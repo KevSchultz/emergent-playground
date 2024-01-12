@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/emergent-playground/static/css/main.e6c13ad2.css",
+    "main.js": "/emergent-playground/static/js/main.277d0341.js",
+    "static/js/787.520f6245.chunk.js": "/emergent-playground/static/js/787.520f6245.chunk.js",
+    "index.html": "/emergent-playground/index.html",
+    "main.e6c13ad2.css.map": "/emergent-playground/static/css/main.e6c13ad2.css.map",
+    "main.277d0341.js.map": "/emergent-playground/static/js/main.277d0341.js.map",
+    "787.520f6245.chunk.js.map": "/emergent-playground/static/js/787.520f6245.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e6c13ad2.css",
+    "static/js/main.277d0341.js"
+  ]
+}
