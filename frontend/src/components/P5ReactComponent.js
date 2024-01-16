@@ -1,7 +1,7 @@
 import React from "react";
 import p5 from "p5";
-import vertexShader from "./gol.vert";
-import fragmentShader from "./gol.frag";
+import vertexShader from "../shaders/gol.vert";
+import fragmentShader from "../shaders/gol.frag";
 
 class P5ReactComponent extends React.Component {
   constructor(props) {

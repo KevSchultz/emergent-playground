@@ -1,5 +1,5 @@
 import * as React from "react";
-import P5ReactComponent from "./P5ReactComponent";
+import P5ReactComponent from "./components/P5ReactComponent";
 
 function App() {
   return (<div>
