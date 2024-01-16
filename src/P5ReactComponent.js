@@ -1,81 +1,66 @@
 import React from "react";
 import p5 from "p5";
+import vertexShader from "./gol.vert";
+import fragmentShader from "./gol.frag";
 
 class P5ReactComponent extends React.Component {
   constructor(props) {
     super(props);
     this.myRef = React.createRef();
-    this.columns = 0;
-    this.rows = 0;
-    this.board = [];
-    this.next = [];
+    this.golShader = null;
+    this.prevFrame = null;
   }
 
   Sketch = (p) => {
-    p.setup = () => {
-      p.createCanvas(720, 400);
-      this.columns = p.width / 10;
-      this.rows = p.height / 10;
 
-      // Initialize the array
-      for (let i = 0; i < this.columns; i++) {
-        this.board[i] = [];
-        this.next[i] = [];
-        for (let j = 0; j < this.rows; j++) {
-          this.board[i][j] = Math.floor(p.random(2));
-          this.next[i][j] = 0;
-        }
-      }
+    p.preload = () => {
+      this.golShader = p.loadShader(vertexShader, fragmentShader);
+    };
+
+    p.setup = () => {
+      p.createCanvas(window.innerWidth, window.innerHeight, p.WEBGL);
+      p.pixelDensity(1);
+      p.noSmooth();
+
+      this.prevFrame = p.createGraphics(p.width, p.height);
+      this.prevFrame.pixelDensity(1);
+      this.prevFrame.noSmooth();
+
+      p.background(0);
+      p.stroke(255);
+      p.shader(this.golShader);
+      this.golShader.setUniform("normalRes", [1.0 / p.width, 1.0 / p.height]);
     };
 
     p.draw = () => {
-      p.background(255);
-      for (let i = 0; i < this.columns; i++) {
-        for (let j = 0; j < this.rows; j++) {
-          if (this.board[i][j] === 1) {
-            p.fill(0);
-          } else {
-            p.fill(255);
-          }
-          p.stroke(0);
-          p.rect(i * 10, j * 10, 10, 10);
-        }
-      }
-
-      // Compute next based on current
-      for (let i = 0; i < this.columns; i++) {
-        for (let j = 0; j < this.rows; j++) {
-          let neighbors = this.countNeighbors(i, j);
-          if ((this.board[i][j] === 1) && (neighbors < 2 || neighbors > 3)) {
-            this.next[i][j] = 0;
-          } else if (this.board[i][j] === 0 && neighbors === 3) {
-            this.next[i][j] = 1;
-          } else {
-            this.next[i][j] = this.board[i][j];
-          }
-        }
-      }
-
-      // Swap
-      [this.board, this.next] = [this.next, this.board];
+      if(p.mouseIsPressed) {
+        p.line(
+          p.pmouseX-p.width/2,
+          p.pmouseY-p.height/2,
+          p.mouseX-p.width/2,
+          p.mouseY-p.height/2
+        );
+      }  
+      
+      // Copy the rendered image into our prevFrame image
+      this.prevFrame.image(p.get(), 0, 0);  
+      // Set the image of the previous frame into our shader
+      this.golShader.setUniform('tex', this.prevFrame);
+      
+      // Give the shader a surface to draw on
+      p.rect(-p.width/2,-p.height/2,p.width,p.height);
     };
-  }
 
-  countNeighbors(x, y) {
-    let sum = 0;
-    for (let i = -1; i <= 1; i++) {
-      for (let j = -1; j <= 1; j++) {
-        let col = (x + i + this.columns) % this.columns;
-        let row = (y + j + this.rows) % this.rows;
-        sum += this.board[col][row];
-      }
-    }
-    sum -= this.board[x][y];
-    return sum;
+    p.windowResized = () => {
+      p.resizeCanvas(window.innerWidth, window.innerHeight);
+    };
+
   }
 
   componentDidMount() {
-    this.myP5 = new p5(this.Sketch, this.myRef.current);
+    if (!this.myP5) {
+      this.myP5 = new p5(this.Sketch, this.myRef.current);
+    }
   }
 
   render() {
