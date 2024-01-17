@@ -1,7 +1,15 @@
 # Emergent Playground
+### A web platform to animate, build, and share cellular automata. 
 
 ![Banner Image](banner.png)
 
+## Team Members
+
+* [Alex Garza](mailto:asgarza@ucsc.edu)
+* [Beckett Avary](mailto:bavary@ucsc.edu)
+* [Ethan Foster](mailto:ewfoster@ucsc.edu)
+* [Preston Nguyen](mailto:prhunguy@ucsc.edu)
+* [Kevin Schultz](mailto:ksschult@ucsc.edu)
 
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
