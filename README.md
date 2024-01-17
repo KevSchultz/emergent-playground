@@ -1,4 +1,4 @@
-# Emergent Playground
+# [Emergent Playground](https://emergentplayground.com/)
 ### A web platform to animate, build, and share cellular automata. 
 
 ![Banner Image](banner.png)
@@ -11,12 +11,82 @@
 * [Preston Nguyen](mailto:prhunguy@ucsc.edu)
 * [Kevin Schultz](mailto:ksschult@ucsc.edu)
 
+## Requirements
+
+To run this project locally, you will need the following:
+
+* [Node.js](https://nodejs.org/) and npm (Node Package Manager). npm is included with Node.js, which you can download and install from [Node.js downloads](https://nodejs.org/en/download/).
+
+* [Git](https://git-scm.com/) for version control.
+
+## Local Installation
+
+Clone the repository to your local machine using Git:
+   ```bash
+   git clone https://github.com/KevSchultz/emergent-playground.git
+   ```
+Follow these steps to install and run the frontend locally:
+
+1. Navigate into the cloned repository:
+
+    ```bash
+    cd emergent-playground
+    ```
+
+2. Navigate into the frontend directory: 
+
+    ```bash
+    cd frontend
+    ```
+
+3. Install project dependencies with npm:
+
+    ```bash
+    npm install
+    ```
+
+4. Start the local development server:
+
+    ```bash
+    npm start
+    ```
+
+5. Navigate to [http://localhost:3000](http://localhost:3000) in a browser.
+
+Follow these steps to install and run the backend locally:
+
+1. Navigate into the cloned repository:
+
+    ```bash
+    cd emergent-playground
+    ```
+
+2. Navigate into the backend directory: 
+
+    ```bash
+    cd backend
+    ```
+
+3. Install project dependencies with npm:
+
+    ```bash
+    npm install
+    ```
+
+4. Start the express server:
+
+    ```bash
+    npm start
+    ```
+
+
+
+
+## Available Scripts with create-react-app
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
-
-In the project directory, you can run:
+In the frontend directory, you can run:
 
 ### `npm start`
 
