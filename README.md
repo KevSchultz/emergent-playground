@@ -1,5 +1,7 @@
 # [Emergent Playground](https://emergentplayground.com/)
-### A web platform to animate, build, and share cellular automata. 
+### Complexity springs from simplicity!
+[emergentplayground.com](https://emergentplayground.com/)
+
 
 ![Banner Image](banner.png)
 
