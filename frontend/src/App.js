@@ -1,9 +1,11 @@
 import * as React from "react";
-import P5ReactComponent from "./components/P5ReactComponent";
+import P5Component from "./components/P5Component";
+import gameOfLifeSketch from "./sketches/gameOfLifeSketch";
 
 function App() {
+
   return (<div>
-    <P5ReactComponent />
+    <P5Component sketch={gameOfLifeSketch} />
   </div>);
 }
 
