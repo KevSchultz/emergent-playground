@@ -11,7 +11,7 @@ const ballMovingSketch = (p) => {
 
   p.setup = () => {
     console.log("setup inside p5");
-    p.createCanvas(700, 410);
+    p.createCanvas(500, 500);
   };
 
   p.draw = () => {

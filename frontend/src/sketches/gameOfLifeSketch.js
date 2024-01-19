@@ -3,7 +3,6 @@
  * @author Kevin Schultz
  * @project Emergent Playground
  */
-
 import vertexShader from "../shaders/gol.vert";
 import fragmentShader from "../shaders/gol.frag";
 
@@ -17,11 +16,11 @@ const gameOfLifeSketch = (p) => {
 
   p.setup = () => {
     console.log("setup game of life");
-    p.createCanvas(window.innerWidth, window.innerHeight, p.WEBGL);
+    p.createCanvas(500, 500, p.WEBGL);
     p.pixelDensity(1);
     p.noSmooth();
 
-    prevFrame = p.createGraphics(p.width, p.height);
+    prevFrame = p.createGraphics(500, 500);
     prevFrame.pixelDensity(1);
     prevFrame.noSmooth();
 
