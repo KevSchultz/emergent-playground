@@ -1,0 +1,15 @@
+red = #FF0000
+green = #00FF00
+blue = #0000FF
+
+red{
+    red > 3 and blue < 2
+    green <= 2
+}
+green{
+    blue > 4
+    red < 3
+}
+blue{
+    else
+}
