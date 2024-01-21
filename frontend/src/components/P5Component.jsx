@@ -4,6 +4,7 @@
  * @project Emergent Playground
  */
 import React, { useEffect } from 'react'
+import PropTypes from 'prop-types';
 import p5 from "p5";
 
 
@@ -26,5 +27,10 @@ function P5Component({sketch}) {
 
     return <div ref={myRef}/>;
 }
+
+// This is a type check for the sketch prop
+P5Component.propTypes = {
+    sketch: PropTypes.func.isRequired
+};
 
 export default P5Component
