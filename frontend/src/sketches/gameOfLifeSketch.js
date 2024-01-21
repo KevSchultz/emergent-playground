@@ -16,11 +16,11 @@ const gameOfLifeSketch = (p) => {
 
   p.setup = () => {
     console.log("setup game of life");
-    p.createCanvas(500, 500, p.WEBGL);
+    p.createCanvas(5000, 5000, p.WEBGL);
     p.pixelDensity(1);
     p.noSmooth();
 
-    prevFrame = p.createGraphics(500, 500);
+    prevFrame = p.createGraphics(p.width, p.height);
     prevFrame.pixelDensity(1);
     prevFrame.noSmooth();
 
@@ -33,13 +33,22 @@ const gameOfLifeSketch = (p) => {
 
   p.draw = () => {
     if (p.mouseIsPressed) {
-      p.line(
-        p.pmouseX - p.width / 2,
-        p.pmouseY - p.height / 2,
-        p.mouseX - p.width / 2,
-        p.mouseY - p.height / 2
-      );
+        p.push();
+        p.noFill();
+
+        p.line(
+            p.pmouseX - p.width / 2,
+            p.pmouseY - p.height / 2,
+            p.mouseX - p.width / 2,
+            p.mouseY - p.height / 2
+        );
+        p.square(p.mouseX - p.width / 2, p.mouseY - p.height / 2, 200);
+        // p.circle(p.mouseX - p.width / 2, p.mouseY - p.height / 2, 100);
+        // p.rectangle(p.mouseX - p.width/2, p.mouseY - p.height/2, 10);
+        p.pop();
     }
+
+    // p.circle(p.mouseX - p.width / 2, p.mouseY - p.height / 2, 100);
 
     // Copy the rendered image into our prevFrame image
     prevFrame.image(p.get(), 0, 0);
