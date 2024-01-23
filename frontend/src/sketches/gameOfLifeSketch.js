@@ -16,18 +16,19 @@ const gameOfLifeSketch = (p) => {
 
   p.setup = () => {
     console.log("setup game of life");
-    p.createCanvas(5000, 5000, p.WEBGL);
-    p.pixelDensity(1);
+    p.createCanvas(500, 500, p.WEBGL);
+    p.pixelDensity(10);
     p.noSmooth();
 
     prevFrame = p.createGraphics(p.width, p.height);
-    prevFrame.pixelDensity(1);
+    prevFrame.pixelDensity(10);
     prevFrame.noSmooth();
 
     p.background(0);
     p.stroke(255);
+    p.fill(255);
     p.shader(golShader);
-    golShader.setUniform("normalRes", [1.0 / p.width, 1.0 / p.height]);
+    golShader.setUniform("normalRes", [10.0 / p.width, 10.0 / p.height]);
     console.log("done setup");
   };
 

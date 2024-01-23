@@ -5,12 +5,16 @@ import gameOfLifeSketch from "./sketches/gameOfLifeSketch";
 import gradientsMovingSketch from "./sketches/gradientsMovingSketch";
 import ballMovingSketch from "./sketches/ballMovingSketch";
 import particleSketch from "./sketches/particleSketch";
+import oneInOneSketch from "./sketches/oneInOneSketch";
+import randomColorsSketch from "./sketches/randomColorsSketch";
 
 function App() {
 
   const [sketchIndex, setSketchIndex] = React.useState(0);
 
   let sketches = [
+    oneInOneSketch,
+    randomColorsSketch,
     gameOfLifeSketch,
     gradientsMovingSketch,
     ballMovingSketch,
