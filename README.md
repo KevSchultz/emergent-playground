@@ -52,9 +52,7 @@ Follow these steps to install and run the frontend locally:
     ```bash
     npm run dev
     ```
-
-5. Navigate to [http://localhost:3000](http://localhost:3000) in a browser.
-
+    
 Follow these steps to install and run the backend locally:
 
 1. Navigate into the cloned repository:

@@ -1,8 +1,14 @@
+/**
+ * @file This file written by chatgpt exports a p5 sketch that contains a particle animation.
+ * Not used in the final project, but kept for reference of how to use p5.js with react. 
+ * @author Kevin Schultz
+ * @project Emergent Playground
+ */
 const particleSketch = (p) => {
   let particles = [];
 
   p.setup = () => {
-    p.createCanvas(500, 500);
+    p.createCanvas(window.innerWidth, window.innerHeight); // set dimensions of canvas of inner window from DOM
     for (let i = 0; i < 100; i++) {
       particles.push(new Particle(p));
     }

@@ -10,18 +10,18 @@ const oneInOneSketch = (p) => {
 
   let shader;
   let prevFrame;
-  let numberOfCellsHorizontal = 500;
-  let numberOfCellsVertical = 500;
+  let numberOfCellsHorizontal = 100;
+  let numberOfCellsVertical = 1;
   let cellWidth;
   let cellHeight;
 
   p.preload = () => {
     shader = p.loadShader(vertexShader, fragmentShader);
-    // p.frameRate(5);
+    p.frameRate(5);
   };
 
   p.setup = () => {
-    p.createCanvas(5000, 5000, p.WEBGL);
+    p.createCanvas(window.innerWidth, Math.floor(window.innerWidth / numberOfCellsHorizontal) , p.WEBGL);
     p.background(0, 0, 0);
     p.noStroke();
     p.pixelDensity(1);

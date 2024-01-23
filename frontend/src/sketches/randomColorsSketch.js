@@ -15,7 +15,7 @@ const randomColorsSketch = (p) => {
   };
 
   p.setup = () => {
-    p.createCanvas(500, 500, p.WEBGL);
+    p.createCanvas(window.innerWidth, window.innerHeight, p.WEBGL);
     p.shader(exampleShader);
     p.noStroke();
   };

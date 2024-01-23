@@ -15,49 +15,41 @@ const gameOfLifeSketch = (p) => {
   };
 
   p.setup = () => {
-    console.log("setup game of life");
-    p.createCanvas(500, 500, p.WEBGL);
-    p.pixelDensity(10);
+    p.createCanvas(window.innerWidth, window.innerHeight, p.WEBGL);
+    p.pixelDensity(1);
     p.noSmooth();
 
     prevFrame = p.createGraphics(p.width, p.height);
-    prevFrame.pixelDensity(10);
+    prevFrame.pixelDensity(1);
     prevFrame.noSmooth();
 
     p.background(0);
     p.stroke(255);
     p.fill(255);
     p.shader(golShader);
-    golShader.setUniform("normalRes", [10.0 / p.width, 10.0 / p.height]);
-    console.log("done setup");
+    golShader.setUniform("normalRes", [1 / p.width, 1 / p.height]);
   };
 
   p.draw = () => {
     if (p.mouseIsPressed) {
-        p.push();
-        p.noFill();
-
-        p.line(
-            p.pmouseX - p.width / 2,
-            p.pmouseY - p.height / 2,
-            p.mouseX - p.width / 2,
-            p.mouseY - p.height / 2
-        );
-        p.square(p.mouseX - p.width / 2, p.mouseY - p.height / 2, 200);
-        // p.circle(p.mouseX - p.width / 2, p.mouseY - p.height / 2, 100);
-        // p.rectangle(p.mouseX - p.width/2, p.mouseY - p.height/2, 10);
-        p.pop();
+      p.push();
+      p.noFill();
+      p.circle(p.mouseX - p.width / 2, p.mouseY - p.height / 2, 100);
+      p.pop();
     }
 
     // p.circle(p.mouseX - p.width / 2, p.mouseY - p.height / 2, 100);
-
     // Copy the rendered image into our prevFrame image
     prevFrame.image(p.get(), 0, 0);
+
     // Set the image of the previous frame into our shader
     golShader.setUniform("tex", prevFrame);
 
     // Give the shader a surface to draw on
     p.rect(-p.width / 2, -p.height / 2, p.width, p.height);
+
+    // Copy the rendered image into our prevFrame image
+    prevFrame.image(p.get(), 0, 0);
   };
 };
 

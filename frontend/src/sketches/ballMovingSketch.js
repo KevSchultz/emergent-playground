@@ -10,8 +10,7 @@ const ballMovingSketch = (p) => {
   let y = 100;
 
   p.setup = () => {
-    console.log("setup inside p5");
-    p.createCanvas(500, 500);
+    p.createCanvas(window.innerWidth, window.innerHeight);
   };
 
   p.draw = () => {

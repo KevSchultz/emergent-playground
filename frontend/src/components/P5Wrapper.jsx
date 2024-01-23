@@ -1,5 +1,5 @@
 /**
- * @file This file exports s P5component which is a react component that wraps a p5 canvas with associated sketch code.
+ * @file This file exports P5Wrapper which is a react component that wraps a p5 canvas with associated sketch code.
  * @author Kevin Schultz
  * @project Emergent Playground
  */
@@ -7,8 +7,14 @@ import React, { useEffect } from 'react'
 import PropTypes from 'prop-types';
 import p5 from "p5";
 
-
-function P5Component({sketch}) {
+/**
+ * @component
+ * @param {Object} props - The properties passed to the component.
+ * @param {string} props.className - The CSS class to apply to the div.
+ * @param {function} props.sketch - The p5 sketch to display in the canvas.
+ * @returns {JSX.Element} A div that contains a p5 canvas.
+ */
+function P5Wrapper({className, sketch}) {
 
     let myRef = React.createRef();
 
@@ -23,14 +29,15 @@ function P5Component({sketch}) {
             // This is where we clean up the sketch
             canvas.remove();
         };
-    }, [myRef, sketch]); // Empty dependency array means this effect runs once on mount
+    }, [myRef, sketch]); // will called when myRef or sketch is changed. 
 
-    return <div ref={myRef}/>;
+    return <div className={className} ref={myRef}/>;
 }
 
 // This is a type check for the sketch prop
-P5Component.propTypes = {
+P5Wrapper.propTypes = {
+    className: PropTypes.string, // needed for styling purposes
     sketch: PropTypes.func.isRequired
 };
 
-export default P5Component
+export default P5Wrapper;
