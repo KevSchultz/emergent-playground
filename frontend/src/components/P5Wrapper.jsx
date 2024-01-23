@@ -3,18 +3,19 @@
  * @author Kevin Schultz
  * @project Emergent Playground
  */
-import React, { useEffect } from 'react'
+import React from 'react'
+import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import p5 from "p5";
 
 /**
  * @component
  * @param {Object} props - The properties passed to the component.
- * @param {string} props.className - The CSS class to apply to the div.
+ * @param {string} props.className - The CSS class to apply to the div. (needed for styled function)
  * @param {function} props.sketch - The p5 sketch to display in the canvas.
  * @returns {JSX.Element} A div that contains a p5 canvas.
  */
-function P5Wrapper({className, sketch}) {
+function P5Wrapper({ className, sketch }) {
 
     let myRef = React.createRef();
 
@@ -29,12 +30,12 @@ function P5Wrapper({className, sketch}) {
             // This is where we clean up the sketch
             canvas.remove();
         };
-    }, [myRef, sketch]); // will called when myRef or sketch is changed. 
+    }, [myRef, sketch]); // useEffect will be called when myRef or sketch is changed. 
 
-    return <div className={className} ref={myRef}/>;
+    return <div className={className} ref={myRef} />;
 }
 
-// This is a type check for the sketch prop
+// This is a type check for the props of the component 
 P5Wrapper.propTypes = {
     className: PropTypes.string, // needed for styling purposes
     sketch: PropTypes.func.isRequired

@@ -11,7 +11,7 @@ const oneInOneSketch = (p) => {
   let shader;
   let prevFrame;
   let numberOfCellsHorizontal = 100;
-  let numberOfCellsVertical = 1;
+  let numberOfCellsVertical = 100;
   let cellWidth;
   let cellHeight;
 
@@ -21,7 +21,7 @@ const oneInOneSketch = (p) => {
   };
 
   p.setup = () => {
-    p.createCanvas(window.innerWidth, Math.floor(window.innerWidth / numberOfCellsHorizontal) , p.WEBGL);
+    p.createCanvas(window.innerWidth - (window.innerWidth % 100), window.innerHeight - (window.innerHeight % 100), p.WEBGL);
     p.background(0, 0, 0);
     p.noStroke();
     p.pixelDensity(1);
