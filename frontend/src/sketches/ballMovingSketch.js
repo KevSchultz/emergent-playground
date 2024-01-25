@@ -1,5 +1,5 @@
 /**
- * @file This file exports a p5 sketch that contains a simple ball moving exercise.
+ * @file ballMovingSketch.js exports a p5 sketch that contains a simple ball moving exercise.
  *  Not used in the final project, but kept for reference.
  * @author Kevin Schultz
  * @project Emergent Playground

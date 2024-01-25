@@ -1,77 +1,51 @@
-import * as React from 'react'
-import Button from '@mui/material/Button'
-import P5Wrapper from './components/P5Wrapper'
-import gameOfLifeSketch from './sketches/gameOfLifeSketch'
-import gradientsMovingSketch from './sketches/gradientsMovingSketch'
-import ballMovingSketch from './sketches/ballMovingSketch'
-import particleSketch from './sketches/particleSketch'
-import oneInOneSketch from './sketches/oneInOneSketch'
-import randomColorsSketch from './sketches/randomColorsSketch'
-import { styled } from '@mui/system'
-import NavBar from './components/NavBar'
-import Typography from '@mui/material/Typography'
-import ButtonPanel from './components/ButtonPanel'
-import IconButton from '@mui/material/IconButton'
-import BrushIcon from '@mui/icons-material/Brush'
-import CropSquareIcon from '@mui/icons-material/CropSquare';
-import AddIcon from '@mui/icons-material/Add';
-import CircleIcon from '@mui/icons-material/Circle';
+/**
+ * @file App.jsx is the root component of the React frontend.
+ * This component is responsible for the client side routing meaning that it will render the correct component corresponding to pages based on the URL.
+ * @author Kevin Schultz
+ * @project Emergent Playground
+ */
 
+// react router imports
+import { createBrowserRouter } from 'react-router-dom';
+import { RouterProvider } from 'react-router-dom';
 
-const BackgroundP5Layer = styled(P5Wrapper)(() => ({
-    position: 'absolute',
-    top: '0',
-    left: '0',
-    zIndex: '-1',
-}));
+// custom page component imports
+import ViewerBuilderCreator from './pages/ViewerBuilderCreator';
+import Welcome from './pages/Welcome';
+import About from './pages/About';
+import Login from './pages/Login';
+import Signup from './pages/Signup';
+import Community from './pages/Community';
 
-const WhiteIconButton = styled(IconButton)(() => ({
-    color: 'white',
-}));
+const router = createBrowserRouter([
+    {
+        path: '/',
+        element: <ViewerBuilderCreator />,
+    },
+    {
+        path: 'welcome',
+        element: <Welcome />,
+    },
+    {
+        path: 'about',
+        element: <About />,
+    },
+    {
+        path: 'login',
+        element: <Login />,
+    },
+    {
+        path: 'signup',
+        element: <Signup />,
+    },
+    {
+        path: 'community',
+        element: <Community />,
+    },
+]);
 
 function App() {
-    const [sketchIndex, setSketchIndex] = React.useState(0)
-
-    let sketches = [
-        oneInOneSketch,
-        randomColorsSketch,
-        gameOfLifeSketch,
-        gradientsMovingSketch,
-        ballMovingSketch,
-        particleSketch,
-    ]
-
-    function handleClick() {
-        setSketchIndex((sketchIndex + 1) % sketches.length)
-    }
-
-    return (
-        <div>
-            <ButtonPanel>
-                <WhiteIconButton color='success'>
-                    <BrushIcon />
-                </WhiteIconButton>
-                <WhiteIconButton>
-                    <CircleIcon/>
-                </WhiteIconButton>
-                <WhiteIconButton>
-                    <CropSquareIcon />
-                </WhiteIconButton>
-                <WhiteIconButton>
-                    <AddIcon/>
-                </WhiteIconButton>
-            </ButtonPanel>
-            <BackgroundP5Layer sketch={sketches[sketchIndex]} />
-            <NavBar>
-                <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                    Emergent Playground
-                </Typography>
-                <Button variant="contained" color="error" onClick={handleClick}>
-                    Change Sketch
-                </Button>
-            </NavBar>
-        </div>
-    )
+    return <RouterProvider router={router} />;
 }
 
-export default App
+export default App;

@@ -1,5 +1,5 @@
 /**
- * @file This file exports P5Wrapper which is a react component that wraps a p5 canvas with associated sketch code.
+ * @file This file exports P5Wrapper which is a react functional component that wraps a p5 canvas with associated sketch code.
  * @author Kevin Schultz
  * @project Emergent Playground
  */
@@ -13,7 +13,7 @@ import p5 from "p5";
  * @param {Object} props - The properties passed to the component.
  * @param {string} props.className - The CSS class to apply to the div. (needed for styled function)
  * @param {function} props.sketch - The p5 sketch to display in the canvas.
- * @returns {JSX.Element} A div that contains a p5 canvas.
+ * @returns {ReactElement} A div that contains a p5 canvas.
  */
 function P5Wrapper({ className, sketch }) {
 
@@ -37,7 +37,7 @@ function P5Wrapper({ className, sketch }) {
 
 // This is a type check for the props of the component 
 P5Wrapper.propTypes = {
-    className: PropTypes.string, // needed for styling purposes
+    className: PropTypes.string, // needed for styling purposes with material ui
     sketch: PropTypes.func.isRequired
 };
 
