@@ -27,7 +27,7 @@ function NavBar({ children, onMouseEnter, onMouseLeave }) {
         >
             <AppBar
                 sx={{
-                    backgroundColor: 'rgba(0, 0, 0, 0.2)',
+                    backgroundColor: 'rgba(20, 20, 20, 0.2)',
                     backdropFilter: 'blur(10px)',
                 }}
                 position="static"

@@ -17,6 +17,7 @@ import ButtonPanel from '../components/ButtonPanel';
 
 // Sketch imports (P5.js)
 import gameOfLifeSketch from '../sketches/gameOfLifeSketch';
+import bufferScalingSketch from '../sketches/bufferScalingSketch';
 import gradientsMovingSketch from '../sketches/gradientsMovingSketch';
 import ballMovingSketch from '../sketches/ballMovingSketch';
 import particleSketch from '../sketches/particleSketch';
@@ -26,11 +27,19 @@ import randomColorsSketch from '../sketches/randomColorsSketch';
 // Material UI imports
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
 import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
-import BrushIcon from '@mui/icons-material/Brush';
-import CropSquareIcon from '@mui/icons-material/CropSquare';
-import CircleIcon from '@mui/icons-material/RadioButtonUnchecked';
+
+
+const sketches = [
+    gameOfLifeSketch,
+    oneInOneSketch,
+    bufferScalingSketch,
+    randomColorsSketch,
+    gradientsMovingSketch,
+    ballMovingSketch,
+    particleSketch,
+];
+
 
 /**
  * @component
@@ -38,16 +47,6 @@ import CircleIcon from '@mui/icons-material/RadioButtonUnchecked';
  */
 function ViewerBuilderCreator() {
     const [sketchIndex, setSketchIndex] = React.useState(0);
-
-    let sketches = [
-        gameOfLifeSketch,
-        oneInOneSketch,
-        randomColorsSketch,
-        gameOfLifeSketch,
-        gradientsMovingSketch,
-        ballMovingSketch,
-        particleSketch,
-    ];
 
     function handleClick() {
         setSketchIndex((sketchIndex + 1) % sketches.length);
@@ -87,28 +86,7 @@ function ViewerBuilderCreator() {
                         </NavBar>
                     </Grid>
                     <Grid item xs="1">
-                        <ButtonPanel>
-                            <IconButton
-                                onClick={() => {
-                                    gameOfLifeSketch.brush = 'line';
-                                }}
-                            >
-                                <BrushIcon sx={{ color: 'white' }} />
-                            </IconButton>
-                            <IconButton
-                                onClick={() => {
-                                    gameOfLifeSketch.brush = 'circle';
-                                }}
-                            >
-                                <CircleIcon sx={{ color: 'white' }} />
-                            </IconButton>
-                            <IconButton
-                                onClick={() => {
-                                    gameOfLifeSketch.brush = 'square';
-                                }}
-                            >
-                                <CropSquareIcon sx={{ color: 'white' }} />
-                            </IconButton>
+                        <ButtonPanel sketch={sketches[sketchIndex]}>
                         </ButtonPanel>
                     </Grid>
                     <Grid item xs="11"></Grid>

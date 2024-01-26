@@ -5,8 +5,36 @@
  * @project Emergent Playground
  */
 
+import { useState } from 'react';
 import Paper from '@mui/material/Paper';
 import PropTypes from 'prop-types';
+import IconButton from '@mui/material/IconButton';
+import BrushIcon from '@mui/icons-material/Brush';
+import CropSquareIcon from '@mui/icons-material/CropSquare';
+import CircleIcon from '@mui/icons-material/RadioButtonUnchecked';
+
+function IconBrushButton({ sketch, icon, brush, setBrush }) {
+    function handleOnClick() {
+        sketch.brush = icon;
+        setBrush(icon);
+    }
+
+    return (
+        <IconButton
+            sx={{ color: icon === brush ? 'yellow' : 'white' }}
+            variant="contained"
+            onClick={handleOnClick}
+        >
+            {icon === 'line' ? (
+                <BrushIcon />
+            ) : icon === 'circle' ? (
+                <CircleIcon />
+            ) : (
+                <CropSquareIcon />
+            )}
+        </IconButton>
+    );
+}
 
 /**
  * ButtonPanel is a functional component that wraps its children with a styled div and Paper component.
@@ -17,7 +45,9 @@ import PropTypes from 'prop-types';
  * 
  * @returns {ReactElement} The ButtonPanel component.
  */
-function ButtonPanel({ className, children }) {
+function ButtonPanel({ className, sketch }) {
+    const [brush, setBrush] = useState('line');
+
     return (
         <div className={className} style={{ display: 'inline-block' }}>
             <Paper
@@ -27,11 +57,13 @@ function ButtonPanel({ className, children }) {
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'start',
-                    backgroundColor: 'rgba(0, 0, 0, 0.2)',
+                    backgroundColor: 'rgba(20, 20, 20, 0.2)',
                     backdropFilter: 'blur(10px)',
                 }}
             >
-                {children}
+                <IconBrushButton sketch={sketch} icon="line" brush={brush} setBrush={setBrush}/>
+                <IconBrushButton sketch={sketch} icon="square" brush={brush} setBrush={setBrush}/>
+                <IconBrushButton sketch={sketch} icon="circle" brush={brush} setBrush={setBrush}/>
             </Paper>
         </div>
     );
