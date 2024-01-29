@@ -23,6 +23,7 @@ import ballMovingSketch from '../sketches/ballMovingSketch';
 import particleSketch from '../sketches/particleSketch';
 import oneInOneSketch from '../sketches/oneInOneSketch';
 import randomColorsSketch from '../sketches/randomColorsSketch';
+import gameOfLifeSketchZoomTmp from '../sketches/gameOfLifeSketchZoomTmp';
 
 // Material UI imports
 import Button from '@mui/material/Button';
@@ -38,6 +39,7 @@ const sketches = [
     gradientsMovingSketch,
     ballMovingSketch,
     particleSketch,
+    gameOfLifeSketchZoomTmp,
 ];
 
 
