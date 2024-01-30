@@ -1,83 +1,106 @@
-import vertShader from '../shaders/golZoomTmp.vert';
-import fragShader from '../shaders/golZoomTmp.frag';
+import vertexShader from '../shaders/golZoomTmp.vert';
+import fragmentShader from '../shaders/golZoomTmp.frag';
 
-var gameOfLifeSketchZoomTmp = (p) => {
-    var canvasWidth = window.innerWidth;
-    var canvasHeight = window.innerHeight;
-    var worldWidth = window.innerWidth;
-    var worldHeight = window.innerHeight;
-    var scalar = 1;
+var gameOfLifeSketchZoomTmp = function(p5) {
 
-    var golShader;
-    var buffer;
-    var prevState;
-    var isFirstGen = true;
-    var translateX = 0;
-    var translateY = 0;
-    var prevMouseX = 0;
-    var prevMouseY = 0;
-    var squareSize = 2000;
+    let canvasWidth = window.innerWidth;
+    let canvasHeight = window.innerHeight;
+    let worldWidth = 1000;
+    let worldHeight = 1000;
+    let squareSize = 700;
+    let zoom = 1;
 
-    p.preload = () => {
-        golShader = p.loadShader('golZoomTmp.vert', 'golZoomTmp.frag');
-    };
+    let shader2Din2D;
+    let buffer;
+    let previousState;
+    let isFirstGeneration = true;
 
-    p.setup = () => {
-        p.createCanvas(canvasWidth, canvasHeight);
-        p.noSmooth();
+    p5.preload = () => {
+        shader2Din2D = p5.loadShader(vertexShader, fragmentShader);
+    }
 
-        buffer = p.createGraphics(worldWidth, worldHeight, WEBGL);
+    p5.setup = () => {
+        p5.createCanvas(canvasWidth, canvasHeight, p5.WEBGL);
+        p5.noSmooth();
+
+        // create off-screen graphics buffer with webgl
+        buffer = p5.createGraphics(worldWidth, worldHeight, p5.WEBGL);
         buffer.noSmooth();
 
-        buffer.shader(golShader);
-        golShader.setUniform("resolution", [worldWidth, worldHeight]);
+        // set shader and resolution uniform
+        buffer.shader(shader2Din2D);
+        shader2Din2D.setUniform('resolution', [worldWidth, worldHeight]);
 
-        prevState = createGraphics(worldWidth, worldHeight);
-        prevState.noSmooth();
-        prevState.stroke(255);
-        prevState.square(worldWidth/2 - squareSize/2, worldHeight/2 - squareSize/2, squareSize);
-    };
+        // create off-screen graphics to hold the previous state of the cellular automata
+        previousState = p5.createGraphics(worldWidth, worldHeight);
+        previousState.noSmooth();
+        previousState.push();
+        previousState.stroke(255);
+        previousState.strokeWeight(10);
+        previousState.noFill();
+        previousState.square(
+            worldWidth / 2 - squareSize / 2,
+            worldHeight / 2 - squareSize / 2,
+            squareSize
+        );
+        previousState.pop();
 
-    p.mouseWheel = (event) => {
-        scalar += event.delta * -0.01;
-        scalar = constrain(scalar, 0.1, 500);
-    };
+    }
 
-    p.mousePressed = () => {
-        prevMouseX = mouseX;
-        prevMouseY = mouseY;
-    };
+        p5.mouseWheel = (event) => {
+            // Adjust scalar based on mouse wheel
+            zoom += event.delta * -0.001;
+            // Constrain the scalar to prevent too much zoom in or out
+            zoom = p5.constrain(zoom, 0.1, 500);
+        };
 
-    p.mouseDragged = () => {
-        if(keyIsPressed && key == 'Control') {
-            translateX += mouseX - prevMouseX;
-            translateY += mouseY - prevMouseY;
-        }
-        prevMouseX = mouseX;
-        prevMouseY = mouseY;
-    };
+        p5.draw = () => {
+        p5.background(0);
 
-    p.draw = () => {
-        p.background('pink');
-
-        if(!isFirstGen){
+        // copy buffer into previousState unless it's the first run then keep initial state
+        if (!isFirstGeneration) {
             previousState.image(buffer, 0, 0);
         } else {
             console.log('first generation');
-            isFirstGen = false;
+            isFirstGeneration = false;
         }
 
-        golShader.setUniform('previousState', prevState);
-        buffer.rect(-buffer.width/2, buffer.height/2, buffer.width, buffer.height);
+        if (p5.mouseIsPressed) {
+            // Map mouse coordinates to previousState coordinates
+            let mappedX = (p5.mouseX - p5.width / 2) / zoom + worldWidth / 2;
+            let mappedY = (p5.mouseY - p5.height / 2) / zoom + worldHeight / 2;
 
-        p.translate(translateX, translateY);
-        p.scale(scalar);
+            mappedX = Math.floor(mappedX);
+            mappedY = Math.floor(mappedY);
 
-        let x = width / (2 * scalar) - (buffer.width / 2);
-        let y = height / (2 * scalar) - (buffer.height / 2);
+            console.log('mappedX ' + mappedX);
+            console.log('mappedY ' + mappedY);
+            // Draw on previousState
+            previousState.push(); // Save current state
+            previousState.noFill();
+            previousState.strokeWeight(1);
+            previousState.stroke(255);
+            previousState.square(mappedX, mappedY, 100);
+            previousState.pop(); // Restore state
+        }
 
-        p.image(buffer, x, y);
-    };
-};
+        // set previousState uniform for buffer
+        shader2Din2D.setUniform('previousState', previousState);
+        buffer.rect(
+            -buffer.width / 2,
+            buffer.height / 2,
+            buffer.width,
+            buffer.height
+        );
+
+        // Display nextState on the plane
+        p5.noSmooth();
+        p5.scale(zoom);
+        p5.texture(buffer);
+        p5.rotateX(p5.frameCount * 0.01);
+        p5.rotateY(p5.frameCount * 0.01);
+        p5.plane(worldWidth, worldHeight);
+    }
+}
 
 export default gameOfLifeSketchZoomTmp;

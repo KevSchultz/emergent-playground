@@ -49,6 +49,8 @@ const oneInOneSketch = (p) => {
         previousState.noSmooth();
         previousState.stroke(255);
         previousState.line(0, 0, 0, 0);
+
+        console.log(buffer.webglVersion);
     }
 
     p.mouseWheel = (event) => {

@@ -32,6 +32,7 @@ import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
 
 
 const sketches = [
+    gameOfLifeSketchZoomTmp,
     gameOfLifeSketch,
     oneInOneSketch,
     bufferScalingSketch,
@@ -39,7 +40,6 @@ const sketches = [
     gradientsMovingSketch,
     ballMovingSketch,
     particleSketch,
-    gameOfLifeSketchZoomTmp,
 ];
 
 
