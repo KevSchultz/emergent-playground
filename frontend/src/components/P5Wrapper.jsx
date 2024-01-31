@@ -11,11 +11,12 @@ import p5 from "p5";
 /**
  * @component
  * @param {Object} props - The properties passed to the component.
- * @param {string} props.className - The CSS class to apply to the div. (needed for styled function)
+ * @param {string} props.className - The CSS class to apply to the div. (needed for styled material ui function)
+ * @param {Object} props.style - The inline styles to apply through react (not material ui) to the div. 
  * @param {function} props.sketch - The p5 sketch to display in the canvas.
  * @returns {ReactElement} A div that contains a p5 canvas.
  */
-function P5Wrapper({ className, sketch }) {
+function P5Wrapper({ className, style, sketch}) {
 
     let myRef = React.createRef();
 
@@ -32,13 +33,14 @@ function P5Wrapper({ className, sketch }) {
         };
     }, [myRef, sketch]); // useEffect will be called when myRef or sketch is changed. 
 
-    return <div className={className} ref={myRef} />;
+    return <div className={className} style={style} ref={myRef} />;
 }
 
 // This is a type check for the props of the component 
 P5Wrapper.propTypes = {
     className: PropTypes.string, // needed for styling purposes with material ui
-    sketch: PropTypes.func.isRequired
+    sketch: PropTypes.func.isRequired,
+    style: PropTypes.object
 };
 
 export default P5Wrapper;

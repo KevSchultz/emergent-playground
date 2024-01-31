@@ -38,11 +38,11 @@ function IconBrushButton({ sketch, icon, brush, setBrush }) {
 
 /**
  * ButtonPanel is a functional component that wraps its children with a styled div and Paper component.
- * 
+ *
  * @param {Object} props - The properties passed to the component.
  * @param {string} props.className - The CSS class to apply to the outer div.
  * @param {ReactNode} props.children - The child components to be rendered inside the Paper component.
- * 
+ *
  * @returns {ReactElement} The ButtonPanel component.
  */
 function ButtonPanel({ className, sketch }) {
@@ -57,13 +57,29 @@ function ButtonPanel({ className, sketch }) {
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'start',
+                    marginLeft: '10px',
                     backgroundColor: 'rgba(20, 20, 20, 0.2)',
                     backdropFilter: 'blur(10px)',
                 }}
             >
-                <IconBrushButton sketch={sketch} icon="line" brush={brush} setBrush={setBrush}/>
-                <IconBrushButton sketch={sketch} icon="square" brush={brush} setBrush={setBrush}/>
-                <IconBrushButton sketch={sketch} icon="circle" brush={brush} setBrush={setBrush}/>
+                <IconBrushButton
+                    sketch={sketch}
+                    icon="line"
+                    brush={brush}
+                    setBrush={setBrush}
+                />
+                <IconBrushButton
+                    sketch={sketch}
+                    icon="square"
+                    brush={brush}
+                    setBrush={setBrush}
+                />
+                <IconBrushButton
+                    sketch={sketch}
+                    icon="circle"
+                    brush={brush}
+                    setBrush={setBrush}
+                />
             </Paper>
         </div>
     );

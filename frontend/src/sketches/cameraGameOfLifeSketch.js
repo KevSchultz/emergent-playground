@@ -3,10 +3,12 @@ import fragmentShader from '../shaders/golZoomTmp.frag';
 
 var gameOfLifeSketchZoomTmp = function(p5) {
 
-    worldWidth = 1000;
+    let worldWidth = 1000;
     let worldHeight = 1000;
     let squareSize = 500;
-
+    let frame = 0;
+    let captureLimit = 5;
+    let video;
 
     let shader2Din2D;
     let buffer;

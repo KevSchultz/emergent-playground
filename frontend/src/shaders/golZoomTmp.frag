@@ -26,15 +26,15 @@ void main() {
     vec4 rightBottomColor = texture2D(previousState, uv + vec2(pixelOffset.x, -pixelOffset.y));
 
     // Convert the colors to binary (black = 0, white = 1)
-    float centerState = step(0.5, centerColor.r);
-    float leftState = step(0.5, leftColor.r);
-    float rightState = step(0.5, rightColor.r);
-    float centerTopState = step(0.5, centerTopColor.r);
-    float leftTopState = step(0.5, leftTopColor.r);
-    float rightTopState = step(0.5, rightTopColor.r);
-    float centerBottomState = step(0.5, centerBottomColor.r);
-    float leftBottomState = step(0.5, leftBottomColor.r);
-    float rightBottomState = step(0.5, rightBottomColor.r);
+    float centerState = step(0.5, (centerColor.r + centerColor.g + centerColor.b) / 3.0);
+    float leftState = step(0.5, (leftColor.r + leftColor.g + leftColor.b) / 3.0);
+    float rightState = step(0.5, (rightColor.r + rightColor.g + rightColor.b) / 3.0);
+    float centerTopState = step(0.5, (centerTopColor.r + centerTopColor.g + centerTopColor.b) / 3.0);
+    float leftTopState = step(0.5, (leftTopColor.r + leftTopColor.g + leftTopColor.b) / 3.0);
+    float rightTopState = step(0.5, (rightTopColor.r + rightTopColor.g + rightTopColor.b) / 3.0);
+    float centerBottomState = step(0.5, (centerBottomColor.r + centerBottomColor.g + centerBottomColor.b) / 3.0);
+    float leftBottomState = step(0.5, (leftBottomColor.r + leftBottomColor.g + leftBottomColor.b) / 3.0);
+    float rightBottomState = step(0.5, (rightBottomColor.r + rightBottomColor.g + rightBottomColor.b) / 3.0);
 
     float aliveNeighbors = leftState + rightState + centerTopState + leftTopState + rightTopState + centerBottomState + leftBottomState + rightBottomState;
 

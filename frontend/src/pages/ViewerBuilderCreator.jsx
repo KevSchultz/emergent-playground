@@ -10,38 +10,30 @@ import React from 'react';
 
 // Custom component imports
 import P5Wrapper from '../components/P5Wrapper';
-import BackgroundLayer from '../components/BackgroundLayer';
+// import BackgroundLayer from '../components/BackgroundLayer';
 import UserInterfaceLayer from '../components/UserInterfaceLayer';
 import NavBar from '../components/NavBar';
 import ButtonPanel from '../components/ButtonPanel';
 
 // Sketch imports (P5.js)
 import gameOfLifeSketch from '../sketches/gameOfLifeSketch';
-import bufferScalingSketch from '../sketches/bufferScalingSketch';
-import gradientsMovingSketch from '../sketches/gradientsMovingSketch';
-import ballMovingSketch from '../sketches/ballMovingSketch';
-import particleSketch from '../sketches/particleSketch';
-import oneInOneSketch from '../sketches/oneInOneSketch';
-import randomColorsSketch from '../sketches/randomColorsSketch';
-import gameOfLifeSketchZoomTmp from '../sketches/gameOfLifeSketchZoomTmp';
+// import bufferScalingSketch from '../sketches/bufferScalingSketch';
+// import gradientsMovingSketch from '../sketches/gradientsMovingSketch';
+// import ballMovingSketch from '../sketches/ballMovingSketch';
+// import particleSketch from '../sketches/particleSketch';
+// import oneInOneSketch from '../sketches/oneInOneSketch';
+// import randomColorsSketch from '../sketches/randomColorsSketch';
+// import gameOfLifeSketchZoomTmp from '../sketches/gameOfLifeSketchZoomTmp';
+import twoInTwo from '../sketches/twoInTwo';
 
 // Material UI imports
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
 
-
 const sketches = [
-    gameOfLifeSketchZoomTmp,
-    gameOfLifeSketch,
-    oneInOneSketch,
-    bufferScalingSketch,
-    randomColorsSketch,
-    gradientsMovingSketch,
-    ballMovingSketch,
-    particleSketch,
+    twoInTwo,
 ];
-
 
 /**
  * @component
@@ -65,6 +57,10 @@ function ViewerBuilderCreator() {
     return (
         <>
             <UserInterfaceLayer>
+                <P5Wrapper
+                    sketch={sketches[sketchIndex]}
+                    style={{ position: 'absolute', top: '0', left: '0' }}
+                />
                 <Grid container spacing={2}>
                     <Grid item xs={12} md={12}>
                         <NavBar
@@ -88,15 +84,13 @@ function ViewerBuilderCreator() {
                         </NavBar>
                     </Grid>
                     <Grid item xs="1">
-                        <ButtonPanel sketch={sketches[sketchIndex]}>
-                        </ButtonPanel>
+                        <ButtonPanel
+                            sketch={sketches[sketchIndex]}
+                        ></ButtonPanel>
                     </Grid>
                     <Grid item xs="11"></Grid>
                 </Grid>
             </UserInterfaceLayer>
-            <BackgroundLayer>
-                <P5Wrapper sketch={sketches[sketchIndex]} />
-            </BackgroundLayer>
         </>
     );
 }
