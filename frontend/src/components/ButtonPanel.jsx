@@ -58,6 +58,7 @@ function ButtonPanel({ className, sketch }) {
                     flexDirection: 'column',
                     alignItems: 'start',
                     marginLeft: '10px',
+                    marginTop: '10px',
                     backgroundColor: 'rgba(20, 20, 20, 0.2)',
                     backdropFilter: 'blur(10px)',
                 }}
