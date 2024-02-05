@@ -1,26 +1,41 @@
+#version 300 es
+
 #ifdef GL_ES
 precision mediump float;
 #endif
 
-varying vec2 vTexCoord;
+in vec2 vTexCoord;
+out vec4 out_col;
+
 uniform sampler2D tex;
 uniform vec2 normalRes;
+
+const vec4 red = vec4(1.0, 0.0, 0.0, 1.0);
+const vec4 green = vec4(0.0, 1.0, 0.0, 1.0);
+const vec4 blue = vec4(0.0, 0.0, 1.0, 1.0);
+
+
+uint pack(vec4 v){
+    uint o = uint(0x0);
+    o |= uint(round(clamp(v.r, 0.0, 1.0) * 255.0)) << 24;
+    o |= uint(round(clamp(v.g, 0.0, 1.0) * 255.0)) << 16;
+    o |= uint(round(clamp(v.b, 0.0, 1.0) * 255.0)) << 8;
+    o |= uint(round(clamp(v.a, 0.0, 1.0) * 255.0));
+    return o;
+}
 
 void main(){
     vec2 uv = vTexCoord;
     uv.y = 1.0 - uv.y;
 
-	red = vec4(1.0, 0.0, 0.0, 1.0);
-	green = vec4(0.0, 1.0, 0.0, 1.0);
-	blue = vec4(0.0, 0.0, 1.0, 1.0);
+	uint red_num = uint(0);
+	uint green_num = uint(0);
+	uint blue_num = uint(0);
 
 
-	uint red_num = 0;
-	uint green_num = 0;
-	uint blue_num = 0;
+    vec4 curr = texture(tex, uv);
 
-
-    vec4 col;
+    uint col;
     for(float i = -1.0; i < 2.0; i++){
         for(float j = -1.0; j < 2.0; j++){
             if(i == 0.0 && j == 0.0){
@@ -29,36 +44,43 @@ void main(){
             float x = uv.x + i * normalRes.x;
             float y = uv.y + j * normalRes.y;
 
-            col = texture2D(tex, vec2(x, y));
+            col = pack(texture(tex, vec2(x, y)));
 
 			switch(col){
-				case red:
+				case uint(0xFF0000FF):
 					red_num++;
 					break;
-				case green:
+				case uint(0x00FF00FF):
 					green_num++;
 					break;
-				case blue:
+				case uint(0x0000FFFF):
 					blue_num++;
 					break;
 			}
 
+
         }
     }
 
-    vec4 color=red;
+    vec4 cell;
 
-	if(red_num>3&&blue_num<2 || green_num<=2){
-		color=red;
-	} else {
-		color=blue;
+	if(curr == red){
+	    if(red_num < uint(2)){
+	        cell = green;
+	    }
+	    if(red_num == uint(2) || red_num == uint(3)){
+	        cell = red;
+	    }
+	    if(red_num > uint(3)){
+	        cell = green;
+	    }
 	}
-	if(blue_num>4 || red_num<3){
-		color=green;
-	} else {
-		color=blue;
+	else {
+	    if(red_num == uint(3)){
+	        cell = red;
+	    }
 	}
+	
 
-
-    gl_FragColor = color;
+    out_col = cell;
 }

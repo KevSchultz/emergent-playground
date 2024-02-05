@@ -1,7 +1,9 @@
-attribute vec3 aPosition;
-attribute vec2 aTexCoord;
+#version 300 es
 
-varying vec2 vTexCoord;
+in vec3 aPosition;
+in vec2 aTexCoord;
+
+out vec2 vTexCoord;
 
 void main() {
     vTexCoord = aTexCoord;

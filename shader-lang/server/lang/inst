@@ -1,15 +1,20 @@
 red = #FF0000
 green = #00FF00
 blue = #0000FF
-
-red{
-    red > 3 and blue < 2
-    green <= 2
+---
+if(curr == red){
+    if(red_num < 2){
+        cell = green;
+    }
+    if(red_num == 2 || red_num == 3){
+        cell = red;
+    }
+    if(red_num > 3){
+        cell = green;
+    }
 }
-green{
-    blue > 4
-    red < 3
-}
-blue{
-    else
+else {
+    if(red_num == 3){
+        cell = red;
+    }
 }

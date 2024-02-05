@@ -2,80 +2,59 @@
 
 import re
 
-def get_colors(hex):
-    tmp = []
-    for i in [0, 2, 4]:
-        tmp.append(float(int(hex[i:i+2], 16)/255))
-    out = 'vec4('
-    for c in tmp:
-        out += str(c) + ', '
-    out += '1.0)'
-    return out
+def split_inst(inst):
+    line = inst.find('---')
+    return inst[0:line], inst[line+4:len(inst)]
 
-def tokenize(rule):
-    out = re.split(r'(\b(?:[<>]=?|==)\b|\b\w+\b)', rule)
-    return [i.strip() for i in out if i.strip()]
+def translate_colors(c):
+    vec = 'vec4('
+    tmp = [float(int(c[i:i+2], 16))/255.0 for i in [0, 2, 4]]
+    for i in tmp:
+        vec += str(i) + ', '
+    vec += '1.0)'
+    code = f'0x{c}FF'
+    return vec, code
 
 if __name__ == '__main__':
-    inst = ''
-    with open('inst', 'r') as f:
-        inst = f.read()
-    f.close()
-    inst = inst.splitlines()
 
-    colors = {}
-    for line in inst:
-        if line == '':
-            break
-        tok = line.split(' ')
-        colors[tok[0]] = get_colors(tok[2].lstrip('#'))
-
-    inst = inst[len(colors)+1:len(inst)+1]
-
-    frag = ''
     with open('lang_template.frag', 'r') as f:
         frag = f.read()
-    f.close()
+        f.close()
+
+    with open('inst', 'r') as f:
+        inst_full = f.read()
+        f.close()
+
+    data, text = split_inst(inst_full)
+    del inst_full
+
+    color_vec = {}
+    color_int = {}
+    for c in data.split('\n'):
+        if c == '': continue
+        tok = c.split(' ')
+        color_vec[tok[0]], color_int[tok[0]] = translate_colors(tok[2][1:])
+    
+    insert = ''
+    for k, v in color_vec.items():
+        insert += f'const vec4 {k} = {v};\n'
+    frag = frag.replace('//CONSTS', insert)
 
     insert = ''
-    for c in colors.keys():
-        insert += '\tuint ' + c + '_num = 0;\n'
+    for k in color_vec.keys():
+        insert += f'\tuint {k}_num = uint(0);\n'
     frag = frag.replace('//BUCKETS', insert)
 
-    insert = ''
-    for c, v in colors.items():
-        insert += '\t' + c + ' = ' + v + ';\n'
-    frag = frag.replace('//COLORS', insert)
-
     insert = '\t\t\tswitch(col){\n'
-    for c in colors.keys():
-        insert += '\t\t\t\tcase ' + c + ':\n\t\t\t\t\t' \
-                + c + '_num++;\n\t\t\t\t\tbreak;\n'
-    insert += '\t\t\t}'
+    for k, v in color_int.items():
+        insert += f'\t\t\t\tcase uint({v}):\n\t\t\t\t\t{k}_num++;\n\t\t\t\t\tbreak;\n'
+    insert += '\t\t\t}\n'
     frag = frag.replace('//IDENTIFY', insert)
 
-    insert = ''
-    col = ''
-    ineq = '<==>=!='
-    for i in range(len(inst)):
-        if inst[i][0] != '\t' and inst[i][0] != ' ':
-            col = inst[i].rstrip('{')
-        elif inst[i] == '}':
-            continue
-        else:
-            insert += '\tif(' if inst[i-1][-1] == '{' else ''
-            proc = tokenize(inst[i].lstrip('\t'))
-            for tok in proc:
-                if tok in colors.keys():
-                    insert += f'{tok}_num'
-                elif tok in ineq or tok.isdigit():
-                    insert += tok
-                elif tok == 'and':
-                    insert += '&&'
-            insert += ' || ' if inst[i+1] != '}' else '){\n\t\tcolor='+col+';\n\t}\n'
+    text = '\n'.join([f'\t{x}' for x in text.split('\n')])
+    insert = re.sub(r'\b(\d+)\b', r'uint(\1)', text)#)
     frag = frag.replace('//RULES', insert)
-                
 
     with open('lang.frag', 'w') as f:
         f.write(frag)
-    f.close()
+        f.close()

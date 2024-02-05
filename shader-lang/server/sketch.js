@@ -9,7 +9,7 @@ function preload(){
 }
 
 function setup() {
-    createCanvas(200, 200, WEBGL);
+    createCanvas(1000, 1000, WEBGL);
     pixelDensity(1);
     noSmooth();
 
@@ -46,6 +46,7 @@ function draw() {
 function keyPressed() {
     if(keyCode === 32){
         run = !run;
+        console.log(run);
     }
     if(keyCode === 49){
         stroke(color('#FF0000'));
