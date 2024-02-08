@@ -3,6 +3,7 @@ import fragmentShader from '../shaders/golZoomTmp.frag';
 
 let twoInTwo = function(p5) {
 
+    // gameOfLifeSketch.js changes cursor so this fixes cursor when leaving that game
     document.body.style.cursor = 'auto';
 
     twoInTwo.worldWidth = 1000;

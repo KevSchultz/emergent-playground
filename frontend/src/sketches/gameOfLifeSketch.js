@@ -10,6 +10,7 @@ var gameOfLifeSketch = (p) => {
     gameOfLifeSketch.noDraw = false;
     gameOfLifeSketch.brush = 'line';
 
+    // Starts with cursor as line brush so automatically set to crosshair
     document.body.style.cursor = 'crosshair';
 
     var golShader;
