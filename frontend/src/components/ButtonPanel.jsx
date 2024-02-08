@@ -12,6 +12,7 @@ import IconButton from '@mui/material/IconButton';
 import BrushIcon from '@mui/icons-material/Brush';
 import CropSquareIcon from '@mui/icons-material/CropSquare';
 import CircleIcon from '@mui/icons-material/RadioButtonUnchecked';
+import PauseIcon from '@mui/icons-material/Pause';
 
 function IconBrushButton({ sketch, icon, brush, setBrush }) {
     function handleOnClick() {
@@ -36,6 +37,23 @@ function IconBrushButton({ sketch, icon, brush, setBrush }) {
     );
 }
 
+// Toggle button for pausing
+function IconPauseButton({sketch, paused, setPaused}) {
+    function handleOnClick() {
+        sketch.paused = !paused;
+        setPaused(!paused);
+    }
+
+    return (
+        <IconButton
+            sx={{ color: paused ? 'red' : 'white' }}
+            onClick={handleOnClick}
+        >
+            <PauseIcon/>
+        </IconButton>
+    );
+}
+
 /**
  * ButtonPanel is a functional component that wraps its children with a styled div and Paper component.
  *
@@ -47,6 +65,7 @@ function IconBrushButton({ sketch, icon, brush, setBrush }) {
  */
 function ButtonPanel({ className, sketch }) {
     const [brush, setBrush] = useState('line');
+    const [paused, setPaused] = useState(false);
 
     return (
         <div className={className} style={{ display: 'inline-block' }}>
@@ -63,6 +82,12 @@ function ButtonPanel({ className, sketch }) {
                     backdropFilter: 'blur(10px)',
                 }}
             >
+                <IconPauseButton
+                    sketch={sketch}
+                    paused={paused}
+                    setPaused={setPaused}
+                />
+
                 <IconBrushButton
                     sketch={sketch}
                     icon="line"

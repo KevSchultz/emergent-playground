@@ -24,6 +24,7 @@ let twoInTwo = function (p5) {
     twoInTwo.isFirstGeneration = true;
     twoInTwo.brush = 'line';
     twoInTwo.brushSize = 100;
+    twoInTwo.paused = false;
 
     p5.preload = () => {
         twoInTwo.shader2Din2D = p5.loadShader(vertexShader, fragmentShader);
@@ -169,6 +170,14 @@ let twoInTwo = function (p5) {
     };
 
     p5.draw = () => {
+
+        // Set pause uniform to whether pause is active or not
+        if (twoInTwo.paused) {
+            twoInTwo.shader2Din2D.setUniform('paused', 1.0);
+        } else {
+            twoInTwo.shader2Din2D.setUniform('paused', 0.0);
+        }
+
         p5.background('black');
 
         // copy buffer into previousState unless it's the first run then keep initial state
