@@ -8,6 +8,7 @@ import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import p5 from "p5";
 
+
 /**
  * @component
  * @param {Object} props - The properties passed to the component.
@@ -25,13 +26,13 @@ function P5Wrapper({ className, style, sketch}) {
 
         // This is where we create the canvas and set up the sketch
         // myRef.current refers to the div created below
-        let canvas = new p5(sketch, myRef.current);
+        let canvas = new p5(sketch(setZoom), myRef.current);
 
         return function cleanup() {
             // This is where we clean up the sketch
             canvas.remove();
         };
-    }, [myRef, sketch]); // useEffect will be called when myRef or sketch is changed. 
+    }); // useEffect will be called when myRef or sketch is changed. 
 
     return <div className={className} style={style} ref={myRef} />;
 }
@@ -40,7 +41,9 @@ function P5Wrapper({ className, style, sketch}) {
 P5Wrapper.propTypes = {
     className: PropTypes.string, // needed for styling purposes with material ui
     sketch: PropTypes.func.isRequired,
-    style: PropTypes.object
+    style: PropTypes.object,
+    zoom: PropTypes.number,
+    setZoom: PropTypes.func,
 };
 
 export default P5Wrapper;

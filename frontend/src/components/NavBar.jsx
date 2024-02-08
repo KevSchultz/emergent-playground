@@ -4,9 +4,11 @@
  * @project Emergent Playground
  */
 import Box from '@mui/material/Box';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import Avatar from '@mui/material/Avatar';
 import PropTypes from 'prop-types';
+import { Paper } from '@mui/material';
 
 /**
  * NavBar is a functional component that wraps its children with a Box and AppBar component.
@@ -18,23 +20,43 @@ import PropTypes from 'prop-types';
  *
  * @returns {ReactElement} The NavBar component.
  */
-function NavBar({ children, onMouseEnter, onMouseLeave }) {
+function NavBar({ onMouseEnter, onMouseLeave }) {
     return (
-        <Box
-            sx={{ flexGrow: 1 }}
+        <Paper
+            elevation={0}
+            sx={{
+                width: '100%',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                height: '5vh',
+                overflow: 'hidden',
+                padding: '1vw',
+                boxSizing: 'border-box',
+            }}
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
         >
-            <AppBar
+            <Typography>Emergent Playground</Typography>
+            <Box
                 sx={{
-                    backgroundColor: 'rgba(20, 20, 20, 0.2)',
-                    backdropFilter: 'blur(10px)',
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    width: '19vw',
+                    gap: '1vw',
+                    justifyContent: 'flex-end',
                 }}
-                position="static"
             >
-                <Toolbar>{children}</Toolbar>
-            </AppBar>
-        </Box>
+                <Button
+                    sx={{ height: '4vh', fontSize: 'calc(min(1.5vw, 1.5vh))' }}
+                    variant="outlined"
+                >
+                    Community
+                </Button>
+                <Avatar sx={{ height: '4vh', width: '4vh' }}>K</Avatar>
+            </Box>
+        </Paper>
     );
 }
 

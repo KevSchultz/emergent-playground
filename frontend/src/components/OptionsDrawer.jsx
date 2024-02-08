@@ -1,100 +1,32 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
+import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
-import Slider from '@mui/material/Slider';
-import MuiInput from '@mui/material/Input';
-import VolumeUp from '@mui/icons-material/VolumeUp';
 import Tabs, { tabsClasses } from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
+import InputSlider from './InputSlider';
 
-const Input = styled(MuiInput)`
-    width: 42px;
-    color: white;
-`;
+function OptionsDrawer({ sketch, zoom, setZoom, worldWidth, setWorldWidth}) {
+    const [value, setValue] = React.useState(0);
 
-function InputSlider({label}) {
-    const [value, setValue] = React.useState(30);
-
-    const handleSliderChange = (event, newValue) => {
+    const handleChange = (event, newValue) => {
         setValue(newValue);
     };
 
-    const handleInputChange = (event) => {
-        setValue(event.target.value === '' ? 0 : Number(event.target.value));
-    };
-
-    const handleBlur = () => {
-        if (value < 0) {
-            setValue(0);
-        } else if (value > 100) {
-            setValue(100);
-        }
-    };
-
     return (
-        <Box sx={{ width: '100%' }}>
-            <Typography id="input-slider" gutterBottom>
-                {label}
-            </Typography>
-            <Grid container spacing={2} alignItems="center">
-                <Grid item>
-                    {/* <VolumeUp /> */}
-                </Grid>
-                <Grid item xs>
-                    <Slider
-                        value={typeof value === 'number' ? value : 0}
-                        onChange={handleSliderChange}
-                        aria-labelledby="input-slider"
-                    />
-                </Grid>
-                <Grid item>
-                    <Input
-                        value={value}
-                        size="small"
-                        onChange={handleInputChange}
-                        onBlur={handleBlur}
-                        inputProps={{
-                            step: 10,
-                            min: 0,
-                            max: 100,
-                            type: 'number',
-                            'aria-labelledby': 'input-slider',
-                        }}
-                    />
-                </Grid>
-            </Grid>
-        </Box>
-    );
-}
-
-function OptionsDrawer({ sketch }) {
-      const [value, setValue] = React.useState(0);
-
-      const handleChange = (event, newValue) => {
-          setValue(newValue);
-      };
-
-
-    return (
-        <Box
-            style={{
+        <Paper
+            elevation={0}
+            sx={{
                 display: 'flex',
                 flexDirection: 'column',
-                justifyContent: 'center',
+                justifyContent: 'flex-start',
                 width: '20vw',
-                marginTop: '10px',
-                padding: '10px',
-                backgroundColor: 'rgba(20, 20, 20, 0.2)',
-                backdropFilter: 'blur(10px)',
+                height: '95vh',
+                overflow: 'none',
+                padding: '1vw',
+                boxSizing: 'border-box',
             }}
         >
-            <Box
-                sx={{
-                    marginBottom: '10px',
-                }}
-            >
+            <Box>
                 <Tabs
                     value={value}
                     onChange={handleChange}
@@ -113,8 +45,24 @@ function OptionsDrawer({ sketch }) {
                     <Tab label="Language" style={{ color: 'white' }} />
                 </Tabs>
             </Box>
-            <InputSlider label="Zoom" />
-        </Box>
+            <InputSlider
+                label="Zoom"
+                minValue={0.1}
+                maxValue={100}
+                stepValue={0.1}
+                value={zoom}
+                setValue={setZoom}
+            />
+
+            <InputSlider
+                label="World Width"
+                minValue={1}
+                maxValue={2500}
+                stepValue={1}
+                value={worldWidth}
+                setValue={setWorldWidth}
+            />
+        </Paper>
     );
 }
 

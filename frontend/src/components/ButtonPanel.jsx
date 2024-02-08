@@ -12,6 +12,7 @@ import IconButton from '@mui/material/IconButton';
 import BrushIcon from '@mui/icons-material/Brush';
 import CropSquareIcon from '@mui/icons-material/CropSquare';
 import CircleIcon from '@mui/icons-material/RadioButtonUnchecked';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 
 function IconBrushButton({ sketch, icon, brush, setBrush }) {
     function handleOnClick() {
@@ -51,18 +52,17 @@ function ButtonPanel({ className, sketch }) {
     return (
         <div className={className} style={{ display: 'inline-block' }}>
             <Paper
-                elevation={3}
+                elevation={0}
                 sx={{
-                    background: 'white',
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'start',
-                    marginLeft: '10px',
-                    marginTop: '10px',
-                    backgroundColor: 'rgba(20, 20, 20, 0.2)',
-                    backdropFilter: 'blur(10px)',
+                    height: '95vh',
                 }}
             >
+                <IconButton>
+                    <ChevronLeftIcon />
+                </IconButton>
                 <IconBrushButton
                     sketch={sketch}
                     icon="line"
