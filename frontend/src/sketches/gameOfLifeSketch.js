@@ -10,6 +10,8 @@ var gameOfLifeSketch = (p) => {
     gameOfLifeSketch.noDraw = false;
     gameOfLifeSketch.brush = 'line';
 
+    document.body.style.cursor = 'crosshair';
+
     var golShader;
     var prevFrame;
 

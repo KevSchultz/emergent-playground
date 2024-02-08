@@ -3,6 +3,8 @@ import fragmentShader from '../shaders/golZoomTmp.frag';
 
 let twoInTwo = function(p5) {
 
+    document.body.style.cursor = 'auto';
+
     twoInTwo.worldWidth = 1000;
     twoInTwo.worldHeight = 1000;
     twoInTwo.squareSize = 500;

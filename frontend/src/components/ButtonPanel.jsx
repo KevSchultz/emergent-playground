@@ -23,10 +23,12 @@ function IconBrushButton({ sketch, icon, brush, setBrush }) {
                 document.body.style.cursor = 'crosshair';
                 break;
             case 'square':
-                document.body.style.cursor = `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" style="fill:none;stroke:white;stroke-width:2;"/></svg>'), auto`;
+                // Draw 100x100 square for cursor
+                document.body.style.cursor = `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" style="fill:none;stroke:white;stroke-width:2;"/><circle cx="2" cy="2" r="6" style="fill:white;"/></svg>'), auto`;
                 break;
             case 'circle':
-                document.body.style.cursor = `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" style="fill:none;stroke:white;stroke-width:2;"/></svg>'), auto`;
+                // Draw 100x100 circle for cursor
+                document.body.style.cursor = `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" style="fill:none;stroke:white;stroke-width:2;"/><circle cx="50" cy="50" r="4" style="fill:white;"/></svg>') 50 50, auto`;
                 break;
             default:
                 document.body.style.cursor = 'auto';
