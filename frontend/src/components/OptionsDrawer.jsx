@@ -9,6 +9,12 @@ import VolumeUp from '@mui/icons-material/VolumeUp';
 import Tabs, { tabsClasses } from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 
+// code editor import
+import AceEditor from 'react-ace';
+import 'ace-builds/src-noconflict/theme-gruvbox';
+import 'ace-builds/src-noconflict/mode-plain_text';
+import 'ace-builds/src-noconflict/ext-language_tools';
+
 const Input = styled(MuiInput)`
     width: 42px;
     color: white;
@@ -69,12 +75,32 @@ function InputSlider({label}) {
     );
 }
 
-function OptionsDrawer({ sketch }) {
-      const [value, setValue] = React.useState(0);
+function TabPanel({children, value, index}){
+    return(
+        <div
+            role='tabpanel'
+            hidden={value !== index}
+            id={`tabpanel-${index}`}
+        >
+            {value === index && (
+                <Box sx={{ p: 3 }}>
+                    {children}
+                </Box>
+            )}
+        </div>
+    );
+}
 
-      const handleChange = (event, newValue) => {
+function OptionsDrawer({code, setCode}) {
+    const [value, setValue] = React.useState(0);
+
+    function handleCodeChange(val) {
+        setCode(val);
+    }
+
+    const handleChange = (event, newValue) => {
           setValue(newValue);
-      };
+    };
 
 
     return (
@@ -83,7 +109,7 @@ function OptionsDrawer({ sketch }) {
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'center',
-                width: '20vw',
+                width: '30vw',
                 marginTop: '10px',
                 padding: '10px',
                 backgroundColor: 'rgba(20, 20, 20, 0.2)',
@@ -107,11 +133,38 @@ function OptionsDrawer({ sketch }) {
                         },
                     }}
                 >
-                    <Tab label="Premade" style={{ color: 'white' }} />
-                    <Tab label="Viewer Options" style={{ color: 'white' }} />
-                    <Tab label="CA Rules" style={{ color: 'white' }} />
-                    <Tab label="Language" style={{ color: 'white' }} />
+                    <Tab label="Premade" style={{ color: 'white' }} id='tabpanel-0' />
+                    <Tab label="Viewer Options" style={{ color: 'white' }} id='tabpanel-1' />
+                    <Tab label="CA Rules" style={{ color: 'white' }} id='tabpanel-2' />
+                    <Tab label="Language" style={{ color: 'white' }} id='tabpanel-3' />
                 </Tabs>
+                <TabPanel value={value} index={0}>
+                    <Typography> premade contents </Typography>
+                </TabPanel>
+                <TabPanel value={value} index={1}>
+                    <Typography> viewer options contents </Typography>
+                </TabPanel>
+                <TabPanel value={value} index={2}>
+                    <Typography> CA rules contents </Typography>
+                </TabPanel>
+                <TabPanel value={value} index={3}>
+                    <AceEditor
+                         placeholder=''
+                         mode='plain_text'
+                         theme='gruvbox'
+                         name='ed'
+                         value={code}
+                         onChange={handleCodeChange}
+                         fontSize='16px'
+                         highlightActiveLine={true}
+                         setOptions={{
+                             enableLiveAutocompletion: false,
+                             showLineNumbers: true,
+                             tabSize: 4
+                         }}
+                    />
+                </TabPanel>
+
             </Box>
             <InputSlider label="Zoom" />
         </Box>

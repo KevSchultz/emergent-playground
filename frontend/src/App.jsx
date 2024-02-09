@@ -16,11 +16,13 @@ import About from './pages/About';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Community from './pages/Community';
+import LangPage from './pages/LangPage';
 
+// overriding ViewerBuilderCerator with LangPage for testing purposes
 const router = createBrowserRouter([
     {
         path: '/',
-        element: <ViewerBuilderCreator />,
+        element: <LangPage />,
     },
     {
         path: 'welcome',
