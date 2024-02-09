@@ -173,9 +173,9 @@ let twoInTwo = function (p5) {
 
         // Set pause uniform to whether pause is active or not
         if (twoInTwo.paused) {
-            twoInTwo.shader2Din2D.setUniform('paused', 1.0);
+            twoInTwo.shader2Din2D.setUniform('paused', true);
         } else {
-            twoInTwo.shader2Din2D.setUniform('paused', 0.0);
+            twoInTwo.shader2Din2D.setUniform('paused', false);
         }
 
         p5.background('black');

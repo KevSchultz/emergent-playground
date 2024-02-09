@@ -19,6 +19,7 @@ import OptionsDrawer from '../components/OptionsDrawer';
 import twoInTwo from '../sketches/twoInTwo';
 import cameraGameOfLife from '../sketches/cameraGameOfLife';
 import oneInOneSketch from '../sketches/oneInOneSketch';
+import oneInTwo from '../sketches/oneInTwo';
 
 // Material UI imports
 import Button from '@mui/material/Button';
@@ -26,7 +27,7 @@ import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
 import Box from '@mui/material/Box';
 
-const sketches = [twoInTwo, cameraGameOfLife, oneInOneSketch];
+const sketches = [twoInTwo, cameraGameOfLife, oneInOneSketch, oneInTwo];
 
 /**
  * @component

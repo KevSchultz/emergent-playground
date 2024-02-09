@@ -6,7 +6,7 @@ varying vec2 vTexCoord; // texture coordinate passed from the vertex shader
 
 uniform vec2 resolution; // determines the distance to see next cell
 uniform sampler2D previousState; // texture of previousState
-uniform float paused;  // pause status
+uniform bool paused;  // pause status
 
 void main() {
     vec2 uv = vTexCoord;
@@ -16,7 +16,7 @@ void main() {
     vec2 pixelOffset = vec2(1.0 / resolution.x, 1.0 / resolution.y);
 
     // If paused, no change to the pixel from its last state
-    if (paused == 1.0) {
+    if (paused) {
         vec4 prevColor = texture2D(previousState, uv);  // Color of pixel
         float prevState = step(0.5, (prevColor.r + prevColor.g + prevColor.b) / 3.0);  // Color in binary
         gl_FragColor = vec4(prevState, prevState, prevState, 1.0);
