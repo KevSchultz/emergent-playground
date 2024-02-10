@@ -15,7 +15,7 @@ export const theme = createTheme({
             main: '#f50057',
         },
         background: {
-            paper: 'rgba(0, 0, 0, 0.5)',
+            paper: 'rgba(0, 0, 0, 0.9)',
         },
     },
 });

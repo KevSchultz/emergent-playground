@@ -58,6 +58,9 @@ function ButtonPanel({ className, sketch }) {
                     flexDirection: 'column',
                     alignItems: 'start',
                     height: '95vh',
+                    boxSizing: 'border-box',
+                    paddingLeft: '1vw',
+                    paddingRight: '1vw',
                 }}
             >
                 <IconButton>

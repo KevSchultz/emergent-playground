@@ -4,8 +4,17 @@ import Box from '@mui/material/Box';
 import Tabs, { tabsClasses } from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import InputSlider from './InputSlider';
+import PlayPauseButton from './PlayPauseButton';
 
-function OptionsDrawer({ sketch, zoom, setZoom, worldWidth, setWorldWidth}) {
+function OptionsDrawer({
+    sketch,
+    zoom,
+    setZoom,
+    worldWidth,
+    setWorldWidth,
+    pause,
+    setPause,
+}) {
     const [value, setValue] = React.useState(0);
 
     const handleChange = (event, newValue) => {
@@ -47,9 +56,9 @@ function OptionsDrawer({ sketch, zoom, setZoom, worldWidth, setWorldWidth}) {
             </Box>
             <InputSlider
                 label="Zoom"
-                minValue={0.1}
+                minValue={-10}
                 maxValue={100}
-                stepValue={0.1}
+                stepValue={1}
                 value={zoom}
                 setValue={setZoom}
             />
@@ -62,6 +71,7 @@ function OptionsDrawer({ sketch, zoom, setZoom, worldWidth, setWorldWidth}) {
                 value={worldWidth}
                 setValue={setWorldWidth}
             />
+            <PlayPauseButton pause={pause} setPause={setPause} />
         </Paper>
     );
 }

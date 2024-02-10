@@ -33,6 +33,7 @@ function NavBar({ onMouseEnter, onMouseLeave }) {
                 overflow: 'hidden',
                 padding: '1vw',
                 boxSizing: 'border-box',
+                borderBottom: '2px solid rgba(0, 0, 0, 0.5)',
             }}
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
@@ -50,7 +51,7 @@ function NavBar({ onMouseEnter, onMouseLeave }) {
             >
                 <Button
                     sx={{ height: '4vh', fontSize: 'calc(min(1.5vw, 1.5vh))' }}
-                    variant="outlined"
+                    variant="contained"
                 >
                     Community
                 </Button>

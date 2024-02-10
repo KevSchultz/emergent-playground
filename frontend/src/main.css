@@ -1,18 +1,33 @@
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@700&display=swap');
 
-:root {
+/* :root {
     font-family: 'IBM Plex Mono', monospace !important;
-}
+} */
 
 /* .MuiButton-root {
     font-family: 'IBM Plex Mono', monospace !important;
 } */
-
-.MuiTypography-root {
-    font-family: 'IBM Plex Mono', monospace !important;
+body {
+    background: radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%);
 }
+
+/* .MuiButton-root {
+    color: rgba(255, 255, 255, 255) !important;
+    background-color: rgba(0, 0, 0, 0) !important;
+} */
+
+/* .MuiTypography-root {
+    font-family: 'IBM Plex Mono', monospace !important;
+} */
 
 .MuiPaper-root {
     backdrop-filter: blur(10px) !important;
     border-radius: 0 !important; 
+}
+
+.MuiAvatar-root
+{
+    border: 2px solid rgba(255, 255, 255, 0.5) !important;
+    background-color: rgba(0, 0, 0, 0) !important;
+    color: white !important;
 }
