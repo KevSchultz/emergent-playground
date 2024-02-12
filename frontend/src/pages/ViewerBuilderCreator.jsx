@@ -1,7 +1,7 @@
 /**
  * @file ViewerBuilderCreator.jsx is the container component for the main editor integrated development environment page.
  * This page is where the real magic happens. It includes the P5 canvas, the code editor, and user interface.
- * @author Kevin Schultz
+ * @author Beckett Avary, Kevin Schultz
  * @project Emergent Playground
  */
 
@@ -9,20 +9,16 @@
 import { useState } from 'react';
 
 // Custom component imports
-// import UserInterfaceLayer from '../components/UserInterfaceLayer';
-import NavBar from '../components/NavBar';
-import ButtonPanel from '../components/ButtonPanel';
-import OptionsDrawer from '../components/OptionsDrawer';
-// import { ZoomProvider } from '../components/ZoomContext';
+import TopNavigationBar from '../components/TopNavigationBar';
+import LeftButtonListContainer from '../components/LeftButtonListContainer';
+import RightOptionsRootContainer from '../components/RightOptionsRootContainer';
 
 // P5.js imports
 import { ReactP5Wrapper } from '@p5-wrapper/react';
-import twoInTwoSketch from '../sketches/twoInTwoSketch';
-import defaultSketchAttributes from '../sketches/defaultSketchAttributes';
+import cellularAutomataSketch from '../sketches/cellularAutomataSketch';
+import DefaultProperties from '../sketches/DefaultProperties';
 
 // Material UI imports
-// import Button from '@mui/material/Button';
-// import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
 import Box from '@mui/material/Box';
 
@@ -31,44 +27,25 @@ import Box from '@mui/material/Box';
  * @returns {ReactElement} A container component that renders the main editor page.
  */
 function ViewerBuilderCreator() {
-    const [worldWidth, setWorldWith] = useState(
-        defaultSketchAttributes.worldWidth
-    );
-    const [worldHeight, setWorldHeight] = useState(
-        defaultSketchAttributes.worldHeight
-    );
-    const [cameraX, setCameraX] = useState(defaultSketchAttributes.cameraX);
-    const [cameraY, setCameraY] = useState(defaultSketchAttributes.cameraY);
-    const [cameraZ, setCameraZ] = useState(defaultSketchAttributes.cameraZ);
-    const [scaleOffset, setScaleOffset] = useState(defaultSketchAttributes.scaleOffset);
-    const [zoom, setZoom] = useState(defaultSketchAttributes.zoom);
-    const [minZoom, setMinZoom] = useState(defaultSketchAttributes.minZoom);
-    const [maxZoom, setMaxZoom] = useState(defaultSketchAttributes.maxZoom);
-    const [zoomSensitivity, setZoomSensitivity] = useState(
-        defaultSketchAttributes.zoomSensitivity
-    );
-    const [panSensitivity, setPanSensitivity] = useState(
-        defaultSketchAttributes.panSensitivity
-    );
-    const [brushType, setBrushType] = useState(
-        defaultSketchAttributes.brushType
-    );
-    const [brushSize, setBrushSize] = useState(
-        defaultSketchAttributes.brushSize
-    );
-    const [previousMouseX, setPreviousMouseX] = useState(
-        defaultSketchAttributes.previousMouseX
-    );
-    const [previousMouseY, setPreviousMouseY] = useState(
-        defaultSketchAttributes.previousMouseY
-    );
-    const [vertexShader, setVertexShader] = useState(
-        defaultSketchAttributes.vertexShader
-    );
-    const [fragmentShader, setFragmentShader] = useState(
-        defaultSketchAttributes.fragmentShader
-    );
-    const [pause, setPause] = useState(defaultSketchAttributes.pause);
+    const [worldWidth, setWorldWith] = useState(DefaultProperties.worldWidth);
+    const [worldHeight, setWorldHeight] = useState(DefaultProperties.worldHeight);
+    const [cameraX, setCameraX] = useState(DefaultProperties.cameraX);
+    const [cameraY, setCameraY] = useState(DefaultProperties.cameraY);
+    const [cameraZ, setCameraZ] = useState(DefaultProperties.cameraZ);
+    const [scaleOffset, setScaleOffset] = useState(DefaultProperties.scaleOffset);
+    const [zoom, setZoom] = useState(DefaultProperties.zoom);
+    const [minZoom, setMinZoom] = useState(DefaultProperties.minZoom);
+    const [maxZoom, setMaxZoom] = useState(DefaultProperties.maxZoom);
+    const [zoomSensitivity, setZoomSensitivity] = useState(DefaultProperties.zoomSensitivity);
+    const [panSensitivity, setPanSensitivity] = useState(DefaultProperties.panSensitivity);
+    const [brushType, setBrushType] = useState(DefaultProperties.brushType);
+    const [brushSize, setBrushSize] = useState(DefaultProperties.brushSize);
+    const [previousMouseX, setPreviousMouseX] = useState(DefaultProperties.previousMouseX);
+    const [previousMouseY, setPreviousMouseY] = useState(DefaultProperties.previousMouseY);
+    const [vertexShader, setVertexShader] = useState(DefaultProperties.vertexShader);
+    const [fragmentShader, setFragmentShader] = useState(DefaultProperties.fragmentShader);
+    const [pause, setPause] = useState(DefaultProperties.pause);
+    const [code, setCode] = useState(DefaultProperties.code); // for shader lang
 
     return (
         <>
@@ -84,7 +61,7 @@ function ViewerBuilderCreator() {
                 }}
             >
                 <ReactP5Wrapper
-                    sketch={twoInTwoSketch}
+                    sketch={cellularAutomataSketch}
                     worldWidth={worldWidth}
                     worldHeight={worldHeight}
                     cameraX={cameraX}
@@ -103,6 +80,7 @@ function ViewerBuilderCreator() {
                     vertexShader={vertexShader}
                     fragmentShader={fragmentShader}
                     pause={pause}
+                    code={code}
                     setWorldWidth={setWorldWith}
                     setWorldHeight={setWorldHeight}
                     setCameraX={setCameraX}
@@ -121,6 +99,7 @@ function ViewerBuilderCreator() {
                     setVertexShader={setVertexShader}
                     setFragmentShader={setFragmentShader}
                     setPause={setPause}
+                    setCode={setCode}
                 ></ReactP5Wrapper>
             </Box>
             <Grid
@@ -133,10 +112,15 @@ function ViewerBuilderCreator() {
                 }}
             >
                 <Grid item xs={12} md={12}>
-                    <NavBar />
+                    <TopNavigationBar />
                 </Grid>
                 <Grid item xs={1}>
-                    <ButtonPanel sketch={twoInTwoSketch}></ButtonPanel>
+                    <LeftButtonListContainer
+                        brushType={brushType}
+                        setBrushType={setBrushType}
+                        pause={pause}
+                        setPause={setPause}
+                    ></LeftButtonListContainer>
                 </Grid>
                 <Grid item xs={11}>
                     <Box
@@ -145,14 +129,15 @@ function ViewerBuilderCreator() {
                             justifyContent: 'flex-end',
                         }}
                     >
-                        <OptionsDrawer
-                            sketch={twoInTwoSketch}
+                        <RightOptionsRootContainer
                             zoom={zoom}
                             setZoom={setZoom}
                             worldWidth={worldWidth}
                             setWorldWidth={setWorldWith}
-                            pause={pause}
-                            setPause={setPause}
+                            brushSize={brushSize}
+                            setBrushSize={setBrushSize}
+                            code={code}
+                            setCode={setCode}
                         />
                     </Box>
                 </Grid>

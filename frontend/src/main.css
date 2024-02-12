@@ -1,4 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@700&family=Pixelify+Sans:wght@400..700&display=swap');
+
+:root {
+    user-select: none;
+}
 
 /* :root {
     font-family: 'IBM Plex Mono', monospace !important;
@@ -16,9 +21,9 @@ body {
     background-color: rgba(0, 0, 0, 0) !important;
 } */
 
-/* .MuiTypography-root {
-    font-family: 'IBM Plex Mono', monospace !important;
-} */
+.MuiTypography-root {
+    font-family: 'Pixelify Sans', monospace !important;
+}
 
 .MuiPaper-root {
     backdrop-filter: blur(10px) !important;
