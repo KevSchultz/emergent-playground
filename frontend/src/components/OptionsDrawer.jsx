@@ -5,6 +5,11 @@ import Tabs, { tabsClasses } from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import InputSlider from './InputSlider';
 import PlayPauseButton from './PlayPauseButton';
+import TabPanel from './TabPanel';
+import EditorTabPanel from './EditorTabPanel';
+
+//tmp
+import Typography from '@mui/material/Typography';
 
 function OptionsDrawer({
     sketch,
@@ -16,6 +21,11 @@ function OptionsDrawer({
     setPause,
 }) {
     const [value, setValue] = React.useState(0);
+
+    var code;
+    const setCode = (code) => {
+        console.log(code);
+    };
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -48,11 +58,21 @@ function OptionsDrawer({
                         },
                     }}
                 >
-                    <Tab label="Premade" style={{ color: 'white' }} />
-                    <Tab label="Viewer Options" style={{ color: 'white' }} />
-                    <Tab label="CA Rules" style={{ color: 'white' }} />
-                    <Tab label="Language" style={{ color: 'white' }} />
+                    <Tab label="Premade" style={{ color: 'white' }} id='tabpanel-0' />
+                    <Tab label="Viewer Options" style={{ color: 'white' }} id='tabpanel-1' />
+                    <Tab label="CA Rules" style={{ color: 'white' }} id='tabpanel-2' />
+                    <Tab label="Language" style={{ color: 'white' }} id='tabpanel-3' />
                 </Tabs>
+                <TabPanel value={value} index={0}>
+                    <Typography> premade contents </Typography>
+                </TabPanel>
+                <TabPanel value={value} index={1}>
+                    <Typography> viewer options contents </Typography>
+                </TabPanel>
+                <TabPanel value={value} index={2}>
+                    <Typography> CA rules contents </Typography>
+                </TabPanel>
+                <EditorTabPanel value={value} index={3} code={code} setCode={setCode} />
             </Box>
             <InputSlider
                 label="Zoom"

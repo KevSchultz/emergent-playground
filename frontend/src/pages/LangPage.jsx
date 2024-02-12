@@ -16,8 +16,7 @@ import ButtonPanel from '../components/ButtonPanel';
 import OptionsDrawer from '../components/OptionsDrawer';
 
 // Sketch imports (P5.js)
-import twoInTwo from '../sketches/twoInTwo';
-import cameraGameOfLife from '../sketches/cameraGameOfLife';
+import twoInTwo from '../sketches/twoInTwoSketch';
 import oneInOneSketch from '../sketches/oneInOneSketch';
 
 // Material UI imports
@@ -30,7 +29,7 @@ import Box from '@mui/material/Box';
 // testing imports
 import Stack from '@mui/material/Stack';
 
-const sketches = [twoInTwo, cameraGameOfLife, oneInOneSketch];
+const sketches = [twoInTwo, oneInOneSketch];
 
 /**
  * @component
