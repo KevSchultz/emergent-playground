@@ -4,7 +4,9 @@ precision mediump float;
 
 varying vec2 vTexCoord; // texture coordinate passed from the vertex shader
 
+
 uniform vec2 resolution; // determines the distance to see next cell
+uniform float pause; // pause the simulation
 uniform sampler2D previousState; // texture of previousState
 
 void main() {
@@ -57,5 +59,9 @@ void main() {
         }
     }
 
+    if (pause == 1.0) {
+        newState = centerState;
+    }
+    
     gl_FragColor = vec4(newState, newState, newState, 1.0);
 }

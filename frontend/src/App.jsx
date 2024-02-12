@@ -1,9 +1,16 @@
 /**
  * @file App.jsx is the root component of the React frontend.
  * This component is responsible for the client side routing meaning that it will render the correct component corresponding to pages based on the URL.
+ * It also sets the material ui theme for the entire app.
  * @author Kevin Schultz
  * @project Emergent Playground
  */
+
+// material ui imports
+import { ThemeProvider } from '@mui/material/styles/';
+import { theme } from './theme';
+import CssBaseline from '@mui/material/CssBaseline';
+
 
 // react router imports
 import { createBrowserRouter } from 'react-router-dom';
@@ -47,7 +54,12 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-    return <RouterProvider router={router} />;
+    return (
+        <ThemeProvider theme={theme}>
+            <CssBaseline/>
+            <RouterProvider router={router} />;
+        </ThemeProvider>
+    );
 }
 
 export default App;
