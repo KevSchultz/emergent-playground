@@ -102,7 +102,6 @@ function OptionsDrawer({code, setCode}) {
           setValue(newValue);
     };
 
-
     return (
         <Box
             style={{
