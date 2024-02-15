@@ -39,6 +39,7 @@ function LeftButtonListContainer({ className, brushType, setBrushType, pause, se
                 boxSizing: 'border-box',
                 paddingLeft: '1vw',
                 paddingRight: '1vw',
+                borderRight: '2px solid rgb(0, 118, 236, 0.5)',
             }}
         >
             <Box

@@ -16,6 +16,7 @@ import Box from '@mui/material/Box';
 import Tabs, { tabsClasses } from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 
+
 // Custom component imports
 import PremadeRulesOptionsTabContainer from './PremadeRulesOptionsTabContainer';
 import ViewerOptionsTabContainer from './ViewerOptionsTabContainer';
@@ -50,11 +51,12 @@ function RightOptionsRootContainer({
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'flex-start',
-                width: '20vw',
-                height: '95vh',
+                width: '100%',
+                height: '100%',
                 overflow: 'none',
                 padding: '1vw',
                 boxSizing: 'border-box',
+                borderLeft: '2px solid rgb(0, 118, 236, 0.5)',
             }}
         >
             <Box>

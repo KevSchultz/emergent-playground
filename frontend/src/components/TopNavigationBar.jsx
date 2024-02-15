@@ -33,7 +33,7 @@ function NavBar() {
                 overflow: 'hidden',
                 padding: '1vw',
                 boxSizing: 'border-box',
-                borderBottom: '2px solid rgba(0, 0, 0, 0.5)',
+                borderBottom: '2px solid rgb(0, 118, 236, 0.5)',
             }}
         >
             <Typography>EMERGENT PLAYGROUND</Typography>

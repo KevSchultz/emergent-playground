@@ -4,15 +4,15 @@
  * @project Emergent Playground
  * @author Kevin Schultz
  */
-import vertexShader from '../shaders/cellularAutomata.vert?raw';
-import fragmentShader from '../shaders/seeds.frag?raw';
+import vertexShader from '../shaders/basic.vert?raw';
+import fragmentShader from '../shaders/cellularAutomata.frag?raw';
 import SquareIcon from '@mui/icons-material/Square';
 import CropSquareIcon from '@mui/icons-material/CropSquare';
 import CircleIcon from '@mui/icons-material/RadioButtonUnchecked';
 
 export const DefaultProperties = {
-    worldWidth: 500,
-    worldHeight: 500,
+    worldWidth: 1000,
+    worldHeight: 1000,
     cameraX: 0,
     cameraY: 0,
     cameraZ: 1,
@@ -21,7 +21,7 @@ export const DefaultProperties = {
     minZoom: 0,
     maxZoom: 100,
     zoomSensitivity: 0.001,
-    panSensitivity: 1,
+    panSensitivity: 0.001,
     brushType: 'pixel',
     listBrushTypes: ['pixel', 'square', 'circle'],
     brushIcons: { pixel: <SquareIcon />, square: <CropSquareIcon />, circle: <CircleIcon /> },

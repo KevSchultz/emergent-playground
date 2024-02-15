@@ -18,6 +18,9 @@ import { ReactP5Wrapper } from '@p5-wrapper/react';
 import cellularAutomataSketch from '../sketches/cellularAutomataSketch';
 import DefaultProperties from '../sketches/DefaultProperties';
 
+// Resizable Panel Imports
+import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
+
 // Material UI imports
 import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
 import Box from '@mui/material/Box';
@@ -58,6 +61,9 @@ function ViewerBuilderCreator() {
                     width: '100%',
                     height: '100%',
                     overflow: 'hidden',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
                 }}
             >
                 <ReactP5Wrapper
@@ -102,7 +108,7 @@ function ViewerBuilderCreator() {
                     setCode={setCode}
                 ></ReactP5Wrapper>
             </Box>
-            <Grid
+            {/* <Grid
                 container
                 sx={{
                     position: 'absolute',
@@ -141,7 +147,35 @@ function ViewerBuilderCreator() {
                         />
                     </Box>
                 </Grid>
-            </Grid>
+            </Grid> */}
+
+            <TopNavigationBar />
+            <PanelGroup direction="horizontal">
+                <div>
+                    <LeftButtonListContainer
+                        brushType={brushType}
+                        setBrushType={setBrushType}
+                        pause={pause}
+                        setPause={setPause}
+                    ></LeftButtonListContainer>
+                </div>
+                <Panel>
+                </Panel>
+                <PanelResizeHandle />
+                <Panel defaultSize={30} minSize={10}>
+                    <RightOptionsRootContainer
+                        zoom={zoom}
+                        setZoom={setZoom}
+                        worldWidth={worldWidth}
+                        setWorldWidth={setWorldWith}
+                        brushSize={brushSize}
+                        setBrushSize={setBrushSize}
+                        code={code}
+                        setCode={setCode}
+                    />
+                </Panel>
+                <PanelResizeHandle />
+            </PanelGroup>
         </>
     );
 }

@@ -1,3 +1,6 @@
+// import { generateRandomStates } from '../cellular_automata';
+import DefaultProperties from './DefaultProperties';
+
 /**
  *
  *
@@ -11,11 +14,18 @@ let sketch = function (p5) {
     const DEBUG_MODE = false;
     const DRAW_DEBUG_MODE = false;
 
+    // TODO delete this and move it into react properties
+    const NUMBER_OF_STATES = 20;
+    const NUMBER_OF_NEIGHBORS = 2;
+
     sketch.reactProperties = {};
 
     sketch.currentState;
     sketch.previousState;
     sketch.overlayGraphics;
+    sketch.ruleGraphics;
+    sketch.stateGraphics;
+    sketch.states;
     sketch.shader;
     sketch.isSketchSetup = false;
 
@@ -31,9 +41,9 @@ let sketch = function (p5) {
 
         // console.log(sketch.reactProperties);
 
-        if (sketch.isSketchSetup == false) {
-            sketch.setupSketchWithReactProperties();
-        }
+        // if (sketch.isSketchSetup == false) {
+        //     sketch.setupSketchWithReactProperties();
+        // }
 
         DEBUG_MODE ? console.log('sketch.updateReactProperties') : null;
     };
@@ -56,15 +66,15 @@ let sketch = function (p5) {
      */
     sketch.setupCurrentStateGraphicsBuffer = () => {
         sketch.currentState = p5.createGraphics(
-            sketch.reactProperties.worldWidth,
-            sketch.reactProperties.worldHeight,
+            DefaultProperties.worldWidth,
+            DefaultProperties.worldHeight,
             p5.WEBGL
         );
 
         sketch.currentState.shader(sketch.shader);
         sketch.shader.setUniform('resolution', [
-            sketch.reactProperties.worldWidth,
-            sketch.reactProperties.worldHeight,
+            DefaultProperties.worldWidth,
+            DefaultProperties.worldHeight,
         ]);
 
         sketch.currentState.pixelDensity(PIXEL_DENSITY);
@@ -78,8 +88,8 @@ let sketch = function (p5) {
      */
     sketch.setupPreviousStateGraphicsBuffer = () => {
         sketch.previousState = p5.createGraphics(
-            sketch.reactProperties.worldWidth,
-            sketch.reactProperties.worldHeight
+            DefaultProperties.worldWidth,
+            DefaultProperties.worldHeight
         );
 
         sketch.previousState.pixelDensity(PIXEL_DENSITY);
@@ -95,10 +105,10 @@ let sketch = function (p5) {
      */
     sketch.setupOverlayGraphicsBuffer = () => {
         let overlayGraphicsWidth = p5.round(
-            sketch.reactProperties.worldWidth * sketch.reactProperties.scaleOffset
+            DefaultProperties.worldWidth * DefaultProperties.scaleOffset
         );
         let overlayGraphicsHeight = p5.round(
-            sketch.reactProperties.worldHeight * sketch.reactProperties.scaleOffset
+            DefaultProperties.worldHeight * DefaultProperties.scaleOffset
         );
 
         sketch.overlayGraphics = p5.createGraphics(overlayGraphicsWidth, overlayGraphicsHeight);
@@ -107,6 +117,49 @@ let sketch = function (p5) {
         sketch.overlayGraphics.noSmooth();
 
         DEBUG_MODE ? console.log('sketch.setupOverlayGraphicsBuffer') : null;
+    };
+
+    sketch.generateRandomStates = (numberOfStates) => {
+        sketch.states = [];
+
+        for (let i = 0; i < numberOfStates; i++) {
+            const red = Math.floor(Math.random() * 255);
+            const green = Math.floor(Math.random() * 255);
+            const blue = Math.floor(Math.random() * 255);
+            const alpha = 255;
+
+            sketch.states.push(p5.color(red, green, blue, alpha));
+        }
+
+        return sketch.states;
+    };
+
+    sketch.generateRandomRuleGraphics = (numberOfStates, numberOfNeighbors) => {
+        let width = Math.pow(numberOfStates, numberOfNeighbors + 1);
+
+        sketch.ruleGraphics = p5.createGraphics(width, 1);
+
+        sketch.ruleGraphics.loadPixels();
+        for (let i = 0; i < width; i++) {
+            let randomState = sketch.states[p5.floor(p5.random() * NUMBER_OF_STATES)];
+
+            sketch.ruleGraphics.set(i, 0, randomState);
+        }
+        sketch.ruleGraphics.updatePixels();
+    };
+
+    sketch.setupRuleGraphics = () => {
+        sketch.generateRandomRuleGraphics(NUMBER_OF_STATES, NUMBER_OF_NEIGHBORS);
+    };
+
+    sketch.setupStateGraphics = () => {
+        sketch.stateGraphics = p5.createGraphics(NUMBER_OF_STATES, 1);
+
+        sketch.stateGraphics.loadPixels();
+        for (let i = 0; i < NUMBER_OF_STATES; i++) {
+            sketch.stateGraphics.set(i, 0, sketch.states[i]);
+        }
+        sketch.stateGraphics.updatePixels();
     };
 
     /**
@@ -118,10 +171,10 @@ let sketch = function (p5) {
      */
     sketch.setupSketchWithReactProperties = () => {
         // ----- Cellular Automata Shader Setup -----
-        sketch.shader = p5.createShader(
-            sketch.reactProperties.vertexShader,
-            sketch.reactProperties.fragmentShader
-        );
+        // sketch.shader = p5.createShader(
+        //     sketch.reactProperties.vertexShader,
+        //     sketch.reactProperties.fragmentShader
+        // );
 
         // ----- Main Canvas Setup -----
         sketch.setupMainCanvas();
@@ -135,9 +188,54 @@ let sketch = function (p5) {
         // ----- Overlay Graphics Buffer Setup -----
         // sketch.setupOverlayGraphicsBuffer();
 
+        sketch.states = sketch.generateRandomStates(NUMBER_OF_STATES);
+
+        console.log(sketch.states);
+
+        // ----- Rule Graphics Buffer Setup -----
+        sketch.setupRuleGraphics();
+
+        // ----- State Graphics Buffer Setup -----
+        sketch.setupStateGraphics();
+
         sketch.isSketchSetup = true;
 
         DEBUG_MODE ? console.log('sketch.setupSketchWithReactProperties') : null;
+    };
+
+    sketch.setup = () => {
+        // ----- Main Canvas Setup -----
+        sketch.setupMainCanvas();
+
+        // ----- Cellular Automata Current State Graphics Buffer Setup -----
+        sketch.setupCurrentStateGraphicsBuffer();
+
+        // ----- Cellular Automata Previous State Graphics Buffer Setup -----
+        sketch.setupPreviousStateGraphicsBuffer();
+
+        // ----- Overlay Graphics Buffer Setup -----
+        // sketch.setupOverlayGraphicsBuffer();
+
+        sketch.states = sketch.generateRandomStates(NUMBER_OF_STATES);
+
+        console.log(sketch.states);
+
+        // ----- Rule Graphics Buffer Setup -----
+        sketch.setupRuleGraphics();
+
+        // ----- State Graphics Buffer Setup -----
+        sketch.setupStateGraphics();
+
+        sketch.isSketchSetup = true;
+
+        DEBUG_MODE ? console.log('sketch.setup') : null;
+    };
+
+    sketch.preload = () => {
+        sketch.shader = p5.createShader(
+            DefaultProperties.vertexShader,
+            DefaultProperties.fragmentShader
+        );
     };
 
     sketch.isBrushDrawingActive = () => {
@@ -213,8 +311,15 @@ let sketch = function (p5) {
 
         sketch.brushDrawOnGraphics(sketch.previousState, mouseWorldX, mouseWorldY);
 
+        // let randomStates = generateRandomStates(4);
+        // let randomRule = generateRandomRule(4, 2);
+
+        // console.log(randomRule);
+
         sketch.shader.setUniform('pause', sketch.reactProperties.pause);
         sketch.shader.setUniform('previousState', sketch.previousState);
+        sketch.shader.setUniform('states', sketch.stateGraphics);
+        sketch.shader.setUniform('rule', sketch.ruleGraphics);
 
         // shader is applied to the currentState by drawing a rectangle the size of the world
         sketch.currentState.rect(
@@ -226,12 +331,22 @@ let sketch = function (p5) {
 
         p5.scale(sketch.reactProperties.scaleOffset + sketch.reactProperties.zoom);
 
-        // ----- Draw the CurrentState to the a Canvas Plane -----
+        // ----- Draw the CurrentState to the Canvas Plane -----
         sketch.drawTexturePlane(
             sketch.currentState,
             sketch.reactProperties.worldWidth,
             sketch.reactProperties.worldHeight
         );
+
+        // console.log(gl.getParameter(gl.MAX_TEXTURE_SIZE));
+
+        sketch.drawTexturePlane(sketch.stateGraphics, 4, 1);
+
+        // sketch.drawTexturePlane(
+        //     sketch.ruleGraphics,
+        //     64,
+        //     1
+        // );
 
         // ----- Draw the Overlay Graphics Buffer to a Main Canvas Plane -----
         // sketch.drawTexturePlane(
@@ -321,22 +436,33 @@ let sketch = function (p5) {
      */
     sketch.mouseDragged = () => {
         // Update the camera's X position
+
+        let mouseX = p5.mouseX;
+        let mouseY = p5.mouseY;
+
+        if (mouseX == 0) {
+            return;
+        }
+
+        console.log(mouseX, mouseY);
+
         sketch.reactProperties.setCameraX((previousCameraX) => {
             if (p5.mouseButton === p5.CENTER) {
-                previousCameraX -= p5.mouseX - sketch.reactProperties.previousMouseX;
+
+                // console.log(p5.mouseX - sketch.reactProperties.previousMouseX);
+
+                previousCameraX -= mouseX - sketch.reactProperties.previousMouseX;
             }
 
-            sketch.reactProperties.setPreviousMouseX(p5.mouseX);
             return previousCameraX;
         });
 
         // Update the camera's Y position
         sketch.reactProperties.setCameraY((previousCameraY) => {
             if (p5.mouseButton === p5.CENTER) {
-                previousCameraY -= p5.mouseY - sketch.reactProperties.previousMouseY;
+                previousCameraY -= mouseY - sketch.reactProperties.previousMouseY;
             }
 
-            sketch.reactProperties.setPreviousMouseY(p5.mouseY);
             return previousCameraY;
         });
 
@@ -516,6 +642,7 @@ let sketch = function (p5) {
     // Map p5 functions to sketch functions
     p5.updateWithProps = sketch.updateReactProperties;
     p5.preload = sketch.preload;
+    p5.setup = sketch.setup;
     p5.draw = sketch.draw;
     p5.mouseWheel = sketch.mouseWheel;
     p5.mouseDragged = sketch.mouseDragged;
