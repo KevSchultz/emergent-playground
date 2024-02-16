@@ -22,10 +22,9 @@ function OptionsDrawer({
 }) {
     const [value, setValue] = React.useState(0);
 
-    var code;
-    const setCode = (code) => {
-        console.log(code);
-    };
+    const [code, setCode] = React.useState('');
+
+    const [frag, setFrag] = React.useState(sketch.fragmentShader);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -72,7 +71,7 @@ function OptionsDrawer({
                 <TabPanel value={value} index={2}>
                     <Typography> CA rules contents </Typography>
                 </TabPanel>
-                <EditorTabPanel value={value} index={3} code={code} setCode={setCode} />
+                <EditorTabPanel value={value} index={3} code={code} setCode={setCode} setFrag={setFrag} />
             </Box>
             <InputSlider
                 label="Zoom"

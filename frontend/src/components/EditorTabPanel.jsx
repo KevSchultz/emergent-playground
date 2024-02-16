@@ -9,6 +9,7 @@ import 'ace-builds/src-noconflict/mode-plain_text';
 import 'ace-builds/src-noconflict/ext-language_tools';
 import TabPanel from './TabPanel';
 import Button from '@mui/material/Button';
+import langCompiler from '../lang-data/langCompiler';
 
 /**
  * EditorTabPanel is a functional component that wraps an AceEditor and Button in a TabPanel.
@@ -21,10 +22,16 @@ import Button from '@mui/material/Button';
  *
  * @returns {ReactElement} The EditorTabPanel component.
  */
-function EditorTabPanel({value, index, code, setCode}){
+function EditorTabPanel({value, index, code, setCode, setFrag}){
     return(
         <TabPanel value={value} index={index}>
-            <Button variant='contained' sx={{ width: 1 }}>
+            <Button 
+                variant='outlined' 
+                sx={{ width: 1, m: 1 }}
+                onClick={() => {
+                    console.log(langCompiler(code));
+                }}
+            >
                 Compile
             </Button>
             <AceEditor
@@ -36,11 +43,6 @@ function EditorTabPanel({value, index, code, setCode}){
                 value={code}
                 onChange={setCode}
                 highlightActiveLine={true}
-                style={{
-                    position: 'absolute',
-                    width: '100%',
-                    height: '100%'
-                }}
                 setOptions={{
                     enableLiveAutocompletion: false,
                     showLineNumbers: true,

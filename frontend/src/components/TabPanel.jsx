@@ -23,7 +23,7 @@ function TabPanel({children, value, index}){
             id={`tabpanel-${index}`}
         >
             {value === index && (
-                <Box sx={{ p: 3, position: 'relative' }}>
+                <Box sx={{ p: 3 }}>
                     {children}
                 </Box>
             )}
