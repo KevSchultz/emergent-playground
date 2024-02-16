@@ -2,12 +2,61 @@
 precision mediump float;
 #endif
 
-varying vec2 vTexCoord; // texture coordinate passed from the vertex shader
+// Constants
+const int RULE_SIZE = 8000;
+const int NUMBER_OF_STATES = 20;
+const int NUMBER_OF_NEIGHBORS = 2;
+const int RADIUS_OF_NEIGHBORS = 1;
 
+varying vec2 vTexCoord; // texture coordinate passed from the vertex shader
 
 uniform vec2 resolution; // determines the distance to see next cell
 uniform float pause; // pause the simulation
 uniform sampler2D previousState; // texture of previousState
+uniform sampler2D rule;
+uniform sampler2D states;
+
+int baseNumberOfStatesToDecimalIndexConversion(int ruleIndexInBaseNumberOfStates[NUMBER_OF_NEIGHBORS + 1]) {
+    int ruleIndexDecimal = 0;
+
+    for (int i = 0; i < NUMBER_OF_NEIGHBORS; i++) {
+        ruleIndexDecimal += ruleIndexInBaseNumberOfStates[i] * int(pow(float(NUMBER_OF_STATES), float(i)));
+    }
+    
+    return ruleIndexDecimal;
+}
+
+int colorToState(vec4 color) {
+
+    float statePixelSize = 1.0 / float(NUMBER_OF_STATES);
+
+    float halfStatePixelSize = statePixelSize * 0.5;
+
+    for (int state = 0; state < NUMBER_OF_STATES; state++) {
+
+        float pixelOffset = halfStatePixelSize + statePixelSize * float(state);
+
+        vec4 stateColor = texture2D(states, vec2(pixelOffset, 0.0));
+
+        if (length(color.rgb - stateColor.rgb) < 0.01) {
+            return state;
+        }
+    }
+
+    // If no state is found, return first state
+    return 0;
+
+}
+
+vec4 ruleColor(int ruleIndexDecimal) {
+    float rulePixelSize = 1.0 / float(RULE_SIZE);
+    float halfRulePixelSize = rulePixelSize * 0.5;
+
+    float pixelOffset = halfRulePixelSize + (rulePixelSize * float(ruleIndexDecimal));
+
+    return texture2D(rule, vec2(pixelOffset, 0.0));
+}
+
 
 void main() {
     vec2 uv = vTexCoord;
@@ -16,52 +65,35 @@ void main() {
     // Calculate pixel offset
     vec2 pixelOffset = vec2(1.0 / resolution.x, 1.0 / resolution.y);
 
-    // Get the color of the current pixel and its neighbors
-    vec4 centerColor = texture2D(previousState, uv);
-    vec4 leftColor = texture2D(previousState, uv + vec2(-pixelOffset.x, 0.0));
-    vec4 rightColor = texture2D(previousState, uv + vec2(pixelOffset.x, 0.0));
-    vec4 centerTopColor = texture2D(previousState, uv + vec2(0.0, pixelOffset.y));
-    vec4 leftTopColor = texture2D(previousState, uv + vec2(-pixelOffset.x, pixelOffset.y));
-    vec4 rightTopColor = texture2D(previousState, uv + vec2(pixelOffset.x, pixelOffset.y));
-    vec4 centerBottomColor = texture2D(previousState, uv + vec2(0.0, -pixelOffset.y));
-    vec4 leftBottomColor = texture2D(previousState, uv + vec2(-pixelOffset.x, -pixelOffset.y));
-    vec4 rightBottomColor = texture2D(previousState, uv + vec2(pixelOffset.x, -pixelOffset.y));
+    int ruleIndexInBaseNumberOfStates[NUMBER_OF_NEIGHBORS + 1];
 
-    // Convert the colors to binary (black = 0, white = 1)
-    float centerState = step(0.5, (centerColor.r + centerColor.g + centerColor.b) / 3.0);
-    float leftState = step(0.5, (leftColor.r + leftColor.g + leftColor.b) / 3.0);
-    float rightState = step(0.5, (rightColor.r + rightColor.g + rightColor.b) / 3.0);
-    float centerTopState = step(0.5, (centerTopColor.r + centerTopColor.g + centerTopColor.b) / 3.0);
-    float leftTopState = step(0.5, (leftTopColor.r + leftTopColor.g + leftTopColor.b) / 3.0);
-    float rightTopState = step(0.5, (rightTopColor.r + rightTopColor.g + rightTopColor.b) / 3.0);
-    float centerBottomState = step(0.5, (centerBottomColor.r + centerBottomColor.g + centerBottomColor.b) / 3.0);
-    float leftBottomState = step(0.5, (leftBottomColor.r + leftBottomColor.g + leftBottomColor.b) / 3.0);
-    float rightBottomState = step(0.5, (rightBottomColor.r + rightBottomColor.g + rightBottomColor.b) / 3.0);
+    for (int indexOffset = -RADIUS_OF_NEIGHBORS; indexOffset <= RADIUS_OF_NEIGHBORS; indexOffset++) {
 
-    float aliveNeighbors = leftState + rightState + centerTopState + leftTopState + rightTopState + centerBottomState + leftBottomState + rightBottomState;
+        float xOffset = float(indexOffset) * pixelOffset.x;
 
-    float newState = centerState;
+        vec4 previousStateColor = texture2D(previousState, uv + vec2(xOffset, 0.0));
 
-    // Game of life Rules
-    // Any live cell with fewer than two live neighbors dies, as if by underpopulation.
-    // Any live cell with two or three live neighbors lives on to the next generation.
-    // Any live cell with more than three live neighbors dies, as if by overpopulation.
-    // Any dead cell with exactly three live neighbors becomes a live cell, as if by reproduction.
-    if (centerState == 1.0) {
-        // underpopulation or overpopulation
-        if (aliveNeighbors < 2.0 || aliveNeighbors > 3.0) {
-            newState = 0.0;
-        }
-    } else {
-        // reproduction
-        if (aliveNeighbors == 3.0) {
-            newState = 1.0;
-        }
+        int state = colorToState(previousStateColor);
+
+        ruleIndexInBaseNumberOfStates[indexOffset + RADIUS_OF_NEIGHBORS] = state;
     }
 
-    if (pause == 1.0) {
-        newState = centerState;
-    }
-    
-    gl_FragColor = vec4(newState, newState, newState, 1.0);
+    int ruleIndexDecimal = baseNumberOfStatesToDecimalIndexConversion(ruleIndexInBaseNumberOfStates);
+
+    gl_FragColor = ruleColor(ruleIndexDecimal);
+
+
+
+    // float rulePixelSize = 1.0 / float(RULE_SIZE);
+    // float pixelOffset = -1.0 + (rulePixelSize * float(0));
+
+    // vec4 firstRuleColor = texture2D(rule, vec2(0.0, 0.0));
+
+    // int state = colorToState(firstRuleColor);
+
+    // if (state == 0) {
+    //     gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+    // } else {
+    //     gl_FragColor = vec4(0.0, 1.0, 0.0, 1.0);
+    // }
 }

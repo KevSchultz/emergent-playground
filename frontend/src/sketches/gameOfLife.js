@@ -22,7 +22,7 @@ let gameOfLife = (p5) => {
     };
 
     p5.setup = () => {
-        p5.createCanvas(window.innerWidth, window.innerHeight, p.WEBGL);
+        p5.createCanvas(window.innerWidth, window.innerHeight, p5.WEBGL);
         p5.pixelDensity(1);
         p5.noSmooth();
 

@@ -4,7 +4,6 @@
  * @author Kevin Schultz
  * @project Emergent Playground
  */
-import { useState } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';

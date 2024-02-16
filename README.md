@@ -7,9 +7,9 @@
 
 ## Team Members
 
-* [Alex Garza](mailto:asgarza@ucsc.edu)
 * [Beckett Avary](mailto:bavary@ucsc.edu)
 * [Ethan Foster](mailto:ewfoster@ucsc.edu)
+* [Alex Garza](mailto:asgarza@ucsc.edu)
 * [Preston Nguyen](mailto:prhunguy@ucsc.edu)
 * [Kevin Schultz](mailto:ksschult@ucsc.edu)
 

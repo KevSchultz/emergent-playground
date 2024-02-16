@@ -20,7 +20,7 @@ import { Paper } from '@mui/material';
  *
  * @returns {ReactElement} The NavBar component.
  */
-function NavBar({ onMouseEnter, onMouseLeave }) {
+function NavBar() {
     return (
         <Paper
             elevation={0}
@@ -33,12 +33,10 @@ function NavBar({ onMouseEnter, onMouseLeave }) {
                 overflow: 'hidden',
                 padding: '1vw',
                 boxSizing: 'border-box',
-                borderBottom: '2px solid rgba(0, 0, 0, 0.5)',
+                borderBottom: '2px solid rgb(0, 118, 236, 0.5)',
             }}
-            onMouseEnter={onMouseEnter}
-            onMouseLeave={onMouseLeave}
         >
-            <Typography>Emergent Playground</Typography>
+            <Typography>EMERGENT PLAYGROUND</Typography>
             <Box
                 sx={{
                     display: 'flex',
@@ -62,10 +60,6 @@ function NavBar({ onMouseEnter, onMouseLeave }) {
 }
 
 // This is a type check for the props of the component
-NavBar.propTypes = {
-    children: PropTypes.element.isRequired,
-    onMouseEnter: PropTypes.func.isRequired,
-    onMouseLeave: PropTypes.func.isRequired,
-};
+NavBar.propTypes = {};
 
 export default NavBar;
