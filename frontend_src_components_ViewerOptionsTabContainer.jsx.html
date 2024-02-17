@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: frontend/src/components/ViewerOptionsTabContainer.jsx</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,232 +17,97 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
-
-    
-
-
-
-    
-
-
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-<section>
-
-<header>
-    
-        <h2>frontend/src/App.jsx</h2>
-        
-    
-</header>
-
-<article>
-    <div class="container-overview">
-    
-        
-            <div class="description">App.jsx is the root component of the React frontend.This component is responsible for the client side routing meaning that it will render the correct component corresponding to pages based on the URL.It also sets the material ui theme for the entire app.</div>
-        
-
-        
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-author">Author:</dt>
-    <dd class="tag-author">
-        <ul>
-            <li>Kevin Schultz</li>
-        </ul>
-    </dd>
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="frontend_src_App.jsx.html">frontend/src/App.jsx</a>, <a href="frontend_src_App.jsx.html#line1">line 1</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
-</section>
-
-
-
-
-
-
-
-<section>
-
-<header>
-    
-        <h2>frontend/src/theme.js</h2>
-        
-    
-</header>
-
-<article>
-    <div class="container-overview">
-    
-        
-            <div class="description">theme.js defines the color palette for the Material-UI theme used in App.jsx and passed down to all components.</div>
-        
-
-        
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-author">Author:</dt>
-    <dd class="tag-author">
-        <ul>
-            <li>Kevin Schultz</li>
-        </ul>
-    </dd>
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="frontend_src_theme.js.html">frontend/src/theme.js</a>, <a href="frontend_src_theme.js.html#line1">line 1</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
-</section>
+    <h1 class="page-title">Source: frontend/src/components/ViewerOptionsTabContainer.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @project Emergent Playground
+ * @file ViewerOptionsTabContainer.jsx
+ * @overview This file contains the container component for the viewer options tab.
+ * @authors Beckett Avary, Kevin Schultz
+ * @exports ViewerOptionsTabContainer
+ */
+
+// React Imports
+import { useContext } from 'react';
+
+// Material UI Imports
+import Box from '@mui/material/Box';
+
+// Custom Component Imports
+import InputSlider from './InputSlider';
+import P5PropertiesContext from './P5PropertiesContext';
+
+
+/**
+ * A container component for the viewer options tab.
+ *
+ * This component displays a Box that contains four InputSlider components.
+ * The InputSlider components are used to control the zoom level, world width, world height, and brush size.
+ * The current values and the functions to update these values are retrieved from the P5PropertiesContext.
+ *
+ * @returns {JSX.Element} The ViewerOptionsTabContainer component.
+ */
+function ViewerOptionsTabContainer() {
+    const {
+        zoom,
+        setZoom,
+        worldWidth,
+        setWorldWidth,
+        worldHeight,
+        setWorldHeight,
+        brushSize,
+        setBrushSize,
+    } = useContext(P5PropertiesContext);
+
+    return (
+        &lt;Box sx={{ width: '100%' }}>
+            &lt;InputSlider
+                label="Zoom"
+                minValue={0}
+                maxValue={100}
+                stepValue={1}
+                value={zoom}
+                setValue={setZoom}
+            />
+            &lt;InputSlider
+                label="World Width"
+                minValue={1}
+                maxValue={6000}
+                stepValue={1}
+                value={worldWidth}
+                setValue={setWorldWidth}
+            />
+            &lt;InputSlider
+                label="World Height"
+                minValue={1}
+                maxValue={6000}
+                stepValue={1}
+                value={worldHeight}
+                setValue={setWorldHeight}
+            />
+            &lt;InputSlider
+                label="Brush Size"
+                minValue={1}
+                maxValue={4000}
+                stepValue={1}
+                value={brushSize}
+                setValue={setBrushSize}
+            >&lt;/InputSlider>
+        &lt;/Box>
+    );
+}
+
+export default ViewerOptionsTabContainer;
+</code></pre>
+        </article>
+    </section>
 
 
 

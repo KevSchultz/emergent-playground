@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: frontend/src/components/PremadeRuleCard.jsx</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,232 +17,85 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
-
-    
-
-
-
-    
-
-
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-<section>
-
-<header>
-    
-        <h2>frontend/src/App.jsx</h2>
-        
-    
-</header>
-
-<article>
-    <div class="container-overview">
-    
-        
-            <div class="description">App.jsx is the root component of the React frontend.This component is responsible for the client side routing meaning that it will render the correct component corresponding to pages based on the URL.It also sets the material ui theme for the entire app.</div>
-        
-
-        
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-author">Author:</dt>
-    <dd class="tag-author">
-        <ul>
-            <li>Kevin Schultz</li>
-        </ul>
-    </dd>
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="frontend_src_App.jsx.html">frontend/src/App.jsx</a>, <a href="frontend_src_App.jsx.html#line1">line 1</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
-</section>
-
-
-
-
-
-
-
-<section>
-
-<header>
-    
-        <h2>frontend/src/theme.js</h2>
-        
-    
-</header>
-
-<article>
-    <div class="container-overview">
-    
-        
-            <div class="description">theme.js defines the color palette for the Material-UI theme used in App.jsx and passed down to all components.</div>
-        
-
-        
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-author">Author:</dt>
-    <dd class="tag-author">
-        <ul>
-            <li>Kevin Schultz</li>
-        </ul>
-    </dd>
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="frontend_src_theme.js.html">frontend/src/theme.js</a>, <a href="frontend_src_theme.js.html#line1">line 1</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
-</section>
+    <h1 class="page-title">Source: frontend/src/components/PremadeRuleCard.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @project Emergent Playground
+ * @file PremadeRuleCard.jsx
+ * @overview Card Button to display a premade rule and set the fragment shader to the new rule when clicked.
+ * @authors Kevin Schultz
+ * @exports PremadeRuleCard
+ */
+
+// React Imports
+import { useContext } from 'react';
+
+// Material UI Imports
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import CardActionArea from '@mui/material/CardActionArea';
+import Typography from '@mui/material/Typography';
+
+// Custom Component Imports
+import P5PropertiesContext from './P5PropertiesContext';
+import PropTypes from 'prop-types';
+
+/**
+ * A card component for displaying a premade rule.
+ *
+ * This component displays a Card with an image and the name of the premade rule.
+ * When the Card is clicked, the fragment shader is updated to the new fragment shader of the premade rule.
+ *
+ * @param {Object} props - The properties passed to the component.
+ * @param {string} props.premadeRuleName - The name of the premade rule.
+ * @param {string} props.newFragmentShader - The new fragment shader of the premade rule.
+ * @param {string} props.imageUrl - The URL of the image to display on the Card.
+ * 
+ * @returns {JSX.Element} The PremadeRuleCard component.
+ */
+function PremadeRuleCard({ premadeRuleName, newFragmentShader, imageUrl }) {
+    const { setFragmentShader } = useContext(P5PropertiesContext);
+
+    const handleCardClick = () => {
+        setFragmentShader(newFragmentShader);
+    };
+
+    return (
+        &lt;Card sx={{ maxWidth: 245 }}>
+            &lt;CardActionArea onClick={handleCardClick}>
+                &lt;CardMedia
+                    component="img"
+                    alt="Thumbnail"
+                    height="140"
+                    image={imageUrl}
+                    title="Thumbnail"
+                />
+                &lt;CardContent>
+                    &lt;Typography>{premadeRuleName}&lt;/Typography>
+                &lt;/CardContent>
+            &lt;/CardActionArea>
+        &lt;/Card>
+    );
+}
+
+PremadeRuleCard.propTypes = {
+    premadeRuleName: PropTypes.string.isRequired,
+    newFragmentShader: PropTypes.string.isRequired,
+    imageUrl: PropTypes.string.isRequired,
+};
+
+export default PremadeRuleCard;
+</code></pre>
+        </article>
+    </section>
 
 
 

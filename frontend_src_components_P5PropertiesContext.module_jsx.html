@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Module: frontend/src/components/P5PropertiesContext.jsx</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,35 +17,9 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Module: frontend/src/components/P5PropertiesContext.jsx</h1>
 
     
-
-
-
-    
-
-
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
-
-
-
 
 
 
@@ -54,16 +28,13 @@
 
 <header>
     
-        <h2>frontend/src/App.jsx</h2>
-        
-    
 </header>
 
 <article>
     <div class="container-overview">
     
         
-            <div class="description">App.jsx is the root component of the React frontend.This component is responsible for the client side routing meaning that it will render the correct component corresponding to pages based on the URL.It also sets the material ui theme for the entire app.</div>
+            <div class="description">This file exports both the P5PropertiesContext and P5PropertiesProvider components for managing p5 property state.</div>
         
 
         
@@ -88,13 +59,6 @@
     
 
     
-    <dt class="tag-author">Author:</dt>
-    <dd class="tag-author">
-        <ul>
-            <li>Kevin Schultz</li>
-        </ul>
-    </dd>
-    
 
     
 
@@ -105,7 +69,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="frontend_src_App.jsx.html">frontend/src/App.jsx</a>, <a href="frontend_src_App.jsx.html#line1">line 1</a>
+        <a href="frontend_src_components_P5PropertiesContext.jsx.html">frontend/src/components/P5PropertiesContext.jsx</a>, <a href="frontend_src_components_P5PropertiesContext.jsx.html#line1">line 1</a>
     </li></ul></dd>
     
 
@@ -136,37 +100,84 @@
     
 
     
-
-    
-
-    
-</article>
-
-</section>
-
-
-
-
-
-
-
-<section>
-
-<header>
-    
-        <h2>frontend/src/theme.js</h2>
-        
-    
-</header>
-
-<article>
-    <div class="container-overview">
-    
-        
-            <div class="description">theme.js defines the color palette for the Material-UI theme used in App.jsx and passed down to all components.</div>
-        
+        <h3 class="subsection-title">Methods</h3>
 
         
+            
+
+    
+
+    
+    <h4 class="name" id=".P5PropertiesProvider"><span class="type-signature">(static) </span>P5PropertiesProvider<span class="signature">(props)</span><span class="type-signature"> &rarr; {JSX.Element}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    P5PropertiesProvider is a React component that provides a context for managing state related to P5 properties.It uses React's useState hook to create state variables for each property, and provides a context that makes thesestate variables and their associated setters available to child components.The properties managed by this context can be found in DefaultProperties.jsxChild components can access these state variables and setters by using React's useContext hook with P5PropertiesContext.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>props</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The properties passed to this component. Expected to include 'children', the child components.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
 
 
 <dl class="details">
@@ -188,13 +199,6 @@
     
 
     
-    <dt class="tag-author">Author:</dt>
-    <dd class="tag-author">
-        <ul>
-            <li>Kevin Schultz</li>
-        </ul>
-    </dd>
-    
 
     
 
@@ -205,7 +209,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="frontend_src_theme.js.html">frontend/src/theme.js</a>, <a href="frontend_src_theme.js.html#line1">line 1</a>
+        <a href="frontend_src_components_P5PropertiesContext.jsx.html">frontend/src/components/P5PropertiesContext.jsx</a>, <a href="frontend_src_components_P5PropertiesContext.jsx.html#line32">line 32</a>
     </li></ul></dd>
     
 
@@ -217,24 +221,47 @@
 </dl>
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
         
-    
-    </div>
+<div class="param-desc">
+    A P5PropertiesContext.Provider that wraps the child components and provides them with access to the P5 properties context.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">JSX.Element</span>
+
+
+    </dd>
+</dl>
 
     
 
-    
 
-    
 
-    
 
-    
 
-    
-
-    
-
+        
     
 
     

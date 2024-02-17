@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: frontend/src/components/BrushIconButton.jsx</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,232 +17,83 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
-
-    
-
-
-
-    
-
-
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-<section>
-
-<header>
-    
-        <h2>frontend/src/App.jsx</h2>
-        
-    
-</header>
-
-<article>
-    <div class="container-overview">
-    
-        
-            <div class="description">App.jsx is the root component of the React frontend.This component is responsible for the client side routing meaning that it will render the correct component corresponding to pages based on the URL.It also sets the material ui theme for the entire app.</div>
-        
-
-        
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-author">Author:</dt>
-    <dd class="tag-author">
-        <ul>
-            <li>Kevin Schultz</li>
-        </ul>
-    </dd>
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="frontend_src_App.jsx.html">frontend/src/App.jsx</a>, <a href="frontend_src_App.jsx.html#line1">line 1</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
-</section>
-
-
-
-
-
-
-
-<section>
-
-<header>
-    
-        <h2>frontend/src/theme.js</h2>
-        
-    
-</header>
-
-<article>
-    <div class="container-overview">
-    
-        
-            <div class="description">theme.js defines the color palette for the Material-UI theme used in App.jsx and passed down to all components.</div>
-        
-
-        
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-author">Author:</dt>
-    <dd class="tag-author">
-        <ul>
-            <li>Kevin Schultz</li>
-        </ul>
-    </dd>
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="frontend_src_theme.js.html">frontend/src/theme.js</a>, <a href="frontend_src_theme.js.html#line1">line 1</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
-</section>
+    <h1 class="page-title">Source: frontend/src/components/BrushIconButton.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @project Emergent Playground
+ * @file BrushIconButton.jsx
+ * @overview This component is a button that changes the brush type in the editor.
+ * @authors Kevin Schultz, Preston Nguyen
+ * @exports BrushIconButton
+ */
+
+// Material UI Imports
+import IconButton from '@mui/material/IconButton';
+
+// Other imports
+import PropTypes from 'prop-types';
+import DefaultProperties from './DefaultProperties';
+
+/**
+ * A button component for selecting a brush type.
+ *
+ * This component displays an icon button with a brush icon.
+ * The color of the icon changes based on whether the brush type of the button matches the current brush type.
+ * When the button is clicked, the current brush type is updated to the brush type of the button.
+ *
+ * @param {Object} props - The properties passed to the component.
+ * @param {string} props.buttonBrushType - The brush type of the button.
+ * @param {string} props.currentBrushType - The current brush type.
+ * @param {Function} props.setCurrentBrushType - The function to update the current brush type.
+ * 
+ * @returns {JSX.Element} The BrushIconButton component.
+ */
+function BrushIconButton({ buttonBrushType, currentBrushType, setCurrentBrushType }) {
+
+    const brushIcons = DefaultProperties.brushIcons;
+
+    // Get the color of the button based on the current brush type
+    function getColor() {
+        if (buttonBrushType === currentBrushType) {
+            return DefaultProperties.selectedBrushIconColor;
+        } else {
+            return DefaultProperties.deselectedBrushIconColor;
+        }
+    }
+
+    // Handle the button click to change the brush type
+    function handleOnClick() {
+        setCurrentBrushType(buttonBrushType);
+    }
+
+    return (
+        &lt;IconButton
+            sx={{ color: getColor() }}
+            variant="contained"
+            onClick={handleOnClick}
+        >
+            {brushIcons[buttonBrushType]}
+        &lt;/IconButton>
+    );
+}
+
+BrushIconButton.propTypes = {
+    buttonBrushType: PropTypes.string.isRequired,
+    currentBrushType: PropTypes.string.isRequired,
+    setCurrentBrushType: PropTypes.func.isRequired,
+};
+
+export default BrushIconButton;
+</code></pre>
+        </article>
+    </section>
 
 
 

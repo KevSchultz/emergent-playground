@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: frontend/src/pages/ViewerBuilderCreator.jsx</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,232 +17,76 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
-
-    
-
-
-
-    
-
-
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-<section>
-
-<header>
-    
-        <h2>frontend/src/App.jsx</h2>
-        
-    
-</header>
-
-<article>
-    <div class="container-overview">
-    
-        
-            <div class="description">App.jsx is the root component of the React frontend.This component is responsible for the client side routing meaning that it will render the correct component corresponding to pages based on the URL.It also sets the material ui theme for the entire app.</div>
-        
-
-        
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-author">Author:</dt>
-    <dd class="tag-author">
-        <ul>
-            <li>Kevin Schultz</li>
-        </ul>
-    </dd>
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="frontend_src_App.jsx.html">frontend/src/App.jsx</a>, <a href="frontend_src_App.jsx.html#line1">line 1</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
-</section>
-
-
-
-
-
-
-
-<section>
-
-<header>
-    
-        <h2>frontend/src/theme.js</h2>
-        
-    
-</header>
-
-<article>
-    <div class="container-overview">
-    
-        
-            <div class="description">theme.js defines the color palette for the Material-UI theme used in App.jsx and passed down to all components.</div>
-        
-
-        
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-author">Author:</dt>
-    <dd class="tag-author">
-        <ul>
-            <li>Kevin Schultz</li>
-        </ul>
-    </dd>
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="frontend_src_theme.js.html">frontend/src/theme.js</a>, <a href="frontend_src_theme.js.html#line1">line 1</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
-</section>
+    <h1 class="page-title">Source: frontend/src/pages/ViewerBuilderCreator.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @project Emergent Playground
+ * @file ViewerBuilderCreator.jsx
+ * @overview The container component for the main editor integrated development environment page.
+ * This page is where the real magic happens. It includes the P5 canvas, the code editor, and user interface.
+ * @authors Beckett Avary, Kevin Schultz
+ * @exports ViewerBuilderCreator
+ */
+
+// Custom component imports
+import TopNavigationBar from '../components/TopNavigationBar';
+import LeftButtonListContainer from '../components/LeftButtonListContainer';
+import RightOptionsRootContainer from '../components/RightOptionsRootContainer';
+import P5Background from '../components/P5Background';
+import {P5PropertiesProvider} from '../components/P5PropertiesContext';
+import DefaultProperties from '../components/DefaultProperties';
+
+// P5.js imports
+// import CellularAutomataSketchClass from '../sketches/CellularAutomataSketchClass';
+import TextureRuleCellularAutomataSketchClass from '../sketches/textureRuleCellularAutomataSketchClass';
+// import CellularAutomataTextureRuleSketch from '../sketches/CellularAutomataTextureRuleSketch';
+
+// Resizable Panel Imports
+import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
+
+// const cellularAutomataSketch = new CellularAutomataSketchClass(DefaultProperties);
+const cellularAutomataSketch = new TextureRuleCellularAutomataSketchClass(DefaultProperties);
+
+/**
+ * A functional component that renders the Viewer Builder Creator page.
+ *
+ * This component displays a P5PropertiesProvider that contains a P5Background, a TopNavigationBar, and a PanelGroup.
+ * The PanelGroup contains a LeftButtonListContainer, a Panel, a PanelResizeHandle, and a RightOptionsRootContainer.
+ *
+ * @returns {JSX.Element} The ViewerBuilderCreator component.
+ */
+function ViewerBuilderCreator() {
+    
+    return (
+        &lt;P5PropertiesProvider>
+            &lt;P5Background cellularAutomataSketch={cellularAutomataSketch} />
+            &lt;TopNavigationBar />
+            &lt;PanelGroup direction="horizontal">
+                &lt;div>
+                    &lt;LeftButtonListContainer>&lt;/LeftButtonListContainer>
+                &lt;/div>
+                &lt;Panel>&lt;/Panel>
+                &lt;PanelResizeHandle />
+                &lt;Panel defaultSize={30} minSize={10}>
+                    &lt;RightOptionsRootContainer/>
+                &lt;/Panel>
+                &lt;PanelResizeHandle />
+            &lt;/PanelGroup>
+        &lt;/P5PropertiesProvider>
+    );
+}
+
+export default ViewerBuilderCreator;
+</code></pre>
+        </article>
+    </section>
 
 
 

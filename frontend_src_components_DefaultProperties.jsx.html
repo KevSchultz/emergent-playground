@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: frontend/src/components/DefaultProperties.jsx</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,232 +17,67 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
-
-    
-
-
-
-    
-
-
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-<section>
-
-<header>
-    
-        <h2>frontend/src/App.jsx</h2>
-        
-    
-</header>
-
-<article>
-    <div class="container-overview">
-    
-        
-            <div class="description">App.jsx is the root component of the React frontend.This component is responsible for the client side routing meaning that it will render the correct component corresponding to pages based on the URL.It also sets the material ui theme for the entire app.</div>
-        
-
-        
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-author">Author:</dt>
-    <dd class="tag-author">
-        <ul>
-            <li>Kevin Schultz</li>
-        </ul>
-    </dd>
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="frontend_src_App.jsx.html">frontend/src/App.jsx</a>, <a href="frontend_src_App.jsx.html#line1">line 1</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
-</section>
-
-
-
-
-
-
-
-<section>
-
-<header>
-    
-        <h2>frontend/src/theme.js</h2>
-        
-    
-</header>
-
-<article>
-    <div class="container-overview">
-    
-        
-            <div class="description">theme.js defines the color palette for the Material-UI theme used in App.jsx and passed down to all components.</div>
-        
-
-        
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-author">Author:</dt>
-    <dd class="tag-author">
-        <ul>
-            <li>Kevin Schultz</li>
-        </ul>
-    </dd>
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="frontend_src_theme.js.html">frontend/src/theme.js</a>, <a href="frontend_src_theme.js.html#line1">line 1</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
-</section>
+    <h1 class="page-title">Source: frontend/src/components/DefaultProperties.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @project Emergent Playground
+ * @file DefaultProperties.jsx
+ * @overview Contains an object with default properties to be used in p5 and react. 
+ * Containing all the presets and changeable attributes for a cellular automata sketch.
+ * @authors Kevin Schultz
+ * @exports DefaultProperties
+ */
+
+import vertexShader from '../shaders/basic.vert?raw';
+import fragmentShader from '../shaders/cellularAutomata.frag?raw';
+import SquareIcon from '@mui/icons-material/Square';
+import CropSquareIcon from '@mui/icons-material/CropSquare';
+import CircleIcon from '@mui/icons-material/RadioButtonUnchecked';
+import CameraAltIcon from '@mui/icons-material/CameraAlt';
+
+const DefaultProperties = {
+    worldWidth: 1000,
+    worldHeight: 1000,
+    pixelDensity: 1,
+    cameraX: 0,
+    cameraY: 0,
+    cameraZ: 1,
+    zoom: 0.5,
+    minZoom: 0.1,
+    maxZoom: 100,
+    zoomSensitivity: 0.001,
+    panSensitivity: 0.001,
+    brushType: 'pixel',
+    listBrushTypes: ['pixel', 'square', 'circle', 'camera'],
+    brushIcons: { pixel: &lt;SquareIcon />, square: &lt;CropSquareIcon />, circle: &lt;CircleIcon />, camera: &lt;CameraAltIcon />},
+    selectedBrushIconColor: 'yellow',
+    deselectedBrushIconColor: 'white',
+    brushSize: 10,
+    cursorStyles: {
+        pixel: 'crosshair',
+        square: `url('data:image/svg+xml;utf8,&lt;svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100">&lt;rect width="100" height="100" style="fill:none;stroke:white;stroke-width:2;"/>&lt;circle cx="2" cy="2" r="6" style="fill:white;"/>&lt;/svg>'), auto`,
+        circle: `url('data:image/svg+xml;utf8,&lt;svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100">&lt;circle cx="50" cy="50" r="50" style="fill:none;stroke:white;stroke-width:2;"/>&lt;circle cx="50" cy="50" r="4" style="fill:white;"/>&lt;/svg>') 50 50, auto`,
+        default: 'auto',
+    },
+    previousMouseX: 0,
+    previousMouseY: 0,
+    vertexShader: vertexShader,
+    fragmentShader: fragmentShader,
+    pause: 0,
+    code: '', // for shader lang
+};
+
+export default DefaultProperties;
+</code></pre>
+        </article>
+    </section>
 
 
 
