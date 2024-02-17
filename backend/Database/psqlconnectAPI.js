@@ -13,9 +13,15 @@ PROGRESS:
    EVERYTHING UP TO MAKEPOST() IS WORKING, BUT SHOULD BE STRESS TESTED
 */
 
-// DONE
-// connects to the database by making a new client and connecting to a pool
-// returns the client
+/**
+ * DONE
+ * Connects to the database by making a new client and connecting to a pool
+ * Returns the client
+ * 
+ * @returns {Client} The connected PostgreSQL client.
+ * @throws {Error} If there is an error while connecting to the database.
+ * 
+ */
 function connectToDatabase() {
     const client = new Client({
         host: "127.0.0.1",
@@ -37,9 +43,13 @@ function connectToDatabase() {
     return client;
 }
 
-// DONE
-// Generate a random integer between min (inclusive) and max (inclusive)
-// used for generating a uniqueID for whatever I need it for
+/**
+ * DONE
+ * Generate a random integer between min (inclusive) and max (inclusive)
+ * used for generating a uniqueID for whatever I need it for
+ *
+ * @returns {number} The generated random integer.
+ */
 function getRandomInt() {
     // Generate a random floating-point number between 0 (inclusive) and 1 (exclusive)
     const randomFloat = Math.random();
@@ -51,7 +61,21 @@ function getRandomInt() {
     return randomNumber;
 }
 
-// DONE
+/**
+ * DONE
+ * Gets the current date and time and formats it as a timestamp string.
+ *
+ * The format of the timestamp string is "YYYY-MM-DD HH:mm:ss.SSS", where:
+ * - "YYYY" is the four-digit year.
+ * - "MM" is the two-digit month (01 = January, 12 = December).
+ * - "DD" is the two-digit day of the month.
+ * - "HH" is the two-digit hour of the day in 24-hour format.
+ * - "mm" is the two-digit minute of the hour.
+ * - "ss" is the two-digit second of the minute.
+ * - "SSS" is the three-digit millisecond of the second.
+ *
+ * @returns {string} The formatted timestamp string.
+ */
 function getCurrentTimestamp() {
     const now = new Date();
     const year = now.getFullYear();
@@ -66,7 +90,21 @@ function getCurrentTimestamp() {
     return formattedTimestamp;
 }
 
-// DONE
+/**
+ * DONE
+ * Gets the current date and time, adds three hours to it, and formats it as a timestamp string.
+ *
+ * The format of the timestamp string is "YYYY-MM-DD HH:mm:ss.SSS", where:
+ * - "YYYY" is the four-digit year.
+ * - "MM" is the two-digit month (01 = January, 12 = December).
+ * - "DD" is the two-digit day of the month.
+ * - "HH" is the two-digit hour of the day in 24-hour format.
+ * - "mm" is the two-digit minute of the hour.
+ * - "ss" is the two-digit second of the minute.
+ * - "SSS" is the three-digit millisecond of the second.
+ *
+ * @returns {string} The formatted timestamp string representing the current time plus three hours.
+ */
 function getTimestampThreeHoursAhead() {
     const now = new Date();
     now.setHours(now.getHours() + 3); // Add 3 hours
@@ -83,12 +121,21 @@ function getTimestampThreeHoursAhead() {
     return formattedTimestamp;
 }
 
-
-// DONE
-// creates a user account as a schema via a query
-// client object, username, pass as args
-// returns bool for success or fail
-// error codes: 1 means that the username was taken
+/**
+ * DONE
+ * Creates a user account as a schema via a query
+ *
+ * This function checks if the provided username is already in use. If it is, the function returns an error code.
+ * If the username is not in use, the function generates a unique user ID and creates a new user account with the provided username, password, and email.
+ * The function then inserts the new user account into the database.
+ *
+ * @param {Client} client - The PostgreSQL client.
+ * @param {string} username - The username for the new account.
+ * @param {string} password - The password for the new account.
+ * @param {string} email - The email for the new account.
+ * @returns {(Object|Number)} The created user object, or an error code if the username is already in use.
+ * @throws {Error} If there is an error while querying the database.
+ */
 async function createAccount(client, username, password, email) {
     // check if there is already an accound with that username
     const defaultPermissions = 1; // standard user permissions
@@ -121,7 +168,7 @@ async function createAccount(client, username, password, email) {
     var user = {
         userID: newUserID,
         username: username,
-        password: password,
+        password: password, 
         email: email, // not needed, can be left as NULL
         creationDate: formattedTimestamp, // DATE data type
         permissions: defaultPermissions // permissions of 1, standard user
@@ -139,9 +186,23 @@ async function createAccount(client, username, password, email) {
     return user // returns the user object
 }
 
-// DONE
-// logs the user in by checking the provided credentials, creating a new session object, and then returning that session after entering it into the database
-// takes the client object, username, and password
+/**
+ * DONE
+ * Logs the user in by checking the provided credentials, creating a new session object, 
+ * and then returning that session after entering it into the database.
+ * takes the client object, username, and password
+ *
+ * This function first checks if the provided username and password match a user in the database.
+ * If they do, the function generates a unique session ID and token, and creates a new session for the user.
+ * The session information is then inserted into the database.
+ * If the username and password do not match a user, the function returns null.
+ *
+ * @param {Client} client - The PostgreSQL client.
+ * @param {string} username - The username to log in with.
+ * @param {string} password - The password to log in with.
+ * @returns {(Object|null)} The created session object, or null if the username and password do not match a user.
+ * @throws {Error} If there is an error while querying the database.
+ */
 async function logIn(client, username, password) {
     // Determining whether there is a valid user with this username and password
     const userSearchQuery = 'SELECT * FROM users WHERE username = $1 AND password = $2';
@@ -195,8 +256,20 @@ async function logIn(client, username, password) {
     };
 }
 
-// DONE
-// logs out by removing the session from both server and client side
+/**
+ * DONE
+ * Logs out by removing the session from both server and client side
+ *
+ * This function deletes the session with the provided session ID and token from the database.
+ * It then nulls out the local session variable and returns true.
+ *
+ * @param {Client} client - The PostgreSQL client.
+ * @param {Object} session - The session to log out.
+ * @param {string} session.sessionID - The ID of the session.
+ * @param {string} session.sessionToken - The token of the session.
+ * @returns {boolean} Always returns true.
+ * @throws {Error} If there is an error while querying the database.
+ */
 async function logOut(client, session) {
     const logOutQuery = 'DELETE FROM sessions WHERE sessionid = $1 AND sessiontoken = $2'; // finds the session and deletes it server side
     console.log('sessionID: ' + session.sessionID); // sends deleted session info to log for debugging 
@@ -206,11 +279,27 @@ async function logOut(client, session) {
     return true; // returning true upon success
 }
 
-// IN PROGRESS
+// IN PROGRESS: WRITTEN BUT NOT TESTED
 
-// WRITTEN, NOT TESTED
-// creates a post and uploads a post to the database
-// returns the postID if successful, null if not
+/**
+ * Creates a post and uploads a post to the database.
+ *
+ * This function generates a unique post ID and creates a new post with the provided parameters.
+ * If a parameter is not provided, a default value is used.
+ * The function then inserts the new post into the database.
+ *
+ * @param {Client} client - The PostgreSQL client.
+ * @param {Object} session - The session of the user making the post.
+ * @param {string} title - The title of the post.
+ * @param {string} description - The description of the post.
+ * @param {boolean} visibility - The visibility of the post.
+ * @param {string} filename - The filename of the post.
+ * @param {string} state - The state of the post.
+ * @param {string} thumbnail - The thumbnail of the post.
+ * @param {string} data - The data of the post.
+ * @returns {(number|null)} The ID of the created post, otherwise null. 
+ * @throws {Error} If there is an error while querying the database.
+ */
 async function makePost(client, session, title, description, visibility, filename, state, thumbnail, data){
     // defaults for the post settings
     const default_title = 'NewPost';
@@ -288,8 +377,18 @@ async function makePost(client, session, title, description, visibility, filenam
     return post.postID;
 }
 
-// gets the info of a post from the database
-// returns the post if found and NULL if no post was found
+/**
+ * Gets the info of a post from the database
+ *
+ * This function queries the database for a post with the provided post ID.
+ * If a post with the provided ID exists, the function creates a post object with the post's information and returns it.
+ * If no post with the provided ID exists, the function returns null.
+ *
+ * @param {Client} client - The PostgreSQL client.
+ * @param {number} postID - The ID of the post to retrieve information about.
+ * @returns {(Object|null)} The post object, or null if no post with the provided ID exists.
+ * @throws {Error} If there is an error while querying the database.
+ */
 async function getPostInfo(client, postID){
     const searchPostQuery = 'SELECT * FROM posts WHERE postid = ' + postID + ';';
     const resultPostQuery = await client.query(searchPostQuery);
@@ -319,9 +418,21 @@ async function getPostInfo(client, postID){
     }
 }
 
-// deletes a post from the database
-// takes the post id and the client
-// returns true if post was deleted properly and false if not
+/**
+ * Deletes a post from the database.
+ * Takes the post id and the client.
+ * Returns true if post was deleted properly and false if not
+ *
+ * This function deletes the post with the provided post ID from the database.
+ * It then checks if the deletion was successful by querying the database for a post with the provided ID.
+ * If a post with the provided ID still exists, the function returns false.
+ * If no post with the provided ID exists, the function returns true.
+ *
+ * @param {Client} client - The PostgreSQL client.
+ * @param {number} postID - The ID of the post to delete.
+ * @returns {boolean} True if the deletion was successful, false otherwise.
+ * @throws {Error} If there is an error while querying the database.
+ */
 async function deletePost(client, postID){
     // deletion
     const postDeleteQuery = 'DELETE * FROM posts WHERE postid = ' + postID + ';';
@@ -341,7 +452,16 @@ async function deletePost(client, postID){
     }
 }
 
-// changes the visibility of a post, used to hide a post
+/**
+ * Changes the visibility of a post, used to hide a post
+ *
+ * This function updates the visibility of the post with the provided post ID in the database to true.
+ *
+ * @param {Client} client - The PostgreSQL client.
+ * @param {number} postid - The ID of the post to hide.
+ * @returns {boolean} Always returns true.
+ * @throws {Error} If there is an error while querying the database.
+ */
 async function hidePost(client, postid){
     // changing the visibility of the post
     await client.query('UPDATE posts SET visibility = true WHERE postid = ' + postid + ';');
@@ -349,7 +469,16 @@ async function hidePost(client, postid){
     return true;
 }
 
-// changes the visibility of a post, used to unhide a post
+/**
+ * Changes the visibility of a post, used to unhide a post
+ *
+ * This function updates the visibility of the post with the provided post ID in the database to false.
+ *
+ * @param {Client} client - The PostgreSQL client.
+ * @param {number} postid - The ID of the post to unhide.
+ * @returns {boolean} Always returns true.
+ * @throws {Error} If there is an error while querying the database.
+ */
 async function unhidePost(client, postid){
     // changing the visibility of the post
     await client.query('UPDATE posts SET visibility = false WHERE postid = ' + postid + ';');
@@ -357,47 +486,88 @@ async function unhidePost(client, postid){
     return true;
 }
 
-// sorts all posts by newest
-// returns the results as an object
+/**
+ * Sorts all posts by newest
+ *
+ * This function queries the database for all posts and orders them by their creation time in descending order.
+ *
+ * @param {Client} client - The PostgreSQL client.
+ * @returns {Array} An array of post objects, ordered by creation time in descending order.
+ * @throws {Error} If there is an error while querying the database.
+ */
 async function getPostsByNewest(client){
     const searchResult = await client.query('SELECT * FROM posts ORDER BY creationtime DESC;');
     console.log('searched posts by newest');
     return searchResult.rows;
 }
 
-// sorts all posts by oldest
-// returns the results as an object
+/**
+ * Sorts all posts by oldest
+ *
+ * This function queries the database for all posts and orders them by their creation time in ascending order.
+ * It then logs a message indicating that the posts were searched by oldest and returns the rows of the search result.
+ *
+ * @param {Client} client - The PostgreSQL client.
+ * @returns {Array} An array of post objects, ordered by creation time in ascending order.
+ * @throws {Error} If there is an error while querying the database.
+ */
 async function getPostsByOldest(client){
     const searchResult = await client.query('SELECT * FROM posts ORDER BY creationtime;');
     console.log('searched posts by oldest');
     return searchResult.rows;
 }
 
-// sorts all posts by most views
-// returns the results as an object
+/**
+ * Sorts all posts by most views
+ *
+ * This function queries the database for all posts and orders them by their views in descending order.
+ * It then logs a message indicating that the posts were searched by most viewed and returns the rows of the search result.
+ *
+ * @param {Client} client - The PostgreSQL client.
+ * @returns {Array} An array of post objects, ordered by views in descending order.
+ * @throws {Error} If there is an error while querying the database.
+ */
 async function getPostsByMostViews(client){
     const searchResult = await client.query('SELECT * FROM posts ORDER BY views DESC;');
     console.log('searched posts by most viewed');
     return searchResult.rows;
 }
 
-// sorts all posts by views ascending
+/**
+ * Sorts all posts by views ascending
+ *
+ * This function queries the database for all posts and orders them by their views in ascending order.
+ * It then logs a message indicating that the posts were searched by least viewed and returns the rows of the search result.
+ *
+ * @param {Client} client - The PostgreSQL client.
+ * @returns {Array} An array of post objects, ordered by views in ascending order.
+ * @throws {Error} If there is an error while querying the database.
+ */
 async function getPostsByLeastViews(client){
     const searchResult = await client.query('SELECT * FROM posts ORDER BY views;');
     console.log('searched posts by least viewed');
     return searchResult.rows;
 }
 
-// sorts all of the posts by the user
-// takes client object, userid, and sorting selection
-// sorting is an int that represents different ways to sort the data
-// sorts by:
-// 0: alphabetical ascending
-// 1: alphabetical descending
-// 2: newest
-// 3: oldest
-// 4: most viewed
-// 5: least viewed 
+/**
+ * Sorts all of the posts by a specific user, ordered by a specified sorting method.
+ *
+ * This function queries the database for all posts made by the user with the provided user ID.
+ * The posts are then ordered based on the provided sorting method.
+ * The sorting methods are as follows:
+ * 0 - Alphabetically ascending
+ * 1 - Alphabetically descending
+ * 2 - Newest
+ * 3 - Oldest
+ * 4 - Most viewed
+ * 5 - Least viewed
+ *
+ * @param {Client} client - The PostgreSQL client.
+ * @param {number} userid - The ID of the user whose posts to retrieve.
+ * @param {number} sorting - The sorting method to use.
+ * @returns {Array} An array of post objects, ordered based on the provided sorting method.
+ * @throws {Error} If there is an error while querying the database.
+ */
 async function getPostsByUser(client, userid, sorting){
     // defining constants for easier string formatting
     
