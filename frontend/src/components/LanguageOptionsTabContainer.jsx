@@ -6,6 +6,9 @@
  * @exports LanguageOptionsTabContainer
  */
 
+// React Imports
+import { useContext } from 'react';
+
 // Material UI Imports
 import Box from '@mui/material/Box';
 
@@ -16,17 +19,18 @@ import 'ace-builds/src-noconflict/theme-gruvbox';
 import 'ace-builds/src-noconflict/ext-language_tools';
 
 // Other Imports
-import PropTypes from 'prop-types';
+import P5PropertiesContext from './P5PropertiesContext';
 
 /**
  * @component
  * @param {Object} props
  * @returns {ReactElement} A container component that renders the language options tab.
- * @param {string} props.code The code for the cellular automata language.
- * @param {function} props.setCode A function to set the code for the cellular automata language.
  * @returns {ReactElement} A component that renders the language options tab inside RightOptionsRootContainer.jsx
  */
-function LanguageOptionsTabContainer({ code, setCode }) {
+function LanguageOptionsTabContainer() {
+
+    const { code, setCode } = useContext(P5PropertiesContext);
+
     const handleCodeChange = (newCode) => {
         setCode(newCode);
     };
@@ -52,10 +56,5 @@ function LanguageOptionsTabContainer({ code, setCode }) {
         </Box>
     );
 }
-
-LanguageOptionsTabContainer.propTypes = {
-    code: PropTypes.string.isRequired,
-    setCode: PropTypes.func.isRequired,
-};
 
 export default LanguageOptionsTabContainer;

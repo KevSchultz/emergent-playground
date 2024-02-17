@@ -5,26 +5,27 @@
  * @author Kevin Schultz
  */
 import vertexShader from '../shaders/basic.vert?raw';
-import fragmentShader from '../shaders/cellularAutomata.frag?raw';
+import fragmentShader from '../shaders/gameOfLife.frag?raw';
 import SquareIcon from '@mui/icons-material/Square';
 import CropSquareIcon from '@mui/icons-material/CropSquare';
 import CircleIcon from '@mui/icons-material/RadioButtonUnchecked';
+import CameraAltIcon from '@mui/icons-material/CameraAlt';
 
-export const DefaultProperties = {
+const DefaultProperties = {
     worldWidth: 1000,
     worldHeight: 1000,
+    pixelDensity: 1,
     cameraX: 0,
     cameraY: 0,
     cameraZ: 1,
-    scaleOffset: 1,
-    zoom: 1,
-    minZoom: 0,
+    zoom: 0.5,
+    minZoom: 0.1,
     maxZoom: 100,
     zoomSensitivity: 0.001,
     panSensitivity: 0.001,
     brushType: 'pixel',
-    listBrushTypes: ['pixel', 'square', 'circle'],
-    brushIcons: { pixel: <SquareIcon />, square: <CropSquareIcon />, circle: <CircleIcon /> },
+    listBrushTypes: ['pixel', 'square', 'circle', 'camera'],
+    brushIcons: { pixel: <SquareIcon />, square: <CropSquareIcon />, circle: <CircleIcon />, camera: <CameraAltIcon />},
     selectedBrushIconColor: 'yellow',
     deselectedBrushIconColor: 'white',
     brushSize: 10,

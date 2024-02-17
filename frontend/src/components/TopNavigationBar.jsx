@@ -5,9 +5,8 @@
  */
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
+import Link from '@mui/material/Link';
 import Avatar from '@mui/material/Avatar';
-import PropTypes from 'prop-types';
 import { Paper } from '@mui/material';
 
 /**
@@ -47,12 +46,9 @@ function NavBar() {
                     justifyContent: 'flex-end',
                 }}
             >
-                <Button
-                    sx={{ height: '4vh', fontSize: 'calc(min(1.5vw, 1.5vh))' }}
-                    variant="contained"
-                >
+                <Link>
                     Community
-                </Button>
+                </Link>
                 <Avatar sx={{ height: '4vh', width: '4vh' }}>K</Avatar>
             </Box>
         </Paper>

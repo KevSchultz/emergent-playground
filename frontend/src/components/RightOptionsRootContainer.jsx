@@ -22,22 +22,10 @@ import PremadeRulesOptionsTabContainer from './PremadeRulesOptionsTabContainer';
 import ViewerOptionsTabContainer from './ViewerOptionsTabContainer';
 import LanguageOptionsTabContainer from './LanguageOptionsTabContainer';
 
-// Other imports
-import PropTypes from 'prop-types';
-
 // Constants
 const TABS = ['Premade Rules', 'Viewer Options', 'Language'];
 
-function RightOptionsRootContainer({
-    zoom,
-    worldWidth,
-    code,
-    setZoom,
-    setWorldWidth,
-    setCode,
-    brushSize,
-    setBrushSize,
-}) {
+function RightOptionsRootContainer() {
     const [currentTabIndex, setCurrentTabIndex] = useState(0);
 
     const handleTabChange = (event, newTabIndex) => {
@@ -82,34 +70,14 @@ function RightOptionsRootContainer({
             {TABS[currentTabIndex] === 'Premade Rules' && <PremadeRulesOptionsTabContainer />}
 
             {TABS[currentTabIndex] === 'Viewer Options' && (
-                <ViewerOptionsTabContainer
-                    zoom={zoom}
-                    worldWidth={worldWidth}
-                    setZoom={setZoom}
-                    setWorldWidth={setWorldWidth}
-                    brushSize={brushSize}
-                    setBrushSize={setBrushSize}
-                />
+                <ViewerOptionsTabContainer/>
             )}
 
             {TABS[currentTabIndex] === 'Language' && (
-                <LanguageOptionsTabContainer code={code} setCode={setCode} />
+                <LanguageOptionsTabContainer />
             )}
         </Paper>
     );
 }
-
-RightOptionsRootContainer.propTypes = {
-    zoom: PropTypes.number,
-    worldWidth: PropTypes.number,
-    pause: PropTypes.number,
-    code: PropTypes.string,
-    setZoom: PropTypes.func,
-    setWorldWidth: PropTypes.func,
-    setPause: PropTypes.func,
-    setCode: PropTypes.func,
-    brushSize: PropTypes.number,
-    setBrushSize: PropTypes.func, 
-};
 
 export default RightOptionsRootContainer;

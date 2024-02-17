@@ -5,16 +5,12 @@
  * @authors Kevin Schultz, Preston Nguyen
  */
 
-// React Imports
-import { useEffect } from 'react';
-
 // Material UI Imports
 import IconButton from '@mui/material/IconButton';
 
 // Other imports
 import PropTypes from 'prop-types';
-import DefaultProperties from '../sketches/DefaultProperties';
-
+import DefaultProperties from './DefaultProperties';
 
 /**
  * @component
@@ -24,16 +20,6 @@ import DefaultProperties from '../sketches/DefaultProperties';
 function BrushIconButton({ buttonBrushType, currentBrushType, setCurrentBrushType }) {
 
     const brushIcons = DefaultProperties.brushIcons;
-    const cursorStyles = DefaultProperties.cursorStyles;
-
-
-    // Set the cursor to the current brush type when the brush type changes
-    useEffect(() => {
-
-        console.log(cursorStyles[currentBrushType]);
-
-        document.body.style.cursor = cursorStyles[currentBrushType];
-    }, [currentBrushType, cursorStyles]);
 
     // Get the color of the button based on the current brush type
     function getColor() {
