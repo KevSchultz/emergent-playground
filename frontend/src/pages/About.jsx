@@ -1,8 +1,10 @@
 /**
- * @file About.jsx is the container component for the about page.
- * The about page includes information about the project and team members (names, roles, github, etc).
- * @author Kevin Schultz
  * @project Emergent Playground
+ * @file About.jsx 
+ * @overview The container component for the about page.
+ * The about page includes information about the project and team members (names, roles, github, etc).
+ * @authors Kevin Schultz
+ * @exports About
  */
 
 /**

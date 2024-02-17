@@ -1,9 +1,12 @@
 /**
- * @file sketchAttributes.js is a file that contains an object that is meant to be passed as prop through ReactP5Wrapper
- * containing all the presets and changeable attributes for a sketch.
  * @project Emergent Playground
- * @author Kevin Schultz
+ * @file DefaultProperties.jsx
+ * @overview Contains an object with default properties to be used in p5 and react. 
+ * Containing all the presets and changeable attributes for a cellular automata sketch.
+ * @authors Kevin Schultz
+ * @exports DefaultProperties
  */
+
 import vertexShader from '../shaders/basic.vert?raw';
 import fragmentShader from '../shaders/cellularAutomata.frag?raw';
 import SquareIcon from '@mui/icons-material/Square';

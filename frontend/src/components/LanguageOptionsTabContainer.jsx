@@ -1,7 +1,7 @@
 /**
+ * @project Emergent Playground
  * @file LanguageOptionsTabContainer.jsx
  * @overview This file contains the container component for the language options including the cellular automata language code editor.
- * @project Emergent Playground
  * @authors Beckett Avary, Kevin Schultz
  * @exports LanguageOptionsTabContainer
  */
@@ -22,10 +22,14 @@ import 'ace-builds/src-noconflict/ext-language_tools';
 import P5PropertiesContext from './P5PropertiesContext';
 
 /**
- * @component
- * @param {Object} props
- * @returns {ReactElement} A container component that renders the language options tab.
- * @returns {ReactElement} A component that renders the language options tab inside RightOptionsRootContainer.jsx
+ * A container component for that shows on the language options tab.
+ *
+ * This component displays an AceEditor inside a Box.
+ * The AceEditor is used to display and edit the code.
+ * The code is retrieved from the P5PropertiesContext.
+ * When the code in the AceEditor changes, the new code is saved to the P5PropertiesContext.
+ *
+ * @returns {JSX.Element} The LanguageOptionsTabContainer component.
  */
 function LanguageOptionsTabContainer() {
 

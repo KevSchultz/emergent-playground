@@ -1,7 +1,7 @@
 /**
+ * @project Emergent Playground
  * @file ViewerOptionsTabContainer.jsx
  * @overview This file contains the container component for the viewer options tab.
- * @project Emergent Playground
  * @authors Beckett Avary, Kevin Schultz
  * @exports ViewerOptionsTabContainer
  */
@@ -16,10 +16,15 @@ import Box from '@mui/material/Box';
 import InputSlider from './InputSlider';
 import P5PropertiesContext from './P5PropertiesContext';
 
+
 /**
- * @component
+ * A container component for the viewer options tab.
  *
- * @returns
+ * This component displays a Box that contains four InputSlider components.
+ * The InputSlider components are used to control the zoom level, world width, world height, and brush size.
+ * The current values and the functions to update these values are retrieved from the P5PropertiesContext.
+ *
+ * @returns {JSX.Element} The ViewerOptionsTabContainer component.
  */
 function ViewerOptionsTabContainer() {
     const {

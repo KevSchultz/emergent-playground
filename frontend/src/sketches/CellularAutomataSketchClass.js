@@ -1,5 +1,21 @@
 const PIXEL_DENSITY = 1;
 
+/**
+ * This class represents a cellular automata sketch, integrating p5.js functionalities with custom shader operations and React properties.
+ * It manages the lifecycle of a cellular automata sketch, including setup, drawing operations, event handling, and dynamic property updates.
+ * The class is designed to work within a React environment, utilizing the ReactP5Wrapper for seamless integration.
+ *
+ * @class CellularAutomataSketchClass
+ * @property {p5} p5 - An instance of the p5 library, used for drawing and event handling.
+ * @property {p5.Graphics} currentState - A graphics buffer representing the current state of the automata.
+ * @property {p5.Graphics} previousState - A graphics buffer storing the previous state of the automata for calculations.
+ * @property {Object} reactProperties - Dynamic properties passed from React, used to control sketch parameters.
+ * @property {Object} defaultReactProperties - Default properties for the sketch, set upon instantiation.
+ * @property {p5.Shader} shader - A p5.js Shader object for custom rendering effects.
+ * @property {boolean} isSketchSetup - Flag to check if the initial setup has been completed.
+ * @constructor
+ * @param {Object} defaultReactProperties - Initial properties for the sketch, typically passed from a React component.
+ */
 class CellularAutomataSketchClass {
     constructor(defaultReactProperties) {
         this.p5;
@@ -37,6 +53,13 @@ class CellularAutomataSketchClass {
         this.freeGraphicsBuffer = this.freeGraphicsBuffer.bind(this);
     }
 
+    /**
+     * Updates the world width of the sketch.
+     *
+     * This method clears the current and previous states, sets the pause state to 1, updates the shader's resolution uniform, and resizes the canvas of the current and previous states.
+     *
+     * @param {number} newWorldWidth - The new world width.
+     */
     updateWorldWidth(newWorldWidth) {
         this.currentState.clear();
         this.previousState.clear();
@@ -50,6 +73,13 @@ class CellularAutomataSketchClass {
         this.previousState.resizeCanvas(newWorldWidth, this.reactProperties.worldHeight);
     }
 
+    /**
+     * Updates the world height of the sketch.
+     *
+     * This method clears the current and previous states, sets the pause state to 1, updates the shader's resolution uniform, and resizes the canvas of the current and previous states.
+     *
+     * @param {number} newWorldHeight - The new world height.
+     */
     updateWorldHeight(newWorldHeight) {
         this.currentState.clear();
         this.previousState.clear();
@@ -63,8 +93,17 @@ class CellularAutomataSketchClass {
         this.previousState.resizeCanvas(this.reactProperties.worldWidth, newWorldHeight);
     }
 
+    /**
+     * Updates the shader of the sketch.
+     *
+     * This method clears the current and previous states, resets the shader of the current state, 
+     * creates a new shader with the new vertex and fragment shaders, 
+     * sets the shader of the current state to the new shader, and updates the pause and resolution uniforms of the new shader.
+     *
+     * @param {string} newVertexShader - The new vertex shader.
+     * @param {string} newFragmentShader - The new fragment shader.
+     */
     updateShader(newVertexShader, newFragmentShader) {
-
         this.currentState.clear();
         this.previousState.clear();
         this.currentState.resetShader();
@@ -468,7 +507,6 @@ class CellularAutomataSketchClass {
      * @returns None
      */
     mouseDragged() {
-
         // Update the camera's X position
         this.reactProperties.setCameraX((previousCameraX) => {
             if (this.p5.mouseButton === this.p5.CENTER) {

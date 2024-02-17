@@ -1,3 +1,11 @@
+/**
+ * @project Emergent Playground
+ * @file PremadeRulesOptionsTabContainer.jsx
+ * @overview A container component that renders the premade rules options tab.
+ * @authors Kevin Schultz
+ * @exports PremadeRulesOptionsTabContainer
+ */
+
 // Material UI imports
 import Box from '@mui/material/Box';
 
@@ -8,10 +16,12 @@ import gameOfLife from '../shaders/gameOfLife.frag?raw';
 import seeds from '../shaders/seeds.frag?raw';
 
 /**
- * @component
- * @param {Object} props
+ * A container component for the premade rules options tab.
  *
- * @returns {ReactElement} A container component that renders the premade rules options tab.
+ * This component displays a Box that contains two PremadeRuleCard components.
+ * The PremadeRuleCard components are passed the new fragment shader, the name of the premade rule, and the URL of the image to display on the Card.
+ *
+ * @returns {JSX.Element} The PremadeRulesOptionsTabContainer component.
  */
 function PremadeRulesOptionsTabContainer() {
     return (

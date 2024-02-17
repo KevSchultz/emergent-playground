@@ -1,8 +1,9 @@
 /**
- * @file ButtonPanel.jsx renders the side panel of buttons.
- * It is a styled container for children components of buttons.
- * @authors Alex Garza, Kevin Schultz
  * @project Emergent Playground
+ * @file ButtonPanel.jsx 
+ * @overview Renders the side panel of buttons.
+ * @authors Alex Garza, Kevin Schultz
+ * @exports LeftButtonListContainer
  */
 
 // React Imports
@@ -19,13 +20,14 @@ import PlayPauseButton from './PlayPauseButton';
 import P5PropertiesContext from './P5PropertiesContext';
 
 /**
- * ButtonPanel is a functional component that wraps its children with a styled div and Paper component.
+ * A container component for the left button list.
  *
- * @param {Object} props - The properties passed to the component.
- * @param {string} props.className - The CSS class to apply to the outer div.
- * @param {ReactNode} props.children - The child components to be rendered inside the Paper component.
+ * This component displays a list of BrushIconButton components and a PlayPauseButton component inside a Paper component.
+ * The BrushIconButton components are created for each brush type in the listBrushTypes array from the P5PropertiesContext.
+ * The PlayPauseButton component is used to control the pause state.
+ * When the brush type changes, the cursor style is updated to match the current brush type.
  *
- * @returns {ReactElement} The ButtonPanel component.
+ * @returns {JSX.Element} The LeftButtonListContainer component.
  */
 function LeftButtonListContainer() {
     const { brushType, setBrushType, pause, setPause, listBrushTypes, cursorStyles } =

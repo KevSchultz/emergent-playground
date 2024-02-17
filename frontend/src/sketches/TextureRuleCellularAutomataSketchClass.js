@@ -1,5 +1,21 @@
 import CellularAutomataSketchClass from './CellularAutomataSketchClass';
 
+/**
+ * Extends CellularAutomataSketchClass to implement a texture-based rule for cellular automata.
+ * This class introduces the concept of states and neighbors into the cellular automata, allowing for more complex patterns and behaviors.
+ * It randomly generates states and rules for cellular automata, then applies these by passing a texture to the shader.
+ * The class is designed for use with p5.js and integrates seamlessly with React through the ReactP5Wrapper component, allowing for dynamic property updates and interactive sketch manipulation.
+ *
+ * @class TextureRuleCellularAutomataSketchClass
+ * @extends {CellularAutomataSketchClass}
+ * @property {number} numberOfStates - The number of unique states each cell can have.
+ * @property {number} numberOfNeighbors - The number of neighbors considered for each cell's next state.
+ * @property {p5.Graphics} ruleGraphics - A p5.js graphics buffer storing the visualization of the rule set.
+ * @property {p5.Graphics} statesGraphics - A p5.js graphics buffer for visual representation of each state.
+ * @property {Array.<p5.Color>} states - An array of p5.js color objects representing the color of each state.
+ * @constructor
+ * @param {Object} defaultReactProperties - Initial properties for the sketch, typically passed from a React component.
+ */
 export default class TextureRuleCellularAutomataSketchClass extends CellularAutomataSketchClass {
     constructor(defaultReactProperties) {
         super(defaultReactProperties);
@@ -19,11 +35,16 @@ export default class TextureRuleCellularAutomataSketchClass extends CellularAuto
         this.draw = this.draw.bind(this);
     }
 
+    /**
+     * Generates random states for the sketch.
+     *
+     * This method clears the current states array and then fills it with new random colors.
+     * Each color is a p5 color object with random red, green, and blue values and an alpha value of 255.
+     */
     generateRandomStates() {
         this.states = [];
 
         for (let i = 0; i < this.numberOfStates; i++) {
-
             const red = Math.floor(Math.random() * 255);
             const green = Math.floor(Math.random() * 255);
             const blue = Math.floor(Math.random() * 255);
@@ -33,6 +54,12 @@ export default class TextureRuleCellularAutomataSketchClass extends CellularAuto
         }
     }
 
+    /**
+     * Generates random rule graphics for the sketch.
+     *
+     * This method creates a new p5 graphics object with a width equal to the number of states raised to the power of the number of neighbors plus one and a height of one.
+     * It then fills the graphics object with random states.
+     */
     generateRandomRuleGraphics() {
         let width = Math.pow(this.numberOfStates, this.numberOfNeighbors + 1);
 
@@ -47,6 +74,12 @@ export default class TextureRuleCellularAutomataSketchClass extends CellularAuto
         this.ruleGraphics.updatePixels();
     }
 
+    /**
+     * Sets up the state graphics for the sketch.
+     *
+     * This method creates a new p5 graphics object with a width equal to the number of states and a height of one.
+     * It then fills the graphics object with the colors of the states.
+     */
     setupStateGraphics() {
         this.stateGraphics = this.p5.createGraphics(this.numberOfStates, 1);
 
@@ -57,10 +90,19 @@ export default class TextureRuleCellularAutomataSketchClass extends CellularAuto
         this.stateGraphics.updatePixels();
     }
 
+    /**
+     * Sets up the rule graphics for the sketch.
+     *
+     * This method calls the generateRandomRuleGraphics method to create a new rule graphics.
+     */
     setupRuleGraphics() {
         this.generateRandomRuleGraphics();
     }
 
+    /**
+     * Sets up the sketch.
+     *
+     */
     setup() {
         super.setup();
 
@@ -72,14 +114,8 @@ export default class TextureRuleCellularAutomataSketchClass extends CellularAuto
     }
 
     /**
-     * Handles the drawing of the cellular automata sketch with p5.
-     * This includes clearing the sketch, updating the previous state with the current state,
-     * handling mouse interactions, setting shader uniforms, applying the shader to the current state,
-     * scaling the sketch based on zoom level, drawing the current state and overlay graphics to the canvas,
-     * and setting the camera settings.
-     * If the sketch is not set up, the function will return early and do nothing.
+     * Draws the sketch.
      *
-     * @returns None
      */
     draw() {
         // If the sketch is not set up, do nothing
@@ -102,7 +138,6 @@ export default class TextureRuleCellularAutomataSketchClass extends CellularAuto
 
         this.brushDrawOnGraphics(this.previousState, mouseWorldX, mouseWorldY);
 
-        
         this.shader.setUniform('pause', this.reactProperties.pause);
         this.shader.setUniform('previousState', this.previousState);
         this.shader.setUniform('states', this.stateGraphics);

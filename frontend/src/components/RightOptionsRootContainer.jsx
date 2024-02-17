@@ -1,10 +1,12 @@
 /**
- * @file RightOptionsRootContainer.jsx is the component for the right options drawer.
+ * @project Emergent Playground
+ * @file RightOptionsRootContainer.jsx 
+ * @overview The component for the right options drawer.
  * This is the right side box contains the options for the user to change the sketch attributes.
  * However, these options are actually implemented in the various TabContainer components.
  * This file holds the logic to switch between the tabs and the box that contains the tabs.
- * @project Emergent Playground
  * @authors Beckett Avary, Kevin Schultz
+ * @exports RightOptionsRootContainer
  */
 
 // React imports
@@ -25,6 +27,16 @@ import LanguageOptionsTabContainer from './LanguageOptionsTabContainer';
 // Constants
 const TABS = ['Premade Rules', 'Viewer Options', 'Language'];
 
+/**
+ * A container component for the right options root.
+ *
+ * This component displays a Paper that contains a Box with Tabs and conditional rendering of tab containers.
+ * The Tabs are created for each tab label in the TABS array.
+ * The tab containers are rendered based on the current tab index.
+ * The current tab index is updated when a tab is clicked.
+ *
+ * @returns {JSX.Element} The RightOptionsRootContainer component.
+ */
 function RightOptionsRootContainer() {
     const [currentTabIndex, setCurrentTabIndex] = useState(0);
 

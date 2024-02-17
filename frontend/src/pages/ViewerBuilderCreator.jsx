@@ -1,8 +1,10 @@
 /**
- * @file ViewerBuilderCreator.jsx is the container component for the main editor integrated development environment page.
- * This page is where the real magic happens. It includes the P5 canvas, the code editor, and user interface.
- * @author Beckett Avary, Kevin Schultz
  * @project Emergent Playground
+ * @file ViewerBuilderCreator.jsx
+ * @overview The container component for the main editor integrated development environment page.
+ * This page is where the real magic happens. It includes the P5 canvas, the code editor, and user interface.
+ * @authors Beckett Avary, Kevin Schultz
+ * @exports ViewerBuilderCreator
  */
 
 // Custom component imports
@@ -25,8 +27,12 @@ import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
 const cellularAutomataSketch = new TextureRuleCellularAutomataSketchClass(DefaultProperties);
 
 /**
- * @component
- * @returns {ReactElement} A container component that renders the main editor page.
+ * A functional component that renders the Viewer Builder Creator page.
+ *
+ * This component displays a P5PropertiesProvider that contains a P5Background, a TopNavigationBar, and a PanelGroup.
+ * The PanelGroup contains a LeftButtonListContainer, a Panel, a PanelResizeHandle, and a RightOptionsRootContainer.
+ *
+ * @returns {JSX.Element} The ViewerBuilderCreator component.
  */
 function ViewerBuilderCreator() {
     
