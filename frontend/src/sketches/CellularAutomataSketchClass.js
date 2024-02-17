@@ -8,12 +8,12 @@ class CellularAutomataSketchClass {
         this.reactProperties;
         this.defaultReactProperties = defaultReactProperties;
         this.shader;
-        this.video;
         this.isSketchSetup = false;
 
         // Bind 'this' to all functions
         this.updateWorldWidth = this.updateWorldWidth.bind(this);
         this.updateWorldHeight = this.updateWorldHeight.bind(this);
+        this.updateShader = this.updateShader.bind(this);
         this.reactP5WrapperToClassInterface = this.reactP5WrapperToClassInterface.bind(this);
         this.updateReactProperties = this.updateReactProperties.bind(this);
         this.setupMainCanvas = this.setupMainCanvas.bind(this);
@@ -24,7 +24,6 @@ class CellularAutomataSketchClass {
         this.pixelDrawOnGraphics = this.pixelDrawOnGraphics.bind(this);
         this.squareDrawOnGraphics = this.squareDrawOnGraphics.bind(this);
         this.circleDrawOnGraphics = this.circleDrawOnGraphics.bind(this);
-        this.cameraDrawOnGraphics = this.cameraDrawOnGraphics.bind(this);
         this.brushDrawOnGraphics = this.brushDrawOnGraphics.bind(this);
         this.draw = this.draw.bind(this);
         this.drawTexturePlane = this.drawTexturePlane.bind(this);
@@ -64,6 +63,21 @@ class CellularAutomataSketchClass {
         this.previousState.resizeCanvas(this.reactProperties.worldWidth, newWorldHeight);
     }
 
+    updateShader(newVertexShader, newFragmentShader) {
+
+        this.currentState.clear();
+        this.previousState.clear();
+        this.currentState.resetShader();
+        this.shader = null;
+        this.shader = this.p5.createShader(newVertexShader, newFragmentShader);
+        this.currentState.shader(this.shader);
+        this.shader.setUniform('pause', 0);
+        this.shader.setUniform('resolution', [
+            this.reactProperties.worldWidth,
+            this.reactProperties.worldHeight,
+        ]);
+    }
+
     /**
      * Maps the p5.js event handlers to the corresponding class methods.
      * This function is used to integrate the p5.js library and ReactP5Wrapper with the class-based structure of this component.
@@ -80,12 +94,6 @@ class CellularAutomataSketchClass {
         this.p5.mouseDragged = this.mouseDragged;
         this.p5.mousePressed = this.mousePressed;
         this.p5.windowResized = this.windowResized;
-        this.video = this.p5.createCapture(this.p5.VIDEO);
-        this.video.size(
-            this.defaultReactProperties.worldWidth,
-            this.defaultReactProperties.worldHeight
-        );
-        this.video.hide();
     }
 
     /**
@@ -109,6 +117,13 @@ class CellularAutomataSketchClass {
 
         if (oldReactProperties.worldWidth !== newReactProperties.worldWidth) {
             this.updateWorldWidth(newReactProperties.worldWidth);
+        }
+
+        if (
+            oldReactProperties.vertexShader !== newReactProperties.vertexShader ||
+            oldReactProperties.fragmentShader !== newReactProperties.fragmentShader
+        ) {
+            this.updateShader(newReactProperties.vertexShader, newReactProperties.fragmentShader);
         }
     }
 
@@ -254,13 +269,6 @@ class CellularAutomataSketchClass {
         graphicsBuffer.strokeWeight(borderSize);
         graphicsBuffer.noFill();
         graphicsBuffer.ellipse(x, y, size);
-        graphicsBuffer.pop();
-    }
-
-    cameraDrawOnGraphics(graphicsBuffer, x, y, width, height) {
-        graphicsBuffer.push();
-        let capture = this.video.get();
-        graphicsBuffer.image(capture, x, y, width, height);
         graphicsBuffer.pop();
     }
 
@@ -460,7 +468,7 @@ class CellularAutomataSketchClass {
      * @returns None
      */
     mouseDragged() {
-        console.log('mouse dragged');
+
         // Update the camera's X position
         this.reactProperties.setCameraX((previousCameraX) => {
             if (this.p5.mouseButton === this.p5.CENTER) {
