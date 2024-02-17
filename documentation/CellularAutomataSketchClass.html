@@ -1,0 +1,4073 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Class: CellularAutomataSketchClass</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Class: CellularAutomataSketchClass</h1>
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        <h2><span class="attribs"><span class="type-signature"></span></span>CellularAutomataSketchClass<span class="signature">(defaultReactProperties)</span><span class="type-signature"></span></h2>
+        
+            <div class="class-description">CellularAutomataSketchClass</div>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+
+    
+    <h2>Constructor</h2>
+    
+
+    
+    <h4 class="name" id="CellularAutomataSketchClass"><span class="type-signature"></span>new CellularAutomataSketchClass<span class="signature">(defaultReactProperties)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>defaultReactProperties</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Initial properties for the sketch, typically passed from a React component.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>p5</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">p5</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">An instance of the p5 library, used for drawing and event handling.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>currentState</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">p5.Graphics</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">A graphics buffer representing the current state of the automata.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>previousState</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">p5.Graphics</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">A graphics buffer storing the previous state of the automata for calculations.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>reactProperties</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Dynamic properties passed from React, used to control sketch parameters.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>defaultReactProperties</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Default properties for the sketch, set upon instantiation.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>shader</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">p5.Shader</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">A p5.js Shader object for custom rendering effects.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>isSketchSetup</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Flag to check if the initial setup has been completed.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="frontend_src_sketches_CellularAutomataSketchClass.js.html">frontend/src/sketches/CellularAutomataSketchClass.js</a>, <a href="frontend_src_sketches_CellularAutomataSketchClass.js.html#line19">line 19</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="brushDrawOnGraphics"><span class="type-signature"></span>brushDrawOnGraphics<span class="signature">(graphicsBuffer, x, y)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Draws the current brush shape on the given graphics buffer at the specified coordinates.This function checks if brush drawing is active and if the cursor is within the world bounds before drawing.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>graphicsBuffer</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">p5.Graphics</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The p5.js graphics buffer where the brush will draw.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>x</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The x-coordinate on the graphics buffer where the brush starts drawing.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>y</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The y-coordinate on the graphics buffer where the brush starts drawing.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="frontend_src_sketches_CellularAutomataSketchClass.js.html">frontend/src/sketches/CellularAutomataSketchClass.js</a>, <a href="frontend_src_sketches_CellularAutomataSketchClass.js.html#line324">line 324</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    None
+</div>
+
+
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="circleDrawOnGraphics"><span class="type-signature"></span>circleDrawOnGraphics<span class="signature">(graphicsBuffer, x, y, color, size, borderSize)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Draws a circle outline on the given graphics buffer at the specified coordinates.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>graphicsBuffer</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">p5.Graphics</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The graphics buffer on which to draw the circle.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>x</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The x-coordinate of the center of the circle.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>y</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The y-coordinate of the center of the circle.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>color</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">p5.Color</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The color of the circle.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>size</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The diameter of the circle.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>borderSize</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The thickness of the circle's border.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="frontend_src_sketches_CellularAutomataSketchClass.js.html">frontend/src/sketches/CellularAutomataSketchClass.js</a>, <a href="frontend_src_sketches_CellularAutomataSketchClass.js.html#line305">line 305</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    None
+</div>
+
+
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="copyGraphicsBufferImageDataToAnotherGraphicsBuffer"><span class="type-signature"></span>copyGraphicsBufferImageDataToAnotherGraphicsBuffer<span class="signature">(source, destination, x, y)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Copies the image data from one graphics buffer to another at the specified coordinates.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>source</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">p5.Graphics</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The graphics buffer from which to copy the image data.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>destination</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">p5.Graphics</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The graphics buffer to which to copy the image data.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>x</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The x-coordinate at which to start copying the image data.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>y</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The y-coordinate at which to start copying the image data.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="frontend_src_sketches_CellularAutomataSketchClass.js.html">frontend/src/sketches/CellularAutomataSketchClass.js</a>, <a href="frontend_src_sketches_CellularAutomataSketchClass.js.html#line381">line 381</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="cursorIsOnWorld"><span class="type-signature"></span>cursorIsOnWorld<span class="signature">()</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Checks if the cursor is on the world (i.e., within the bounds of the cellular automata plane).This function first converts the screen coordinates to world coordinates,then checks if the world coordinates are not null to determine if the cursor is on the world.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="frontend_src_sketches_CellularAutomataSketchClass.js.html">frontend/src/sketches/CellularAutomataSketchClass.js</a>, <a href="frontend_src_sketches_CellularAutomataSketchClass.js.html#line640">line 640</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    true if the cursor is on the world, false otherwise.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">boolean</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="draw"><span class="type-signature"></span>draw<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Handles the drawing of the cellular automata sketch with p5.This includes clearing the sketch, updating the previous state with the current state,handling mouse interactions, setting shader uniforms, applying the shader to the current state,scaling the sketch based on zoom level, drawing the current state and overlay graphics to the canvas,and setting the camera settings.If the sketch is not set up, the function will return early and do nothing.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="frontend_src_sketches_CellularAutomataSketchClass.js.html">frontend/src/sketches/CellularAutomataSketchClass.js</a>, <a href="frontend_src_sketches_CellularAutomataSketchClass.js.html#line395">line 395</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    None
+</div>
+
+
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="drawTexturePlane"><span class="type-signature"></span>drawTexturePlane<span class="signature">(texture, width, height)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Draws a texture plane with the specified texture, width, and height.The texture filtering is set to nearest instead of linear, which prevents smoothing on the texture.This is done by reaching into the internals of the p5.js library, which is not documented in the p5.js reference.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>texture</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">p5.Texture</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The texture to apply to the plane.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>width</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The width of the plane.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>height</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The height of the plane.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="frontend_src_sketches_CellularAutomataSketchClass.js.html">frontend/src/sketches/CellularAutomataSketchClass.js</a>, <a href="frontend_src_sketches_CellularAutomataSketchClass.js.html#line460">line 460</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="isBrushDrawingActive"><span class="type-signature"></span>isBrushDrawingActive<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Checks if the brush is currently drawing.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="frontend_src_sketches_CellularAutomataSketchClass.js.html">frontend/src/sketches/CellularAutomataSketchClass.js</a>, <a href="frontend_src_sketches_CellularAutomataSketchClass.js.html#line253">line 253</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Boolean - True if the brush is drawing, false otherwise.
+</div>
+
+
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="mouseDragged"><span class="type-signature"></span>mouseDragged<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Handles the mouse dragged event to pan the camera over the sketch.The camera's X and Y positions are updated based on the mouse's X and Y positions.The new camera positions are calculated by subtracting the difference between the current and previous mouse position from the current mouse position.The camera is only moved if the center mouse button is pressed.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="frontend_src_sketches_CellularAutomataSketchClass.js.html">frontend/src/sketches/CellularAutomataSketchClass.js</a>, <a href="frontend_src_sketches_CellularAutomataSketchClass.js.html#line509">line 509</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    None
+</div>
+
+
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="mousePressed"><span class="type-signature"></span>mousePressed<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Handles the mouse pressed event.The previous mouse X and Y positions are updated with the current mouse X and Y positions.If the cursor is on the world (i.e., within the bounds of the sketch), the sketch is paused to allow for drawing in draw function.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="frontend_src_sketches_CellularAutomataSketchClass.js.html">frontend/src/sketches/CellularAutomataSketchClass.js</a>, <a href="frontend_src_sketches_CellularAutomataSketchClass.js.html#line538">line 538</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    None
+</div>
+
+
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="mouseWheel"><span class="type-signature"></span>mouseWheel<span class="signature">(event)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Handles the mouse wheel event for zooming in and out of the sketch.The zoom level is updated based on the delta of the mouse wheel event and the zoom sensitivity.The new zoom level is constrained between the minimum and maximum zoom levels.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>event</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The mouse wheel event.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="frontend_src_sketches_CellularAutomataSketchClass.js.html">frontend/src/sketches/CellularAutomataSketchClass.js</a>, <a href="frontend_src_sketches_CellularAutomataSketchClass.js.html#line489">line 489</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    None
+</div>
+
+
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="pixelDrawOnGraphics"><span class="type-signature"></span>pixelDrawOnGraphics<span class="signature">(graphicsBuffer, x, y, color)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Draws a pixel on the given graphics buffer at the specified coordinates.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>graphicsBuffer</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">p5.Graphics</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The graphics buffer on which to draw the pixel.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>x</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The x-coordinate of the pixel.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>y</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The y-coordinate of the pixel.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>color</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">p5.Color</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The color of the pixel.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="frontend_src_sketches_CellularAutomataSketchClass.js.html">frontend/src/sketches/CellularAutomataSketchClass.js</a>, <a href="frontend_src_sketches_CellularAutomataSketchClass.js.html#line267">line 267</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    None
+</div>
+
+
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="reactP5WrapperToClassInterface"><span class="type-signature"></span>reactP5WrapperToClassInterface<span class="signature">(p5)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Maps the p5.js event handlers to the corresponding class methods.This function is used to integrate the p5.js library and ReactP5Wrapper with the class-based structure of this component.It assigns the class methods to the p5.js event handlers, allowing the class to handle these events.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>p5</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The p5 instance associated with the sketch.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="frontend_src_sketches_CellularAutomataSketchClass.js.html">frontend/src/sketches/CellularAutomataSketchClass.js</a>, <a href="frontend_src_sketches_CellularAutomataSketchClass.js.html#line127">line 127</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="screenToWorldP52DCoordinates"><span class="type-signature"></span>screenToWorldP52DCoordinates<span class="signature">(screenX, screenY)</span><span class="type-signature"> &rarr; {object}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Converts screen coordinates to world coordinates inside the cellular automata in a p5.js 2D context.This function takes into account the current scaleOffset, zoom, and camera position.If the screen coordinates are outside the world boundaries, it returns null for the world coordinates.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>screenX</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The X coordinate on the screen.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>screenY</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The Y coordinate on the screen.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="frontend_src_sketches_CellularAutomataSketchClass.js.html">frontend/src/sketches/CellularAutomataSketchClass.js</a>, <a href="frontend_src_sketches_CellularAutomataSketchClass.js.html#line564">line 564</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    An object with the world X and Y coordinates, or null if the screen coordinates are outside the world boundaries.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">object</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="screenToWorldP5WebGlCoordinates"><span class="type-signature"></span>screenToWorldP5WebGlCoordinates<span class="signature">(screenX, screenY)</span><span class="type-signature"> &rarr; {object}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Converts screen coordinates to world coordinates in a p5.js WebGL context.This function first converts the screen coordinates to p5.js 2D world coordinates,then adjusts them for the WebGL context by subtracting half the world width and height.If the screen coordinates are outside the world boundaries, it returns null for the world coordinates.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>screenX</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The X coordinate on the screen.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>screenY</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The Y coordinate on the screen.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="frontend_src_sketches_CellularAutomataSketchClass.js.html">frontend/src/sketches/CellularAutomataSketchClass.js</a>, <a href="frontend_src_sketches_CellularAutomataSketchClass.js.html#line626">line 626</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    An object with the world X and Y coordinates in the WebGL context, or null if the screen coordinates are outside the world boundaries.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">object</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="setup"><span class="type-signature"></span>setup<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Sets up the cellular automata sketch with the necessary react properties.Once setup is complete, the `isSketchSetup` flag is set to true.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="frontend_src_sketches_CellularAutomataSketchClass.js.html">frontend/src/sketches/CellularAutomataSketchClass.js</a>, <a href="frontend_src_sketches_CellularAutomataSketchClass.js.html#line220">line 220</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    None
+</div>
+
+
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="setupCurrentStateGraphicsBuffer"><span class="type-signature"></span>setupCurrentStateGraphicsBuffer<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Sets up the current state graphics buffer which is eventually drawn as a texture to a plane in the main canvas.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="frontend_src_sketches_CellularAutomataSketchClass.js.html">frontend/src/sketches/CellularAutomataSketchClass.js</a>, <a href="frontend_src_sketches_CellularAutomataSketchClass.js.html#line183">line 183</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    None
+</div>
+
+
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="setupMainCanvas"><span class="type-signature"></span>setupMainCanvas<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Sets up the main webgl canvas for p5.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="frontend_src_sketches_CellularAutomataSketchClass.js.html">frontend/src/sketches/CellularAutomataSketchClass.js</a>, <a href="frontend_src_sketches_CellularAutomataSketchClass.js.html#line173">line 173</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    None
+</div>
+
+
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="setupPreviousStateGraphicsBuffer"><span class="type-signature"></span>setupPreviousStateGraphicsBuffer<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Sets up the previous state graphics buffer which will be drawn on and feed into the shader as a texture.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="frontend_src_sketches_CellularAutomataSketchClass.js.html">frontend/src/sketches/CellularAutomataSketchClass.js</a>, <a href="frontend_src_sketches_CellularAutomataSketchClass.js.html#line197">line 197</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    None
+</div>
+
+
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="setupShader"><span class="type-signature"></span>setupShader<span class="signature">(vertexShader, fragmentShader)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Sets up a shader using the provided vertex and fragment shaders.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>vertexShader</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The GLSL source code for the vertex shader.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>fragmentShader</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The GLSL source code for the fragment shader.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="frontend_src_sketches_CellularAutomataSketchClass.js.html">frontend/src/sketches/CellularAutomataSketchClass.js</a>, <a href="frontend_src_sketches_CellularAutomataSketchClass.js.html#line211">line 211</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="squareDrawOnGraphics"><span class="type-signature"></span>squareDrawOnGraphics<span class="signature">(graphicsBuffer, x, y, color, size)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Draws a square outline on the given graphics buffer at the specified coordinates for the top left of the square.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>graphicsBuffer</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">p5.Graphics</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The graphics buffer on which to draw the square.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>x</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The x-coordinate of the top-left corner of the square.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>y</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The y-coordinate of the top-left corner of the square.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>color</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">p5.Color</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The color of the square.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>size</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The size of the square.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="frontend_src_sketches_CellularAutomataSketchClass.js.html">frontend/src/sketches/CellularAutomataSketchClass.js</a>, <a href="frontend_src_sketches_CellularAutomataSketchClass.js.html#line284">line 284</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    None
+</div>
+
+
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="updateReactProperties"><span class="type-signature"></span>updateReactProperties<span class="signature">(newReactProperties)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Updates the sketch attributes with the provided properties.These properties are passed from the ReactP5Wrapper in ViewerBuilderCreator.jsx using the @p5-wrapper/react library.This function must be called before the sketch is created.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>newReactProperties</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The properties to update the sketch with.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="frontend_src_sketches_CellularAutomataSketchClass.js.html">frontend/src/sketches/CellularAutomataSketchClass.js</a>, <a href="frontend_src_sketches_CellularAutomataSketchClass.js.html#line145">line 145</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="updateShader"><span class="type-signature"></span>updateShader<span class="signature">(newVertexShader, newFragmentShader)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Updates the shader of the sketch.This method clears the current and previous states, resets the shader of the current state, creates a new shader with the new vertex and fragment shaders, sets the shader of the current state to the new shader, and updates the pause and resolution uniforms of the new shader.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>newVertexShader</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The new vertex shader.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>newFragmentShader</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The new fragment shader.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="frontend_src_sketches_CellularAutomataSketchClass.js.html">frontend/src/sketches/CellularAutomataSketchClass.js</a>, <a href="frontend_src_sketches_CellularAutomataSketchClass.js.html#line106">line 106</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="updateWorldHeight"><span class="type-signature"></span>updateWorldHeight<span class="signature">(newWorldHeight)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Updates the world height of the sketch.This method clears the current and previous states, sets the pause state to 1, updates the shader's resolution uniform, and resizes the canvas of the current and previous states.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>newWorldHeight</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The new world height.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="frontend_src_sketches_CellularAutomataSketchClass.js.html">frontend/src/sketches/CellularAutomataSketchClass.js</a>, <a href="frontend_src_sketches_CellularAutomataSketchClass.js.html#line83">line 83</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="updateWorldWidth"><span class="type-signature"></span>updateWorldWidth<span class="signature">(newWorldWidth)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Updates the world width of the sketch.This method clears the current and previous states, sets the pause state to 1, updates the shader's resolution uniform, and resizes the canvas of the current and previous states.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>newWorldWidth</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The new world width.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="frontend_src_sketches_CellularAutomataSketchClass.js.html">frontend/src/sketches/CellularAutomataSketchClass.js</a>, <a href="frontend_src_sketches_CellularAutomataSketchClass.js.html#line63">line 63</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="windowResized"><span class="type-signature"></span>windowResized<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Handles the window resized event.The canvas is resized to match the new window width and height.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="frontend_src_sketches_CellularAutomataSketchClass.js.html">frontend/src/sketches/CellularAutomataSketchClass.js</a>, <a href="frontend_src_sketches_CellularAutomataSketchClass.js.html#line551">line 551</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="frontend_src_components_BrushIconButton.module_jsx.html">frontend/src/components/BrushIconButton.jsx</a></li><li><a href="frontend_src_components_DefaultProperties.module_jsx.html">frontend/src/components/DefaultProperties.jsx</a></li><li><a href="frontend_src_components_InputSlider.module_jsx.html">frontend/src/components/InputSlider.jsx</a></li><li><a href="frontend_src_components_LanguageOptionsTabContainer.module_jsx.html">frontend/src/components/LanguageOptionsTabContainer.jsx</a></li><li><a href="frontend_src_components_LeftButtonListContainer.module_jsx.html">frontend/src/components/LeftButtonListContainer.jsx</a></li><li><a href="frontend_src_components_P5Background.module_jsx.html">frontend/src/components/P5Background.jsx</a></li><li><a href="frontend_src_components_P5PropertiesContext.module_jsx.html">frontend/src/components/P5PropertiesContext.jsx</a></li><li><a href="frontend_src_components_PlayPauseButton.module_jsx.html">frontend/src/components/PlayPauseButton.jsx</a></li><li><a href="frontend_src_components_PremadeRuleCard.module_jsx.html">frontend/src/components/PremadeRuleCard.jsx</a></li><li><a href="frontend_src_components_PremadeRulesOptionsTabContainer.module_jsx.html">frontend/src/components/PremadeRulesOptionsTabContainer.jsx</a></li><li><a href="frontend_src_components_RightOptionsRootContainer.module_jsx.html">frontend/src/components/RightOptionsRootContainer.jsx</a></li><li><a href="frontend_src_components_TopNavigationBar.module_jsx.html">frontend/src/components/TopNavigationBar.jsx</a></li><li><a href="frontend_src_components_ViewerOptionsTabContainer.module_jsx.html">frontend/src/components/ViewerOptionsTabContainer.jsx</a></li><li><a href="frontend_src_pages_About.module_jsx.html">frontend/src/pages/About.jsx</a></li><li><a href="frontend_src_pages_Community.module_jsx.html">frontend/src/pages/Community.jsx</a></li><li><a href="frontend_src_pages_Login.module_jsx.html">frontend/src/pages/Login.jsx</a></li><li><a href="frontend_src_pages_Signup.module_jsx.html">frontend/src/pages/Signup.jsx</a></li><li><a href="frontend_src_pages_ViewerBuilderCreator.module_jsx.html">frontend/src/pages/ViewerBuilderCreator.jsx</a></li><li><a href="frontend_src_pages_Welcome.module_jsx.html">frontend/src/pages/Welcome.jsx</a></li></ul><h3>Classes</h3><ul><li><a href="CellularAutomataSketchClass.html">CellularAutomataSketchClass</a></li><li><a href="TextureRuleCellularAutomataSketchClass.html">TextureRuleCellularAutomataSketchClass</a></li></ul><h3>Global</h3><ul><li><a href="global.html#connectToDatabase">connectToDatabase</a></li><li><a href="global.html#createAccount">createAccount</a></li><li><a href="global.html#deletePost">deletePost</a></li><li><a href="global.html#getCurrentTimestamp">getCurrentTimestamp</a></li><li><a href="global.html#getPostInfo">getPostInfo</a></li><li><a href="global.html#getPostsByLeastViews">getPostsByLeastViews</a></li><li><a href="global.html#getPostsByMostViews">getPostsByMostViews</a></li><li><a href="global.html#getPostsByNewest">getPostsByNewest</a></li><li><a href="global.html#getPostsByOldest">getPostsByOldest</a></li><li><a href="global.html#getPostsByUser">getPostsByUser</a></li><li><a href="global.html#getRandomInt">getRandomInt</a></li><li><a href="global.html#getTimestampThreeHoursAhead">getTimestampThreeHoursAhead</a></li><li><a href="global.html#hidePost">hidePost</a></li><li><a href="global.html#logIn">logIn</a></li><li><a href="global.html#logOut">logOut</a></li><li><a href="global.html#makePost">makePost</a></li><li><a href="global.html#unhidePost">unhidePost</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Fri Feb 16 2024 23:57:50 GMT-0800 (Pacific Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
