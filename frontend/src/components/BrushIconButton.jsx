@@ -1,39 +1,35 @@
 /**
+ * @project Emergent Playground
  * @file BrushIconButton.jsx
  * @overview This component is a button that changes the brush type in the editor.
- * @project Emergent Playground
  * @authors Kevin Schultz, Preston Nguyen
+ * @exports BrushIconButton
  */
-
-// React Imports
-import { useEffect } from 'react';
 
 // Material UI Imports
 import IconButton from '@mui/material/IconButton';
 
 // Other imports
 import PropTypes from 'prop-types';
-import DefaultProperties from '../sketches/DefaultProperties';
-
+import DefaultProperties from './DefaultProperties';
 
 /**
- * @component
- * @param {Object} props
- * @returns {ReactElement} A button that changes the brush type in the editor.
+ * A button component for selecting a brush type.
+ *
+ * This component displays an icon button with a brush icon.
+ * The color of the icon changes based on whether the brush type of the button matches the current brush type.
+ * When the button is clicked, the current brush type is updated to the brush type of the button.
+ *
+ * @param {Object} props - The properties passed to the component.
+ * @param {string} props.buttonBrushType - The brush type of the button.
+ * @param {string} props.currentBrushType - The current brush type.
+ * @param {Function} props.setCurrentBrushType - The function to update the current brush type.
+ * 
+ * @returns {JSX.Element} The BrushIconButton component.
  */
 function BrushIconButton({ buttonBrushType, currentBrushType, setCurrentBrushType }) {
 
     const brushIcons = DefaultProperties.brushIcons;
-    const cursorStyles = DefaultProperties.cursorStyles;
-
-
-    // Set the cursor to the current brush type when the brush type changes
-    useEffect(() => {
-
-        console.log(cursorStyles[currentBrushType]);
-
-        document.body.style.cursor = cursorStyles[currentBrushType];
-    }, [currentBrushType, cursorStyles]);
 
     // Get the color of the button based on the current brush type
     function getColor() {

@@ -1,26 +1,25 @@
 /**
- * @file NavBar.jsx renders the top bar.
- * @author Kevin Schultz
  * @project Emergent Playground
+ * @file NavBar.jsx
+ * @overview This component renders a top navigation bar.
+ * @authors Kevin Schultz
+ * @exports TopNavigationBar
  */
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import Avatar from '@mui/material/Avatar';
-import PropTypes from 'prop-types';
-import { Paper } from '@mui/material';
+import Link from '@mui/material/Link';
+import Paper from '@mui/material/Paper';
 
 /**
- * NavBar is a functional component that wraps its children with a Box and AppBar component.
+ * A functional component that renders a top navigation bar.
  *
- * @param {Object} props - The properties passed to the component.
- * @param {ReactNode} props.children - The child components to be rendered inside the AppBar component.
- * @param {function} props.onMouseEnter - The function to be called when the mouse enters the Box component.
- * @param {function} props.onMouseLeave - The function to be called when the mouse leaves the Box component.
+ * This component displays a Paper component that contains a Typography component and a Box component.
+ * The Typography component displays the title of the application.
+ * The Box component contains a Link component that navigates to the community page.
  *
- * @returns {ReactElement} The NavBar component.
+ * @returns {JSX.Element} The TopNavigationBar component.
  */
-function NavBar() {
+function TopNavigationBar() {
     return (
         <Paper
             elevation={0}
@@ -47,19 +46,12 @@ function NavBar() {
                     justifyContent: 'flex-end',
                 }}
             >
-                <Button
-                    sx={{ height: '4vh', fontSize: 'calc(min(1.5vw, 1.5vh))' }}
-                    variant="contained"
-                >
+                <Link>
                     Community
-                </Button>
-                <Avatar sx={{ height: '4vh', width: '4vh' }}>K</Avatar>
+                </Link>
             </Box>
         </Paper>
     );
 }
 
-// This is a type check for the props of the component
-NavBar.propTypes = {};
-
-export default NavBar;
+export default TopNavigationBar;

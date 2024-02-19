@@ -1,35 +1,45 @@
 /**
- * @file ButtonPanel.jsx renders the side panel of buttons.
- * It is a styled container for children components of buttons.
- * @authors Alex Garza, Kevin Schultz
  * @project Emergent Playground
+ * @file ButtonPanel.jsx 
+ * @overview Renders the side panel of buttons.
+ * @authors Alex Garza, Kevin Schultz
+ * @exports LeftButtonListContainer
  */
+
+// React Imports
+import { useEffect } from 'react';
+import { useContext } from 'react';
 
 // Material UI Imports
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
-import PropTypes from 'prop-types';
 
 // Custom Component Imports
 import BrushIconButton from './BrushIconButton';
-import DefaultProperties from '../sketches/DefaultProperties';
 import PlayPauseButton from './PlayPauseButton';
+import P5PropertiesContext from './P5PropertiesContext';
 
 /**
- * ButtonPanel is a functional component that wraps its children with a styled div and Paper component.
+ * A container component for the left button list.
  *
- * @param {Object} props - The properties passed to the component.
- * @param {string} props.className - The CSS class to apply to the outer div.
- * @param {ReactNode} props.children - The child components to be rendered inside the Paper component.
+ * This component displays a list of BrushIconButton components and a PlayPauseButton component inside a Paper component.
+ * The BrushIconButton components are created for each brush type in the listBrushTypes array from the P5PropertiesContext.
+ * The PlayPauseButton component is used to control the pause state.
+ * When the brush type changes, the cursor style is updated to match the current brush type.
  *
- * @returns {ReactElement} The ButtonPanel component.
+ * @returns {JSX.Element} The LeftButtonListContainer component.
  */
-function LeftButtonListContainer({ className, brushType, setBrushType, pause, setPause}) {
-    const defaultListBrushTypes = DefaultProperties.listBrushTypes;
+function LeftButtonListContainer() {
+    const { brushType, setBrushType, pause, setPause, listBrushTypes, cursorStyles } =
+        useContext(P5PropertiesContext);
+
+    // Set the cursor to the current brush type when the brush type changes
+    useEffect(() => {
+        document.body.style.cursor = cursorStyles[brushType];
+    }, [brushType, cursorStyles]);
 
     return (
         <Paper
-            className={className}
             elevation={0}
             sx={{
                 display: 'flex',
@@ -51,11 +61,10 @@ function LeftButtonListContainer({ className, brushType, setBrushType, pause, se
                     width: '100%',
                 }}
             >
-
-                <PlayPauseButton pause={pause} setPause={setPause}/>
+                <PlayPauseButton pause={pause} setPause={setPause} />
 
                 {/* Create the button list from all the types */}
-                {defaultListBrushTypes.map((buttonBrushType) => (
+                {listBrushTypes.map((buttonBrushType) => (
                     <BrushIconButton
                         key={buttonBrushType}
                         buttonBrushType={buttonBrushType}
@@ -67,12 +76,5 @@ function LeftButtonListContainer({ className, brushType, setBrushType, pause, se
         </Paper>
     );
 }
-
-// This is a type check for the props of the component
-LeftButtonListContainer.propTypes = {
-    className: PropTypes.string, // needed for styling purposes with material ui
-    brushType: PropTypes.string.isRequired,
-    setBrushType: PropTypes.func.isRequired,
-};
 
 export default LeftButtonListContainer;

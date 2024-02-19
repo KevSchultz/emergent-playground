@@ -1,9 +1,12 @@
 /**
- * @file InputSlider.jsx renders a material ui slider input component with a label and input field.
- * It is a modified version of the InputSlider component from the Material-UI documentation. The original code can be found at https://mui.com/components/slider/
- * @author Kevin Schultz
  * @project Emergent Playground
+ * @file InputSlider.jsx 
+ * @overview Renders a Material-UI slider input component with a label and input field.
+ * It is a modified version of the InputSlider component from the Material-UI documentation. The original code can be found at https://mui.com/components/slider/
+ * @authors Kevin Schultz
+ * @exports InputSlider
  */
+
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
@@ -25,6 +28,8 @@ import PropTypes from 'prop-types';
  * @param {number} props.stepValue - The step size of the slider.
  * @param {number} props.value - The value of the slider (controlled component).
  * @param {Function} props.setValue - The function to call when the slider's value changes.
+ * 
+ * @returns {JSX.Element} The InputSlider component.
  */
 function InputSlider({
     className,

@@ -1,55 +1,73 @@
 /**
+ * @project Emergent Playground
  * @file ViewerOptionsTabContainer.jsx
  * @overview This file contains the container component for the viewer options tab.
- * @project Emergent Playground
  * @authors Beckett Avary, Kevin Schultz
  * @exports ViewerOptionsTabContainer
  */
+
+// React Imports
+import { useContext } from 'react';
 
 // Material UI Imports
 import Box from '@mui/material/Box';
 
 // Custom Component Imports
 import InputSlider from './InputSlider';
+import P5PropertiesContext from './P5PropertiesContext';
 
-// Other Imports
-import PropTypes from 'prop-types';
 
 /**
- * @component
+ * A container component for the viewer options tab.
  *
- * @returns
+ * This component displays a Box that contains four InputSlider components.
+ * The InputSlider components are used to control the zoom level, world width, world height, and brush size.
+ * The current values and the functions to update these values are retrieved from the P5PropertiesContext.
+ *
+ * @returns {JSX.Element} The ViewerOptionsTabContainer component.
  */
-function ViewerOptionsTabContainer({
-    zoom,
-    worldWidth,
-    brushSize,
-    setZoom,
-    setWorldWidth,
-    setBrushSize,
-}) {
+function ViewerOptionsTabContainer() {
+    const {
+        zoom,
+        setZoom,
+        worldWidth,
+        setWorldWidth,
+        worldHeight,
+        setWorldHeight,
+        brushSize,
+        setBrushSize,
+    } = useContext(P5PropertiesContext);
+
     return (
         <Box sx={{ width: '100%' }}>
             <InputSlider
                 label="Zoom"
-                min={0}
-                max={100}
+                minValue={0}
+                maxValue={100}
                 stepValue={1}
                 value={zoom}
                 setValue={setZoom}
             />
             <InputSlider
                 label="World Width"
-                min={0}
-                max={100}
+                minValue={1}
+                maxValue={6000}
                 stepValue={1}
                 value={worldWidth}
                 setValue={setWorldWidth}
             />
             <InputSlider
+                label="World Height"
+                minValue={1}
+                maxValue={6000}
+                stepValue={1}
+                value={worldHeight}
+                setValue={setWorldHeight}
+            />
+            <InputSlider
                 label="Brush Size"
-                min={1}
-                max={500}
+                minValue={1}
+                maxValue={4000}
                 stepValue={1}
                 value={brushSize}
                 setValue={setBrushSize}
@@ -57,14 +75,5 @@ function ViewerOptionsTabContainer({
         </Box>
     );
 }
-
-ViewerOptionsTabContainer.propTypes = {
-    zoom: PropTypes.number.isRequired,
-    worldWidth: PropTypes.number.isRequired,
-    brushSize: PropTypes.number.isRequired,
-    setZoom: PropTypes.func.isRequired,
-    setWorldWidth: PropTypes.func.isRequired,
-    setBrushSize: PropTypes.func.isRequired,
-};
 
 export default ViewerOptionsTabContainer;

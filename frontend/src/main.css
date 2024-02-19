@@ -13,7 +13,7 @@
     font-family: 'IBM Plex Mono', monospace !important;
 } */
 body {
-background: linear-gradient(109.6deg, rgb(36, 45, 57) 11.2%, rgb(16, 37, 60) 51.2%, rgb(0, 0, 0) 98.6%);
+    background: linear-gradient(109.6deg, rgb(36, 45, 57) 11.2%, rgb(16, 37, 60) 51.2%, rgb(0, 0, 0) 98.6%);
 }
 
 /* .MuiButton-root {
@@ -22,7 +22,7 @@ background: linear-gradient(109.6deg, rgb(36, 45, 57) 11.2%, rgb(16, 37, 60) 51.
 } */
 
 .MuiTypography-root {
-    font-family: 'Pixelify Sans', monospace !important;
+    /* font-family: 'Pixelify Sans', monospace !important; */
 }
 
 .MuiPaper-root {
