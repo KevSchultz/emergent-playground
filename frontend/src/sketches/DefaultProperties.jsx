@@ -5,7 +5,7 @@
  * @author Kevin Schultz
  */
 import vertexShader from '../shaders/basic.vert?raw';
-import fragmentShader from '../shaders/cellularAutomata.frag?raw';
+import fragmentShader from '../shaders/gol.frag?raw';
 import SquareIcon from '@mui/icons-material/Square';
 import CropSquareIcon from '@mui/icons-material/CropSquare';
 import CircleIcon from '@mui/icons-material/RadioButtonUnchecked';

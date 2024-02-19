@@ -9,6 +9,7 @@ out vec4 out_col;
 
 uniform sampler2D tex;
 uniform vec2 normalRes;
+uniform float pause;
 
 //CONSTS
 
@@ -30,11 +31,9 @@ void main(){
     vec4 curr = texture(tex, uv);
 
     uint col;
-    for(float i = -1.0; i < 2.0; i++){
-        for(float j = -1.0; j < 2.0; j++){
-            if(i == 0.0 && j == 0.0){
-                continue;
-            }
+//RANGE
+//INCLUDE_SELF
+//NEIGHBORHOOD
             float x = uv.x + i * normalRes.x;
             float y = uv.y + j * normalRes.y;
 
@@ -48,6 +47,10 @@ void main(){
     vec4 cell;
 
 //RULES
+
+    if(pause == 1.0){
+        cell = curr;
+    }
 
     out_col = cell;
 }
