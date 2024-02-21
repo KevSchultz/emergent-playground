@@ -62,6 +62,7 @@ export function P5PropertiesProvider({ children }) {
     const [langTupleList, setLangTupleList] = useState(DefaultProperties.langTupleList);
     const [langIncludeSelf, setLangIncludeSelf] = useState(DefaultProperties.langIncludeSelf);
     const [langRange, setLangRange] = useState(DefaultProperties.langRange);
+    const [backgroundColor, setBackgroundColor] = useState(DefaultProperties.backgroundColor);
 
     const value = {
         worldWidth,
@@ -119,7 +120,9 @@ export function P5PropertiesProvider({ children }) {
         langIncludeSelf,
         setLangIncludeSelf,
         langRange,
-        setLangRange
+        setLangRange,
+        backgroundColor,
+        setBackgroundColor
     };
 
     return <P5PropertiesContext.Provider value={value}>{children}</P5PropertiesContext.Provider>;

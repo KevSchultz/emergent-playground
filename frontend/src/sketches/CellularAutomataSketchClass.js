@@ -30,6 +30,7 @@ class CellularAutomataSketchClass {
         this.updateWorldWidth = this.updateWorldWidth.bind(this);
         this.updateWorldHeight = this.updateWorldHeight.bind(this);
         this.updateShader = this.updateShader.bind(this);
+        this.updateBackgroundColor = this.updateBackgroundColor.bind(this);
         this.reactP5WrapperToClassInterface = this.reactP5WrapperToClassInterface.bind(this);
         this.updateReactProperties = this.updateReactProperties.bind(this);
         this.setupMainCanvas = this.setupMainCanvas.bind(this);
@@ -118,6 +119,20 @@ class CellularAutomataSketchClass {
     }
 
     /**
+     * Updates the 'default CA state' color according to a given value.
+     * Sets the background attribute of the texture's currentState and previousState.
+     *
+     * @param {string} newBackgroundColor - The new background color in hex format.
+     */
+
+    updateBackgroundColor(newBackgroundColor){
+        this.currentState.clear();
+        this.previousState.clear();
+        this.currentState.background(newBackgroundColor);
+        this.previousState.background(newBackgroundColor);
+    }
+
+    /**
      * Maps the p5.js event handlers to the corresponding class methods.
      * This function is used to integrate the p5.js library and ReactP5Wrapper with the class-based structure of this component.
      * It assigns the class methods to the p5.js event handlers, allowing the class to handle these events.
@@ -163,6 +178,10 @@ class CellularAutomataSketchClass {
             oldReactProperties.fragmentShader !== newReactProperties.fragmentShader
         ) {
             this.updateShader(newReactProperties.vertexShader, newReactProperties.fragmentShader);
+        }
+
+        if (oldReactProperties.backgroundColor !== newReactProperties.backgroundColor) {
+            this.updateBackgroundColor(newReactProperties.backgroundColor);
         }
     }
 

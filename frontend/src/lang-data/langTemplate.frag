@@ -27,7 +27,7 @@ void main(){
     vec2 uv = vTexCoord;
     uv.y = 1.0 - uv.y;
 
-    const vec2 offset = vec2(1.0/resolution.x, 1.0/resolution.y);
+    vec2 offset = vec2(1.0/resolution.x, 1.0/resolution.y);
 
 //BUCKETS
 

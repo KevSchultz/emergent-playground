@@ -24,6 +24,7 @@ import { HexColorPicker } from 'react-colorful';
 import LanguageStateItem from './LanguageStateItem';
 import langCompiler from '../lang-data/langCompiler';
 import LanguageOptionsDropdown from './LanguageOptionsDropdown';
+import langVert from '../lang-data/lang.vert?raw';
 
 /**
  * A container component for that shows on the language options tab.
@@ -36,7 +37,6 @@ import LanguageOptionsDropdown from './LanguageOptionsDropdown';
  * @returns {JSX.Element} The LanguageOptionsTabContainer component.
  */
 
-//TODO: UI for include_self, range, neighborhood
 //TODO: syntax highlighting & autocomplete for language in AceEditor
 function LanguageOptionsTabContainer() {
 
@@ -48,10 +48,13 @@ function LanguageOptionsTabContainer() {
         langTupleList,
         setLangTupleList,
         langIncludeSelf,
-        langRange
+        langRange,
+        setFragmentShader,
+        setVertexShader
     } = useContext(P5PropertiesContext);
 
     const [openError, setOpenError] = useState(false);
+    const [alertMessage, setAlertMessage] = useState('');
     const [contSize, setContSize] = useState(0);
     const contRef = useRef(null);
 
@@ -84,6 +87,7 @@ function LanguageOptionsTabContainer() {
     const handleAddColor = () => {
         if(langTupleList.some(s => s.color === currentLangColor)){
             setOpenError(true);
+            setAlertMessage('Color already in use.');
         } else {
             setLangTupleList([...langTupleList, {color: currentLangColor, name: ''}]);
         }
@@ -98,9 +102,18 @@ function LanguageOptionsTabContainer() {
 
     const handleCompile = () => {
         if(code !== ''){
-            console.log(langCompiler(code, langTupleList, langIncludeSelf, langRange, 'moore'));
-        } 
+            const newFrag = langCompiler(code, langTupleList, langIncludeSelf, langRange, 'moore');
+            setFragmentShader(newFrag);
+            setVertexShader(langVert);
+        } else {
+            setOpenError(true);
+            setAlertMessage('Invalid code.');
+        }
     };
+
+    const handleDebug = () => {
+        console.log(langTupleList);
+    }
 
     return (
         <Box ref={contRef}>
@@ -136,6 +149,9 @@ function LanguageOptionsTabContainer() {
                     </Button>
                 </Grid>
             </Grid>
+            <Button onClick={handleDebug}>
+                Debug
+            </Button>
             <Snackbar 
                 open={openError} 
                 autoHideDuration={1500} 
@@ -148,7 +164,7 @@ function LanguageOptionsTabContainer() {
                     variant='outlined'
                     sx={{ width: '100%' }}
                 >
-                    Color already in use.
+                    {alertMessage}
                 </Alert>
             </Snackbar>
             <LanguageOptionsDropdown/>

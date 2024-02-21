@@ -44,10 +44,11 @@ const DefaultProperties = {
     fragmentShader: fragmentShader,
     pause: 0,
     code: '', // for shader lang
-    currentLangColor: '',
+    currentLangColor: '#ffffff',
     langTupleList: [],
     langIncludeSelf: false,
-    langRange: 1
+    langRange: 1,
+    backgroundColor: 0
 };
 
 export default DefaultProperties;

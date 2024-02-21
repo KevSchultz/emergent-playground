@@ -16,15 +16,15 @@ import {P5PropertiesProvider} from '../components/P5PropertiesContext';
 import DefaultProperties from '../components/DefaultProperties';
 
 // P5.js imports
-// import CellularAutomataSketchClass from '../sketches/CellularAutomataSketchClass';
-import TextureRuleCellularAutomataSketchClass from '../sketches/textureRuleCellularAutomataSketchClass';
+import CellularAutomataSketchClass from '../sketches/CellularAutomataSketchClass';
+// import TextureRuleCellularAutomataSketchClass from '../sketches/textureRuleCellularAutomataSketchClass';
 // import CellularAutomataTextureRuleSketch from '../sketches/CellularAutomataTextureRuleSketch';
 
 // Resizable Panel Imports
 import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
 
-// const cellularAutomataSketch = new CellularAutomataSketchClass(DefaultProperties);
-const cellularAutomataSketch = new TextureRuleCellularAutomataSketchClass(DefaultProperties);
+const cellularAutomataSketch = new CellularAutomataSketchClass(DefaultProperties);
+//const cellularAutomataSketch = new TextureRuleCellularAutomataSketchClass(DefaultProperties);
 
 /**
  * A functional component that renders the Viewer Builder Creator page.

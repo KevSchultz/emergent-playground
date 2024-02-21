@@ -10,7 +10,20 @@
 import { useContext } from 'react';
 
 // Material UI Imports
-import { Accordion, AccordionSummary, Checkbox, FormControlLabel, Grid, Slider, Typography } from '@mui/material';
+import { 
+    Accordion, 
+    AccordionSummary, 
+    Checkbox, 
+    FormControl, 
+    FormControlLabel, 
+    Grid, 
+    InputLabel, 
+    MenuItem, 
+    Select, 
+    Slider, 
+    Typography 
+} from '@mui/material';
+
 import { ExpandMoreOutlined } from '@mui/icons-material';
 
 // Other Imports
@@ -26,8 +39,17 @@ import P5PropertiesContext from './P5PropertiesContext';
  *
  * @returns {JSX.Element} The LanguageOptionsDropdown component.
  */
+
+//TODO: reflect default state selection in langCompiler
 function LanguageOptionsDropdown() {
-    const { setLangIncludeSelf, setLangRange } = useContext(P5PropertiesContext);
+    const { 
+        setLangIncludeSelf, 
+        setLangRange, 
+        backgroundColor, 
+        setBackgroundColor,
+        langTupleList
+    } = useContext(P5PropertiesContext);
+
     return(
         <Accordion>
             <AccordionSummary
@@ -52,6 +74,21 @@ function LanguageOptionsDropdown() {
                         max={5}
                         onChange={(e, value) => setLangRange(value)}
                     />
+                </Grid>
+                <Grid item xs={12}>
+                    <FormControl fullWidth>
+                        <InputLabel id='backgroundSelectLabel'>Default State</InputLabel>
+                        <Select
+                            labelId='backgroundSelectLabel'
+                            value={backgroundColor}
+                            label='Default State'
+                            onChange={(e) => {setBackgroundColor(e.target.value)}}
+                        >
+                            {langTupleList.map((s) => (
+                                <MenuItem value={s.name}>{s.name}</MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
                 </Grid>
                 <Grid item xs={12}>
                     {/*Kevin's neighborhood selector goes here*/}
