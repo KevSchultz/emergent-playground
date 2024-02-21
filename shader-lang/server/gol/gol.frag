@@ -1,17 +1,20 @@
+#version 300 es
+
 #ifdef GL_ES
 precision mediump float;
 #endif
 
-varying vec2 vTexCoord;
+in vec2 vTexCoord;
+out vec4 out_col;
+
 uniform sampler2D tex;
 uniform vec2 normalRes;
 
 void main(){
     vec2 uv = vTexCoord;
-
     uv.y = 1.0 - uv.y;
 
-    vec4 col = texture2D(tex, uv);
+    vec4 curr = texture(tex, uv);
     float a = col.r;
 
     float num = 0.0;
@@ -20,7 +23,7 @@ void main(){
             float x = uv.x + i * normalRes.x;
             float y = uv.y + j * normalRes.y;
 
-            num += texture2D(tex, vec2(x, y)).r;
+            num += texture(tex, vec2(x, y)).r;
         }
     }
 
@@ -40,5 +43,5 @@ void main(){
         }
     }
 
-    gl_FragColor = vec4(a, a, a, 1.0);
+    out_col = vec4(a, a, a, 1.0);
 }
