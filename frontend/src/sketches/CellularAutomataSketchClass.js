@@ -318,10 +318,11 @@ class CellularAutomataSketchClass {
      * @param {p5.Graphics} graphicsBuffer - The p5.js graphics buffer where the brush will draw.
      * @param {number} x - The x-coordinate on the graphics buffer where the brush starts drawing.
      * @param {number} y - The y-coordinate on the graphics buffer where the brush starts drawing.
+     * @param {p5.Color} color - The color of the brush.
      *
      * @returns None
      */
-    brushDrawOnGraphics(graphicsBuffer, x, y) {
+    brushDrawOnGraphics(graphicsBuffer, x, y, color) {
         // If the brush is not drawing, do nothing
         // If the cursor is not on the world, do nothing
         if (!this.isBrushDrawingActive() || !this.cursorIsOnWorld()) {
@@ -330,7 +331,7 @@ class CellularAutomataSketchClass {
 
         switch (this.reactProperties.brushType) {
             case 'pixel':
-                this.pixelDrawOnGraphics(graphicsBuffer, x, y, this.p5.color(255));
+                this.pixelDrawOnGraphics(graphicsBuffer, x, y, color);
                 break;
 
             case 'square':
@@ -338,7 +339,7 @@ class CellularAutomataSketchClass {
                     graphicsBuffer,
                     x,
                     y,
-                    this.p5.color(255),
+                    color,
                     this.reactProperties.brushSize,
                     2
                 );
@@ -349,7 +350,7 @@ class CellularAutomataSketchClass {
                     graphicsBuffer,
                     x,
                     y,
-                    this.p5.color(255),
+                    color,
                     this.reactProperties.brushSize,
                     1
                 );
@@ -411,7 +412,7 @@ class CellularAutomataSketchClass {
         let mouseWorldX = mouseWorldLocation.x;
         let mouseWorldY = mouseWorldLocation.y;
 
-        this.brushDrawOnGraphics(this.previousState, mouseWorldX, mouseWorldY);
+        this.brushDrawOnGraphics(this.previousState, mouseWorldX, mouseWorldY, this.p5.color(255));
 
         this.shader.setUniform('pause', this.reactProperties.pause);
         this.shader.setUniform('previousState', this.previousState);

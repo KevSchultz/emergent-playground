@@ -3,8 +3,8 @@ precision mediump float;
 #endif
 
 // Constants
-const int RULE_SIZE = 8000;
-const int NUMBER_OF_STATES = 20;
+const int RULE_SIZE = 8;
+const int NUMBER_OF_STATES = 2;
 const int NUMBER_OF_NEIGHBORS = 2;
 const int RADIUS_OF_NEIGHBORS = 1;
 
@@ -12,6 +12,7 @@ varying vec2 vTexCoord; // texture coordinate passed from the vertex shader
 
 uniform vec2 resolution; // determines the distance to see next cell
 uniform float pause; // pause the simulation
+uniform int generation;
 uniform sampler2D previousState; // texture of previousState
 uniform sampler2D rule;
 uniform sampler2D states;
@@ -70,8 +71,17 @@ void main() {
     for (int indexOffset = -RADIUS_OF_NEIGHBORS; indexOffset <= RADIUS_OF_NEIGHBORS; indexOffset++) {
 
         float xOffset = float(indexOffset) * pixelOffset.x;
+        float yOffset = -pixelOffset.y;
 
-        vec4 previousStateColor = texture2D(previousState, uv + vec2(xOffset, 0.0));
+        int b = int(mod(float(generation), resolution.y));
+
+        if (generation == 0) {
+            yOffset = 0.0;
+        } else if (b == 0) {
+            yOffset = (resolution.y - 1.0) * pixelOffset.y;
+        }
+
+        vec4 previousStateColor = texture2D(previousState, uv + vec2(xOffset, yOffset));
 
         int state = colorToState(previousStateColor);
 
@@ -80,7 +90,16 @@ void main() {
 
     int ruleIndexDecimal = baseNumberOfStatesToDecimalIndexConversion(ruleIndexInBaseNumberOfStates);
 
-    gl_FragColor = ruleColor(ruleIndexDecimal);
+    int activeRow = int(mod(float(generation), resolution.y));
+
+    float activeRowPosition = float(activeRow) / resolution.y;
+
+    if (length(uv.y - activeRowPosition) < 0.01) {
+        gl_FragColor = ruleColor(ruleIndexDecimal);
+        // gl_FragColor = vec4(activeRowPosition, 0.0, 0.0, 1.0);
+    } else {
+        gl_FragColor = texture2D(previousState, uv);
+    }
 
 
 

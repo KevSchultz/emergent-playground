@@ -15,8 +15,8 @@ import CircleIcon from '@mui/icons-material/RadioButtonUnchecked';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 
 const DefaultProperties = {
-    worldWidth: 1000,
-    worldHeight: 1000,
+    worldWidth: 500,
+    worldHeight: 500,
     pixelDensity: 1,
     cameraX: 0,
     cameraY: 0,
@@ -28,7 +28,12 @@ const DefaultProperties = {
     panSensitivity: 0.001,
     brushType: 'pixel',
     listBrushTypes: ['pixel', 'square', 'circle', 'camera'],
-    brushIcons: { pixel: <SquareIcon />, square: <CropSquareIcon />, circle: <CircleIcon />, camera: <CameraAltIcon />},
+    brushIcons: {
+        pixel: <SquareIcon />,
+        square: <CropSquareIcon />,
+        circle: <CircleIcon />,
+        camera: <CameraAltIcon />,
+    },
     selectedBrushIconColor: 'yellow',
     deselectedBrushIconColor: 'white',
     brushSize: 10,
@@ -44,6 +49,8 @@ const DefaultProperties = {
     fragmentShader: fragmentShader,
     pause: 0,
     code: '', // for shader lang
+    currentLangColor: '',
+    langTupleList: [],
 };
 
 export default DefaultProperties;

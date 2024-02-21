@@ -1,7 +1,7 @@
 /**
  * @project Emergent Playground
  * @file P5PropertiesContext.jsx
- * @overview This file exports both the P5PropertiesContext and P5PropertiesProvider components for managing p5 property state. 
+ * @overview This file exports both the P5PropertiesContext and P5PropertiesProvider components for managing p5 property state.
  * @authors Kevin Schultz
  * @exports P5PropertiesContext P5PropertiesProvider
  */
@@ -26,7 +26,7 @@ const P5PropertiesContext = createContext();
  * Child components can access these state variables and setters by using React's useContext hook with P5PropertiesContext.
  *
  * @param {object} props - The properties passed to this component. Expected to include 'children', the child components.
- * 
+ *
  * @returns {JSX.Element} A P5PropertiesContext.Provider that wraps the child components and provides them with access to the P5 properties context.
  */
 export function P5PropertiesProvider({ children }) {
@@ -58,6 +58,8 @@ export function P5PropertiesProvider({ children }) {
     const [fragmentShader, setFragmentShader] = useState(DefaultProperties.fragmentShader);
     const [pause, setPause] = useState(DefaultProperties.pause);
     const [code, setCode] = useState(DefaultProperties.code);
+    const [currentLangColor, setCurrentLangColor] = useState(DefaultProperties.currentLangColor);
+    const [langTupleList, setLangTupleList] = useState(DefaultProperties.langTupleList);
 
     const value = {
         worldWidth,
@@ -108,6 +110,10 @@ export function P5PropertiesProvider({ children }) {
         setPause,
         code,
         setCode,
+        currentLangColor,
+        setCurrentLangColor,
+        langTupleList,
+        setLangTupleList,
     };
 
     return <P5PropertiesContext.Provider value={value}>{children}</P5PropertiesContext.Provider>;

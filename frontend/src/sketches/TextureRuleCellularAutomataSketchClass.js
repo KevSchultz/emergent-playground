@@ -1,12 +1,13 @@
 import CellularAutomataSketchClass from './CellularAutomataSketchClass';
 
+const PIXEL_DENSITY = 1;
+
 /**
- * Extends CellularAutomataSketchClass to implement a texture-based rule for cellular automata.
+ * @class TextureRuleCellularAutomataSketchClass
+ * @classdesc Extends CellularAutomataSketchClass to implement a texture-based rule for cellular automata.
  * This class introduces the concept of states and neighbors into the cellular automata, allowing for more complex patterns and behaviors.
  * It randomly generates states and rules for cellular automata, then applies these by passing a texture to the shader.
  * The class is designed for use with p5.js and integrates seamlessly with React through the ReactP5Wrapper component, allowing for dynamic property updates and interactive sketch manipulation.
- *
- * @class TextureRuleCellularAutomataSketchClass
  * @property {number} numberOfStates - The number of unique states each cell can have.
  * @property {number} numberOfNeighbors - The number of neighbors considered for each cell's next state.
  * @property {p5.Graphics} ruleGraphics - A p5.js graphics buffer storing the visualization of the rule set.
@@ -19,8 +20,9 @@ class TextureRuleCellularAutomataSketchClass extends CellularAutomataSketchClass
     constructor(defaultReactProperties) {
         super(defaultReactProperties);
 
-        this.numberOfStates = 20;
+        this.numberOfStates = 2;
         this.numberOfNeighbors = 2;
+        this.generation = 0;
         this.ruleGraphics;
         this.statesGraphics;
         this.states;
@@ -51,6 +53,18 @@ class TextureRuleCellularAutomataSketchClass extends CellularAutomataSketchClass
 
             this.states.push(this.p5.color(red, green, blue, alpha));
         }
+    }
+
+    generateRule30() {
+        this.ruleGraphics = this.p5.createGraphics(8, 1);
+
+        this.ruleGraphics.loadPixels();
+        for (let i = 0; i < 8; i++) {
+            let randomState = this.states[i % 2];
+
+            this.ruleGraphics.set(i, 0, randomState);
+        }
+        this.ruleGraphics.updatePixels();
     }
 
     /**
@@ -99,13 +113,28 @@ class TextureRuleCellularAutomataSketchClass extends CellularAutomataSketchClass
     }
 
     /**
+     * Sets up the current state graphics buffer which is eventually drawn as a texture to a plane in the main canvas.
+     * @returns None
+     */
+    setupCurrentStateGraphicsBuffer(worldWidth, worldHeight) {
+        this.currentState = this.p5.createGraphics(worldWidth, worldHeight, this.p5.WEBGL);
+
+        this.currentState.shader(this.shader);
+        this.shader.setUniform('resolution', [worldWidth, worldHeight]);
+
+        this.currentState.pixelDensity(PIXEL_DENSITY);
+        this.currentState.background(this.states[0]);
+    }
+
+    /**
      * Sets up the sketch.
      *
      */
     setup() {
-        super.setup();
 
         this.generateRandomStates();
+
+        super.setup();
 
         this.setupStateGraphics();
 
@@ -118,6 +147,8 @@ class TextureRuleCellularAutomataSketchClass extends CellularAutomataSketchClass
      */
     draw() {
         // If the sketch is not set up, do nothing
+        this.generation += 1;
+
         if (this.isSketchSetup == false) {
             return;
         }
@@ -135,8 +166,9 @@ class TextureRuleCellularAutomataSketchClass extends CellularAutomataSketchClass
         let mouseWorldX = mouseWorldLocation.x;
         let mouseWorldY = mouseWorldLocation.y;
 
-        this.brushDrawOnGraphics(this.previousState, mouseWorldX, mouseWorldY);
+        this.brushDrawOnGraphics(this.previousState, mouseWorldX, mouseWorldY, this.states[1]);
 
+        this.shader.setUniform('generation', this.generation);
         this.shader.setUniform('pause', this.reactProperties.pause);
         this.shader.setUniform('previousState', this.previousState);
         this.shader.setUniform('states', this.stateGraphics);
