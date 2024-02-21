@@ -7,10 +7,10 @@
  */
 
 // React Imports
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 
 // Material UI Imports
-import { Button, Box, Grid, List } from '@mui/material';
+import { Alert, Button, Box, Grid, List, Snackbar } from '@mui/material';
 
 // Ace Code Editor Imports
 import AceEditor from 'react-ace';
@@ -39,6 +39,8 @@ function LanguageOptionsTabContainer() {
     const { currentLangColor, setCurrentLangColor } = useContext(P5PropertiesContext);
     const { langTupleList, setLangTupleList } = useContext(P5PropertiesContext);
 
+    const [openError, setOpenError] = useState(false);
+
     const handleCodeChange = (newCode) => {
         setCode(newCode);
     };
@@ -48,10 +50,24 @@ function LanguageOptionsTabContainer() {
     };
 
     const handleAddColor = () => {
-        setLangTupleList([...langTupleList, currentLangColor]);
+        if(langTupleList.some(s => s.color === currentLangColor)){
+            setOpenError(true);
+        } else {
+            setLangTupleList([...langTupleList, {color: currentLangColor, name: ''}]);
+        }
     };
 
-    //TODO: GRID BREAKPOINTS!
+    const handleErrorClose = (event, reason) => {
+        if(reason === 'clickaway'){
+            return;
+        }
+        setOpenError(false);
+    };
+
+    const handleCompile = () => {
+        console.log(langTupleList);
+    };
+
     return (
         <Box>
             <Grid container spacing={1} padding={2}>
@@ -59,11 +75,13 @@ function LanguageOptionsTabContainer() {
                     <HexColorPicker color={currentLangColor} onChange={handleCurrentColorChange}/>
                 </Grid>
                 <Grid item xs={12} md={6}>
-                    <List>
-                        {langTupleList.map((color) => (
-                            <LanguageStateItem color={color}/>
-                        ))}
-                    </List>
+                    <Box style={{ maxHeight: 200, overflow: 'auto' }}>
+                        <List>
+                            {langTupleList.map((s) => (
+                                <LanguageStateItem state={{color: s.color, name: s.name}}/>
+                            ))}
+                        </List>
+                    </Box>
                 </Grid>
                 <Grid item xs={12} md={6}>
                     <Button 
@@ -75,9 +93,30 @@ function LanguageOptionsTabContainer() {
                     </Button>
                 </Grid>
                 <Grid item xs={12} md={6}>
-                    <Button variant="outlined" fullWidth> Compile </Button>
+                    <Button 
+                        variant="outlined" 
+                        fullWidth
+                        onClick={handleCompile}
+                    > 
+                        Compile 
+                    </Button>
                 </Grid>
             </Grid>
+            <Snackbar 
+                open={openError} 
+                autoHideDuration={1500} 
+                onClose={handleErrorClose}
+                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+            >
+                <Alert
+                    onClose={handleErrorClose}
+                    severity='error'
+                    variant='outlined'
+                    sx={{ width: '100%' }}
+                >
+                    Color already in use.
+                </Alert>
+            </Snackbar>
             <AceEditor
                 width="100%"
                 placeholder=""
