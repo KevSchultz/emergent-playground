@@ -4,6 +4,12 @@
  * @project Emergent Playground
  */
 
+// React Imports
+import { useContext } from 'react';
+
+// Other Imports
+import P5PropertiesContext from '../components/P5PropertiesContext';
+
 /**
  * langCompiler is a function that takes a String instruction of shader-lang format and transforms it to GLSL ES 3.0 code.
  *
@@ -11,26 +17,21 @@
  * @param {boolean} include_self - Whether to include current cell in identificaiton.
  * @param {number} range - Integer size of neighborhood in identification.
  * @param {string} neighborhood - Type of neighborhood. TODO: Encode customs somehow.
- * @param {Array<Array<number, string>>} colors - Selected by color picker on Langauge tab in options drawer.
+ * @param {Array[{string, string}]} colors - ONLY USE langTupleList here!!!
  *
  * @returns {string} frag - The resultant GLSL ES 3.0 code.
  */
-function langCompiler(inst, include_self, range, neighborhood, colors){
+function langCompiler(code, colors, include_self, range, neighborhood){
     let frag = '#version 300 es\n\n#ifdef GL_ES\nprecision mediump float;\n#endif\n\nin vec2 vTexCoord;\nout vec4 out_col;\n\nuniform sampler2D tex;\nuniform vec2 normalRes;\nuniform float pause;\n\n//CONSTS\n\nuint pack(vec4 v){\n\tuint o = uint(0x0);\n\to |= uint(round(clamp(v.r, 0.0, 1.0) * 255.0)) << 24;\n\to |= uint(round(clamp(v.g, 0.0, 1.0) * 255.0)) << 16;\n\to |= uint(round(clamp(v.b, 0.0, 1.0) * 255.0)) << 8;\n\to |= uint(round(clamp(v.a, 0.0, 1.0) * 255.0));\n\treturn o;\n}\n\nvoid main(){\n\tvec2 uv = vTexCoord;\n\tuv.y = 1.0 - uv.y;\n\n//BUCKETS\n\n\tvec4 curr = texture(tex, uv);\n\n\tuint col;\n//RANGE\n//INCLUDE_SELF\n//NEIGHBORHOOD\n\t\t\tfloat x = uv.x + i * normalRes.x;\n\t\t\tfloat y = uv.y + j * normalRes.y;\n\n\t\t\tcol = pack(texture(tex, vec2(x, y)));\n\n//IDENTIFY\n\n\t\t}\n\t}\n\n\tvec4 cell;\n\n//RULES\n\n\tif(pause == 1.0){\n\t\tcell = curr;\n\t}\n\n\tout_col = cell;\n}\n';
 
     // parse instructions
-    let [data, text] = inst.split('---\n');
+    let text = code;
 
     let color_vec = {};
     let color_int = {};
-    for(const c of data.split('\n')){
-        if(c === ''){
-            continue;
-        }
-        let tok = c.split(' ');
-        [color_vec[tok[0]], color_int[tok[0]]] = translate_colors(tok[2]);
-        
-    }
+    colors.forEach(st => {
+        [color_vec[st.name], color_int[st.name]] = translate_colors(st.color);
+    });
 
     let insert = '';
     for(const [k, v] of Object.entries(color_vec)){
@@ -75,7 +76,6 @@ function langCompiler(inst, include_self, range, neighborhood, colors){
     } else if(neighborhood === 'moore'){
         frag = frag.replace('//NEIGHBORHOOD', '');
     } else{
-        frag = frag;
         frag = frag.replace('//NEIGHBORHOOD', '');
     }
 

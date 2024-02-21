@@ -22,6 +22,7 @@ import 'ace-builds/src-noconflict/ext-language_tools';
 import P5PropertiesContext from './P5PropertiesContext';
 import { HexColorPicker } from 'react-colorful';
 import LanguageStateItem from './LanguageStateItem';
+import langCompiler from '../lang-data/langCompiler';
 
 /**
  * A container component for that shows on the language options tab.
@@ -33,6 +34,8 @@ import LanguageStateItem from './LanguageStateItem';
  *
  * @returns {JSX.Element} The LanguageOptionsTabContainer component.
  */
+
+//TODO: UI for include_self, range, neighborhood
 function LanguageOptionsTabContainer() {
 
     const { code, setCode } = useContext(P5PropertiesContext);
@@ -65,7 +68,7 @@ function LanguageOptionsTabContainer() {
     };
 
     const handleCompile = () => {
-        console.log(langTupleList);
+        langCompiler(code, langTupleList, false, 1, 'moore');
     };
 
     return (
