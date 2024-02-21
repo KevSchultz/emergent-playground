@@ -7,7 +7,7 @@
  */
 
 // React Imports
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 
 // Material UI Imports
 import { Alert, Button, Box, Grid, List, Snackbar } from '@mui/material';
@@ -23,6 +23,7 @@ import P5PropertiesContext from './P5PropertiesContext';
 import { HexColorPicker } from 'react-colorful';
 import LanguageStateItem from './LanguageStateItem';
 import langCompiler from '../lang-data/langCompiler';
+import LanguageOptionsDropdown from './LanguageOptionsDropdown';
 
 /**
  * A container component for that shows on the language options tab.
@@ -36,6 +37,7 @@ import langCompiler from '../lang-data/langCompiler';
  */
 
 //TODO: UI for include_self, range, neighborhood
+//TODO: syntax highlighting & autocomplete for language in AceEditor
 function LanguageOptionsTabContainer() {
 
     const { code, setCode } = useContext(P5PropertiesContext);
@@ -43,6 +45,26 @@ function LanguageOptionsTabContainer() {
     const { langTupleList, setLangTupleList } = useContext(P5PropertiesContext);
 
     const [openError, setOpenError] = useState(false);
+    const [contSize, setContSize] = useState(0);
+    const contRef = useRef(null);
+
+    useEffect(() => {
+        const resizeObs = new ResizeObserver(entries => {
+            if(entries && entries.length > 0){
+                setContSize(entries[0].contentRect.width);
+            }
+        });
+
+        if(contRef.current){
+            resizeObs.observe(contRef.current);
+        }
+
+        return () => {
+            if(contRef.current){
+                resizeObs.unobserve(contRef.current);
+            }
+        };
+    }, [contRef, contSize]);
 
     const handleCodeChange = (newCode) => {
         setCode(newCode);
@@ -68,16 +90,16 @@ function LanguageOptionsTabContainer() {
     };
 
     const handleCompile = () => {
-        langCompiler(code, langTupleList, false, 1, 'moore');
+        console.log(langCompiler(code, langTupleList, false, 1, 'moore'));
     };
 
     return (
-        <Box>
+        <Box ref={contRef}>
             <Grid container spacing={1} padding={2}>
-                <Grid item xs={12} md={6}>
+                <Grid item xs={contSize < 400 ? 12 : 6}>
                     <HexColorPicker color={currentLangColor} onChange={handleCurrentColorChange}/>
                 </Grid>
-                <Grid item xs={12} md={6}>
+                <Grid item xs={contSize < 400 ? 12 : 6}>
                     <Box style={{ maxHeight: 200, overflow: 'auto' }}>
                         <List>
                             {langTupleList.map((s) => (
@@ -86,7 +108,7 @@ function LanguageOptionsTabContainer() {
                         </List>
                     </Box>
                 </Grid>
-                <Grid item xs={12} md={6}>
+                <Grid item xs={contSize < 400 ? 12 : 6}>
                     <Button 
                         variant="outlined" 
                         fullWidth
@@ -95,7 +117,7 @@ function LanguageOptionsTabContainer() {
                         Add Color 
                     </Button>
                 </Grid>
-                <Grid item xs={12} md={6}>
+                <Grid item xs={contSize < 400 ? 12 : 6}>
                     <Button 
                         variant="outlined" 
                         fullWidth

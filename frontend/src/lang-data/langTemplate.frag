@@ -7,11 +7,12 @@ precision mediump float;
 in vec2 vTexCoord;
 out vec4 out_col;
 
-uniform sampler2D tex;
-uniform vec2 normalRes;
+uniform sampler2D previousState;
+uniform vec2 resolution;
 uniform float pause;
 
 //CONSTS
+
 
 uint pack(vec4 v){
     uint o = uint(0x0);
@@ -26,18 +27,20 @@ void main(){
     vec2 uv = vTexCoord;
     uv.y = 1.0 - uv.y;
 
+    const vec2 offset = vec2(1.0/resolution.x, 1.0/resolution.y);
+
 //BUCKETS
 
-    vec4 curr = texture(tex, uv);
+    vec4 curr = texture(previousState, uv);
 
     uint col;
 //RANGE
 //INCLUDE_SELF
 //NEIGHBORHOOD
-            float x = uv.x + i * normalRes.x;
-            float y = uv.y + j * normalRes.y;
+            float x = uv.x + i * offset.x;
+            float y = uv.y + j * offset.y;
 
-            col = pack(texture(tex, vec2(x, y)));
+            col = pack(texture(previousState, vec2(x, y)));
 
 //IDENTIFY
 
