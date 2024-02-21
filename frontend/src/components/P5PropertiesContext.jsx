@@ -58,6 +58,8 @@ export function P5PropertiesProvider({ children }) {
     const [fragmentShader, setFragmentShader] = useState(DefaultProperties.fragmentShader);
     const [pause, setPause] = useState(DefaultProperties.pause);
     const [code, setCode] = useState(DefaultProperties.code);
+    const [currentLangColor, setCurrentLangColor] = useState(DefaultProperties.currentLangColor);
+    const [langTupleList, setLangTupleList] = useState(DefaultProperties.langTupleList);
 
     const value = {
         worldWidth,
@@ -108,6 +110,10 @@ export function P5PropertiesProvider({ children }) {
         setPause,
         code,
         setCode,
+        currentLangColor,
+        setCurrentLangColor,
+        langTupleList,
+        setLangTupleList
     };
 
     return <P5PropertiesContext.Provider value={value}>{children}</P5PropertiesContext.Provider>;

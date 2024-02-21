@@ -79,7 +79,9 @@ function RightOptionsRootContainer() {
 
             {/* The following code is conditional rendering of tabs through React. */}
 
-            {TABS[currentTabIndex] === 'Premade Rules' && <PremadeRulesOptionsTabContainer />}
+            {TABS[currentTabIndex] === 'Premade Rules' && (
+                <PremadeRulesOptionsTabContainer />
+            )}
 
             {TABS[currentTabIndex] === 'Viewer Options' && (
                 <ViewerOptionsTabContainer/>

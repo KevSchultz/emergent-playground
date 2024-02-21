@@ -10,7 +10,7 @@
 import { useContext } from 'react';
 
 // Material UI Imports
-import Box from '@mui/material/Box';
+import { Button, Box, Grid, List } from '@mui/material';
 
 // Ace Code Editor Imports
 import AceEditor from 'react-ace';
@@ -20,6 +20,8 @@ import 'ace-builds/src-noconflict/ext-language_tools';
 
 // Other Imports
 import P5PropertiesContext from './P5PropertiesContext';
+import { HexColorPicker } from 'react-colorful';
+import LanguageStateItem from './LanguageStateItem';
 
 /**
  * A container component for that shows on the language options tab.
@@ -34,13 +36,48 @@ import P5PropertiesContext from './P5PropertiesContext';
 function LanguageOptionsTabContainer() {
 
     const { code, setCode } = useContext(P5PropertiesContext);
+    const { currentLangColor, setCurrentLangColor } = useContext(P5PropertiesContext);
+    const { langTupleList, setLangTupleList } = useContext(P5PropertiesContext);
 
     const handleCodeChange = (newCode) => {
         setCode(newCode);
     };
 
+    const handleCurrentColorChange = (newColor) => {
+        setCurrentLangColor(newColor);
+    };
+
+    const handleAddColor = () => {
+        setLangTupleList([...langTupleList, currentLangColor]);
+    };
+
+    //TODO: GRID BREAKPOINTS!
     return (
         <Box>
+            <Grid container spacing={1} padding={2}>
+                <Grid item xs={12} md={6}>
+                    <HexColorPicker color={currentLangColor} onChange={handleCurrentColorChange}/>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                    <List>
+                        {langTupleList.map((color) => (
+                            <LanguageStateItem color={color}/>
+                        ))}
+                    </List>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                    <Button 
+                        variant="outlined" 
+                        fullWidth
+                        onClick={handleAddColor}
+                    > 
+                        Add Color 
+                    </Button>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                    <Button variant="outlined" fullWidth> Compile </Button>
+                </Grid>
+            </Grid>
             <AceEditor
                 width="100%"
                 placeholder=""
