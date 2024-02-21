@@ -40,9 +40,16 @@ import LanguageOptionsDropdown from './LanguageOptionsDropdown';
 //TODO: syntax highlighting & autocomplete for language in AceEditor
 function LanguageOptionsTabContainer() {
 
-    const { code, setCode } = useContext(P5PropertiesContext);
-    const { currentLangColor, setCurrentLangColor } = useContext(P5PropertiesContext);
-    const { langTupleList, setLangTupleList } = useContext(P5PropertiesContext);
+    const { 
+        code, 
+        setCode, 
+        currentLangColor,
+        setCurrentLangColor,
+        langTupleList,
+        setLangTupleList,
+        langIncludeSelf,
+        langRange
+    } = useContext(P5PropertiesContext);
 
     const [openError, setOpenError] = useState(false);
     const [contSize, setContSize] = useState(0);
@@ -90,7 +97,9 @@ function LanguageOptionsTabContainer() {
     };
 
     const handleCompile = () => {
-        console.log(langCompiler(code, langTupleList, false, 1, 'moore'));
+        if(code !== ''){
+            console.log(langCompiler(code, langTupleList, langIncludeSelf, langRange, 'moore'));
+        } 
     };
 
     return (
@@ -142,6 +151,7 @@ function LanguageOptionsTabContainer() {
                     Color already in use.
                 </Alert>
             </Snackbar>
+            <LanguageOptionsDropdown/>
             <AceEditor
                 width="100%"
                 placeholder=""

@@ -46,6 +46,8 @@ const DefaultProperties = {
     code: '', // for shader lang
     currentLangColor: '',
     langTupleList: [],
+    langIncludeSelf: false,
+    langRange: 1
 };
 
 export default DefaultProperties;
