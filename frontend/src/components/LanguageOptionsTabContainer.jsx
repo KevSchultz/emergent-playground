@@ -124,8 +124,8 @@ function LanguageOptionsTabContainer() {
                 <Grid item xs={contSize < 400 ? 12 : 6}>
                     <Box style={{ maxHeight: 200, overflow: 'auto' }}>
                         <List>
-                            {langTupleList.map((s) => (
-                                <LanguageStateItem state={{color: s.color, name: s.name}}/>
+                            {langTupleList.map((s, index) => (
+                                <LanguageStateItem key={index} state={{color: s.color, name: s.name}}/>
                             ))}
                         </List>
                     </Box>
@@ -149,9 +149,9 @@ function LanguageOptionsTabContainer() {
                     </Button>
                 </Grid>
             </Grid>
-            <Button onClick={handleDebug}>
+        {/*<Button onClick={handleDebug}>
                 Debug
-            </Button>
+            </Button>*/}
             <Snackbar 
                 open={openError} 
                 autoHideDuration={1500} 

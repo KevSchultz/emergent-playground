@@ -48,7 +48,7 @@ const DefaultProperties = {
     langTupleList: [],
     langIncludeSelf: false,
     langRange: 1,
-    backgroundColor: 0
+    backgroundColor: '#000000'
 };
 
 export default DefaultProperties;

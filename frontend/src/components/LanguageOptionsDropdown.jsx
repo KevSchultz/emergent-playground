@@ -84,8 +84,8 @@ function LanguageOptionsDropdown() {
                             label='Default State'
                             onChange={(e) => {setBackgroundColor(e.target.value)}}
                         >
-                            {langTupleList.map((s) => (
-                                <MenuItem value={s.name}>{s.name}</MenuItem>
+                            {langTupleList.map((s, index) => (
+                                <MenuItem key={index} value={s.color}>{s.name}</MenuItem>
                             ))}
                         </Select>
                     </FormControl>
