@@ -12,19 +12,17 @@ import TopNavigationBar from '../components/TopNavigationBar';
 import LeftButtonListContainer from '../components/LeftButtonListContainer';
 import RightOptionsRootContainer from '../components/RightOptionsRootContainer';
 import P5Background from '../components/P5Background';
-import {P5PropertiesProvider} from '../components/P5PropertiesContext';
 import DefaultProperties from '../components/DefaultProperties';
 
 // P5.js imports
-// import CellularAutomataSketchClass from '../sketches/CellularAutomataSketchClass';
-import TextureRuleCellularAutomataSketchClass from '../sketches/textureRuleCellularAutomataSketchClass';
-// import CellularAutomataTextureRuleSketch from '../sketches/CellularAutomataTextureRuleSketch';
+import CellularAutomataSketchClass from '../sketches/CellularAutomataSketchClass';
+import TextureRuleCellularAutomataSketchClass from '../sketches/TextureRuleCellularAutomataSketchClass';
 
 // Resizable Panel Imports
 import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
 
 // const cellularAutomataSketch = new CellularAutomataSketchClass(DefaultProperties);
-const cellularAutomataSketch = new TextureRuleCellularAutomataSketchClass(DefaultProperties);
+const TextureRuleCellularAutomataSketch = new TextureRuleCellularAutomataSketchClass(DefaultProperties);
 
 /**
  * A functional component that renders the Viewer Builder Creator page.
@@ -35,10 +33,9 @@ const cellularAutomataSketch = new TextureRuleCellularAutomataSketchClass(Defaul
  * @returns {JSX.Element} The ViewerBuilderCreator component.
  */
 function ViewerBuilderCreator() {
-    
     return (
-        <P5PropertiesProvider>
-            <P5Background cellularAutomataSketch={cellularAutomataSketch} />
+        <>
+            <P5Background cellularAutomataSketch={TextureRuleCellularAutomataSketch} />
             <TopNavigationBar />
             <PanelGroup direction="horizontal">
                 <div>
@@ -47,11 +44,11 @@ function ViewerBuilderCreator() {
                 <Panel></Panel>
                 <PanelResizeHandle />
                 <Panel defaultSize={30} minSize={10}>
-                    <RightOptionsRootContainer/>
+                    <RightOptionsRootContainer />
                 </Panel>
                 <PanelResizeHandle />
             </PanelGroup>
-        </P5PropertiesProvider>
+        </>
     );
 }
 

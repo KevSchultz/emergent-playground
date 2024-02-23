@@ -5,19 +5,22 @@ precision mediump float;
 
 varying vec2 vTexCoord;    // texture coordinate passed from the vertex shader
 
-uniform float resolution; // determines the distance to see next cell
+uniform vec2 resolution; // determines the distance to see next cell
 uniform sampler2D previousState; // texture of previousState
 
 void main() {
   
   vec2 uv = vTexCoord;
   uv.y = 1.0 - uv.y; // adjust coordinates because of p5
+
+  vec2 pixelOffset = vec2(1.0 / resolution.x, 1.0 / resolution.y);
+
   
   
   // Get the color of the current pixel and its neighbors
   vec4 centerColor = texture2D(previousState, uv);
-  vec4 leftColor = texture2D(previousState, uv - vec2(resolution, 0.0));
-  vec4 rightColor = texture2D(previousState, uv + vec2(resolution, 0.0));
+  vec4 leftColor = texture2D(previousState, uv - vec2(pixelOffset.x, 0.0));
+  vec4 rightColor = texture2D(previousState, uv + vec2(pixelOffset.x, 0.0));
   
   // Convert the colors to binary (black = 0, white = 1)
   float centerState = step(0.5, centerColor.r);

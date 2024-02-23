@@ -47,7 +47,7 @@ const DefaultProperties = {
     previousMouseY: 0,
     vertexShader: vertexShader,
     fragmentShader: fragmentShader,
-    pause: 0,
+    pause: 1,
     code: '', // for shader lang
     currentLangColor: '',
     langTupleList: [],

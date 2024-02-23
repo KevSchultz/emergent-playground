@@ -79,8 +79,8 @@ function LanguageOptionsTabContainer() {
                 <Grid item xs={12} md={6}>
                     <Box style={{ maxHeight: 200, overflow: 'auto' }}>
                         <List>
-                            {langTupleList.map((s) => (
-                                <LanguageStateItem key={s.name} state={{ color: s.color, name: s.name }} />
+                            {langTupleList.map((s, index) => (
+                                <LanguageStateItem key={index} state={{ color: s.color, name: s.name }} />
                             ))}
                         </List>
                     </Box>

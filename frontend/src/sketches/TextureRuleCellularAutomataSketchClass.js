@@ -20,20 +20,27 @@ class TextureRuleCellularAutomataSketchClass extends CellularAutomataSketchClass
     constructor(defaultReactProperties) {
         super(defaultReactProperties);
 
-        this.numberOfStates = 2;
-        this.numberOfNeighbors = 2;
+        this.numberOfStates = 4;
+        this.numberOfNeighbors = 4;
         this.generation = 0;
         this.ruleGraphics;
         this.statesGraphics;
         this.states;
+        this.random = Math.random();
 
         // bind the this to methods
         this.generateRandomStates = this.generateRandomStates.bind(this);
         this.setupStateGraphics = this.setupStateGraphics.bind(this);
         this.setupRuleGraphics = this.setupRuleGraphics.bind(this);
         this.generateRandomRuleGraphics = this.generateRandomRuleGraphics.bind(this);
+        this.generateIsomorphicRuleGraphics = this.generateIsomorphicRuleGraphics.bind(this);
         this.setup = this.setup.bind(this);
         this.draw = this.draw.bind(this);
+        this.setupCurrentStateGraphicsBuffer = this.setupCurrentStateGraphicsBuffer.bind(this);
+        this.updateWorldWidth = this.updateWorldWidth.bind(this);
+        this.updateWorldHeight = this.updateWorldHeight.bind(this);
+        this.generateRule30 = this.generateRule30.bind(this);
+
     }
 
     /**
@@ -87,6 +94,48 @@ class TextureRuleCellularAutomataSketchClass extends CellularAutomataSketchClass
         this.ruleGraphics.updatePixels();
     }
 
+    reflectNumber(num, base) {
+
+        let stringNumber = num.toString(base);
+
+        let reflectedNumber = 0;
+
+        for (let i = 0; i < stringNumber.length; i++) {
+            reflectedNumber += parseInt(stringNumber[i]) * Math.pow(base, i);
+        }
+
+        return reflectedNumber;
+    }
+
+    /**
+     * Generates random isomorphic rule graphics for the sketch.
+     *
+     * This method creates a new p5 graphics object with a width equal to the number of states raised to the power of the number of neighbors plus one and a height of one.
+     * It then fills the graphics object with random states in a symmetrical pattern.
+     */
+    generateIsomorphicRuleGraphics() {
+        let width = Math.pow(this.numberOfStates, this.numberOfNeighbors + 1);
+
+        this.ruleGraphics = this.p5.createGraphics(width, 1);
+
+        this.ruleGraphics.loadPixels();
+        let midPoint = Math.floor(width / 2);
+        for (let i = 0; i <= midPoint; i++) {
+            let randomState = this.states[this.p5.floor(this.p5.random() * this.numberOfStates)];
+
+            let reflectedNumber = this.reflectNumber(i, this.numberOfStates);
+
+            // Set the state at the current index and its mirror image
+            this.ruleGraphics.set(i, 0, randomState);
+            this.ruleGraphics.set(reflectedNumber, 0, randomState);
+
+
+            console.log(i.toString(this.numberOfStates), reflectedNumber.toString(this.numberOfStates));
+
+        }
+        this.ruleGraphics.updatePixels();
+    }
+
     /**
      * Sets up the state graphics for the sketch.
      *
@@ -109,7 +158,62 @@ class TextureRuleCellularAutomataSketchClass extends CellularAutomataSketchClass
      * This method calls the generateRandomRuleGraphics method to create a new rule graphics.
      */
     setupRuleGraphics() {
-        this.generateRandomRuleGraphics();
+        // this.generateRandomRuleGraphics();
+        this.generateIsomorphicRuleGraphics();
+    }
+
+    /**
+     * Updates the world width of the sketch.
+     *
+     * This method clears the current and previous states, sets the pause state to 1, updates the shader's resolution uniform, and resizes the canvas of the current and previous states.
+     *
+     * @param {number} newWorldWidth - The new world width.
+     */
+    updateWorldWidth(newWorldWidth) {
+        this.currentState.clear();
+        this.previousState.clear();
+        this.reactProperties.setPause(1);
+        this.shader.setUniform('pause', 1);
+        this.shader.setUniform('resolution', [
+            this.reactProperties.worldWidth,
+            this.reactProperties.worldHeight,
+        ]);
+        this.currentState.resizeCanvas(newWorldWidth, this.reactProperties.worldHeight);
+        this.previousState.resizeCanvas(newWorldWidth, this.reactProperties.worldHeight);
+
+        this.currentState.background(this.states[0]);
+        this.previousState.background(this.states[0]);
+
+        this.generation = 0;
+
+        this.debugMode ? console.log('CellularAutomataSketchClass.updateWorldWidth') : null;
+    }
+
+    /**
+     * Updates the world height of the sketch.
+     *
+     * This method clears the current and previous states, sets the pause state to 1, updates the shader's resolution uniform, and resizes the canvas of the current and previous states.
+     *
+     * @param {number} newWorldHeight - The new world height.
+     */
+    updateWorldHeight(newWorldHeight) {
+        this.currentState.clear();
+        this.previousState.clear();
+        this.reactProperties.setPause(1);
+        this.shader.setUniform('pause', 1);
+        this.shader.setUniform('resolution', [
+            this.reactProperties.worldWidth,
+            this.reactProperties.worldHeight,
+        ]);
+        this.currentState.resizeCanvas(this.reactProperties.worldWidth, newWorldHeight);
+        this.previousState.resizeCanvas(this.reactProperties.worldWidth, newWorldHeight);
+
+        this.currentState.background(this.states[0]);
+        this.previousState.background(this.states[0]);
+
+        this.generation = 0;
+
+        this.debugMode ? console.log('CellularAutomataSketchClass.updateWorldHeight') : null;
     }
 
     /**
@@ -131,7 +235,6 @@ class TextureRuleCellularAutomataSketchClass extends CellularAutomataSketchClass
      *
      */
     setup() {
-
         this.generateRandomStates();
 
         super.setup();
@@ -147,7 +250,9 @@ class TextureRuleCellularAutomataSketchClass extends CellularAutomataSketchClass
      */
     draw() {
         // If the sketch is not set up, do nothing
-        this.generation += 1;
+        if (this.reactProperties.pause === 0) {
+            this.generation += 1;
+        }
 
         if (this.isSketchSetup == false) {
             return;
@@ -173,6 +278,7 @@ class TextureRuleCellularAutomataSketchClass extends CellularAutomataSketchClass
         this.shader.setUniform('previousState', this.previousState);
         this.shader.setUniform('states', this.stateGraphics);
         this.shader.setUniform('rule', this.ruleGraphics);
+        this.shader.setUniform('random', this.random);
 
         // shader is applied to the currentState by drawing a rectangle the size of the world
         this.currentState.rect(

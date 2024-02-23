@@ -25,6 +25,7 @@ class CellularAutomataSketchClass {
         this.defaultReactProperties = defaultReactProperties;
         this.shader;
         this.isSketchSetup = false;
+        this.debugMode = false;
 
         // Bind 'this' to all functions
         this.updateWorldWidth = this.updateWorldWidth.bind(this);
@@ -50,7 +51,9 @@ class CellularAutomataSketchClass {
         this.screenToWorldP52DCoordinates = this.screenToWorldP52DCoordinates.bind(this);
         this.screenToWorldP5WebGlCoordinates = this.screenToWorldP5WebGlCoordinates.bind(this);
         this.cursorIsOnWorld = this.cursorIsOnWorld.bind(this);
-        this.freeGraphicsBuffer = this.freeGraphicsBuffer.bind(this);
+
+        this.debugMode ? console.log('CellularAutomataSketchClass.constructor') : null;
+
     }
 
     /**
@@ -71,6 +74,11 @@ class CellularAutomataSketchClass {
         ]);
         this.currentState.resizeCanvas(newWorldWidth, this.reactProperties.worldHeight);
         this.previousState.resizeCanvas(newWorldWidth, this.reactProperties.worldHeight);
+
+        this.currentState.background(0);
+        this.previousState.background(0);
+
+        this.debugMode ? console.log('CellularAutomataSketchClass.updateWorldWidth') : null;
     }
 
     /**
@@ -91,6 +99,12 @@ class CellularAutomataSketchClass {
         ]);
         this.currentState.resizeCanvas(this.reactProperties.worldWidth, newWorldHeight);
         this.previousState.resizeCanvas(this.reactProperties.worldWidth, newWorldHeight);
+        
+        this.currentState.background(0);
+        this.previousState.background(0);
+
+        this.debugMode ? console.log('CellularAutomataSketchClass.updateWorldHeight') : null;
+
     }
 
     /**
@@ -115,6 +129,8 @@ class CellularAutomataSketchClass {
             this.reactProperties.worldWidth,
             this.reactProperties.worldHeight,
         ]);
+
+        this.debugMode ? console.log('CellularAutomataSketchClass.updateShader') : null;
     }
 
     /**
@@ -133,6 +149,8 @@ class CellularAutomataSketchClass {
         this.p5.mouseDragged = this.mouseDragged;
         this.p5.mousePressed = this.mousePressed;
         this.p5.windowResized = this.windowResized;
+
+        this.debugMode ? console.log('CellularAutomataSketchClass.reactP5WrapperToClassInterface') : null;
     }
 
     /**
@@ -164,6 +182,8 @@ class CellularAutomataSketchClass {
         ) {
             this.updateShader(newReactProperties.vertexShader, newReactProperties.fragmentShader);
         }
+
+        this.debugMode ? console.log('CellularAutomataSketchClass.updateReactProperties') : null;
     }
 
     /**
@@ -174,6 +194,8 @@ class CellularAutomataSketchClass {
         this.p5.createCanvas(this.p5.windowWidth, this.p5.windowHeight, this.p5.WEBGL); // no smooth is active by default with webgl
         this.p5.pixelDensity(PIXEL_DENSITY);
         this.p5.noStroke();
+
+        this.debugMode ? console.log('CellularAutomataSketchClass.setupMainCanvas') : null;
     }
 
     /**
@@ -181,6 +203,7 @@ class CellularAutomataSketchClass {
      * @returns None
      */
     setupCurrentStateGraphicsBuffer(worldWidth, worldHeight) {
+
         this.currentState = this.p5.createGraphics(worldWidth, worldHeight, this.p5.WEBGL);
 
         this.currentState.shader(this.shader);
@@ -188,6 +211,8 @@ class CellularAutomataSketchClass {
 
         this.currentState.pixelDensity(PIXEL_DENSITY);
         this.currentState.background(0);
+
+        this.debugMode ? console.log('CellularAutomataSketchClass.setupCurrentStateGraphicsBuffer') : null;
     }
 
     /**
@@ -195,11 +220,14 @@ class CellularAutomataSketchClass {
      * @returns None
      */
     setupPreviousStateGraphicsBuffer(worldWidth, worldHeight) {
+
         this.previousState = this.p5.createGraphics(worldWidth, worldHeight);
 
         this.previousState.pixelDensity(PIXEL_DENSITY);
         this.previousState.noSmooth();
         this.previousState.background(0);
+
+        this.debugMode ? console.log('CellularAutomataSketchClass.setupPreviousStateGraphicsBuffer') : null;
     }
 
     /**
@@ -209,7 +237,10 @@ class CellularAutomataSketchClass {
      * @param {string} fragmentShader - The GLSL source code for the fragment shader.
      */
     setupShader(vertexShader, fragmentShader) {
+
         this.shader = this.p5.createShader(vertexShader, fragmentShader);
+
+        this.debugMode ? console.log('CellularAutomataSketchClass.setupShader') : null;
     }
 
     /**
@@ -243,6 +274,8 @@ class CellularAutomataSketchClass {
         );
 
         this.isSketchSetup = true;
+
+        this.debugMode ? console.log('CellularAutomataSketchClass.setup') : null;
     }
 
     /**
@@ -251,6 +284,9 @@ class CellularAutomataSketchClass {
      * @returns Boolean - True if the brush is drawing, false otherwise.
      */
     isBrushDrawingActive() {
+
+        // this.debugMode ? console.log('CellularAutomataSketchClass.isBrushDrawingActive') : null;
+
         return this.p5.mouseIsPressed && this.p5.mouseButton === this.p5.LEFT;
     }
 
@@ -268,6 +304,8 @@ class CellularAutomataSketchClass {
         graphicsBuffer.loadPixels();
         graphicsBuffer.set(x, y, color);
         graphicsBuffer.updatePixels();
+
+        this.debugMode ? console.log('CellularAutomataSketchClass.pixelDrawOnGraphics') : null;
     }
 
     /**
@@ -288,6 +326,8 @@ class CellularAutomataSketchClass {
         graphicsBuffer.noFill();
         graphicsBuffer.rect(x, y, size, size);
         graphicsBuffer.pop();
+
+        this.debugMode ? console.log('CellularAutomataSketchClass.squareDrawOnGraphics') : null;
     }
 
     /**
@@ -309,6 +349,8 @@ class CellularAutomataSketchClass {
         graphicsBuffer.noFill();
         graphicsBuffer.ellipse(x, y, size);
         graphicsBuffer.pop();
+
+        this.debugMode ? console.log('CellularAutomataSketchClass.circleDrawOnGraphics') : null;
     }
 
     /**
@@ -369,6 +411,8 @@ class CellularAutomataSketchClass {
             default:
                 break;
         }
+
+        // this.debugMode ? console.log('CellularAutomataSketchClass.brushDrawOnGraphics') : null;
     }
 
     /**
@@ -381,6 +425,8 @@ class CellularAutomataSketchClass {
      */
     copyGraphicsBufferImageDataToAnotherGraphicsBuffer(source, destination, x, y) {
         source.image(destination.get(), x, y);
+
+        // this.debugMode ? console.log('CellularAutomataSketchClass.copyGraphicsBufferImageDataToAnotherGraphicsBuffer') : null;
     }
 
     /**
@@ -396,6 +442,7 @@ class CellularAutomataSketchClass {
     draw() {
         // If the sketch is not set up, do nothing
         if (this.isSketchSetup == false) {
+            console.log('Sketch not set up');
             return;
         }
 
@@ -497,6 +544,8 @@ class CellularAutomataSketchClass {
             );
             return previousZoom;
         });
+
+        this.debugMode ? console.log('CellularAutomataSketchClass.mouseWheel') : null;
     }
 
     /**
@@ -527,6 +576,8 @@ class CellularAutomataSketchClass {
             this.reactProperties.setPreviousMouseY(this.p5.mouseY);
             return previousCameraY;
         });
+
+        this.debugMode ? console.log('CellularAutomataSketchClass.mouseDragged') : null;
     }
 
     /**
@@ -543,6 +594,8 @@ class CellularAutomataSketchClass {
         if (this.cursorIsOnWorld()) {
             this.reactProperties.setPause(1);
         }
+
+        this.debugMode ? console.log('CellularAutomataSketchClass.mousePressed') : null;
     }
 
     /**
@@ -551,6 +604,8 @@ class CellularAutomataSketchClass {
      */
     windowResized() {
         this.p5.resizeCanvas(this.p5.windowWidth, this.p5.windowHeight);
+
+        this.debugMode ? console.log('CellularAutomataSketchClass.windowResized') : null;
     }
 
     /**
@@ -643,26 +698,26 @@ class CellularAutomataSketchClass {
         return cursorWorld.x !== null && cursorWorld.y !== null;
     }
 
-    freeGraphicsBuffer(graphicsBuffer) {
-        const gl = graphicsBuffer._renderer.GL;
+    // freeGraphicsBuffer(graphicsBuffer) {
+    //     const gl = graphicsBuffer._renderer.GL;
 
-        if (gl) {
-            const numTextureUnits = gl.getParameter(gl.MAX_TEXTURE_IMAGE_UNITS);
-            for (let unit = 0; unit < numTextureUnits; ++unit) {
-                gl.activeTexture(gl.TEXTURE0 + unit);
-                gl.bindTexture(gl.TEXTURE_2D, null);
-                gl.bindTexture(gl.TEXTURE_CUBE_MAP, null);
-            }
-            gl.bindBuffer(gl.ARRAY_BUFFER, null);
-            gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
-            gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-            gl.bindRenderbuffer(gl.RENDERBUFFER, null);
-        }
+    //     if (gl) {
+    //         const numTextureUnits = gl.getParameter(gl.MAX_TEXTURE_IMAGE_UNITS);
+    //         for (let unit = 0; unit < numTextureUnits; ++unit) {
+    //             gl.activeTexture(gl.TEXTURE0 + unit);
+    //             gl.bindTexture(gl.TEXTURE_2D, null);
+    //             gl.bindTexture(gl.TEXTURE_CUBE_MAP, null);
+    //         }
+    //         gl.bindBuffer(gl.ARRAY_BUFFER, null);
+    //         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
+    //         gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    //         gl.bindRenderbuffer(gl.RENDERBUFFER, null);
+    //     }
 
-        graphicsBuffer._renderer.GL = null;
-        graphicsBuffer.remove();
-        graphicsBuffer = null;
-    }
+    //     graphicsBuffer._renderer.GL = null;
+    //     graphicsBuffer.remove();
+    //     graphicsBuffer = null;
+    // }
 }
 
 export default CellularAutomataSketchClass;
