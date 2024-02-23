@@ -27,6 +27,8 @@ import LanguageOptionsDropdown from './LanguageOptionsDropdown';
 import langVert from '../lang-data/lang.vert?raw';
 import PrettyAlert from './PrettyAlert';
 
+import ResizableGrid from './ResizableGrid';
+
 /**
  * A container component for that shows on the language options tab.
  *
@@ -56,26 +58,6 @@ function LanguageOptionsTabContainer() {
 
     const [openError, setOpenError] = useState(false);
     const [alertMessage, setAlertMessage] = useState('');
-    const [contSize, setContSize] = useState(0);
-    const contRef = useRef(null);
-
-    useEffect(() => {
-        const resizeObs = new ResizeObserver(entries => {
-            if(entries && entries.length > 0){
-                setContSize(entries[0].contentRect.width);
-            }
-        });
-
-        if(contRef.current){
-            resizeObs.observe(contRef.current);
-        }
-
-        return () => {
-            if(contRef.current){
-                resizeObs.unobserve(contRef.current);
-            }
-        };
-    }, [contRef, contSize]);
 
     const handleCodeChange = (newCode) => {
         setCode(newCode);
@@ -94,13 +76,6 @@ function LanguageOptionsTabContainer() {
         }
     };
 
-    const handleErrorClose = (event, reason) => {
-        if(reason === 'clickaway'){
-            return;
-        }
-        setOpenError(false);
-    };
-
     const handleCompile = () => {
         if(code !== ''){
             const newFrag = langCompiler(code, langTupleList, langIncludeSelf, langRange, 'moore');
@@ -117,42 +92,32 @@ function LanguageOptionsTabContainer() {
     }
 
     return (
-        <Box ref={contRef}>
-            <Grid container spacing={1} padding={2}>
-                <Grid item xs={contSize < 400 ? 12 : 6}>
-                    <HexColorPicker color={currentLangColor} onChange={handleCurrentColorChange}/>
-                </Grid>
-                <Grid item xs={contSize < 400 ? 12 : 6}>
-                    <Box style={{ maxHeight: 200, overflow: 'auto' }}>
-                        <List>
-                            {langTupleList.map((s, index) => (
-                                <LanguageStateItem key={index} state={{color: s.color, name: s.name}}/>
-                            ))}
-                        </List>
-                    </Box>
-                </Grid>
-                <Grid item xs={contSize < 400 ? 12 : 6}>
-                    <Button 
-                        variant="outlined" 
-                        fullWidth
-                        onClick={handleAddColor}
-                    > 
-                        Add Color 
-                    </Button>
-                </Grid>
-                <Grid item xs={contSize < 400 ? 12 : 6}>
-                    <Button 
-                        variant="outlined" 
-                        fullWidth
-                        onClick={handleCompile}
-                    > 
-                        Compile 
-                    </Button>
-                </Grid>
-            </Grid>
-        {/*<Button onClick={handleDebug}>
-                Debug
-            </Button>*/}
+        <Box>
+            <ResizableGrid limit={400}>
+                <HexColorPicker color={currentLangColor} onChange={handleCurrentColorChange}/>
+                <Box style={{ maxHeight: 200, overflow: 'auto' }}>
+                    <List>
+                        {langTupleList.map((s, index) => (
+                            <LanguageStateItem key={index} state={{color: s.color, name: s.name}}/>
+                        ))}
+                    </List>
+                </Box>
+                <Button 
+                    variant="outlined" 
+                    fullWidth
+                    onClick={handleAddColor}
+                > 
+                    Add Color 
+                </Button>
+                <Button 
+                    variant="outlined" 
+                    fullWidth
+                    onClick={handleCompile}
+                > 
+                    Compile 
+                </Button>
+            </ResizableGrid>
+            <Button onClick={handleDebug}>Debug</Button>
             <PrettyAlert
                 openAlert={openError}
                 setOpenAlert={setOpenError}
