@@ -10,7 +10,7 @@
 import { useContext, useEffect, useRef, useState } from 'react';
 
 // Material UI Imports
-import { Alert, Button, Box, Grid, List, Snackbar } from '@mui/material';
+import { Button, Box, Grid, List } from '@mui/material';
 
 // Ace Code Editor Imports
 import AceEditor from 'react-ace';
@@ -25,6 +25,7 @@ import LanguageStateItem from './LanguageStateItem';
 import langCompiler from '../lang-data/langCompiler';
 import LanguageOptionsDropdown from './LanguageOptionsDropdown';
 import langVert from '../lang-data/lang.vert?raw';
+import PrettyAlert from './PrettyAlert';
 
 /**
  * A container component for that shows on the language options tab.
@@ -152,21 +153,15 @@ function LanguageOptionsTabContainer() {
         {/*<Button onClick={handleDebug}>
                 Debug
             </Button>*/}
-            <Snackbar 
-                open={openError} 
-                autoHideDuration={1500} 
-                onClose={handleErrorClose}
-                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-            >
-                <Alert
-                    onClose={handleErrorClose}
-                    severity='error'
-                    variant='outlined'
-                    sx={{ width: '100%' }}
-                >
-                    {alertMessage}
-                </Alert>
-            </Snackbar>
+            <PrettyAlert
+                openAlert={openError}
+                setOpenAlert={setOpenError}
+                alertDuration={1500}
+                alertSeverity='error'
+                alertMessage={alertMessage}
+                anchorOriginV='top'
+                anchorOriginH='right'
+            />
             <LanguageOptionsDropdown/>
             <AceEditor
                 width="100%"
