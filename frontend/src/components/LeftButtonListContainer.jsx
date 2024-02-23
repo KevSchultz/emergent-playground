@@ -11,8 +11,9 @@ import { useEffect } from 'react';
 import { useContext } from 'react';
 
 // Material UI Imports
-import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
+import { Box, FormControl, MenuItem, Paper, Select } from '@mui/material';
+import { Brightness1 } from '@mui/icons-material';
+
 
 // Custom Component Imports
 import BrushIconButton from './BrushIconButton';
@@ -30,8 +31,17 @@ import P5PropertiesContext from './P5PropertiesContext';
  * @returns {JSX.Element} The LeftButtonListContainer component.
  */
 function LeftButtonListContainer() {
-    const { brushType, setBrushType, pause, setPause, listBrushTypes, cursorStyles } =
-        useContext(P5PropertiesContext);
+    const { 
+        brushType, 
+        setBrushType, 
+        pause, 
+        setPause, 
+        listBrushTypes, 
+        cursorStyles, 
+        langTupleList, 
+        currentDrawColor,
+        setCurrentDrawColor
+    } = useContext(P5PropertiesContext);
 
     // Set the cursor to the current brush type when the brush type changes
     useEffect(() => {
@@ -72,6 +82,19 @@ function LeftButtonListContainer() {
                         setCurrentBrushType={setBrushType}
                     />
                 ))}
+                <FormControl fullWidth>
+                    <Select
+                        value={currentDrawColor}
+                        onChange={(e) => {setCurrentDrawColor(e.target.value)}}
+                        variant='standard'
+                    >
+                    {langTupleList.map((s, index) => (
+                        <MenuItem key={index} value={s.color}>
+                            <Brightness1 sx={{ color: s.color }}/>
+                        </MenuItem>
+                    ))}
+                    </Select>
+                </FormControl>
             </Box>
         </Paper>
     );
