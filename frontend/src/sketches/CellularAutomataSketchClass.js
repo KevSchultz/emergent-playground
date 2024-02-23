@@ -25,6 +25,8 @@ class CellularAutomataSketchClass {
         this.defaultReactProperties = defaultReactProperties;
         this.shader;
         this.isSketchSetup = false;
+        this.cursorIsOnCanvas = false;
+        this.canvas;
 
         // Bind 'this' to all functions
         this.updateWorldWidth = this.updateWorldWidth.bind(this);
@@ -126,6 +128,7 @@ class CellularAutomataSketchClass {
      */
 
     updateBackgroundColor(newBackgroundColor){
+        this.reactProperties.setPause(1);
         this.currentState.clear();
         this.previousState.clear();
         this.currentState.background(newBackgroundColor);
@@ -190,7 +193,7 @@ class CellularAutomataSketchClass {
      * @returns None
      */
     setupMainCanvas() {
-        this.p5.createCanvas(this.p5.windowWidth, this.p5.windowHeight, this.p5.WEBGL); // no smooth is active by default with webgl
+        this.canvas = this.p5.createCanvas(this.p5.windowWidth, this.p5.windowHeight, this.p5.WEBGL); // no smooth is active by default with webgl
         this.p5.pixelDensity(PIXEL_DENSITY);
         this.p5.noStroke();
     }
@@ -262,6 +265,14 @@ class CellularAutomataSketchClass {
         );
 
         this.isSketchSetup = true;
+
+        this.canvas.mouseOver(() => {
+            this.cursorIsOnCanvas = true;
+        });
+
+        this.canvas.mouseOut(() => {
+            this.cursorIsOnCanvas = false;
+        });
     }
 
     /**
@@ -349,7 +360,7 @@ class CellularAutomataSketchClass {
 
         switch (this.reactProperties.brushType) {
             case 'pixel':
-                this.pixelDrawOnGraphics(graphicsBuffer, x, y, this.p5.color(255));
+                this.pixelDrawOnGraphics(graphicsBuffer, x, y, this.p5.color(this.reactProperties.currentDrawColor));
                 break;
 
             case 'square':
@@ -357,7 +368,7 @@ class CellularAutomataSketchClass {
                     graphicsBuffer,
                     x,
                     y,
-                    this.p5.color(255),
+                    this.p5.color(this.reactProperties.currentDrawColor),
                     this.reactProperties.brushSize,
                     2
                 );
@@ -368,7 +379,7 @@ class CellularAutomataSketchClass {
                     graphicsBuffer,
                     x,
                     y,
-                    this.p5.color(255),
+                    this.p5.color(this.reactProperties.currentDrawColor),
                     this.reactProperties.brushSize,
                     1
                 );
@@ -506,15 +517,17 @@ class CellularAutomataSketchClass {
      * @returns None
      */
     mouseWheel(event) {
-        this.reactProperties.setZoom((previousZoom) => {
-            previousZoom -= event.delta * this.reactProperties.zoomSensitivity;
-            previousZoom = this.p5.constrain(
-                previousZoom,
-                this.reactProperties.minZoom,
-                this.reactProperties.maxZoom
-            );
-            return previousZoom;
-        });
+        if(this.cursorIsOnCanvas){
+            this.reactProperties.setZoom((previousZoom) => {
+                previousZoom -= event.delta * this.reactProperties.zoomSensitivity;
+                previousZoom = this.p5.constrain(
+                    previousZoom,
+                    this.reactProperties.minZoom,
+                    this.reactProperties.maxZoom
+                );
+                return previousZoom;
+            });
+        }
     }
 
     /**
@@ -658,7 +671,7 @@ class CellularAutomataSketchClass {
      */
     cursorIsOnWorld() {
         let cursorWorld = this.screenToWorldP52DCoordinates(this.p5.mouseX, this.p5.mouseY);
-        return cursorWorld.x !== null && cursorWorld.y !== null;
+        return cursorWorld.x !== null && cursorWorld.y !== null && this.cursorIsOnCanvas;
     }
 
     freeGraphicsBuffer(graphicsBuffer) {

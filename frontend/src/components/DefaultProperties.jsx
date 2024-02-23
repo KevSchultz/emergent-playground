@@ -48,7 +48,8 @@ const DefaultProperties = {
     langTupleList: [],
     langIncludeSelf: false,
     langRange: 1,
-    backgroundColor: '#000000'
+    backgroundColor: '',
+    currentDrawColor: '#ffffff'
 };
 
 export default DefaultProperties;

@@ -53,7 +53,10 @@ function LanguageOptionsTabContainer() {
         langIncludeSelf,
         langRange,
         setFragmentShader,
-        setVertexShader
+        setVertexShader,
+        backgroundColor,
+        setBackgroundColor,
+        setCurrentDrawColor
     } = useContext(P5PropertiesContext);
 
     const [openError, setOpenError] = useState(false);
@@ -73,6 +76,9 @@ function LanguageOptionsTabContainer() {
             setAlertMessage('Color already in use.');
         } else {
             setLangTupleList([...langTupleList, {color: currentLangColor, name: ''}]);
+            if(backgroundColor === ''){
+                setBackgroundColor(currentLangColor);
+            }
         }
     };
 
@@ -88,7 +94,8 @@ function LanguageOptionsTabContainer() {
     };
 
     const handleDebug = () => {
-        console.log(langTupleList);
+        console.log(backgroundColor);
+        setCurrentDrawColor('#ff0000');
     }
 
     return (

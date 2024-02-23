@@ -63,6 +63,7 @@ export function P5PropertiesProvider({ children }) {
     const [langIncludeSelf, setLangIncludeSelf] = useState(DefaultProperties.langIncludeSelf);
     const [langRange, setLangRange] = useState(DefaultProperties.langRange);
     const [backgroundColor, setBackgroundColor] = useState(DefaultProperties.backgroundColor);
+    const [currentDrawColor, setCurrentDrawColor] = useState(DefaultProperties.currentDrawColor);
 
     const value = {
         worldWidth,
@@ -122,7 +123,9 @@ export function P5PropertiesProvider({ children }) {
         langRange,
         setLangRange,
         backgroundColor,
-        setBackgroundColor
+        setBackgroundColor,
+        currentDrawColor,
+        setCurrentDrawColor
     };
 
     return <P5PropertiesContext.Provider value={value}>{children}</P5PropertiesContext.Provider>;

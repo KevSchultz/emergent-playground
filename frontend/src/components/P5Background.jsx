@@ -51,6 +51,8 @@ function P5Background({ cellularAutomataSketch }) {
         fragmentShader,
         pause,
         code,
+        backgroundColor,
+        currentDrawColor,
         // Setters
         setWorldWidth,
         setWorldHeight,
@@ -128,6 +130,8 @@ function P5Background({ cellularAutomataSketch }) {
                 setFragmentShader={setFragmentShader}
                 setPause={setPause}
                 setCode={setCode}
+                backgroundColor={backgroundColor}
+                currentDrawColor={currentDrawColor}
             ></ReactP5Wrapper>
         </Box>
     );
