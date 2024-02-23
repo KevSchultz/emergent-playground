@@ -6,6 +6,9 @@ script_dir=$(dirname "$0")
 # Change to the specific folder relative to the script directory
 cd "$script_dir/../frontend"
 
+# Install the dependencies
+npm install
+
 # Build the frontend
 npm run build
 
