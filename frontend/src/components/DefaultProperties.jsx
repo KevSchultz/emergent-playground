@@ -7,14 +7,18 @@
  * @exports DefaultProperties
  */
 
-import vertexShader from '../shaders/basic.vert?raw';
-import fragmentShader from '../shaders/cellularAutomata.frag?raw';
+// Material-UI Imports
 import SquareIcon from '@mui/icons-material/Square';
 import CropSquareIcon from '@mui/icons-material/CropSquare';
 import CircleIcon from '@mui/icons-material/RadioButtonUnchecked';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 
-const DefaultProperties = {
+// Custom Imports
+import vertexShader from '../shaders/basic.vert?raw';
+import fragmentShader from '../shaders/gameOfLife.frag?raw';
+
+let DefaultProperties = {
+    sketchClassType: "CellularAutomataSketchClass",
     worldWidth: 500,
     worldHeight: 500,
     pixelDensity: 1,
@@ -48,9 +52,11 @@ const DefaultProperties = {
     vertexShader: vertexShader,
     fragmentShader: fragmentShader,
     pause: 1,
+    alwaysOn: 0,
     code: '', // for shader lang
     currentLangColor: '',
     langTupleList: [],
 };
+
 
 export default DefaultProperties;

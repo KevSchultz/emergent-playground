@@ -12,17 +12,9 @@ import TopNavigationBar from '../components/TopNavigationBar';
 import LeftButtonListContainer from '../components/LeftButtonListContainer';
 import RightOptionsRootContainer from '../components/RightOptionsRootContainer';
 import P5Background from '../components/P5Background';
-import DefaultProperties from '../components/DefaultProperties';
-
-// P5.js imports
-import CellularAutomataSketchClass from '../sketches/CellularAutomataSketchClass';
-import TextureRuleCellularAutomataSketchClass from '../sketches/TextureRuleCellularAutomataSketchClass';
 
 // Resizable Panel Imports
 import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
-
-// const cellularAutomataSketch = new CellularAutomataSketchClass(DefaultProperties);
-const TextureRuleCellularAutomataSketch = new TextureRuleCellularAutomataSketchClass(DefaultProperties);
 
 /**
  * A functional component that renders the Viewer Builder Creator page.
@@ -35,7 +27,7 @@ const TextureRuleCellularAutomataSketch = new TextureRuleCellularAutomataSketchC
 function ViewerBuilderCreator() {
     return (
         <>
-            <P5Background cellularAutomataSketch={TextureRuleCellularAutomataSketch} />
+            <P5Background />
             <TopNavigationBar />
             <PanelGroup direction="horizontal">
                 <div>

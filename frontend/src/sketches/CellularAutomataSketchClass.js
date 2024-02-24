@@ -26,6 +26,8 @@ class CellularAutomataSketchClass {
         this.shader;
         this.isSketchSetup = false;
         this.debugMode = false;
+        this.cursorIsOnCanvas = false;
+        this.canvas;
 
         // Bind 'this' to all functions
         this.updateWorldWidth = this.updateWorldWidth.bind(this);
@@ -53,7 +55,6 @@ class CellularAutomataSketchClass {
         this.cursorIsOnWorld = this.cursorIsOnWorld.bind(this);
 
         this.debugMode ? console.log('CellularAutomataSketchClass.constructor') : null;
-
     }
 
     /**
@@ -99,19 +100,18 @@ class CellularAutomataSketchClass {
         ]);
         this.currentState.resizeCanvas(this.reactProperties.worldWidth, newWorldHeight);
         this.previousState.resizeCanvas(this.reactProperties.worldWidth, newWorldHeight);
-        
+
         this.currentState.background(0);
         this.previousState.background(0);
 
         this.debugMode ? console.log('CellularAutomataSketchClass.updateWorldHeight') : null;
-
     }
 
     /**
      * Updates the shader of the sketch.
      *
-     * This method clears the current and previous states, resets the shader of the current state, 
-     * creates a new shader with the new vertex and fragment shaders, 
+     * This method clears the current and previous states, resets the shader of the current state,
+     * creates a new shader with the new vertex and fragment shaders,
      * sets the shader of the current state to the new shader, and updates the pause and resolution uniforms of the new shader.
      *
      * @param {string} newVertexShader - The new vertex shader.
@@ -150,7 +150,9 @@ class CellularAutomataSketchClass {
         this.p5.mousePressed = this.mousePressed;
         this.p5.windowResized = this.windowResized;
 
-        this.debugMode ? console.log('CellularAutomataSketchClass.reactP5WrapperToClassInterface') : null;
+        this.debugMode
+            ? console.log('CellularAutomataSketchClass.reactP5WrapperToClassInterface')
+            : null;
     }
 
     /**
@@ -191,7 +193,11 @@ class CellularAutomataSketchClass {
      * @returns None
      */
     setupMainCanvas() {
-        this.p5.createCanvas(this.p5.windowWidth, this.p5.windowHeight, this.p5.WEBGL); // no smooth is active by default with webgl
+        this.canvas = this.p5.createCanvas(
+            this.p5.windowWidth,
+            this.p5.windowHeight,
+            this.p5.WEBGL
+        ); // no smooth is active by default with webgl
         this.p5.pixelDensity(PIXEL_DENSITY);
         this.p5.noStroke();
 
@@ -203,7 +209,6 @@ class CellularAutomataSketchClass {
      * @returns None
      */
     setupCurrentStateGraphicsBuffer(worldWidth, worldHeight) {
-
         this.currentState = this.p5.createGraphics(worldWidth, worldHeight, this.p5.WEBGL);
 
         this.currentState.shader(this.shader);
@@ -212,7 +217,9 @@ class CellularAutomataSketchClass {
         this.currentState.pixelDensity(PIXEL_DENSITY);
         this.currentState.background(0);
 
-        this.debugMode ? console.log('CellularAutomataSketchClass.setupCurrentStateGraphicsBuffer') : null;
+        this.debugMode
+            ? console.log('CellularAutomataSketchClass.setupCurrentStateGraphicsBuffer')
+            : null;
     }
 
     /**
@@ -220,14 +227,15 @@ class CellularAutomataSketchClass {
      * @returns None
      */
     setupPreviousStateGraphicsBuffer(worldWidth, worldHeight) {
-
         this.previousState = this.p5.createGraphics(worldWidth, worldHeight);
 
         this.previousState.pixelDensity(PIXEL_DENSITY);
         this.previousState.noSmooth();
         this.previousState.background(0);
 
-        this.debugMode ? console.log('CellularAutomataSketchClass.setupPreviousStateGraphicsBuffer') : null;
+        this.debugMode
+            ? console.log('CellularAutomataSketchClass.setupPreviousStateGraphicsBuffer')
+            : null;
     }
 
     /**
@@ -237,7 +245,6 @@ class CellularAutomataSketchClass {
      * @param {string} fragmentShader - The GLSL source code for the fragment shader.
      */
     setupShader(vertexShader, fragmentShader) {
-
         this.shader = this.p5.createShader(vertexShader, fragmentShader);
 
         this.debugMode ? console.log('CellularAutomataSketchClass.setupShader') : null;
@@ -275,6 +282,14 @@ class CellularAutomataSketchClass {
 
         this.isSketchSetup = true;
 
+        this.canvas.mouseOver(() => {
+            this.cursorIsOnCanvas = true;
+        });
+
+        this.canvas.mouseOut(() => {
+            this.cursorIsOnCanvas = false;
+        });
+
         this.debugMode ? console.log('CellularAutomataSketchClass.setup') : null;
     }
 
@@ -284,10 +299,11 @@ class CellularAutomataSketchClass {
      * @returns Boolean - True if the brush is drawing, false otherwise.
      */
     isBrushDrawingActive() {
-
         // this.debugMode ? console.log('CellularAutomataSketchClass.isBrushDrawingActive') : null;
 
-        return this.p5.mouseIsPressed && this.p5.mouseButton === this.p5.LEFT;
+        return (
+            this.p5.mouseIsPressed && this.p5.mouseButton === this.p5.LEFT && this.cursorIsOnCanvas
+        );
     }
 
     /**
@@ -365,6 +381,7 @@ class CellularAutomataSketchClass {
      * @returns None
      */
     brushDrawOnGraphics(graphicsBuffer, x, y, color) {
+
         // If the brush is not drawing, do nothing
         // If the cursor is not on the world, do nothing
         if (!this.isBrushDrawingActive() || !this.cursorIsOnWorld()) {
@@ -440,6 +457,7 @@ class CellularAutomataSketchClass {
      * @returns None
      */
     draw() {
+
         // If the sketch is not set up, do nothing
         if (this.isSketchSetup == false) {
             console.log('Sketch not set up');
@@ -535,6 +553,10 @@ class CellularAutomataSketchClass {
      * @returns None
      */
     mouseWheel(event) {
+        if (!this.cursorIsOnCanvas) {
+            return;
+        }
+
         this.reactProperties.setZoom((previousZoom) => {
             previousZoom -= event.delta * this.reactProperties.zoomSensitivity;
             previousZoom = this.p5.constrain(
@@ -587,7 +609,7 @@ class CellularAutomataSketchClass {
      *
      * @returns None
      */
-    mousePressed() {
+    mousePressed(event) {
         this.reactProperties.setPreviousMouseX(this.p5.mouseX);
         this.reactProperties.setPreviousMouseY(this.p5.mouseY);
 

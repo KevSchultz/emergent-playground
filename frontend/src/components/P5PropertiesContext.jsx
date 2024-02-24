@@ -30,6 +30,7 @@ const P5PropertiesContext = createContext();
  * @returns {JSX.Element} A P5PropertiesContext.Provider that wraps the child components and provides them with access to the P5 properties context.
  */
 export function P5PropertiesProvider({ children }) {
+    const [sketchClass, setSketchClass] = useState(DefaultProperties.sketchClass);
     const [worldWidth, setWorldWidth] = useState(DefaultProperties.worldWidth);
     const [worldHeight, setWorldHeight] = useState(DefaultProperties.worldHeight);
     const [pixelDensity, setPixelDensity] = useState(DefaultProperties.pixelDensity);
@@ -57,11 +58,14 @@ export function P5PropertiesProvider({ children }) {
     const [vertexShader, setVertexShader] = useState(DefaultProperties.vertexShader);
     const [fragmentShader, setFragmentShader] = useState(DefaultProperties.fragmentShader);
     const [pause, setPause] = useState(DefaultProperties.pause);
+    const [alwaysOn, setAlwaysOn] = useState(DefaultProperties.alwaysOn);
     const [code, setCode] = useState(DefaultProperties.code);
     const [currentLangColor, setCurrentLangColor] = useState(DefaultProperties.currentLangColor);
     const [langTupleList, setLangTupleList] = useState(DefaultProperties.langTupleList);
 
     const value = {
+        sketchClass,
+        setSketchClass,
         worldWidth,
         setWorldWidth,
         worldHeight,
@@ -108,6 +112,8 @@ export function P5PropertiesProvider({ children }) {
         setFragmentShader,
         pause,
         setPause,
+        alwaysOn,
+        setAlwaysOn,
         code,
         setCode,
         currentLangColor,

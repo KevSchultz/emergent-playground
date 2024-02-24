@@ -1,20 +1,22 @@
 /**
  * @project Emergent Playground
  * @file P5Background.jsx
- * @overview A component for rendering the P5.js background. 
+ * @overview A component for rendering the P5.js background.
  * @authors Kevin Schultz
  * @exports P5Background
  */
 
 // React Imports
-import { useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 // Material UI Imports
 import Box from '@mui/material/Box';
 
 // Other Imports
 import { ReactP5Wrapper } from '@p5-wrapper/react';
 import P5PropertiesContext from './P5PropertiesContext';
+import DefaultProperties from './DefaultProperties';
 import PropTypes from 'prop-types';
+import CellularAutomataSketchClass from '../sketches/CellularAutomataSketchClass';
 
 /**
  * A component for rendering the P5.js background.
@@ -26,52 +28,26 @@ import PropTypes from 'prop-types';
  *
  * @param {Object} props - The properties passed to the component.
  * @param {Object} props.cellularAutomataSketch - The cellular automata sketch.
- * 
+ *
  * @returns {JSX.Element} The P5Background component.
  */
-function P5Background({ cellularAutomataSketch }) {
-    const {
-        // State variables
-        worldWidth,
-        worldHeight,
-        cameraX,
-        cameraY,
-        cameraZ,
-        scaleOffset,
-        zoom,
-        minZoom,
-        maxZoom,
-        zoomSensitivity,
-        panSensitivity,
-        brushType,
-        brushSize,
-        previousMouseX,
-        previousMouseY,
-        vertexShader,
-        fragmentShader,
-        pause,
-        code,
-        // Setters
-        setWorldWidth,
-        setWorldHeight,
-        setCameraX,
-        setCameraY,
-        setCameraZ,
-        setScaleOffset,
-        setZoom,
-        setMinZoom,
-        setMaxZoom,
-        setZoomSensitivity,
-        setPanSensitivity,
-        setBrushType,
-        setBrushSize,
-        setPreviousMouseX,
-        setPreviousMouseY,
-        setVertexShader,
-        setFragmentShader,
-        setPause,
-        setCode,
-    } = useContext(P5PropertiesContext);
+function P5Background() {
+    const [sketch, setSketch] = useState(new CellularAutomataSketchClass(DefaultProperties));
+    const p5Properties = useContext(P5PropertiesContext);
+
+    const { sketchClass } = p5Properties;
+
+    useEffect(() => {
+
+        switch (sketchClass) {
+            case "CellularAutomataSketchClass":
+                setSketch(new CellularAutomataSketchClass(DefaultProperties));
+                break;
+            default:
+                setSketch(new CellularAutomataSketchClass(DefaultProperties));
+        }
+
+    }, [sketchClass]);
 
     return (
         <Box
@@ -88,52 +64,15 @@ function P5Background({ cellularAutomataSketch }) {
             }}
         >
             <ReactP5Wrapper
-                sketch={cellularAutomataSketch.reactP5WrapperToClassInterface}
-                worldWidth={worldWidth}
-                worldHeight={worldHeight}
-                cameraX={cameraX}
-                cameraY={cameraY}
-                cameraZ={cameraZ}
-                scaleOffset={scaleOffset}
-                zoom={zoom}
-                minZoom={minZoom}
-                maxZoom={maxZoom}
-                zoomSensitivity={zoomSensitivity}
-                panSensitivity={panSensitivity}
-                brushType={brushType}
-                brushSize={brushSize}
-                previousMouseX={previousMouseX}
-                previousMouseY={previousMouseY}
-                vertexShader={vertexShader}
-                fragmentShader={fragmentShader}
-                pause={pause}
-                code={code}
-                setWorldWidth={setWorldWidth}
-                setWorldHeight={setWorldHeight}
-                setCameraX={setCameraX}
-                setCameraY={setCameraY}
-                setCameraZ={setCameraZ}
-                setScaleOffset={setScaleOffset}
-                setZoom={setZoom}
-                setMinZoom={setMinZoom}
-                setMaxZoom={setMaxZoom}
-                setZoomSensitivity={setZoomSensitivity}
-                setPanSensitivity={setPanSensitivity}
-                setBrushType={setBrushType}
-                setBrushSize={setBrushSize}
-                setPreviousMouseX={setPreviousMouseX}
-                setPreviousMouseY={setPreviousMouseY}
-                setVertexShader={setVertexShader}
-                setFragmentShader={setFragmentShader}
-                setPause={setPause}
-                setCode={setCode}
+                sketch={sketch.reactP5WrapperToClassInterface}
+                {...p5Properties}
             ></ReactP5Wrapper>
         </Box>
     );
 }
 
 P5Background.propTypes = {
-    cellularAutomataSketch: PropTypes.object.isRequired,
+    P5SketchClass: PropTypes.object.isRequired,
 };
 
 export default P5Background;
