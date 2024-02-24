@@ -5,239 +5,256 @@
  * @project Emergent Playground
  */
 
-import React from 'react';
+import { useContext, useEffect } from 'react';
+import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import { Paper } from '@mui/material';
 import Box from '@mui/material/Box';
-import Avatar from '@mui/material/Avatar';
+import Paper from '@mui/material/Paper';
+import P5Background from '../components/P5Background';
+import DefaultProperties from '../components/DefaultProperties';
+import TextureRuleCellularAutomataSketchClass from '../sketches/TextureRuleCellularAutomataSketchClass';
+import P5PropertiesContext from '../components/P5PropertiesContext';
 
 
-// import { ReactP5Wrapper } from '@p5-wrapper/react';
-// import cellularAutomataSketch from '../sketches/cellularAutomataSketch';
-// import DefaultProperties from '../sketches/DefaultProperties';
+const TextureRuleCellularAutomataSketch = new TextureRuleCellularAutomataSketchClass(
+    DefaultProperties
+);
 
-
-/**
- * @component
- * @returns {ReactElement} A container component that renders the welcome page.
- */
 function Welcome() {
+    
+    const { setZoom } = useContext(P5PropertiesContext);
+
+    useEffect(() => {
+        setZoom(10);
+    });
+
     return (
-        <>  
-            {/* Custom Top Nav Bar */}
-            <Paper
-                elevation={0}
-                sx={{
-                    width: '100%',
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    height: '5vh',
-                    overflow: 'hidden',
-                    padding: '1vw',
-                    boxSizing: 'border-box',
-                    // borderBottom: '2px solid rgba(0, 0, 0, 0.5)',
-                    position: 'relative',
-                }}
-            >
-                {/* HOME, CANVAS, and COMMUNITY buttons */}
-                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flex: 1 }}>
-                    <a href="/welcome" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
-                        <Button 
-                            variant="text"
-                            color="primary"
+        <Box
+            sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                minHeight: '100vh',
+                justifyContent: 'center',
+                alignItems: 'center',
+            }}
+        >
 
-                        >
-                            Home
-                        </Button>
-                    </a>
-                    <a href="/" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
-                        <Button 
-                            variant="text" 
-                            color="primary" 
-                        >
-                            Canvas
-                        </Button>
-                    </a>
-                    <a href="/community" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
-                        <Button 
-                            variant="text"  
-                            color="primary"
-                        >
-                            Community
-                        </Button>
-                    </a>
-                </Box>
+            <P5Background cellularAutomataSketch={TextureRuleCellularAutomataSketch} />
 
-                {/* LOGIN and SIGN UP buttons */}
-                <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                    <a href="/login" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
-                        <Button 
-                            variant="text" 
-                            color="primary" 
-                            sx={{ 
-                                marginRight: '10px', 
-                            }}
-                        >
-                            Login
-                        </Button>
-                    </a>
-                    <a href="/register" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
-                        <Button 
-                            variant="contained" 
-                            color="primary" 
-                        >
-                            Sign Up
-                        </Button>
-                    </a>
-                </Box>
-            </Paper>
-
-            {/* Play Button Box */}
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '90vh' }}>
-                <Box
+                {/* Custom Top Nav Bar */}
+                <Paper
+                    elevation={0}
                     sx={{
-                        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                        padding: '40px', 
-                        borderRadius: '4px',
+                        width: '100%',
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        height: '5vh',
+                        overflow: 'hidden',
+                        padding: '1vw',
+                        boxSizing: 'border-box',
+                        // borderBottom: '2px solid rgba(0, 0, 0, 0.5)',
+                        position: 'relative',
+                        backgroundColor: 'rgba(0, 0, 0, 0.75)',
                     }}
                 >
-                    <div style={{ textAlign: 'center' }}>
-                        <Typography variant="h4" gutterBottom>
-                            Welcome to
-                            <br />
-                            EMERGENT PLAYGROUND
-                        </Typography>
-
-                        <Typography variant="h6" gutterBottom>
-                            A web platform to animate, build, and share cellular automata.
-                        </Typography>
-
-                        <a href="/" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
+                    {/* HOME, CANVAS, and COMMUNITY buttons */}
+                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'left', flex: 1 }}>
+                        <a href="/welcome" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
                             <Button 
-                                variant="contained" 
+                                variant="text"
                                 color="primary"
-                                sx={{ 
-                                    marginTop: '15px', 
-                                }}
                             >
-                                PLAY
+                                Home
                             </Button>
                         </a>
-                    </div>
-                </Box>
-            </div>
-
-            {/* About Box */}
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '60vh' }}>
-                <Box
-                    sx={{
-                        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                        padding: '40px', 
-                        borderRadius: '4px',
-                        marginTop: '300px'
-                    }}
-                >
-                    <div style={{ textAlign: 'center' }}>
-                        <Typography variant="h4" gutterBottom>
-                            ABOUT
-                        </Typography>
-
-                        <Typography 
-                            variant="h5" 
-                            gutterBottom
-                            sx={{ marginTop: '30px'}}
-                        >
-                            What is a cellular automaton?
-                        </Typography>
-
-                        <Typography 
-                            variant="body1" 
-                            gutterBottom
-                            sx={{width: '70vh', marginTop: '15px'}}
-                        >
-                            A cellular automaton is a mathematical model consisting of a grid of cells, each governed by simple rules dictating their state changes based on neighboring cells. 
-                            These rules typically involve replication, destruction, or state transitions, leading to dynamic and emergent behaviors within the system. 
-                            Cellular automata find applications in various fields, from generating intricate patterns in art and design to modeling complex phenomena in physics, biology, and computer science.
-                        </Typography>
-
-                        <Typography 
-                            variant="h5" 
-                            gutterBottom 
-                            sx={{ marginTop: '30px'}}
-                        >
-                            CSE115A Winter 2023 Project
-                        </Typography>
-
-                        <Typography 
-                            variant="body1" 
-                            gutterBottom
-                            sx={{width: '70vh', marginTop: '15px'}}
-                        >
-                            This site is meant to serve as a platform to view, create, and share cellular automata. 
-                            Done over an 8 week period, our team employed SCRUM techniques learned in class to collaborate on this project.
-                        </Typography>
-
-                        {/* Avatar list */}
-                        <div style={{ display: 'flex', alignItems: 'center', marginTop: '30px' }}>
-                            <Avatar 
-                                sx={{ height: '10vh', width: '10vh', marginRight: '10px' }}
+                        <a href="/" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
+                            <Button 
+                                variant="text" 
+                                color="primary" 
                             >
-                                Kevin
-                            </Avatar>
-                            <Typography variant="body2" gutterBottom>
-                                I am the product manager
-                            </Typography>
-                        </div>
-
-                        <div style={{ display: 'flex', alignItems: 'center', marginTop: '30px' }}>
-                            <Avatar 
-                                sx={{ height: '10vh', width: '10vh', marginRight: '10px' }}
+                                Canvas
+                            </Button>
+                        </a>
+                        <a href="/community" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
+                            <Button 
+                                variant="text"  
+                                color="primary"
                             >
-                                Beckett
-                            </Avatar>
-                            <Typography variant="body2" gutterBottom>
-                                Text here
-                            </Typography>
-                        </div>
-
-                        <div style={{ display: 'flex', alignItems: 'center', marginTop: '30px' }}>
-                            <Avatar 
-                                sx={{ height: '10vh', width: '10vh', marginRight: '10px' }}
+                                Community
+                            </Button>
+                        </a>
+                    </Box>
+                    
+                    {/* LOGIN and SIGN UP buttons */}
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                        <a href="/login" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
+                            <Button 
+                                variant="text" 
+                                color="primary" 
+                                sx={{ 
+                                    marginRight: '10px', 
+                                }}
                             >
-                                Alex
-                            </Avatar>
-                            <Typography variant="body2" gutterBottom>
-                                Text here
-                            </Typography>
-                        </div>
-
-                        <div style={{ display: 'flex', alignItems: 'center', marginTop: '30px' }}>
-                            <Avatar 
-                                sx={{ height: '10vh', width: '10vh', marginRight: '10px' }}
+                                Login
+                            </Button>
+                        </a>
+                        <a href="/register" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
+                            <Button 
+                                variant="contained" 
+                                color="primary" 
                             >
-                                Ethan
-                            </Avatar>
-                            <Typography variant="body2" gutterBottom>
-                                Text here
-                            </Typography>
-                        </div>
+                                Sign Up
+                            </Button>
+                        </a>
+                    </Box>
+                </Paper>
 
-                        <div style={{ display: 'flex', alignItems: 'center', marginTop: '30px' }}>
-                            <Avatar 
-                                sx={{ height: '10vh', width: '10vh', marginRight: '10px' }}
-                            >
-                                Preston
-                            </Avatar>
-                            <Typography variant="body2" gutterBottom>
-                                Text here
+                {/* Play Button Box */}
+                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '90vh' }}>
+                    <Box
+                        sx={{
+                            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                            padding: '40px', 
+                            borderRadius: '4px',
+                        }}
+                    >
+                        <div style={{ textAlign: 'center' }}>
+                            <Typography variant="h4" gutterBottom>
+                                Welcome to
+                                <br />
+                                EMERGENT PLAYGROUND
                             </Typography>
+
+                            <Typography variant="h6" gutterBottom>
+                                A web platform to animate, build, and share cellular automata.
+                            </Typography>
+
+                            <a href="/" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
+                                <Button 
+                                    variant="contained" 
+                                    color="primary"
+                                    sx={{ 
+                                        marginTop: '15px', 
+                                    }}
+                                >
+                                    PLAY
+                                </Button>
+                            </a>
                         </div>
-                    </div>
-                </Box>
-            </div>
-        </>
+                    </Box>
+                </div>
+
+                {/* About Box */}
+                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '60vh' }}>
+                    <Box
+                        sx={{
+                            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                            padding: '40px', 
+                            borderRadius: '4px',
+                            marginTop: '300px'
+                        }}
+                    >
+                        <div style={{ textAlign: 'center' }}>
+                            <Typography variant="h4" gutterBottom>
+                                ABOUT
+                            </Typography>
+
+                            <Typography 
+                                variant="h5" 
+                                gutterBottom
+                                sx={{ marginTop: '30px'}}
+                            >
+                                What is a cellular automaton?
+                            </Typography>
+
+                            <Typography 
+                                variant="body1" 
+                                gutterBottom
+                                sx={{width: '70vh', marginTop: '15px'}}
+                            >
+                                A cellular automaton is a mathematical model consisting of a grid of cells, each governed by simple rules dictating their state changes based on neighboring cells. 
+                                These rules typically involve replication, destruction, or state transitions, leading to dynamic and emergent behaviors within the system. 
+                                Cellular automata find applications in various fields, from generating intricate patterns in art and design to modeling complex phenomena in physics, biology, and computer science.
+                            </Typography>
+
+                            <Typography 
+                                variant="h5" 
+                                gutterBottom 
+                                sx={{ marginTop: '30px'}}
+                            >
+                                CSE115A Winter 2023 Project
+                            </Typography>
+
+                            <Typography 
+                                variant="body1" 
+                                gutterBottom
+                                sx={{width: '70vh', marginTop: '15px'}}
+                            >
+                                This site is meant to serve as a platform to view, create, and share cellular automata. 
+                                Done over an 8 week period, our team employed SCRUM techniques learned in class to collaborate on this project.
+                            </Typography>
+
+                            {/* Avatar list */}
+                            <div style={{ display: 'flex', alignItems: 'center', marginTop: '30px' }}>
+                                <Avatar 
+                                    sx={{ height: '10vh', width: '10vh', marginRight: '10px' }}
+                                >
+                                    Kevin
+                                </Avatar>
+                                <Typography variant="body2" gutterBottom>
+                                    I am the product manager
+                                </Typography>
+                            </div>
+
+                            <div style={{ display: 'flex', alignItems: 'center', marginTop: '30px' }}>
+                                <Avatar 
+                                    sx={{ height: '10vh', width: '10vh', marginRight: '10px' }}
+                                >
+                                    Beckett
+                                </Avatar>
+                                <Typography variant="body2" gutterBottom>
+                                    Text here
+                                </Typography>
+                            </div>
+
+                            <div style={{ display: 'flex', alignItems: 'center', marginTop: '30px' }}>
+                                <Avatar 
+                                    sx={{ height: '10vh', width: '10vh', marginRight: '10px' }}
+                                >
+                                    Alex
+                                </Avatar>
+                                <Typography variant="body2" gutterBottom>
+                                    Text here
+                                </Typography>
+                            </div>
+
+                            <div style={{ display: 'flex', alignItems: 'center', marginTop: '30px' }}>
+                                <Avatar 
+                                    sx={{ height: '10vh', width: '10vh', marginRight: '10px' }}
+                                >
+                                    Ethan
+                                </Avatar>
+                                <Typography variant="body2" gutterBottom>
+                                    Text here
+                                </Typography>
+                            </div>
+
+                            <div style={{ display: 'flex', alignItems: 'center', marginTop: '30px' }}>
+                                <Avatar 
+                                    sx={{ height: '10vh', width: '10vh', marginRight: '10px' }}
+                                >
+                                    Preston
+                                </Avatar>
+                                <Typography variant="body2" gutterBottom>
+                                    Text here
+                                </Typography>
+                            </div>
+                        </div>
+                    </Box>
+                </div>
+        </Box>
     );
 }
 

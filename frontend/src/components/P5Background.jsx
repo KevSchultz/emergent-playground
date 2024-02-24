@@ -85,6 +85,7 @@ function P5Background({ cellularAutomataSketch }) {
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
+                zIndex: '-1',
             }}
         >
             <ReactP5Wrapper
