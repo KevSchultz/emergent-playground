@@ -53,6 +53,7 @@ class CellularAutomataSketchClass {
         this.screenToWorldP52DCoordinates = this.screenToWorldP52DCoordinates.bind(this);
         this.screenToWorldP5WebGlCoordinates = this.screenToWorldP5WebGlCoordinates.bind(this);
         this.cursorIsOnWorld = this.cursorIsOnWorld.bind(this);
+        this.saveState = this.saveState.bind(this);
 
         this.debugMode ? console.log('CellularAutomataSketchClass.constructor') : null;
     }
@@ -381,7 +382,6 @@ class CellularAutomataSketchClass {
      * @returns None
      */
     brushDrawOnGraphics(graphicsBuffer, x, y, color) {
-
         // If the brush is not drawing, do nothing
         // If the cursor is not on the world, do nothing
         if (!this.isBrushDrawingActive() || !this.cursorIsOnWorld()) {
@@ -457,6 +457,7 @@ class CellularAutomataSketchClass {
      * @returns None
      */
     draw() {
+        // this.saveState(this.previousState);
 
         // If the sketch is not set up, do nothing
         if (this.isSketchSetup == false) {
@@ -609,7 +610,7 @@ class CellularAutomataSketchClass {
      *
      * @returns None
      */
-    mousePressed(event) {
+    mousePressed() {
         this.reactProperties.setPreviousMouseX(this.p5.mouseX);
         this.reactProperties.setPreviousMouseY(this.p5.mouseY);
 
@@ -720,26 +721,24 @@ class CellularAutomataSketchClass {
         return cursorWorld.x !== null && cursorWorld.y !== null;
     }
 
-    // freeGraphicsBuffer(graphicsBuffer) {
-    //     const gl = graphicsBuffer._renderer.GL;
+    saveState(graphicsBuffer) {
+        graphicsBuffer.loadPixels();
 
-    //     if (gl) {
-    //         const numTextureUnits = gl.getParameter(gl.MAX_TEXTURE_IMAGE_UNITS);
-    //         for (let unit = 0; unit < numTextureUnits; ++unit) {
-    //             gl.activeTexture(gl.TEXTURE0 + unit);
-    //             gl.bindTexture(gl.TEXTURE_2D, null);
-    //             gl.bindTexture(gl.TEXTURE_CUBE_MAP, null);
-    //         }
-    //         gl.bindBuffer(gl.ARRAY_BUFFER, null);
-    //         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
-    //         gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-    //         gl.bindRenderbuffer(gl.RENDERBUFFER, null);
-    //     }
+        // Create an array to hold the pixel data
+        let pixelArray = [];
 
-    //     graphicsBuffer._renderer.GL = null;
-    //     graphicsBuffer.remove();
-    //     graphicsBuffer = null;
-    // }
+        // Set the pixels of the new image to match the pixels of the graphicsBuffer
+        for (let y = 0; y < graphicsBuffer.height; y++) {
+            for (let x = 0; x < graphicsBuffer.width; x++) {
+                let c = graphicsBuffer.get(x, y);
+                // Push the pixel's color values into the array
+                pixelArray.push([c[0], c[1], c[2], c[3]]);
+            }
+        }
+
+        // Now pixelArray contains the RGBA values of all pixels
+        console.log(pixelArray);
+    }
 }
 
 export default CellularAutomataSketchClass;

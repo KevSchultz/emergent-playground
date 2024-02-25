@@ -16,6 +16,7 @@ import CameraAltIcon from '@mui/icons-material/CameraAlt';
 // Custom Imports
 import vertexShader from '../shaders/basic.vert?raw';
 import fragmentShader from '../shaders/gameOfLife.frag?raw';
+import CellularAutomataSketchClass from '../sketches/CellularAutomataSketchClass';
 
 let DefaultProperties = {
     sketchClassType: "CellularAutomataSketchClass",
@@ -58,5 +59,6 @@ let DefaultProperties = {
     langTupleList: [],
 };
 
+export const sketch = new CellularAutomataSketchClass(DefaultProperties);
 
 export default DefaultProperties;

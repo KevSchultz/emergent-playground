@@ -7,7 +7,7 @@
  */
 
 // React Imports
-import { useState, useContext, useEffect } from 'react';
+import {useContext} from 'react';
 // Material UI Imports
 import Box from '@mui/material/Box';
 
@@ -15,8 +15,7 @@ import Box from '@mui/material/Box';
 import { ReactP5Wrapper } from '@p5-wrapper/react';
 import P5PropertiesContext from './P5PropertiesContext';
 import DefaultProperties from './DefaultProperties';
-import PropTypes from 'prop-types';
-import CellularAutomataSketchClass from '../sketches/CellularAutomataSketchClass';
+import { sketch } from './DefaultProperties';
 
 /**
  * A component for rendering the P5.js background.
@@ -32,22 +31,22 @@ import CellularAutomataSketchClass from '../sketches/CellularAutomataSketchClass
  * @returns {JSX.Element} The P5Background component.
  */
 function P5Background() {
-    const [sketch, setSketch] = useState(new CellularAutomataSketchClass(DefaultProperties));
+    // const [sketch, setSketch] = useState(new CellularAutomataSketchClass(DefaultProperties));
     const p5Properties = useContext(P5PropertiesContext);
 
-    const { sketchClass } = p5Properties;
+    // const { sketchClass } = p5Properties;
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        switch (sketchClass) {
-            case "CellularAutomataSketchClass":
-                setSketch(new CellularAutomataSketchClass(DefaultProperties));
-                break;
-            default:
-                setSketch(new CellularAutomataSketchClass(DefaultProperties));
-        }
+    //     switch (sketchClass) {
+    //         case "CellularAutomataSketchClass":
+    //             setSketch(new CellularAutomataSketchClass(DefaultProperties));
+    //             break;
+    //         default:
+    //             setSketch(new CellularAutomataSketchClass(DefaultProperties));
+    //     }
 
-    }, [sketchClass]);
+    // }, [sketchClass]);
 
     return (
         <Box
@@ -70,9 +69,5 @@ function P5Background() {
         </Box>
     );
 }
-
-P5Background.propTypes = {
-    P5SketchClass: PropTypes.object.isRequired,
-};
 
 export default P5Background;

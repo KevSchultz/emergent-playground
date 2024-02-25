@@ -11,6 +11,8 @@ import { useContext } from 'react';
 
 // Material UI Imports
 import Box from '@mui/material/Box';
+import { Button } from '@mui/material';
+import { sketch } from './DefaultProperties';
 
 // Custom Component Imports
 import InputSlider from './InputSlider';
@@ -40,6 +42,10 @@ function ViewerOptionsTabContainer() {
 
     return (
         <Box sx={{ width: '100%' }}>
+
+            <Button onClick={() => sketch.saveState(sketch.previousState)}>Save</Button>
+
+
             <InputSlider
                 label="Zoom"
                 minValue={0}

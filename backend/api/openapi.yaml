@@ -8,11 +8,34 @@ servers:
   - url: http://localhost:3010/api
 
 paths:
+  /register:
+    post:
+      description: Register
+      requestBody:
+        description: Request Body with Username, Email and Password. All fields are required.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegistrationCredentials'
+      responses:
+        200:
+          description: Access Token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        default:
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnexpectedError'
   /login:
     post:
       description: Login
       requestBody:
-        description: Request Body
+        description: Request Body with Email and Password. All fields are required.
         required: true
         content:
           application/json:
@@ -20,11 +43,32 @@ paths:
               $ref: '#/components/schemas/Credentials'
       responses:
         200:
-          description: Books Response
+          description: Access Token
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
+        default:
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnexpectedError'
+  /test:
+    get:
+      security:
+        - bearerAuth: []
+      description: Test route to check if the token is working
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
         default:
           description: Unexpected Error
           content:
@@ -44,6 +88,19 @@ components:
           format: int32
         message:
           type: string
+    RegistrationCredentials:
+      type: object
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+      required:
+        - username
+        - email
+        - password
 
     Credentials:
       type: object
@@ -59,12 +116,9 @@ components:
     User:
       type: object
       properties:
-        name:
-          type: string
         accessToken:
           type: string
       required:
-        - name
         - accessToken
 
   securitySchemes:
