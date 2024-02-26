@@ -21,7 +21,7 @@ app.use(express.urlencoded({ extended: false }));
 // ------ OpenAPI Specification Validation and Swagger Documentation Page ------
 
 // Load the OpenAPI specification
-const openAPISpecificationPath = path.join(__dirname, '../api/openapi.yaml');
+const openAPISpecificationPath = path.join(__dirname, '../api-schema/openapi.yaml');
 const openAPISpecificationContents = fs.readFileSync(openAPISpecificationPath, 'utf8');
 const apiSwaggerDocumentationPage = yaml.load(openAPISpecificationContents);
 

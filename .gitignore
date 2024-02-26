@@ -1,3 +1,6 @@
+# DO NOT REMOVE THIS FILE EVER!
+.env
+
 # Logs
 logs
 *.log

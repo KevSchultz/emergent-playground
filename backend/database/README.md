@@ -11,6 +11,7 @@ The API allows for:
 ## Building
 
 ### Database
+
 To build the Postgresql Database first ensure that the following dependencies are installed:
     - node
     - express
@@ -36,23 +37,31 @@ Change the password of this account using this command in the sql prompt
 
 The default account has admin privileges so it is important to select a secure password for non local hosting
 
+Next, we need to create a role for the server to connect to the database. Use a secure password that is also found in .env as DATABASE_CLIENT_PASSWORD.
+
+```
+CREATE ROLE client WITH LOGIN PASSWORD <DATABASE_CLIENT_PASSWORD>; -- (replace DATABASE_CLIENT_PASSWORD with real password)
+```
+
 To build the database, we are going to use the createDatabase.sql
 
 First obtain the path to where createDatabase.sql is located on your file system
 
 Then run the following command in the sql prompt
+
 ```
 \i ~/path/to/your/createDatabase.sql
 ```
 
 Where '~/path/to/your/createDatabase.sql' should be replaced with the actual path to createDatabase.sql
 
-To verify that the database was correctly built, use 
+To verify that the database was correctly built, use
+
 ```
 \dt
 ```
 
-to list all tables. There should be three tables named users, sessions, and posts
+to list all tables. There should be two tables named users and posts.
 
 ### API
 
@@ -65,17 +74,19 @@ node psqlConnectAPI.js
 Or include the psqlConnectAPI.js file in a different javascript file to use the functions as a library
 
 ## Usage
+
 No knowledge of SQL is required for the usage of this API, however it is recommended to be familiar with the definitions of what a query is and how it is used
 
 Included below is a comprehensive list of the functions this API provides and how to use them
 
 ### Functions:
 
-
 #### connectToDatabase()
+
 ```
 connectToDatabase()
 ```
+
 Connects to the database by making a new client object and connecting to the database
 
 returns the client as an object with fields:
@@ -85,11 +96,12 @@ returns the client as an object with fields:
     - password: the password of the account
     - database: the name of the database we have connected to
 
-
 #### createAccount()
+
 ```
 createAccount(client, username, password, email)
 ```
+
 Creates a user account by entering a new account with the provided info as a row into the users table
 
 Takes the following arguments:
@@ -105,8 +117,8 @@ Returns a user object with the following fields:
     - creationTime:
     - permissions:
 
-
 #### deleteAccount()
+
 ```
 deleteAccount(client, user)
 ```
@@ -117,11 +129,12 @@ Takes the following arguments:
     - client: the client object
     - user: the user object
 
-
 #### logIn()
+
 ```
 logIn(client, username, password)
 ```
+
 Logs the user in by checking the provided credentials, creating a new session object, and then returning it after uploading the session info to the database
 
 Takes the client object, username, and password
@@ -142,8 +155,8 @@ It should be noted that creationTime and expireTime must be in the format: 'YYYY
 If the credentials are incorrect:
 Returns NULL
 
-
 #### logOut()
+
 ```
 logOut(client, session)
 ```
@@ -154,8 +167,8 @@ Takes the client object and the session object
 
 returns true if successful
 
-
 #### makePost()
+
 ```
 makePost(client, session, title, description, visibility, filename, state, thumbnail, data)
 ```
@@ -171,19 +184,20 @@ It should be noted that:
 
 Returns the postID of the created post
 
-
 #### deletePost()
+
 ```
 deletePost(client, postID)
 ```
+
 Deletes a post from the database
 
 Takes the client object and the postID of the post to be deleted
 
 Returns true if successful, false if failure
 
-
 #### getPostInfo()
+
 ```
 getPostInfo(client, postID)
 ```
@@ -204,58 +218,64 @@ Returns a post object with fields:
             - thumbnail: BYTES
             - data: BYTES
 
-
 #### hidePost()
+
 ```
 hidePost(client, postid)
 ```
+
 Changes the visibility of a post to hidden
 
-
 #### unhidePost()
+
 ```
 unhidePost(client, postid)
 ```
+
 Changes the visibility of a post to public
 
-
 #### getPostsByNewest()
+
 ```
 getPostsByNewest(client)
 ```
+
 Gets all posts by newest creation date
 
 Takes the client object
 
 Returns the posts as rows in an array
 
-
 #### getPostsByOldest()
+
 ```
 getPostsByOldest(client)
 ```
+
 Gets all posts by oldest creation date
 
 Takes the client object
 
 Returns the posts as rows in an array
 
-
 #### getPostsByMostViews()
+
 ```
 getPostsByMostViews(client)
 ```
+
 Gets all posts by most views
 
 Takes the client object
 
 Returns the posts as rows in an array
 
-
 #### getPostsByLeastViews()
+
 ```
 getPostsByLeastViews(client)
 ```
+
 Gets all posts by least views
 
 Takes the client object

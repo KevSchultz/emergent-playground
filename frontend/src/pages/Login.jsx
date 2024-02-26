@@ -29,13 +29,28 @@ const TextureRuleCellularAutomataSketch = new TextureRuleCellularAutomataSketchC
 );
 
 function Login() {
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        console.log({
-            email: data.get('email'),
-            password: data.get('password'),
-        });
+
+        try {
+            const body = { email: data.get('email'), password: data.get('password') };
+
+            const response = await fetch('https://localhost:3000/api/login', {
+                method: 'POST',
+                headers: {
+                    'Content-type': 'application/json',
+                },
+                body: JSON.stringify(body),
+            });
+
+            const responseData = await response.json();
+
+            console.log(responseData);
+
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     const { setZoom } = useContext(P5PropertiesContext);
@@ -59,10 +74,6 @@ function Login() {
             <Container component="main" maxWidth="xs">
                 <Paper
                     sx={{
-                        // paddingLeft: 2,
-                        // paddingRight: 2,
-                        // paddingTop: 4,
-                        // paddingBottom: 4,
                         padding: 2,
                         boxSizing: 'border-box',
                     }}

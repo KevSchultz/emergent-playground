@@ -24,6 +24,9 @@ exports.register = async (req, res) => {
 
         res.status(200).json({ accessToken: jsonWebToken });
     } catch (err) {
+
+        console.log(err);
+
         res.status(401).json('Invalid.');
     }
 };
@@ -69,7 +72,6 @@ exports.check = (request, response, next) => {
     if (!isValid) {
         return response.sendStatus(403);
     } else {
-        console.log("calling next");
         next();
     }
 };

@@ -1,9 +1,5 @@
 -- FOR DEBUGGING, DELETES THE DATABASE AND USER EVERY TIME YOU RUN IT
 DROP DATABASE clientdata;
-DROP ROLE client;
-
--- creating a client user with limited permissions
-CREATE ROLE client WITH LOGIN PASSWORD '123456';
 
 -- creating the database
 CREATE DATABASE clientdata;

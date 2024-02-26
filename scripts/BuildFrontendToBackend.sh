@@ -20,3 +20,6 @@ rm -rf ../backend/build
 
 # Copy the build to the backend
 cp -r build ../backend/
+
+# Remove the build from the frontend
+rm -rf build

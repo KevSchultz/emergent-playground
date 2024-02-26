@@ -1,4 +1,6 @@
 const { Client } = require('pg'); // declares that the client data type requires pg (psql lib)
+require('dotenv').config();
+
 
 /*
 the client object is used for the backend connection
@@ -27,7 +29,7 @@ function connectToDatabase() {
         host: '127.0.0.1',
         user: 'client',
         port: 5432,
-        password: '123456',
+        password: process.env.DATABASE_CLIENT_PASSWORD,
         database: 'clientdata',
     });
 
@@ -137,10 +139,12 @@ function getTimestampThreeHoursAhead() {
  * @throws {Error} If there is an error while querying the database.
  */
 async function createAccount(client, username, email, password) {
+    
     // check if there is already an account with that username
     const resultUserName = await client.query('SELECT * FROM users WHERE username = $1', [
         username,
     ]);
+
     const countUserName = parseInt(resultUserName.rows.length); // Extract the count from the query result
 
     // check if there is already an account with that email
@@ -157,6 +161,8 @@ async function createAccount(client, username, email, password) {
 
     // getting current timestamp
     const formattedTimestamp = getCurrentTimestamp();
+
+    console.log("userResult query");
 
     const userResult = await client.query(
         'INSERT INTO users (username, email, password, creationtime, permissions) VALUES ($1, $2, $3, $4, $5) RETURNING *',
