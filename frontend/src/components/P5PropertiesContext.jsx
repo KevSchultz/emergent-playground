@@ -58,10 +58,13 @@ export function P5PropertiesProvider({ children }) {
     const [vertexShader, setVertexShader] = useState(DefaultProperties.vertexShader);
     const [fragmentShader, setFragmentShader] = useState(DefaultProperties.fragmentShader);
     const [pause, setPause] = useState(DefaultProperties.pause);
-    const [alwaysOn, setAlwaysOn] = useState(DefaultProperties.alwaysOn);
     const [code, setCode] = useState(DefaultProperties.code);
     const [currentLangColor, setCurrentLangColor] = useState(DefaultProperties.currentLangColor);
     const [langTupleList, setLangTupleList] = useState(DefaultProperties.langTupleList);
+    const [langIncludeSelf, setLangIncludeSelf] = useState(DefaultProperties.langIncludeSelf);
+    const [langRange, setLangRange] = useState(DefaultProperties.langRange);
+    const [backgroundColor, setBackgroundColor] = useState(DefaultProperties.backgroundColor);
+    const [currentDrawColor, setCurrentDrawColor] = useState(DefaultProperties.currentDrawColor);
 
     const value = {
         sketchClass,
@@ -112,14 +115,20 @@ export function P5PropertiesProvider({ children }) {
         setFragmentShader,
         pause,
         setPause,
-        alwaysOn,
-        setAlwaysOn,
         code,
         setCode,
         currentLangColor,
         setCurrentLangColor,
         langTupleList,
         setLangTupleList,
+        langIncludeSelf,
+        setLangIncludeSelf,
+        langRange,
+        setLangRange,
+        backgroundColor,
+        setBackgroundColor,
+        currentDrawColor,
+        setCurrentDrawColor
     };
 
     return <P5PropertiesContext.Provider value={value}>{children}</P5PropertiesContext.Provider>;

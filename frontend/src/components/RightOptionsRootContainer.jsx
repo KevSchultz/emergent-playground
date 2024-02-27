@@ -1,6 +1,6 @@
 /**
  * @project Emergent Playground
- * @file RightOptionsRootContainer.jsx
+ * @file RightOptionsRootContainer.jsx 
  * @overview The component for the right options drawer.
  * This is the right side box contains the options for the user to change the sketch attributes.
  * However, these options are actually implemented in the various TabContainer components.
@@ -17,6 +17,7 @@ import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Tabs, { tabsClasses } from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
+
 
 // Custom component imports
 import PremadeRulesOptionsTabContainer from './PremadeRulesOptionsTabContainer';
@@ -51,8 +52,8 @@ function RightOptionsRootContainer() {
                 flexDirection: 'column',
                 justifyContent: 'flex-start',
                 width: '100%',
-                height: '100%',
-                overflow: 'none',
+                height: '95vh',
+                overflow: 'auto',
                 padding: '1vw',
                 boxSizing: 'border-box',
                 borderLeft: '2px solid rgb(0, 118, 236, 0.5)',
@@ -78,11 +79,17 @@ function RightOptionsRootContainer() {
 
             {/* The following code is conditional rendering of tabs through React. */}
 
-            {TABS[currentTabIndex] === 'Premade Rules' && <PremadeRulesOptionsTabContainer />}
+            {TABS[currentTabIndex] === 'Premade Rules' && (
+                <PremadeRulesOptionsTabContainer />
+            )}
 
-            {TABS[currentTabIndex] === 'Viewer Options' && <ViewerOptionsTabContainer />}
+            {TABS[currentTabIndex] === 'Viewer Options' && (
+                <ViewerOptionsTabContainer/>
+            )}
 
-            {TABS[currentTabIndex] === 'Language' && <LanguageOptionsTabContainer />}
+            {TABS[currentTabIndex] === 'Language' && (
+                <LanguageOptionsTabContainer />
+            )}
         </Paper>
     );
 }

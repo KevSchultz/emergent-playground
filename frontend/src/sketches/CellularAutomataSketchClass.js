@@ -1,11 +1,10 @@
 const PIXEL_DENSITY = 1;
 
 /**
- * This class represents a cellular automata sketch, integrating p5.js functionalities with custom shader operations and React properties.
+ * @class CellularAutomataSketchClass
+ * @classdesc This class represents a cellular automata sketch, integrating p5.js functionalities with custom shader operations and React properties.
  * It manages the lifecycle of a cellular automata sketch, including setup, drawing operations, event handling, and dynamic property updates.
  * The class is designed to work within a React environment, utilizing the ReactP5Wrapper for seamless integration.
- *
- * @class CellularAutomataSketchClass
  * @property {p5} p5 - An instance of the p5 library, used for drawing and event handling.
  * @property {p5.Graphics} currentState - A graphics buffer representing the current state of the automata.
  * @property {p5.Graphics} previousState - A graphics buffer storing the previous state of the automata for calculations.
@@ -33,6 +32,7 @@ class CellularAutomataSketchClass {
         this.updateWorldWidth = this.updateWorldWidth.bind(this);
         this.updateWorldHeight = this.updateWorldHeight.bind(this);
         this.updateShader = this.updateShader.bind(this);
+        this.updateBackgroundColor = this.updateBackgroundColor.bind(this);
         this.reactP5WrapperToClassInterface = this.reactP5WrapperToClassInterface.bind(this);
         this.updateReactProperties = this.updateReactProperties.bind(this);
         this.setupMainCanvas = this.setupMainCanvas.bind(this);
@@ -59,8 +59,7 @@ class CellularAutomataSketchClass {
     }
 
     /**
-     * Updates the world width of the sketch.
-     *
+     * @description Updates the world width of the sketch.
      * This method clears the current and previous states, sets the pause state to 1, updates the shader's resolution uniform, and resizes the canvas of the current and previous states.
      *
      * @param {number} newWorldWidth - The new world width.
@@ -135,6 +134,20 @@ class CellularAutomataSketchClass {
     }
 
     /**
+     * Updates the 'default CA state' color according to a given value.
+     * Sets the background attribute of the texture's currentState and previousState.
+     *
+     * @param {string} newBackgroundColor - The new background color in hex format.
+     */
+    updateBackgroundColor(newBackgroundColor) {
+        this.reactProperties.setPause(1);
+        this.currentState.clear();
+        this.previousState.clear();
+        this.currentState.background(newBackgroundColor);
+        this.previousState.background(newBackgroundColor);
+    }
+
+    /**
      * Maps the p5.js event handlers to the corresponding class methods.
      * This function is used to integrate the p5.js library and ReactP5Wrapper with the class-based structure of this component.
      * It assigns the class methods to the p5.js event handlers, allowing the class to handle these events.
@@ -184,6 +197,10 @@ class CellularAutomataSketchClass {
             oldReactProperties.fragmentShader !== newReactProperties.fragmentShader
         ) {
             this.updateShader(newReactProperties.vertexShader, newReactProperties.fragmentShader);
+        }
+
+        if (oldReactProperties.backgroundColor !== newReactProperties.backgroundColor) {
+            this.updateBackgroundColor(newReactProperties.backgroundColor);
         }
 
         this.debugMode ? console.log('CellularAutomataSketchClass.updateReactProperties') : null;
@@ -478,7 +495,7 @@ class CellularAutomataSketchClass {
         let mouseWorldX = mouseWorldLocation.x;
         let mouseWorldY = mouseWorldLocation.y;
 
-        this.brushDrawOnGraphics(this.previousState, mouseWorldX, mouseWorldY, this.p5.color(255));
+        this.brushDrawOnGraphics(this.previousState, mouseWorldX, mouseWorldY, this.p5.color(this.reactProperties.currentDrawColor));
 
         this.shader.setUniform('pause', this.reactProperties.pause);
         this.shader.setUniform('previousState', this.previousState);
@@ -749,15 +766,16 @@ class CellularAutomataSketchClass {
             method: 'POST',
             body: buffer, // your ArrayBuffer
             headers: {
-                'Content-Type': 'application/octet-stream' // indicate that we are sending binary data
-            }
+                'Content-Type': 'application/octet-stream', // indicate that we are sending binary data
+            },
         };
 
         fetch(url, options)
             .then((response) => response.json())
             .then((data) => {
                 console.log(data);
-            }).catch((error) => {
+            })
+            .catch((error) => {
                 console.error('Error:', error);
             });
     }

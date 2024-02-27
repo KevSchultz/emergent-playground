@@ -53,10 +53,13 @@ let DefaultProperties = {
     vertexShader: vertexShader,
     fragmentShader: fragmentShader,
     pause: 1,
-    alwaysOn: 0,
     code: '', // for shader lang
-    currentLangColor: '',
+    currentLangColor: '#ffffff',
     langTupleList: [],
+    langIncludeSelf: false,
+    langRange: 1,
+    backgroundColor: '',
+    currentDrawColor: ''
 };
 
 export const sketch = new CellularAutomataSketchClass(DefaultProperties);

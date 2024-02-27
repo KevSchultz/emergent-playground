@@ -1,9 +1,11 @@
+#version 300 es
+
 #ifdef GL_ES
 precision mediump float;
 #endif
 
-varying vec2 vTexCoord; // texture coordinate passed from the vertex shader
-
+in vec2 vTexCoord; // texture coordinate passed from the vertex shader
+out vec4 out_col;
 
 uniform vec2 resolution; // determines the distance to see next cell
 uniform float pause; // pause the simulation
@@ -17,15 +19,15 @@ void main() {
     vec2 pixelOffset = vec2(1.0 / resolution.x, 1.0 / resolution.y);
 
     // Get the color of the current pixel and its neighbors
-    vec4 centerColor = texture2D(previousState, uv);
-    vec4 leftColor = texture2D(previousState, uv + vec2(-pixelOffset.x, 0.0));
-    vec4 rightColor = texture2D(previousState, uv + vec2(pixelOffset.x, 0.0));
-    vec4 centerTopColor = texture2D(previousState, uv + vec2(0.0, pixelOffset.y));
-    vec4 leftTopColor = texture2D(previousState, uv + vec2(-pixelOffset.x, pixelOffset.y));
-    vec4 rightTopColor = texture2D(previousState, uv + vec2(pixelOffset.x, pixelOffset.y));
-    vec4 centerBottomColor = texture2D(previousState, uv + vec2(0.0, -pixelOffset.y));
-    vec4 leftBottomColor = texture2D(previousState, uv + vec2(-pixelOffset.x, -pixelOffset.y));
-    vec4 rightBottomColor = texture2D(previousState, uv + vec2(pixelOffset.x, -pixelOffset.y));
+    vec4 centerColor = texture(previousState, uv);
+    vec4 leftColor = texture(previousState, uv + vec2(-pixelOffset.x, 0.0));
+    vec4 rightColor = texture(previousState, uv + vec2(pixelOffset.x, 0.0));
+    vec4 centerTopColor = texture(previousState, uv + vec2(0.0, pixelOffset.y));
+    vec4 leftTopColor = texture(previousState, uv + vec2(-pixelOffset.x, pixelOffset.y));
+    vec4 rightTopColor = texture(previousState, uv + vec2(pixelOffset.x, pixelOffset.y));
+    vec4 centerBottomColor = texture(previousState, uv + vec2(0.0, -pixelOffset.y));
+    vec4 leftBottomColor = texture(previousState, uv + vec2(-pixelOffset.x, -pixelOffset.y));
+    vec4 rightBottomColor = texture(previousState, uv + vec2(pixelOffset.x, -pixelOffset.y));
 
     // Convert the colors to binary (black = 0, white = 1)
     float centerState = step(0.5, (centerColor.r + centerColor.g + centerColor.b) / 3.0);
@@ -59,5 +61,5 @@ void main() {
         newState = centerState;
     }
     
-    gl_FragColor = vec4(newState, newState, newState, 1.0);
+    out_col = vec4(newState, newState, newState, 1.0);
 }

@@ -14,7 +14,6 @@ import Box from '@mui/material/Box';
 // Other Imports
 import { ReactP5Wrapper } from '@p5-wrapper/react';
 import P5PropertiesContext from './P5PropertiesContext';
-import DefaultProperties from './DefaultProperties';
 import { sketch } from './DefaultProperties';
 
 /**
