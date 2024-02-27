@@ -7,10 +7,10 @@
  */
 
 // React Imports
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useState } from 'react';
 
 // Material UI Imports
-import { Button, Box, Grid, List } from '@mui/material';
+import { Button, Box, List } from '@mui/material';
 
 // Ace Code Editor Imports
 import AceEditor from 'react-ace';
@@ -24,7 +24,6 @@ import { HexColorPicker } from 'react-colorful';
 import LanguageStateItem from './LanguageStateItem';
 import langCompiler from '../lang-data/langCompiler';
 import LanguageOptionsDropdown from './LanguageOptionsDropdown';
-import langVert from '../lang-data/lang.vert?raw';
 import PrettyAlert from './PrettyAlert';
 
 import ResizableGrid from './ResizableGrid';
@@ -41,6 +40,7 @@ import ResizableGrid from './ResizableGrid';
  */
 
 //TODO: syntax highlighting & autocomplete for language in AceEditor
+//TODO: UPDATE PALETTE WHEN COLOR BECOMES UNAVAILABLE
 function LanguageOptionsTabContainer() {
 
     const { 
@@ -53,10 +53,9 @@ function LanguageOptionsTabContainer() {
         langIncludeSelf,
         langRange,
         setFragmentShader,
-        setVertexShader,
         backgroundColor,
         setBackgroundColor,
-        setCurrentDrawColor
+        fragmentShader
     } = useContext(P5PropertiesContext);
 
     const [openError, setOpenError] = useState(false);
@@ -86,7 +85,6 @@ function LanguageOptionsTabContainer() {
         if(code !== ''){
             const newFrag = langCompiler(code, langTupleList, langIncludeSelf, langRange, 'moore');
             setFragmentShader(newFrag);
-            setVertexShader(langVert);
         } else {
             setOpenError(true);
             setAlertMessage('Invalid code.');
@@ -95,7 +93,7 @@ function LanguageOptionsTabContainer() {
 
     const handleDebug = () => {
         console.log(backgroundColor);
-        setCurrentDrawColor('#ff0000');
+        console.log(fragmentShader);
     }
 
     return (

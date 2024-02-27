@@ -110,6 +110,7 @@ class CellularAutomataSketchClass {
         this.currentState.clear();
         this.previousState.clear();
         this.currentState.resetShader();
+        this.currentState.background(this.reactProperties.backgroundColor);
         this.shader = null;
         this.shader = this.p5.createShader(newVertexShader, newFragmentShader);
         this.currentState.shader(this.shader);
