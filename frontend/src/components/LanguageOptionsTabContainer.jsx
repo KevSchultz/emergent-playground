@@ -146,7 +146,7 @@ function LanguageOptionsTabContainer() {
                 setOptions={{
                     enableLiveAutocompletion: false,
                     showLineNumbers: true,
-                    tabSize: 4,
+                    tabSize: 2,
                 }}
             />
         </Box>
