@@ -724,20 +724,42 @@ class CellularAutomataSketchClass {
     saveState(graphicsBuffer) {
         graphicsBuffer.loadPixels();
 
-        // Create an array to hold the pixel data
-        let pixelArray = [];
+        // Create an array to temporarily hold the pixel data
+        let tempArray = [];
 
         // Set the pixels of the new image to match the pixels of the graphicsBuffer
         for (let y = 0; y < graphicsBuffer.height; y++) {
             for (let x = 0; x < graphicsBuffer.width; x++) {
                 let c = graphicsBuffer.get(x, y);
                 // Push the pixel's color values into the array
-                pixelArray.push([c[0], c[1], c[2], c[3]]);
+                tempArray.push(c[0], c[1], c[2], c[3]);
             }
         }
 
-        // Now pixelArray contains the RGBA values of all pixels
-        console.log(pixelArray);
+        // Convert the temporary array to a Uint8Array
+        let pixelArray = new Uint8Array(tempArray);
+
+        // Convert the Uint8Array to an ArrayBuffer
+        let buffer = pixelArray.buffer;
+
+        console.log(buffer);
+
+        let url = 'https://localhost:3000/api/upload'; // replace with your API endpoint
+        let options = {
+            method: 'POST',
+            body: buffer, // your ArrayBuffer
+            headers: {
+                'Content-Type': 'application/octet-stream' // indicate that we are sending binary data
+            }
+        };
+
+        fetch(url, options)
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+            }).catch((error) => {
+                console.error('Error:', error);
+            });
     }
 }
 

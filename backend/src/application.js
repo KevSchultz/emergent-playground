@@ -13,7 +13,7 @@ const app = express();
 // ------ Pre-routing Middleware ------
 
 // CORS enabled only for development!
-// app.use(cors());
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -33,8 +33,21 @@ app.use('/api/documentation', swaggerUi.serve, swaggerUi.setup(apiSwaggerDocumen
 
 app.post('/api/register', authentication.register);
 app.post('/api/login', authentication.login);
-app.get('/api/test', authentication.check, (req, res) => {
+app.get('/api/test', authentication.check, (_, res) => {
     res.status(200).json({message: 'Hello Secure World?!'});
+});
+
+
+// ------ Cellular Automata Routes ------
+
+app.post('/api/upload', express.raw({ type: 'application/octet-stream', limit: '10mb' }), (req, res) => {
+    let buffer = req.body;
+
+    let pixelArray = new Uint8Array(buffer);
+
+    console.log('Received', buffer.length, 'bytes of data');
+
+    console.log(pixelArray);
 });
 
 
