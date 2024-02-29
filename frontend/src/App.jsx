@@ -21,9 +21,13 @@ import ViewerBuilderCreator from './pages/ViewerBuilderCreator';
 import Welcome from './pages/Welcome';
 import About from './pages/About';
 import Login from './pages/Login';
-import Signup from './pages/Signup';
+import Register from './pages/Register';
 import Community from './pages/Community';
+<<<<<<< HEAD
 //import LangPage from './pages/LangPage';
+=======
+import { P5PropertiesProvider } from './components/P5PropertiesContext';
+>>>>>>> origin/main
 
 // overriding ViewerBuilderCerator with LangPage for testing purposes
 const router = createBrowserRouter([
@@ -44,8 +48,8 @@ const router = createBrowserRouter([
         element: <Login />,
     },
     {
-        path: 'signup',
-        element: <Signup />,
+        path: 'register',
+        element: <Register />,
     },
     {
         path: 'community',
@@ -56,8 +60,10 @@ const router = createBrowserRouter([
 function App() {
     return (
         <ThemeProvider theme={theme}>
-            <CssBaseline/>
-            <RouterProvider router={router} />
+            <P5PropertiesProvider>
+                <CssBaseline />
+                <RouterProvider router={router} />
+            </P5PropertiesProvider>
         </ThemeProvider>
     );
 }

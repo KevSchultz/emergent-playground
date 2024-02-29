@@ -1,7 +1,7 @@
 /**
  * @project Emergent Playground
  * @file P5PropertiesContext.jsx
- * @overview This file exports both the P5PropertiesContext and P5PropertiesProvider components for managing p5 property state. 
+ * @overview This file exports both the P5PropertiesContext and P5PropertiesProvider components for managing p5 property state.
  * @authors Kevin Schultz
  * @exports P5PropertiesContext P5PropertiesProvider
  */
@@ -26,10 +26,11 @@ const P5PropertiesContext = createContext();
  * Child components can access these state variables and setters by using React's useContext hook with P5PropertiesContext.
  *
  * @param {object} props - The properties passed to this component. Expected to include 'children', the child components.
- * 
+ *
  * @returns {JSX.Element} A P5PropertiesContext.Provider that wraps the child components and provides them with access to the P5 properties context.
  */
 export function P5PropertiesProvider({ children }) {
+    const [sketchClass, setSketchClass] = useState(DefaultProperties.sketchClass);
     const [worldWidth, setWorldWidth] = useState(DefaultProperties.worldWidth);
     const [worldHeight, setWorldHeight] = useState(DefaultProperties.worldHeight);
     const [pixelDensity, setPixelDensity] = useState(DefaultProperties.pixelDensity);
@@ -66,6 +67,8 @@ export function P5PropertiesProvider({ children }) {
     const [currentDrawColor, setCurrentDrawColor] = useState(DefaultProperties.currentDrawColor);
 
     const value = {
+        sketchClass,
+        setSketchClass,
         worldWidth,
         setWorldWidth,
         worldHeight,

@@ -7,16 +7,21 @@
  * @exports DefaultProperties
  */
 
-import vertexShader from '../shaders/basic.vert?raw';
-import fragmentShader from '../shaders/gameOfLife.frag?raw';
+// Material-UI Imports
 import SquareIcon from '@mui/icons-material/Square';
 import CropSquareIcon from '@mui/icons-material/CropSquare';
 import CircleIcon from '@mui/icons-material/RadioButtonUnchecked';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 
-const DefaultProperties = {
-    worldWidth: 1000,
-    worldHeight: 1000,
+// Custom Imports
+import vertexShader from '../shaders/basic.vert?raw';
+import fragmentShader from '../shaders/gameOfLife.frag?raw';
+import CellularAutomataSketchClass from '../sketches/CellularAutomataSketchClass';
+
+let DefaultProperties = {
+    sketchClassType: "CellularAutomataSketchClass",
+    worldWidth: 500,
+    worldHeight: 500,
     pixelDensity: 1,
     cameraX: 0,
     cameraY: 0,
@@ -28,7 +33,12 @@ const DefaultProperties = {
     panSensitivity: 0.001,
     brushType: 'pixel',
     listBrushTypes: ['pixel', 'square', 'circle', 'camera'],
-    brushIcons: { pixel: <SquareIcon />, square: <CropSquareIcon />, circle: <CircleIcon />, camera: <CameraAltIcon />},
+    brushIcons: {
+        pixel: <SquareIcon />,
+        square: <CropSquareIcon />,
+        circle: <CircleIcon />,
+        camera: <CameraAltIcon />,
+    },
     selectedBrushIconColor: 'yellow',
     deselectedBrushIconColor: 'white',
     brushSize: 10,
@@ -42,7 +52,7 @@ const DefaultProperties = {
     previousMouseY: 0,
     vertexShader: vertexShader,
     fragmentShader: fragmentShader,
-    pause: 0,
+    pause: 1,
     code: '', // for shader lang
     currentLangColor: '#ffffff',
     langTupleList: [],
@@ -51,5 +61,7 @@ const DefaultProperties = {
     backgroundColor: '',
     currentDrawColor: ''
 };
+
+export const sketch = new CellularAutomataSketchClass(DefaultProperties);
 
 export default DefaultProperties;

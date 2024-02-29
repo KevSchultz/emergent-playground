@@ -1,13 +1,12 @@
 /**
  * @project Emergent Playground
- * @file Login.jsx is
- * @overview The container component for the sign in page.
- * The sign in page includes a form for the user to enter their username and password.
+ * @file Register.jsx
+ * @overview The container component for the Register page.
+ * The Register page includes a form for the user to enter their new username, password, and retype password.
  * As well as integration with authentication services such as Google and (TBD).
  * @authors Kevin Schultz
- * @exports Login
+ * @exports Register
  */
-
 import { useContext, useEffect } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -28,29 +27,20 @@ const TextureRuleCellularAutomataSketch = new TextureRuleCellularAutomataSketchC
     DefaultProperties
 );
 
-function Login() {
-    const handleSubmit = async (event) => {
+/**
+ * A functional component that renders the Register page.
+ *
+ * @returns {JSX.Element} The Register component.
+ */
+function Register() {
+    const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-
-        try {
-            const body = { email: data.get('email'), password: data.get('password') };
-
-            const response = await fetch('https://localhost:3000/api/login', {
-                method: 'POST',
-                headers: {
-                    'Content-type': 'application/json',
-                },
-                body: JSON.stringify(body),
-            });
-
-            const responseData = await response.json();
-
-            console.log(responseData);
-
-        } catch (error) {
-            console.error(error);
-        }
+        console.log({
+            username: data.get('username'),
+            email: data.get('email'),
+            password: data.get('password'),
+        });
     };
 
     const { setZoom } = useContext(P5PropertiesContext);
@@ -89,9 +79,19 @@ function Login() {
                             <LockOutlinedIcon />
                         </Avatar>
                         <Typography component="h1" variant="h5">
-                            Sign in
+                            Register
                         </Typography>
                         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+                            <TextField
+                                margin="normal"
+                                required
+                                fullWidth
+                                id="username"
+                                label="Username"
+                                name="username"
+                                autoComplete="username"
+                                autoFocus
+                            />
                             <TextField
                                 margin="normal"
                                 required
@@ -112,23 +112,28 @@ function Login() {
                                 id="password"
                                 autoComplete="current-password"
                             />
+                            <TextField
+                                margin="normal"
+                                required
+                                fullWidth
+                                name="retype-password"
+                                label="Retype Password"
+                                type="password"
+                                id="retype-password"
+                                autoComplete="retype-password"
+                            />
                             <Button
                                 type="submit"
                                 fullWidth
                                 variant="contained"
                                 sx={{ mt: 3, mb: 2 }}
                             >
-                                Sign In
+                                Register
                             </Button>
                             <Grid container>
-                                <Grid item xs>
-                                    <Link href="/" variant="body2">
-                                        Forgot password?
-                                    </Link>
-                                </Grid>
                                 <Grid item>
-                                    <Link href="/register" variant="body2">
-                                        {"Don't have an account? Register"}
+                                    <Link href="/login" variant="body2">
+                                        {"Already have an account? Login"}
                                     </Link>
                                 </Grid>
                             </Grid>
@@ -140,4 +145,4 @@ function Login() {
     );
 }
 
-export default Login;
+export default Register;

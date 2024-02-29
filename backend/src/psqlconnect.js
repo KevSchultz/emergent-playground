@@ -1,4 +1,6 @@
-const {Client} = require('pg'); // declares that the client data type requires pg (psql lib)
+const { Client } = require('pg'); // declares that the client data type requires pg (psql lib)
+require('dotenv').config();
+
 
 /*
 the client object is used for the backend connection
@@ -17,18 +19,18 @@ PROGRESS:
  * DONE
  * Connects to the database by making a new client and connecting to a pool
  * Returns the client
- * 
+ *
  * @returns {Client} The connected PostgreSQL client.
  * @throws {Error} If there is an error while connecting to the database.
- * 
+ *
  */
 function connectToDatabase() {
     const client = new Client({
-        host: "127.0.0.1",
-        user: "client",
+        host: '127.0.0.1',
+        user: 'client',
         port: 5432,
-        password: "123456",
-        database: "clientdata"
+        password: process.env.DATABASE_CLIENT_PASSWORD,
+        database: 'clientdata',
     });
 
     // Attempt to connect to the database
@@ -53,11 +55,11 @@ function connectToDatabase() {
 function getRandomInt() {
     // Generate a random floating-point number between 0 (inclusive) and 1 (exclusive)
     const randomFloat = Math.random();
-    
+
     // Multiply the random float by the maximum supported integer size (2^31 - 1)
     const maxInt = Math.pow(2, 31) - 1;
     const randomNumber = Math.floor(randomFloat * maxInt);
-    
+
     return randomNumber;
 }
 
@@ -131,129 +133,55 @@ function getTimestampThreeHoursAhead() {
  *
  * @param {Client} client - The PostgreSQL client.
  * @param {string} username - The username for the new account.
- * @param {string} password - The password for the new account.
  * @param {string} email - The email for the new account.
- * @returns {(Object|Number)} The created user object, or an error code if the username is already in use.
+ * @param {string} password - The password for the new account.
+ * @returns {(Object)} The created user object
  * @throws {Error} If there is an error while querying the database.
  */
-async function createAccount(client, username, password, email) {
-    // check if there is already an accound with that username
-    const defaultPermissions = 1; // standard user permissions
+async function createAccount(client, username, email, password) {
+    
+    // check if there is already an account with that username
+    const resultUserName = await client.query('SELECT * FROM users WHERE username = $1', [
+        username,
+    ]);
 
-    // check if the username is valid
-    const resultUserName = await client.query('SELECT COUNT(*) AS count FROM users WHERE username = \'' + username + '\';');  // query checks if a user with that username already exists
-    const countUserName = parseInt(resultUserName.rows[0].count); // Extract the count from the query result
-    if(countUserName > 0){ // if match found
-        console.log('username taken'); // indicate username taken
-        return 1; // username taken error code
+    const countUserName = parseInt(resultUserName.rows.length); // Extract the count from the query result
+
+    // check if there is already an account with that email
+    const resultEmail = await client.query('SELECT * FROM users WHERE email = $1', [email]);
+    const countEmail = parseInt(resultEmail.rows.length); // Extract the count from the query result
+
+    if (countUserName > 0 || countEmail > 0) {
+        // if match found
+        console.log('username or email taken'); // indicate username or email taken
+        throw new Error('Username or email already taken');
     }
+
+    const defaultPermissions = 1; // standard user permissions
 
     // getting current timestamp
     const formattedTimestamp = getCurrentTimestamp();
-    var newUserID; // declaring var outside of loop
-    
-    // creating a new userID
-    while(true){ // loops until a number is generated that is not already in use (avoids session confusion)
-        newUserID = getRandomInt();
-        const result = await client.query('SELECT COUNT(*) AS count FROM users WHERE userID = ' + newUserID + ';');  // query checks if a user with that id and username already exists
-        const count = parseInt(result.rows[0].count); // Extract the count from the query result
-        if(count > 0){ // if match found
-            continue; // continue the loop
-        } else {
-            break; // break loop if no match found
-        }
-    }
 
-    // create a new user object
-    var user = {
-        userID: newUserID,
-        username: username,
-        password: password, 
-        email: email, // not needed, can be left as NULL
-        creationDate: formattedTimestamp, // DATE data type
-        permissions: defaultPermissions // permissions of 1, standard user
-    }
+    console.log("userResult query");
 
-    // formatted sql query, might be able to use a query generator for this
-    var userQuery = 'INSERT INTO users (userid, username, password, email, creationTime, permissions) VALUES (' + user.userID + ', \'' + user.username + '\', \'' + user.password + '\', \'' + user.email + '\', \'' + user.creationDate + '\', ' + user.permissions + ');';
+    const userResult = await client.query(
+        'INSERT INTO users (username, email, password, creationtime, permissions) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+        [username, email, password, formattedTimestamp, defaultPermissions]
+    );
 
-    client.query(userQuery); // query to insert the new user as SQL
-    console.log('produced query: ');
-    console.log(userQuery);
+    console.log('server side user successfully created');
 
-    console.log("server side user successfully created");
-
-    return user // returns the user object
+    return userResult.rows[0]; // returns the user object
 }
 
-/**
- * DONE
- * Logs the user in by checking the provided credentials, creating a new session object, 
- * and then returning that session after entering it into the database.
- * takes the client object, username, and password
- *
- * This function first checks if the provided username and password match a user in the database.
- * If they do, the function generates a unique session ID and token, and creates a new session for the user.
- * The session information is then inserted into the database.
- * If the username and password do not match a user, the function returns null.
- *
- * @param {Client} client - The PostgreSQL client.
- * @param {string} username - The username to log in with.
- * @param {string} password - The password to log in with.
- * @returns {(Object|null)} The created session object, or null if the username and password do not match a user.
- * @throws {Error} If there is an error while querying the database.
- */
-async function logIn(client, username, password) {
-    // Determining whether there is a valid user with this username and password
-    const userSearchQuery = 'SELECT * FROM users WHERE username = $1 AND password = $2';
-    const resultUserSearch = await client.query(userSearchQuery, [username, password]);
+async function getAccountByEmail(client, email) {
+    const result = await client.query('SELECT * FROM users WHERE email = $1', [email]);
 
-    // Checking if user exists
-    if (resultUserSearch.rows.length === 0) {
-        console.log("No user found");
-        return null;
+    if (result.rows.length === 0) {
+        throw new Error('No user found');
     }
 
-    const userData = resultUserSearch.rows[0];
-    const userID = userData.userid;
-
-    // Creating a new session with the newly found user
-    let newSessionID, newSessionToken;
-
-    // Generate unique session ID and token
-    while (true) {
-        newSessionID = getRandomInt();
-        newSessionToken = getRandomInt();
-
-        // Check if the generated session ID and token already exist
-        const sessionExistsQuery = 'SELECT COUNT(*) AS count FROM sessions WHERE sessionid = $1 OR sessiontoken = $2';
-        const result = await client.query(sessionExistsQuery, [newSessionID, newSessionToken]);
-
-        if (result.rows[0].count === '0') {
-            // No matching session ID or token found, break the loop
-            break;
-        }
-    }
-
-    // Insert the session information into the database
-    const currentTimestamp = getCurrentTimestamp();
-    const endTimestamp = getTimestampThreeHoursAhead();
-
-    const sessionInsertQuery = `
-        INSERT INTO sessions (userid, sessionid, sessiontoken, creationtime, expiretime, expired)
-        VALUES ($1, $2, $3, $4, $5, $6)
-    `;
-    await client.query(sessionInsertQuery, [userID, newSessionID, newSessionToken, currentTimestamp, endTimestamp, false]);
-
-    // Return the created session object
-    return {
-        userID: userID,
-        sessionID: newSessionID,
-        sessionToken: newSessionToken,
-        creationTime: currentTimestamp,
-        expireTime: endTimestamp,
-        expired: false
-    };
+    return result.rows[0];
 }
 
 /**
@@ -272,9 +200,9 @@ async function logIn(client, username, password) {
  */
 async function logOut(client, session) {
     const logOutQuery = 'DELETE FROM sessions WHERE sessionid = $1 AND sessiontoken = $2'; // finds the session and deletes it server side
-    console.log('sessionID: ' + session.sessionID); // sends deleted session info to log for debugging 
-    console.log('sessionToken: ' + session.sessionToken); 
-    await client.query(logOutQuery, [session.sessionID, session.sessionToken]); // sends the previous query with the sessionID and sessionTOken being inserted 
+    console.log('sessionID: ' + session.sessionID); // sends deleted session info to log for debugging
+    console.log('sessionToken: ' + session.sessionToken);
+    await client.query(logOutQuery, [session.sessionID, session.sessionToken]); // sends the previous query with the sessionID and sessionTOken being inserted
     session = null; // nulling out session local var
     return true; // returning true upon success
 }
@@ -297,10 +225,20 @@ async function logOut(client, session) {
  * @param {string} state - The state of the post.
  * @param {string} thumbnail - The thumbnail of the post.
  * @param {string} data - The data of the post.
- * @returns {(number|null)} The ID of the created post, otherwise null. 
+ * @returns {(number|null)} The ID of the created post, otherwise null.
  * @throws {Error} If there is an error while querying the database.
  */
-async function makePost(client, session, title, description, visibility, filename, state, thumbnail, data){
+async function makePost(
+    client,
+    session,
+    title,
+    description,
+    visibility,
+    filename,
+    state,
+    thumbnail,
+    data
+) {
     // defaults for the post settings
     const default_title = 'NewPost';
     const default_description = 'This is the default description';
@@ -316,10 +254,14 @@ async function makePost(client, session, title, description, visibility, filenam
 
     // creating a new postID
     var newPostID;
-    while(true){ // loops until a number is generated that is not already in use (avoids session confusion)
+    while (true) {
+        // loops until a number is generated that is not already in use (avoids session confusion)
         newPostID = getRandomInt();
-        const result = await client.query('SELECT COUNT(*) AS count FROM posts WHERE postID = ' + newPostID + ';');  // query checks if a user with that id and username already exists
-        if(result.rows[0]){ // if match found (if anything returns in the sql query then that would be a match)
+        const result = await client.query(
+            'SELECT COUNT(*) AS count FROM posts WHERE postID = ' + newPostID + ';'
+        ); // query checks if a user with that id and username already exists
+        if (result.rows[0]) {
+            // if match found (if anything returns in the sql query then that would be a match)
             continue; // continue the loop
         } else {
             break; // break loop if no match found
@@ -327,26 +269,26 @@ async function makePost(client, session, title, description, visibility, filenam
     }
 
     // checking if values are provided, using default if not
-    if(!title){
+    if (!title) {
         title = default_title;
     }
-    if(!description){
+    if (!description) {
         description = default_description;
     }
-    if(!visibility){
+    if (!visibility) {
         visibility = default_visibility;
     }
-    if(!filename){
+    if (!filename) {
         filename = default_filename;
     }
-    if(!state){
+    if (!state) {
         state = default_state;
     }
-    if(!thumbnail){
+    if (!thumbnail) {
         thumbnail = default_thumbnail;
     }
-    if(!data){
-        data = default_data
+    if (!data) {
+        data = default_data;
     }
 
     // creating the post object
@@ -362,13 +304,26 @@ async function makePost(client, session, title, description, visibility, filenam
         filename: filename,
         state: state,
         thumbnail: thumbnail,
-        data: data
+        data: data,
     };
 
     console.log('Post compiled');
 
     // uploading the post
-    const insertPostQuery = 'INSERT INTO posts (userid, postid, username, creationtime, title, description, filename, state) VALUES (userid, ' + post.postID + ', \'' + post.username + '\', \'' + post.creationTime + '\', \'' + title + '\', \'' + description + '\', \'' + filename + '\', state);'; // forming the string query
+    const insertPostQuery =
+        'INSERT INTO posts (userid, postid, username, creationtime, title, description, filename, state) VALUES (userid, ' +
+        post.postID +
+        ", '" +
+        post.username +
+        "', '" +
+        post.creationTime +
+        "', '" +
+        title +
+        "', '" +
+        description +
+        "', '" +
+        filename +
+        "', state);"; // forming the string query
     console.log('created query: ');
     console.log(insertPostQuery);
     await client.query(insertPostQuery); // sending the query to the server
@@ -389,13 +344,14 @@ async function makePost(client, session, title, description, visibility, filenam
  * @returns {(Object|null)} The post object, or null if no post with the provided ID exists.
  * @throws {Error} If there is an error while querying the database.
  */
-async function getPostInfo(client, postID){
+async function getPostInfo(client, postID) {
     const searchPostQuery = 'SELECT * FROM posts WHERE postid = ' + postID + ';';
     const resultPostQuery = await client.query(searchPostQuery);
     const postResult = resultPostQuery.rows[0];
 
     // checking if post exists or not
-    if(postRow){ // if so then create and return a post object
+    if (postRow) {
+        // if so then create and return a post object
         const post = {
             userID: postResult.userID,
             postID: postResult.postID,
@@ -408,11 +364,12 @@ async function getPostInfo(client, postID){
             filename: postResult.filename,
             state: postResult.state,
             thumbnail: postResult.thumbnail,
-            data: postResult.data
+            data: postResult.data,
         };
         console.log('found post: ' + postID + ';'); // indicating we found the post
         return post;
-    } else { // otherwise return nullS
+    } else {
+        // otherwise return nullS
         console.log('post not found'); // indicating we did not find the post
         return null;
     }
@@ -433,20 +390,23 @@ async function getPostInfo(client, postID){
  * @returns {boolean} True if the deletion was successful, false otherwise.
  * @throws {Error} If there is an error while querying the database.
  */
-async function deletePost(client, postID){
+async function deletePost(client, postID) {
     // deletion
     const postDeleteQuery = 'DELETE * FROM posts WHERE postid = ' + postID + ';';
     console.log('deleting postid: ' + postID); // indicating which post is being deleted
     await client.query(postDeleteQuery); // deleting the post from the databse
 
     // checking the deletion
-    console.log('confirming deletion...')
-    const postConfirmationQuery = 'SELECT COUNT(*) AS count FROM posts WHERE postid = ' + postID + ';';
+    console.log('confirming deletion...');
+    const postConfirmationQuery =
+        'SELECT COUNT(*) AS count FROM posts WHERE postid = ' + postID + ';';
     const resultConfirmation = await client.query(postConfirmationQuery);
-    if(resultConfirmation.rows[0] == 1){ // if there is still a post with that postid
+    if (resultConfirmation.rows[0] == 1) {
+        // if there is still a post with that postid
         console.log('deletion failed');
         return false; // then fail
-    } else { // if there is no longer a post with that postid
+    } else {
+        // if there is no longer a post with that postid
         console.log('deletion successful');
         return true; // then success
     }
@@ -462,7 +422,7 @@ async function deletePost(client, postID){
  * @returns {boolean} Always returns true.
  * @throws {Error} If there is an error while querying the database.
  */
-async function hidePost(client, postid){
+async function hidePost(client, postid) {
     // changing the visibility of the post
     await client.query('UPDATE posts SET visibility = true WHERE postid = ' + postid + ';');
     console.log('postID: ' + postid + ' was hidden');
@@ -479,7 +439,7 @@ async function hidePost(client, postid){
  * @returns {boolean} Always returns true.
  * @throws {Error} If there is an error while querying the database.
  */
-async function unhidePost(client, postid){
+async function unhidePost(client, postid) {
     // changing the visibility of the post
     await client.query('UPDATE posts SET visibility = false WHERE postid = ' + postid + ';');
     console.log('postID: ' + postid + ' was made visible');
@@ -495,7 +455,7 @@ async function unhidePost(client, postid){
  * @returns {Array} An array of post objects, ordered by creation time in descending order.
  * @throws {Error} If there is an error while querying the database.
  */
-async function getPostsByNewest(client){
+async function getPostsByNewest(client) {
     const searchResult = await client.query('SELECT * FROM posts ORDER BY creationtime DESC;');
     console.log('searched posts by newest');
     return searchResult.rows;
@@ -511,7 +471,7 @@ async function getPostsByNewest(client){
  * @returns {Array} An array of post objects, ordered by creation time in ascending order.
  * @throws {Error} If there is an error while querying the database.
  */
-async function getPostsByOldest(client){
+async function getPostsByOldest(client) {
     const searchResult = await client.query('SELECT * FROM posts ORDER BY creationtime;');
     console.log('searched posts by oldest');
     return searchResult.rows;
@@ -527,7 +487,7 @@ async function getPostsByOldest(client){
  * @returns {Array} An array of post objects, ordered by views in descending order.
  * @throws {Error} If there is an error while querying the database.
  */
-async function getPostsByMostViews(client){
+async function getPostsByMostViews(client) {
     const searchResult = await client.query('SELECT * FROM posts ORDER BY views DESC;');
     console.log('searched posts by most viewed');
     return searchResult.rows;
@@ -543,7 +503,7 @@ async function getPostsByMostViews(client){
  * @returns {Array} An array of post objects, ordered by views in ascending order.
  * @throws {Error} If there is an error while querying the database.
  */
-async function getPostsByLeastViews(client){
+async function getPostsByLeastViews(client) {
     const searchResult = await client.query('SELECT * FROM posts ORDER BY views;');
     console.log('searched posts by least viewed');
     return searchResult.rows;
@@ -568,24 +528,49 @@ async function getPostsByLeastViews(client){
  * @returns {Array} An array of post objects, ordered based on the provided sorting method.
  * @throws {Error} If there is an error while querying the database.
  */
-async function getPostsByUser(client, userid, sorting){
+async function getPostsByUser(client, userid, sorting) {
     // defining constants for easier string formatting
-    
+
     const standardQuery = 'SELECT * FROM posts WHERE userid = ' + userid;
     const endQuery = ';';
 
     const descendQuery = 'ORDER BY ';
-    if (sorting === 0) { // alpha ascend
-
-    } else if (sorting === 1) { // alpha descend
+    if (sorting === 0) {
+        // alpha ascend
+    } else if (sorting === 1) {
+        // alpha descend
         client.query(standardQuery + endQuery);
-    } else if (sorting === 2) { // newest
+    } else if (sorting === 2) {
+        // newest
         client.query(standardQuery + endQuery);
-    } else if (sorting === 3) { // oldest
+    } else if (sorting === 3) {
+        // oldest
         client.query(standardQuery + endQuery);
-    } else if (sorting === 4) { // most viewed
+    } else if (sorting === 4) {
+        // most viewed
         client.query(standardQuery + endQuery);
-    } else if (sorting === 5) { // leaast viewed
+    } else if (sorting === 5) {
+        // leaast viewed
         client.query(standardQuery + endQuery);
-    }  
+    }
 }
+
+module.exports = {
+    connectToDatabase,
+    getRandomInt,
+    getCurrentTimestamp,
+    getTimestampThreeHoursAhead,
+    createAccount,
+    getAccountByEmail,
+    logOut,
+    makePost,
+    getPostInfo,
+    deletePost,
+    hidePost,
+    unhidePost,
+    getPostsByNewest,
+    getPostsByOldest,
+    getPostsByMostViews,
+    getPostsByLeastViews,
+    getPostsByUser,
+};

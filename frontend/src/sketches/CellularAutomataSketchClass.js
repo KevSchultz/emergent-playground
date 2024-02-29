@@ -1,11 +1,10 @@
 const PIXEL_DENSITY = 1;
 
 /**
- * This class represents a cellular automata sketch, integrating p5.js functionalities with custom shader operations and React properties.
+ * @class CellularAutomataSketchClass
+ * @classdesc This class represents a cellular automata sketch, integrating p5.js functionalities with custom shader operations and React properties.
  * It manages the lifecycle of a cellular automata sketch, including setup, drawing operations, event handling, and dynamic property updates.
  * The class is designed to work within a React environment, utilizing the ReactP5Wrapper for seamless integration.
- *
- * @class CellularAutomataSketchClass
  * @property {p5} p5 - An instance of the p5 library, used for drawing and event handling.
  * @property {p5.Graphics} currentState - A graphics buffer representing the current state of the automata.
  * @property {p5.Graphics} previousState - A graphics buffer storing the previous state of the automata for calculations.
@@ -25,6 +24,7 @@ class CellularAutomataSketchClass {
         this.defaultReactProperties = defaultReactProperties;
         this.shader;
         this.isSketchSetup = false;
+        this.debugMode = false;
         this.cursorIsOnCanvas = false;
         this.canvas;
 
@@ -53,12 +53,13 @@ class CellularAutomataSketchClass {
         this.screenToWorldP52DCoordinates = this.screenToWorldP52DCoordinates.bind(this);
         this.screenToWorldP5WebGlCoordinates = this.screenToWorldP5WebGlCoordinates.bind(this);
         this.cursorIsOnWorld = this.cursorIsOnWorld.bind(this);
-        this.freeGraphicsBuffer = this.freeGraphicsBuffer.bind(this);
+        this.saveState = this.saveState.bind(this);
+
+        this.debugMode ? console.log('CellularAutomataSketchClass.constructor') : null;
     }
 
     /**
-     * Updates the world width of the sketch.
-     *
+     * @description Updates the world width of the sketch.
      * This method clears the current and previous states, sets the pause state to 1, updates the shader's resolution uniform, and resizes the canvas of the current and previous states.
      *
      * @param {number} newWorldWidth - The new world width.
@@ -74,6 +75,11 @@ class CellularAutomataSketchClass {
         ]);
         this.currentState.resizeCanvas(newWorldWidth, this.reactProperties.worldHeight);
         this.previousState.resizeCanvas(newWorldWidth, this.reactProperties.worldHeight);
+
+        this.currentState.background(0);
+        this.previousState.background(0);
+
+        this.debugMode ? console.log('CellularAutomataSketchClass.updateWorldWidth') : null;
     }
 
     /**
@@ -94,13 +100,18 @@ class CellularAutomataSketchClass {
         ]);
         this.currentState.resizeCanvas(this.reactProperties.worldWidth, newWorldHeight);
         this.previousState.resizeCanvas(this.reactProperties.worldWidth, newWorldHeight);
+
+        this.currentState.background(0);
+        this.previousState.background(0);
+
+        this.debugMode ? console.log('CellularAutomataSketchClass.updateWorldHeight') : null;
     }
 
     /**
      * Updates the shader of the sketch.
      *
-     * This method clears the current and previous states, resets the shader of the current state, 
-     * creates a new shader with the new vertex and fragment shaders, 
+     * This method clears the current and previous states, resets the shader of the current state,
+     * creates a new shader with the new vertex and fragment shaders,
      * sets the shader of the current state to the new shader, and updates the pause and resolution uniforms of the new shader.
      *
      * @param {string} newVertexShader - The new vertex shader.
@@ -119,6 +130,22 @@ class CellularAutomataSketchClass {
             this.reactProperties.worldWidth,
             this.reactProperties.worldHeight,
         ]);
+
+        this.debugMode ? console.log('CellularAutomataSketchClass.updateShader') : null;
+    }
+
+    /**
+     * Updates the 'default CA state' color according to a given value.
+     * Sets the background attribute of the texture's currentState and previousState.
+     *
+     * @param {string} newBackgroundColor - The new background color in hex format.
+     */
+    updateBackgroundColor(newBackgroundColor) {
+        this.reactProperties.setPause(1);
+        this.currentState.clear();
+        this.previousState.clear();
+        this.currentState.background(newBackgroundColor);
+        this.previousState.background(newBackgroundColor);
     }
 
     /**
@@ -152,6 +179,10 @@ class CellularAutomataSketchClass {
         this.p5.mouseDragged = this.mouseDragged;
         this.p5.mousePressed = this.mousePressed;
         this.p5.windowResized = this.windowResized;
+
+        this.debugMode
+            ? console.log('CellularAutomataSketchClass.reactP5WrapperToClassInterface')
+            : null;
     }
 
     /**
@@ -187,6 +218,8 @@ class CellularAutomataSketchClass {
         if (oldReactProperties.backgroundColor !== newReactProperties.backgroundColor) {
             this.updateBackgroundColor(newReactProperties.backgroundColor);
         }
+
+        this.debugMode ? console.log('CellularAutomataSketchClass.updateReactProperties') : null;
     }
 
     /**
@@ -194,9 +227,15 @@ class CellularAutomataSketchClass {
      * @returns None
      */
     setupMainCanvas() {
-        this.canvas = this.p5.createCanvas(this.p5.windowWidth, this.p5.windowHeight, this.p5.WEBGL); // no smooth is active by default with webgl
+        this.canvas = this.p5.createCanvas(
+            this.p5.windowWidth,
+            this.p5.windowHeight,
+            this.p5.WEBGL
+        ); // no smooth is active by default with webgl
         this.p5.pixelDensity(PIXEL_DENSITY);
         this.p5.noStroke();
+
+        this.debugMode ? console.log('CellularAutomataSketchClass.setupMainCanvas') : null;
     }
 
     /**
@@ -211,6 +250,10 @@ class CellularAutomataSketchClass {
 
         this.currentState.pixelDensity(PIXEL_DENSITY);
         this.currentState.background(0);
+
+        this.debugMode
+            ? console.log('CellularAutomataSketchClass.setupCurrentStateGraphicsBuffer')
+            : null;
     }
 
     /**
@@ -223,6 +266,10 @@ class CellularAutomataSketchClass {
         this.previousState.pixelDensity(PIXEL_DENSITY);
         this.previousState.noSmooth();
         this.previousState.background(0);
+
+        this.debugMode
+            ? console.log('CellularAutomataSketchClass.setupPreviousStateGraphicsBuffer')
+            : null;
     }
 
     /**
@@ -233,6 +280,8 @@ class CellularAutomataSketchClass {
      */
     setupShader(vertexShader, fragmentShader) {
         this.shader = this.p5.createShader(vertexShader, fragmentShader);
+
+        this.debugMode ? console.log('CellularAutomataSketchClass.setupShader') : null;
     }
 
     /**
@@ -274,6 +323,8 @@ class CellularAutomataSketchClass {
         this.canvas.mouseOut(() => {
             this.cursorIsOnCanvas = false;
         });
+
+        this.debugMode ? console.log('CellularAutomataSketchClass.setup') : null;
     }
 
     /**
@@ -282,7 +333,11 @@ class CellularAutomataSketchClass {
      * @returns Boolean - True if the brush is drawing, false otherwise.
      */
     isBrushDrawingActive() {
-        return this.p5.mouseIsPressed && this.p5.mouseButton === this.p5.LEFT;
+        // this.debugMode ? console.log('CellularAutomataSketchClass.isBrushDrawingActive') : null;
+
+        return (
+            this.p5.mouseIsPressed && this.p5.mouseButton === this.p5.LEFT && this.cursorIsOnCanvas
+        );
     }
 
     /**
@@ -299,6 +354,8 @@ class CellularAutomataSketchClass {
         graphicsBuffer.loadPixels();
         graphicsBuffer.set(x, y, color);
         graphicsBuffer.updatePixels();
+
+        this.debugMode ? console.log('CellularAutomataSketchClass.pixelDrawOnGraphics') : null;
     }
 
     /**
@@ -319,6 +376,8 @@ class CellularAutomataSketchClass {
         graphicsBuffer.noFill();
         graphicsBuffer.rect(x, y, size, size);
         graphicsBuffer.pop();
+
+        this.debugMode ? console.log('CellularAutomataSketchClass.squareDrawOnGraphics') : null;
     }
 
     /**
@@ -340,6 +399,8 @@ class CellularAutomataSketchClass {
         graphicsBuffer.noFill();
         graphicsBuffer.ellipse(x, y, size);
         graphicsBuffer.pop();
+
+        this.debugMode ? console.log('CellularAutomataSketchClass.circleDrawOnGraphics') : null;
     }
 
     /**
@@ -349,10 +410,11 @@ class CellularAutomataSketchClass {
      * @param {p5.Graphics} graphicsBuffer - The p5.js graphics buffer where the brush will draw.
      * @param {number} x - The x-coordinate on the graphics buffer where the brush starts drawing.
      * @param {number} y - The y-coordinate on the graphics buffer where the brush starts drawing.
+     * @param {p5.Color} color - The color of the brush.
      *
      * @returns None
      */
-    brushDrawOnGraphics(graphicsBuffer, x, y) {
+    brushDrawOnGraphics(graphicsBuffer, x, y, color) {
         // If the brush is not drawing, do nothing
         // If the cursor is not on the world, do nothing
         if (!this.isBrushDrawingActive() || !this.cursorIsOnWorld()) {
@@ -361,7 +423,7 @@ class CellularAutomataSketchClass {
 
         switch (this.reactProperties.brushType) {
             case 'pixel':
-                this.pixelDrawOnGraphics(graphicsBuffer, x, y, this.p5.color(this.reactProperties.currentDrawColor));
+                this.pixelDrawOnGraphics(graphicsBuffer, x, y, color);
                 break;
 
             case 'square':
@@ -369,7 +431,7 @@ class CellularAutomataSketchClass {
                     graphicsBuffer,
                     x,
                     y,
-                    this.p5.color(this.reactProperties.currentDrawColor),
+                    color,
                     this.reactProperties.brushSize,
                     2
                 );
@@ -380,7 +442,7 @@ class CellularAutomataSketchClass {
                     graphicsBuffer,
                     x,
                     y,
-                    this.p5.color(this.reactProperties.currentDrawColor),
+                    color,
                     this.reactProperties.brushSize,
                     1
                 );
@@ -399,6 +461,8 @@ class CellularAutomataSketchClass {
             default:
                 break;
         }
+
+        // this.debugMode ? console.log('CellularAutomataSketchClass.brushDrawOnGraphics') : null;
     }
 
     /**
@@ -411,6 +475,8 @@ class CellularAutomataSketchClass {
      */
     copyGraphicsBufferImageDataToAnotherGraphicsBuffer(source, destination, x, y) {
         source.image(destination.get(), x, y);
+
+        // this.debugMode ? console.log('CellularAutomataSketchClass.copyGraphicsBufferImageDataToAnotherGraphicsBuffer') : null;
     }
 
     /**
@@ -424,8 +490,11 @@ class CellularAutomataSketchClass {
      * @returns None
      */
     draw() {
+        // this.saveState(this.previousState);
+
         // If the sketch is not set up, do nothing
         if (this.isSketchSetup == false) {
+            console.log('Sketch not set up');
             return;
         }
 
@@ -442,7 +511,7 @@ class CellularAutomataSketchClass {
         let mouseWorldX = mouseWorldLocation.x;
         let mouseWorldY = mouseWorldLocation.y;
 
-        this.brushDrawOnGraphics(this.previousState, mouseWorldX, mouseWorldY);
+        this.brushDrawOnGraphics(this.previousState, mouseWorldX, mouseWorldY, this.p5.color(this.reactProperties.currentDrawColor));
 
         this.shader.setUniform('pause', this.reactProperties.pause);
         this.shader.setUniform('previousState', this.previousState);
@@ -518,17 +587,21 @@ class CellularAutomataSketchClass {
      * @returns None
      */
     mouseWheel(event) {
-        if(this.cursorIsOnCanvas){
-            this.reactProperties.setZoom((previousZoom) => {
-                previousZoom -= event.delta * this.reactProperties.zoomSensitivity;
-                previousZoom = this.p5.constrain(
-                    previousZoom,
-                    this.reactProperties.minZoom,
-                    this.reactProperties.maxZoom
-                );
-                return previousZoom;
-            });
+        if (!this.cursorIsOnCanvas) {
+            return;
         }
+
+        this.reactProperties.setZoom((previousZoom) => {
+            previousZoom -= event.delta * this.reactProperties.zoomSensitivity;
+            previousZoom = this.p5.constrain(
+                previousZoom,
+                this.reactProperties.minZoom,
+                this.reactProperties.maxZoom
+            );
+            return previousZoom;
+        });
+
+        this.debugMode ? console.log('CellularAutomataSketchClass.mouseWheel') : null;
     }
 
     /**
@@ -559,6 +632,8 @@ class CellularAutomataSketchClass {
             this.reactProperties.setPreviousMouseY(this.p5.mouseY);
             return previousCameraY;
         });
+
+        this.debugMode ? console.log('CellularAutomataSketchClass.mouseDragged') : null;
     }
 
     /**
@@ -575,6 +650,8 @@ class CellularAutomataSketchClass {
         if (this.cursorIsOnWorld()) {
             this.reactProperties.setPause(1);
         }
+
+        this.debugMode ? console.log('CellularAutomataSketchClass.mousePressed') : null;
     }
 
     /**
@@ -583,6 +660,8 @@ class CellularAutomataSketchClass {
      */
     windowResized() {
         this.p5.resizeCanvas(this.p5.windowWidth, this.p5.windowHeight);
+
+        this.debugMode ? console.log('CellularAutomataSketchClass.windowResized') : null;
     }
 
     /**
@@ -675,25 +754,46 @@ class CellularAutomataSketchClass {
         return cursorWorld.x !== null && cursorWorld.y !== null && this.cursorIsOnCanvas;
     }
 
-    freeGraphicsBuffer(graphicsBuffer) {
-        const gl = graphicsBuffer._renderer.GL;
+    saveState(graphicsBuffer) {
+        graphicsBuffer.loadPixels();
 
-        if (gl) {
-            const numTextureUnits = gl.getParameter(gl.MAX_TEXTURE_IMAGE_UNITS);
-            for (let unit = 0; unit < numTextureUnits; ++unit) {
-                gl.activeTexture(gl.TEXTURE0 + unit);
-                gl.bindTexture(gl.TEXTURE_2D, null);
-                gl.bindTexture(gl.TEXTURE_CUBE_MAP, null);
+        // Create an array to temporarily hold the pixel data
+        let tempArray = [];
+
+        // Set the pixels of the new image to match the pixels of the graphicsBuffer
+        for (let y = 0; y < graphicsBuffer.height; y++) {
+            for (let x = 0; x < graphicsBuffer.width; x++) {
+                let c = graphicsBuffer.get(x, y);
+                // Push the pixel's color values into the array
+                tempArray.push(c[0], c[1], c[2], c[3]);
             }
-            gl.bindBuffer(gl.ARRAY_BUFFER, null);
-            gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
-            gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-            gl.bindRenderbuffer(gl.RENDERBUFFER, null);
         }
 
-        graphicsBuffer._renderer.GL = null;
-        graphicsBuffer.remove();
-        graphicsBuffer = null;
+        // Convert the temporary array to a Uint8Array
+        let pixelArray = new Uint8Array(tempArray);
+
+        // Convert the Uint8Array to an ArrayBuffer
+        let buffer = pixelArray.buffer;
+
+        console.log(buffer);
+
+        let url = 'https://localhost:3000/api/upload'; // replace with your API endpoint
+        let options = {
+            method: 'POST',
+            body: buffer, // your ArrayBuffer
+            headers: {
+                'Content-Type': 'application/octet-stream', // indicate that we are sending binary data
+            },
+        };
+
+        fetch(url, options)
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
     }
 }
 
