@@ -65,6 +65,7 @@ export function P5PropertiesProvider({ children }) {
     const [langRange, setLangRange] = useState(DefaultProperties.langRange);
     const [backgroundColor, setBackgroundColor] = useState(DefaultProperties.backgroundColor);
     const [currentDrawColor, setCurrentDrawColor] = useState(DefaultProperties.currentDrawColor);
+    const [fullscreen, setFullscreen] = useState(false);
 
     const value = {
         sketchClass,
@@ -128,7 +129,9 @@ export function P5PropertiesProvider({ children }) {
         backgroundColor,
         setBackgroundColor,
         currentDrawColor,
-        setCurrentDrawColor
+        setCurrentDrawColor,
+        fullscreen,
+        setFullscreen,
     };
 
     return <P5PropertiesContext.Provider value={value}>{children}</P5PropertiesContext.Provider>;

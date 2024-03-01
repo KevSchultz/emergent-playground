@@ -1,12 +1,17 @@
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@700&family=Pixelify+Sans:wght@400..700&display=swap');
+
+
 
 :root {
     user-select: none;
 }
 
 body {
-    background: linear-gradient(109.6deg, rgb(36, 45, 57) 11.2%, rgb(16, 37, 60) 51.2%, rgb(0, 0, 0) 98.6%);
+        background: linear-gradient(109.6deg, rgb(36, 45, 57) 11.2%, rgb(16, 37, 60) 51.2%, rgb(0, 0, 0) 98.6%);
+}
+
+.MuiTypography-root {
+    font-family: 'Pixelify Sans', sans-serif !important;
 }
 
 .MuiPaper-root {

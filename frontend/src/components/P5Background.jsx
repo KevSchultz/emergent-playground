@@ -30,30 +30,14 @@ import { sketch } from './DefaultProperties';
  * @returns {JSX.Element} The P5Background component.
  */
 function P5Background() {
-    // const [sketch, setSketch] = useState(new CellularAutomataSketchClass(DefaultProperties));
     const p5Properties = useContext(P5PropertiesContext);
-
-    // const { sketchClass } = p5Properties;
-
-    // useEffect(() => {
-
-    //     switch (sketchClass) {
-    //         case "CellularAutomataSketchClass":
-    //             setSketch(new CellularAutomataSketchClass(DefaultProperties));
-    //             break;
-    //         default:
-    //             setSketch(new CellularAutomataSketchClass(DefaultProperties));
-    //     }
-
-    // }, [sketchClass]);
 
     return (
         <Box
             sx={{
                 position: 'absolute',
-                top: '0',
-                left: '0',
-                width: '100%',
+                top: 0,
+                left: 0,
                 height: '100%',
                 overflow: 'hidden',
                 display: 'flex',

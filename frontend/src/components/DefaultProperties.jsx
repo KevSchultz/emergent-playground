@@ -20,18 +20,18 @@ import CellularAutomataSketchClass from '../sketches/CellularAutomataSketchClass
 
 let DefaultProperties = {
     sketchClassType: "CellularAutomataSketchClass",
-    worldWidth: 500,
-    worldHeight: 500,
+    worldWidth: 300,
+    worldHeight: 300,
     pixelDensity: 1,
     cameraX: 0,
     cameraY: 0,
     cameraZ: 1,
-    zoom: 0.5,
+    zoom: 1,
     minZoom: 0.1,
     maxZoom: 100,
     zoomSensitivity: 0.001,
     panSensitivity: 0.001,
-    brushType: 'pixel',
+    brushType: 'square',
     listBrushTypes: ['pixel', 'square', 'circle', 'camera'],
     brushIcons: {
         pixel: <SquareIcon />,
@@ -59,7 +59,8 @@ let DefaultProperties = {
     langIncludeSelf: false,
     langRange: 1,
     backgroundColor: '',
-    currentDrawColor: ''
+    currentDrawColor: '',
+    fullscreen: false,
 };
 
 export const sketch = new CellularAutomataSketchClass(DefaultProperties);
