@@ -8,7 +8,7 @@
  * langCompiler is a function that takes a String instruction of shader-lang format and transforms it to GLSL ES 3.0 code.
  *
  * @param {string} inst - The input instruction code.
- * @param {boolean} include_self - Whether to include current cell in identificaiton.
+ * @param {boolean} include_self - Whether to include current cell in identification.
  * @param {number} range - Integer size of neighborhood in identification.
  * @param {string} neighborhood - Type of neighborhood. 
  * @param {Array[{string, string}]} colors - ONLY USE langTupleList here!!!

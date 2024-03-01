@@ -20,6 +20,7 @@ class CellularAutomataSketchClass {
         this.p5;
         this.currentState;
         this.previousState;
+        this.overlayGraphics;
         this.reactProperties;
         this.defaultReactProperties = defaultReactProperties;
         this.shader;
@@ -256,6 +257,15 @@ class CellularAutomataSketchClass {
             : null;
     }
 
+    setupOverlayGraphicsBuffer(worldWidth, worldHeight, pixelDensity) {
+
+        this.overlayGraphics = this.p5.createGraphics(worldWidth, worldHeight);
+
+        this.overlayGraphics.pixelDensity(pixelDensity);
+        this.overlayGraphics.noSmooth();
+
+    }
+
     /**
      * Sets up a shader using the provided vertex and fragment shaders.
      *
@@ -296,6 +306,13 @@ class CellularAutomataSketchClass {
         this.setupPreviousStateGraphicsBuffer(
             this.defaultReactProperties.worldWidth,
             this.defaultReactProperties.worldHeight
+        );
+
+        // ------ Overlay Graphics ------
+        this.setupOverlayGraphicsBuffer(
+            this.defaultReactProperties.worldWidth,
+            this.defaultReactProperties.worldHeight,
+            this.defaultReactProperties.pixelDensity
         );
 
         this.isSketchSetup = true;
@@ -399,12 +416,6 @@ class CellularAutomataSketchClass {
      * @returns None
      */
     brushDrawOnGraphics(graphicsBuffer, x, y, color) {
-        // If the brush is not drawing, do nothing
-        // If the cursor is not on the world, do nothing
-        if (!this.isBrushDrawingActive() || !this.cursorIsOnWorld()) {
-            return;
-        }
-
         switch (this.reactProperties.brushType) {
             case 'pixel':
                 this.pixelDrawOnGraphics(graphicsBuffer, x, y, color);
@@ -463,6 +474,11 @@ class CellularAutomataSketchClass {
         // this.debugMode ? console.log('CellularAutomataSketchClass.copyGraphicsBufferImageDataToAnotherGraphicsBuffer') : null;
     }
 
+    drawOverlay() {
+        this.overlayGraphics.clear();
+        this.brushDrawOnGraphics(this.overlayGraphics)
+    }
+
     /**
      * Handles the drawing of the cellular automata sketch with p5.
      * This includes clearing the sketch, updating the previous state with the current state,
@@ -495,7 +511,13 @@ class CellularAutomataSketchClass {
         let mouseWorldX = mouseWorldLocation.x;
         let mouseWorldY = mouseWorldLocation.y;
 
-        this.brushDrawOnGraphics(this.previousState, mouseWorldX, mouseWorldY, this.p5.color(this.reactProperties.currentDrawColor));
+
+        if (this.isBrushDrawingActive() && this.cursorIsOnWorld()) {
+            this.brushDrawOnGraphics(this.previousState, mouseWorldX, mouseWorldY, this.p5.color(this.reactProperties.currentDrawColor));
+        }
+
+        this.overlayGraphics.clear();
+        this.brushDrawOnGraphics(this.overlayGraphics, mouseWorldX, mouseWorldY, this.p5.color(this.reactProperties.currentDrawColor));
 
         this.shader.setUniform('pause', this.reactProperties.pause);
         this.shader.setUniform('previousState', this.previousState);
@@ -513,6 +535,12 @@ class CellularAutomataSketchClass {
         // ----- Draw the CurrentState to the a Canvas Plane -----
         this.drawTexturePlane(
             this.currentState,
+            this.reactProperties.worldWidth,
+            this.reactProperties.worldHeight
+        );
+
+        this.drawTexturePlane(
+            this.overlayGraphics,
             this.reactProperties.worldWidth,
             this.reactProperties.worldHeight
         );
