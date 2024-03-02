@@ -19,10 +19,8 @@ import {
     MenuItem, 
     Select, 
     Table,
-    TableBody,
     TableCell,
     TableContainer,
-    TableHead,
     TableRow,
     Typography 
 } from '@mui/material';
@@ -70,7 +68,7 @@ function LanguageHelpDropdown() {
         `;
 
     return(
-        <Accordion>
+        <Accordion sx={{ borderBottom: 0 }}>
             <AccordionSummary
                 expandIcon={<ExpandMoreOutlined/>}
             >
