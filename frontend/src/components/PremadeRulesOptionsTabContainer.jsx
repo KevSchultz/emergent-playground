@@ -33,6 +33,9 @@ function PremadeRulesOptionsTabContainer() {
                     newDefaultBackground={p.defaultBackground}
                     premadeRuleName={p.name}
                     imageUrl={p.url}
+                    newNeighborhood={p.neighborhood}
+                    newRange={p.range}
+                    newIncludeSelf={p.includeSelf}
                 />
             ))}
         </ResizableGrid>

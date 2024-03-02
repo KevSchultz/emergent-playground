@@ -70,13 +70,9 @@ function LanguageOptionsTabContainer() {
         }
     };
 
-    const handleDebug = () => {
+    const handleSave = () => {
         console.log(fragmentShader);
         console.log(langTupleList);
-    };
-
-    const handleSave = () => {
-        console.log('saved :^)');
     };
 
     return (

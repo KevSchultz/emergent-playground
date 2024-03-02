@@ -36,12 +36,15 @@ import PropTypes from 'prop-types';
  * 
  * @returns {JSX.Element} The PremadeRuleCard component.
  */
-function PremadeRuleCard({ premadeRuleName, newFragmentShader, imageUrl, newTupleList, newDefaultDraw, newDefaultBackground }) {
+function PremadeRuleCard({ premadeRuleName, newFragmentShader, imageUrl, newTupleList, newDefaultDraw, newDefaultBackground, newNeighborhood, newRange, newIncludeSelf }) {
     const { 
         setFragmentShader, 
         setLangTupleList, 
         setCurrentDrawColor,
-        setBackgroundColor
+        setBackgroundColor,
+        setLangNeighborhoodType,
+        setLangRange,
+        setLangIncludeSelf
     } = useContext(P5PropertiesContext);
 
     const handleCardClick = () => {
@@ -49,6 +52,9 @@ function PremadeRuleCard({ premadeRuleName, newFragmentShader, imageUrl, newTupl
         setLangTupleList(newTupleList);
         setCurrentDrawColor(newDefaultDraw);
         setBackgroundColor(newDefaultBackground);
+        setLangNeighborhoodType(newNeighborhood);
+        setLangRange(newRange);
+        setLangIncludeSelf(newIncludeSelf);
     };
 
     return (
