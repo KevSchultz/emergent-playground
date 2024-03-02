@@ -13,7 +13,6 @@ import { useContext } from 'react';
 import { 
     Accordion, 
     AccordionSummary, 
-    Button, 
     Checkbox, 
     FormControl, 
     FormControlLabel, 
@@ -31,6 +30,7 @@ import { ExpandMoreOutlined } from '@mui/icons-material';
 
 // Other Imports
 import P5PropertiesContext from './P5PropertiesContext';
+import ResizableGrid from './ResizableGrid';
 
 /**
  * A dropdown menu for setting options for langCompiler in the language options tab.
@@ -55,32 +55,32 @@ function LanguageOptionsDropdown() {
 
     const handleNeighborhoodSwitch = (event) => {
         if(event.target.checked){
-            setLangNeighborhoodType('von_neumann');
-        } else {
             setLangNeighborhoodType('moore');
+        } else {
+            setLangNeighborhoodType('von_neumann');
         }
     };
 
     return(
-        <Accordion>
+        <Accordion disableGutters>
             <AccordionSummary
                 expandIcon={<ExpandMoreOutlined/>}
             >
                 Options
             </AccordionSummary>
             <Grid container spacing={1} padding={2}>
-                <Grid item xs={6}>
+                <Grid item xs={12}>
+                    <ResizableGrid limit={400}>
                     <FormControlLabel 
                         control={<Checkbox onChange={(e) => setLangIncludeSelf(e.target.checked)}/>} 
                         label='Include Self'
                     />
-                </Grid>
-                <Grid item xs={6}>{/*moore, von_neumann, ???*/}
                     <Stack direction='row' spacing={1} alignItems='center'>
-                        <Typography>Moore</Typography>
-                        <Switch onChange={handleNeighborhoodSwitch} />
                         <Typography>Von Neumann</Typography>
+                        <Switch onChange={handleNeighborhoodSwitch} />
+                        <Typography>Moore</Typography>
                     </Stack>
+                    </ResizableGrid>
                 </Grid>
                 <Grid item xs={12}>
                     <Typography gutterBottom> Range </Typography>
@@ -93,9 +93,6 @@ function LanguageOptionsDropdown() {
                         onChange={(e, value) => setLangRange(value)}
                     />
                 </Grid>
-        {/*<Grid item xs={12}>
-                    <Button onClick={()=>{console.log(langNeighborhoodType);}}>DEBUG</Button>
-                </Grid>*/}
                 <Grid item xs={12}>
                     <FormControl fullWidth>
                         <InputLabel id='backgroundSelectLabel'>Default State</InputLabel>

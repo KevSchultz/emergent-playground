@@ -29,7 +29,6 @@ import { Brightness1, ExpandMoreOutlined } from '@mui/icons-material';
 
 // Other Imports
 import P5PropertiesContext from './P5PropertiesContext';
-import '@fontsource/roboto-mono';
 
 /**
  * A dropdown menu for help with writing the language. Displays active variables.
@@ -50,25 +49,24 @@ function LanguageHelpDropdown() {
     const infoPages = ['Help', 'Variables', 'Example'];
 
     const golExample = `
-        if(curr == live){
-            if(live_num < 2){
-                next = dead;
-            }
-            if(live_num == 2 || live_num == 3){
-                next = live;
-            }
-            if(live_num > 3){
-                next = dead;
-            }
-        } else {
-            if(curr == dead && live_num == 3){
-                next = live;
-            }
+    if(curr == live){
+        if(live_num < 2){
+            next = dead;
         }
-        `;
+        if(live_num == 2 || live_num == 3){
+            next = live;
+        }
+        if(live_num > 3){
+            next = dead;
+        }
+    } else {
+        if(curr == dead && live_num == 3){
+            next = live;
+        }
+    }`;
 
     return(
-        <Accordion sx={{ borderBottom: 0 }}>
+        <Accordion disableGutters> 
             <AccordionSummary
                 expandIcon={<ExpandMoreOutlined/>}
             >
@@ -164,7 +162,9 @@ function LanguageHelpDropdown() {
                     {infoPage === 'Example' && (
                         <>
                         <Typography>{"Conway\'s Game of Life"}</Typography>
-                        <Typography sx={{ fontFamily:'monospace' }}>{golExample}</Typography>
+                        <Typography sx={{ fontFamily:'monospace' }} noWrap>
+                            <pre><code>{golExample}</code></pre>
+                        </Typography>
                         </>
                     )}
                 </Grid>

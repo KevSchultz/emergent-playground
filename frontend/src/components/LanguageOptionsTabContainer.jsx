@@ -18,13 +18,14 @@ import 'ace-builds/src-noconflict/mode-glsl';
 import 'ace-builds/src-noconflict/theme-gruvbox';
 import 'ace-builds/src-noconflict/ext-language_tools';
 
-// Other Imports
-import P5PropertiesContext from './P5PropertiesContext';
-import { HexColorPicker } from 'react-colorful';
-import LanguageStateItem from './LanguageStateItem';
-import langCompiler from '../lang-data/langCompiler';
+// Dropdown Imports
 import LanguageOptionsDropdown from './LanguageOptionsDropdown';
 import LanguageHelpDropdown from './LanguageHelpDropdown';
+import LanguageColorMenuDropdown from './LanguageColorMenuDropdown';
+
+// Other Imports
+import P5PropertiesContext from './P5PropertiesContext';
+import langCompiler from '../lang-data/langCompiler';
 import PrettyAlert from './PrettyAlert';
 import ResizableGrid from './ResizableGrid';
 
@@ -39,22 +40,16 @@ import ResizableGrid from './ResizableGrid';
  * @returns {JSX.Element} The LanguageOptionsTabContainer component.
  */
 
-//TODO: syntax highlighting & autocomplete for language in AceEditor
+//TODO: autocomplete for language in AceEditor
 //TODO: UPDATE PALETTE WHEN COLOR BECOMES UNAVAILABLE
-//TODO: help page (dropdown style) -- just show available variables
 function LanguageOptionsTabContainer() {
     const { 
         code, 
         setCode, 
-        currentLangColor,
-        setCurrentLangColor,
         langTupleList,
-        setLangTupleList,
         langIncludeSelf,
         langRange,
         setFragmentShader,
-        backgroundColor,
-        setBackgroundColor,
         fragmentShader
     } = useContext(P5PropertiesContext);
 
@@ -63,22 +58,6 @@ function LanguageOptionsTabContainer() {
 
     const handleCodeChange = (newCode) => {
         setCode(newCode);
-    };
-
-    const handleCurrentColorChange = (newColor) => {
-        setCurrentLangColor(newColor);
-    };
-
-    const handleAddColor = () => {
-        if(langTupleList.some(s => s.color === currentLangColor)){
-            setOpenError(true);
-            setAlertMessage('Color already in use.');
-        } else {
-            setLangTupleList([...langTupleList, {color: currentLangColor, name: ''}]);
-            if(backgroundColor === ''){
-                setBackgroundColor(currentLangColor);
-            }
-        }
     };
 
     const handleCompile = () => {
@@ -102,46 +81,7 @@ function LanguageOptionsTabContainer() {
 
     return (
         <Box>
-            <ResizableGrid limit={400}>
-                <HexColorPicker color={currentLangColor} onChange={handleCurrentColorChange}/>
-                <Box style={{ maxHeight: 200, overflow: 'auto' }}>
-                    <List>
-                        {langTupleList.map((s, index) => (
-                            <LanguageStateItem key={index} state={{color: s.color, name: s.name}}/>
-                        ))}
-                    </List>
-                </Box>
-                <Button 
-                    variant="outlined" 
-                    fullWidth
-                    onClick={handleAddColor}
-                > 
-                    Add Color 
-                </Button>
-                <Button 
-                    variant="outlined" 
-                    fullWidth
-                    onClick={handleCompile}
-                > 
-                    Compile 
-                </Button>
-            </ResizableGrid>
-            <Button 
-                variant="contained"
-                fullWidth
-                onClick={handleSave}
-                sx={{ mt: 0, mb: 2 }}
-            >
-                Save
-            </Button>
-            <Button 
-                variant="contained"
-                fullWidth
-                onClick={handleDebug}
-                sx={{ mt: 0, mb: 2 }}
-            >
-                Debug
-            </Button>
+            <LanguageColorMenuDropdown setOpenError={setOpenError} setAlertMessage={setAlertMessage}/>
             <PrettyAlert
                 openAlert={openError}
                 setOpenAlert={setOpenError}
@@ -153,6 +93,22 @@ function LanguageOptionsTabContainer() {
             />
             <LanguageOptionsDropdown/>
             <LanguageHelpDropdown/>
+            <ResizableGrid limit={400}>
+                <Button
+                    variant='outlined'
+                    onClick={handleSave}
+                    fullWidth
+                >
+                    Save
+                </Button>
+                 <Button
+                    variant='outlined'
+                    onClick={handleCompile}
+                    fullWidth
+                >
+                    Compile
+                </Button>
+            </ResizableGrid>
             <AceEditor
                 width="100%"
                 placeholder=""
