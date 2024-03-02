@@ -31,7 +31,7 @@ let DefaultProperties = {
     maxZoom: 100,
     zoomSensitivity: 0.001,
     panSensitivity: 0.001,
-    brushType: 'square',
+    brushType: 'pixel',
     listBrushTypes: ['pixel', 'square', 'circle', 'camera'],
     brushIcons: {
         pixel: <SquareIcon />,

@@ -19,16 +19,12 @@ import Paper from '@mui/material/Paper';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import P5Background from '../components/P5Background';
-import DefaultProperties from '../components/DefaultProperties';
-import TextureRuleCellularAutomataSketchClass from '../sketches/TextureRuleCellularAutomataSketchClass';
-import P5PropertiesContext from '../components/P5PropertiesContext';
+import { useNavigate } from 'react-router-dom';
 
-const TextureRuleCellularAutomataSketch = new TextureRuleCellularAutomataSketchClass(
-    DefaultProperties
-);
 
 function Login() {
+
+    const navigate = useNavigate(); // Get the navigate function
     const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
@@ -48,16 +44,14 @@ function Login() {
 
             console.log(responseData);
 
+            if (response.ok) {
+                navigate('/');
+            }
+
         } catch (error) {
             console.error(error);
         }
     };
-
-    const { setZoom } = useContext(P5PropertiesContext);
-
-    useEffect(() => {
-        setZoom(50);
-    });
 
     return (
         <Box
@@ -69,8 +63,6 @@ function Login() {
                 alignItems: 'center',
             }}
         >
-            <P5Background cellularAutomataSketch={TextureRuleCellularAutomataSketch} />
-
             <Container component="main" maxWidth="xs">
                 <Paper
                     sx={{

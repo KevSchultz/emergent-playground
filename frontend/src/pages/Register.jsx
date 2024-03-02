@@ -18,14 +18,8 @@ import Paper from '@mui/material/Paper';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import P5Background from '../components/P5Background';
-import DefaultProperties from '../components/DefaultProperties';
-import TextureRuleCellularAutomataSketchClass from '../sketches/TextureRuleCellularAutomataSketchClass';
 import P5PropertiesContext from '../components/P5PropertiesContext';
 
-const TextureRuleCellularAutomataSketch = new TextureRuleCellularAutomataSketchClass(
-    DefaultProperties
-);
 
 /**
  * A functional component that renders the Register page.
@@ -43,12 +37,6 @@ function Register() {
         });
     };
 
-    const { setZoom } = useContext(P5PropertiesContext);
-
-    useEffect(() => {
-        setZoom(50);
-    });
-
     return (
         <Box
             sx={{
@@ -59,8 +47,6 @@ function Register() {
                 alignItems: 'center',
             }}
         >
-            <P5Background cellularAutomataSketch={TextureRuleCellularAutomataSketch} />
-
             <Container component="main" maxWidth="xs">
                 <Paper
                     sx={{

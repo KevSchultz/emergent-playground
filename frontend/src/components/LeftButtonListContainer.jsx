@@ -43,6 +43,8 @@ import Draggable from 'react-draggable';
  * @returns {JSX.Element} The LeftButtonListContainer component.
  */
 function LeftButtonListContainer() {
+
+
     const {
         brushType,
         setBrushType,
@@ -143,9 +145,7 @@ function LeftButtonListContainer() {
                         backgroundColor: 'rgba(0, 0, 0, 0.5)',
                     }}
                 >
-                    <Fab color="primary" aria-label="add">
-                        <PlayPauseButton pause={pause} setPause={setPause} />
-                    </Fab>
+                    <PlayPauseButton pause={pause} setPause={setPause} />
                     <Fab color="primary" aria-label="edit" onClick={handleClickOpen}>
                         <BrushIcon />
                     </Fab>

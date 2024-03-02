@@ -266,8 +266,6 @@ class CellularAutomataSketchClass {
         this.overlayGraphics.pixelDensity(pixelDensity);
         this.overlayGraphics.noSmooth();
 
-        console.log(this.overlayGraphics.drawingContext);
-
         this.overlayGraphics.noStroke();
     }
 
