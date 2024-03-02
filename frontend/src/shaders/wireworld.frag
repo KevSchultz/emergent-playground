@@ -12,9 +12,9 @@ uniform vec2 resolution;
 uniform float pause;
 
 const vec4 empty = vec4(0, 0, 0, 1.0);
-const vec4 electron_head = vec4(0, 0.7568627450980392, 1, 1.0);
+const vec4 electron_head = vec4(0, 1, 1, 1.0);
 const vec4 electron_tail = vec4(1, 0, 0, 1.0);
-const vec4 conductor = vec4(1, 0.9333333333333333, 0, 1.0);
+const vec4 conductor = vec4(1, 1, 0, 1.0);
 
 
 
@@ -68,13 +68,15 @@ void main(){
 //CODEBEGIN
 	if(curr == empty){
 	  next = empty;
-	} else if(curr == electron_head){
+	} 
+    if(curr == electron_head){
 	  next = electron_tail;
-	} else if(curr == electron_tail){
+	} 
+    if(curr == electron_tail){
 	  next = conductor;
 	} else {
 	  next = conductor;
-	  if(electron_head_num < uint(3)){
+	  if(electron_head_num == uint(1) || electron_head_num == uint(2)){
 	    next = electron_head;
 	  }
 	}

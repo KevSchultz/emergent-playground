@@ -41,8 +41,8 @@ const briansBrain = {
 
 const wireworld = {
     name: 'Wireworld',
-    tupleList: [{color: '#000000', name: 'empty'}, {color: '#00c1ff', name: 'electron_head'}, {color: '#ff0000', name: 'electron_tail'}, {color: '#ffee00', name: 'conductor'}],
-    defaultDraw: '#ffee00',
+    tupleList: [{color: '#000000', name: 'empty'}, {color: '#00ffff', name: 'electron_head'}, {color: '#ff0000', name: 'electron_tail'}, {color: '#ffff00', name: 'conductor'}],
+    defaultDraw: '#ffff00',
     defaultBackground: '#000000',
     url: 'https://upload.wikimedia.org/wikipedia/commons/1/13/Wireworld_XOR-gate.gif',
     shader: wireworldShader,
