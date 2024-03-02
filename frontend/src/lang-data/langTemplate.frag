@@ -38,13 +38,13 @@ void main(){
         }
     }
 
-    vec4 cell;
+    vec4 next;
 
 //RULES
 
     if(pause == 1.0){
-        cell = curr;
+        next = curr;
     }
 
-    out_col = cell;
+    out_col = next;
 }

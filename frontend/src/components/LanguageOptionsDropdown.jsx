@@ -43,7 +43,6 @@ import P5PropertiesContext from './P5PropertiesContext';
  * @returns {JSX.Element} The LanguageOptionsDropdown component.
  */
 
-//TODO: neighborhood selector
 function LanguageOptionsDropdown() {
     const { 
         setLangIncludeSelf, 
@@ -52,7 +51,6 @@ function LanguageOptionsDropdown() {
         setBackgroundColor,
         langTupleList,
         setLangNeighborhoodType,
-        langNeighborhoodType
     } = useContext(P5PropertiesContext);
 
     const handleNeighborhoodSwitch = (event) => {
