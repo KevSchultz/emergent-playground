@@ -6,9 +6,6 @@
  * @exports PremadeRulesOptionsTabContainer
  */
 
-// Material UI imports
-import Box from '@mui/material/Box';
-
 // Shader Imports (for the premade rules)
 import premadeConstants from '../lang-data/premadeConstants';
 
