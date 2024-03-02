@@ -60,6 +60,7 @@ void main(){
 
 	vec4 cell;
 
+//CODEBEGIN
 	if(curr == live){
 	  cell = dying;
 	} else if(curr == dying){
@@ -70,6 +71,7 @@ void main(){
 	    cell = live;
 	  }
 	}
+//CODEEND
 
 	if(pause == 1.0){
 		cell = curr;

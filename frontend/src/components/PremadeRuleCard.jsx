@@ -56,7 +56,7 @@ function PremadeRuleCard({ premadeRuleName, newFragmentShader, imageUrl, newTupl
         setLangNeighborhoodType(newNeighborhood);
         setLangRange(newRange);
         setLangIncludeSelf(newIncludeSelf);
-        setCode(newFragmentShader.match(/\/\/CODEBEGIN([\s\S]*?)\/\/CODEEND/g)[0].replace('//CODEBEGIN','').replace('//CODEEND','').replace(/^(\t)/gm,'').replace(/uint\((\d+)\)/g, '$1'));
+        setCode(newFragmentShader.match(/\/\/CODEBEGIN([\s\S]*?)\/\/CODEEND/g)[0].replace('//CODEBEGIN','').replace('//CODEEND','').replace(/^(\t)/gm,'').replace(/uint\((\d+)\)/g, '$1').trim());
     };
 
     return (
