@@ -13,6 +13,7 @@ import { useContext } from 'react';
 import { 
     Accordion, 
     AccordionSummary, 
+    Button,
     Checkbox, 
     FormControl, 
     FormControlLabel, 
@@ -51,6 +52,7 @@ function LanguageOptionsDropdown() {
         setBackgroundColor,
         langTupleList,
         setLangNeighborhoodType,
+        langNeighborhoodType
     } = useContext(P5PropertiesContext);
 
     const handleNeighborhoodSwitch = (event) => {
@@ -68,6 +70,7 @@ function LanguageOptionsDropdown() {
             >
                 Options
             </AccordionSummary>
+        {/*<Button onClick={() => {console.log(langNeighborhoodType);}}>DEBUG</Button>*/}
             <Grid container spacing={1} padding={2}>
                 <Grid item xs={12}>
                     <ResizableGrid limit={400}>
@@ -77,7 +80,7 @@ function LanguageOptionsDropdown() {
                     />
                     <Stack direction='row' spacing={1} alignItems='center'>
                         <Typography>Von Neumann</Typography>
-                        <Switch onChange={handleNeighborhoodSwitch} />
+                        <Switch checked={langNeighborhoodType === 'moore'} onChange={handleNeighborhoodSwitch} />
                         <Typography>Moore</Typography>
                     </Stack>
                     </ResizableGrid>
