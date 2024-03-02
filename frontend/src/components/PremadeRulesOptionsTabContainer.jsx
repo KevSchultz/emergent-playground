@@ -9,11 +9,12 @@
 // Material UI imports
 import Box from '@mui/material/Box';
 
-import PremadeRuleCard from './PremadeRuleCard';
-
 // Shader Imports (for the premade rules)
 import premadeConstants from '../lang-data/premadeConstants';
 
+// Other Imports
+import PremadeRuleCard from './PremadeRuleCard';
+import ResizableGrid from './ResizableGrid';
 
 /**
  * A container component for the premade rules options tab.
@@ -25,15 +26,7 @@ import premadeConstants from '../lang-data/premadeConstants';
  */
 function PremadeRulesOptionsTabContainer() {
     return (
-        <Box
-            sx={{
-                display: 'flex',
-                width: '100%',
-                paddingTop: '10px',
-                rowGap: '10px',
-                columnGap: '10px',
-            }}
-        >
+        <ResizableGrid limit={400}>
             {premadeConstants.map((p, index) => (
                 <PremadeRuleCard
                     key={index}
@@ -45,7 +38,7 @@ function PremadeRulesOptionsTabContainer() {
                     imageUrl={p.url}
                 />
             ))}
-        </Box>
+        </ResizableGrid>
     );
 }
 
