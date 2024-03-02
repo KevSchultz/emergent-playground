@@ -24,6 +24,7 @@ import { HexColorPicker } from 'react-colorful';
 import LanguageStateItem from './LanguageStateItem';
 import langCompiler from '../lang-data/langCompiler';
 import LanguageOptionsDropdown from './LanguageOptionsDropdown';
+import LanguageHelpDropdown from './LanguageHelpDropdown';
 import PrettyAlert from './PrettyAlert';
 import ResizableGrid from './ResizableGrid';
 
@@ -40,8 +41,8 @@ import ResizableGrid from './ResizableGrid';
 
 //TODO: syntax highlighting & autocomplete for language in AceEditor
 //TODO: UPDATE PALETTE WHEN COLOR BECOMES UNAVAILABLE
+//TODO: help page (dropdown style) -- just show available variables
 function LanguageOptionsTabContainer() {
-
     const { 
         code, 
         setCode, 
@@ -151,6 +152,7 @@ function LanguageOptionsTabContainer() {
                 anchorOriginH='right'
             />
             <LanguageOptionsDropdown/>
+            <LanguageHelpDropdown/>
             <AceEditor
                 width="100%"
                 placeholder=""

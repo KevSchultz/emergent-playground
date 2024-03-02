@@ -13,6 +13,7 @@ import { useContext } from 'react';
 import { 
     Accordion, 
     AccordionSummary, 
+    Button, 
     Checkbox, 
     FormControl, 
     FormControlLabel, 
@@ -21,6 +22,8 @@ import {
     MenuItem, 
     Select, 
     Slider, 
+    Stack,
+    Switch,
     Typography 
 } from '@mui/material';
 
@@ -40,15 +43,25 @@ import P5PropertiesContext from './P5PropertiesContext';
  * @returns {JSX.Element} The LanguageOptionsDropdown component.
  */
 
-//TODO: reflect default state selection in langCompiler
+//TODO: neighborhood selector
 function LanguageOptionsDropdown() {
     const { 
         setLangIncludeSelf, 
         setLangRange, 
         backgroundColor, 
         setBackgroundColor,
-        langTupleList
+        langTupleList,
+        setLangNeighborhoodType,
+        langNeighborhoodType
     } = useContext(P5PropertiesContext);
+
+    const handleNeighborhoodSwitch = (event) => {
+        if(event.target.checked){
+            setLangNeighborhoodType('von_neumann');
+        } else {
+            setLangNeighborhoodType('moore');
+        }
+    };
 
     return(
         <Accordion>
@@ -64,7 +77,14 @@ function LanguageOptionsDropdown() {
                         label='Include Self'
                     />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={6}>{/*moore, von_neumann, ???*/}
+                    <Stack direction='row' spacing={1} alignItems='center'>
+                        <Typography>Moore</Typography>
+                        <Switch onChange={handleNeighborhoodSwitch} />
+                        <Typography>Von Neumann</Typography>
+                    </Stack>
+                </Grid>
+                <Grid item xs={12}>
                     <Typography gutterBottom> Range </Typography>
                     <Slider
                         defaultValue={1}
@@ -75,6 +95,9 @@ function LanguageOptionsDropdown() {
                         onChange={(e, value) => setLangRange(value)}
                     />
                 </Grid>
+        {/*<Grid item xs={12}>
+                    <Button onClick={()=>{console.log(langNeighborhoodType);}}>DEBUG</Button>
+                </Grid>*/}
                 <Grid item xs={12}>
                     <FormControl fullWidth>
                         <InputLabel id='backgroundSelectLabel'>Default State</InputLabel>
@@ -89,9 +112,6 @@ function LanguageOptionsDropdown() {
                             ))}
                         </Select>
                     </FormControl>
-                </Grid>
-                <Grid item xs={12}>
-                    {/*Kevin's neighborhood selector goes here*/}
                 </Grid>
             </Grid>
         </Accordion>

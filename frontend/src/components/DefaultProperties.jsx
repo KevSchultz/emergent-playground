@@ -59,7 +59,8 @@ let DefaultProperties = {
     langIncludeSelf: false,
     langRange: 1,
     backgroundColor: '',
-    currentDrawColor: ''
+    currentDrawColor: '',
+    langNeighborhoodType: 'moore',
 };
 
 export const sketch = new CellularAutomataSketchClass(DefaultProperties);
