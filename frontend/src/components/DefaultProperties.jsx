@@ -20,13 +20,13 @@ import CellularAutomataSketchClass from '../sketches/CellularAutomataSketchClass
 
 let DefaultProperties = {
     sketchClassType: "CellularAutomataSketchClass",
-    worldWidth: 500,
-    worldHeight: 500,
+    worldWidth: 300,
+    worldHeight: 300,
     pixelDensity: 1,
     cameraX: 0,
     cameraY: 0,
     cameraZ: 1,
-    zoom: 0.5,
+    zoom: 1,
     minZoom: 0.1,
     maxZoom: 100,
     zoomSensitivity: 0.001,
@@ -43,9 +43,9 @@ let DefaultProperties = {
     deselectedBrushIconColor: 'white',
     brushSize: 10,
     cursorStyles: {
-        pixel: 'crosshair',
-        square: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" style="fill:none;stroke:white;stroke-width:2;"/><circle cx="2" cy="2" r="6" style="fill:white;"/></svg>'), auto`,
-        circle: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" style="fill:none;stroke:white;stroke-width:2;"/><circle cx="50" cy="50" r="4" style="fill:white;"/></svg>') 50 50, auto`,
+        pixel: 'auto',
+        square: `auto`,
+        circle: `auto`,
         default: 'auto',
     },
     previousMouseX: 0,
@@ -61,6 +61,7 @@ let DefaultProperties = {
     backgroundColor: '',
     currentDrawColor: '',
     langNeighborhoodType: 'moore',
+    fullscreen: false,
 };
 
 export const sketch = new CellularAutomataSketchClass(DefaultProperties);

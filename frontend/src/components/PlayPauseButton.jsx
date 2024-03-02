@@ -6,10 +6,10 @@
  * @exports PlayPauseButton
  */
 
-import IconButton from '@mui/material/IconButton';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
 import PropTypes from 'prop-types';
+import Fab from '@mui/material/Fab';
 
 /**
  * A button component for controlling the pause state.
@@ -33,13 +33,13 @@ function PlayPauseButton({ pause, setPause }) {
     };
 
     return (
-        <IconButton
-            style={{ width: '50px', height: '50px' }}
+        <Fab
+            color="primary"
             onClick={handleButtonClick}
             aria-label="play/pause"
         >
             {pause === 0 ? <PauseIcon /> : <PlayArrowIcon />}
-        </IconButton>
+        </Fab>
     );
 }
 

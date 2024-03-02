@@ -20,6 +20,8 @@ class CellularAutomataSketchClass {
         this.p5;
         this.currentState;
         this.previousState;
+        this.staticOverlayGraphics;
+        this.dynamicOverlayGraphics;
         this.reactProperties;
         this.defaultReactProperties = defaultReactProperties;
         this.shader;
@@ -67,17 +69,18 @@ class CellularAutomataSketchClass {
     updateWorldWidth(newWorldWidth) {
         this.currentState.clear();
         this.previousState.clear();
+        this.overlayGraphics.clear();
+
         this.reactProperties.setPause(1);
         this.shader.setUniform('pause', 1);
         this.shader.setUniform('resolution', [
             this.reactProperties.worldWidth,
             this.reactProperties.worldHeight,
         ]);
+
         this.currentState.resizeCanvas(newWorldWidth, this.reactProperties.worldHeight);
         this.previousState.resizeCanvas(newWorldWidth, this.reactProperties.worldHeight);
-
-        this.currentState.background(0);
-        this.previousState.background(0);
+        this.overlayGraphics.resizeCanvas(newWorldWidth, this.reactProperties.worldHeight);
 
         this.debugMode ? console.log('CellularAutomataSketchClass.updateWorldWidth') : null;
     }
@@ -92,17 +95,18 @@ class CellularAutomataSketchClass {
     updateWorldHeight(newWorldHeight) {
         this.currentState.clear();
         this.previousState.clear();
+        this.overlayGraphics.clear();
+
         this.reactProperties.setPause(1);
         this.shader.setUniform('pause', 1);
         this.shader.setUniform('resolution', [
             this.reactProperties.worldWidth,
             this.reactProperties.worldHeight,
         ]);
+
         this.currentState.resizeCanvas(this.reactProperties.worldWidth, newWorldHeight);
         this.previousState.resizeCanvas(this.reactProperties.worldWidth, newWorldHeight);
-
-        this.currentState.background(0);
-        this.previousState.background(0);
+        this.overlayGraphics.resizeCanvas(this.reactProperties.worldWidth, newWorldHeight);
 
         this.debugMode ? console.log('CellularAutomataSketchClass.updateWorldHeight') : null;
     }
@@ -272,6 +276,15 @@ class CellularAutomataSketchClass {
             : null;
     }
 
+    setupOverlayGraphicsBuffer(worldWidth, worldHeight, pixelDensity) {
+        this.overlayGraphics = this.p5.createGraphics(worldWidth, worldHeight);
+
+        this.overlayGraphics.pixelDensity(pixelDensity);
+        this.overlayGraphics.noSmooth();
+
+        this.overlayGraphics.noStroke();
+    }
+
     /**
      * Sets up a shader using the provided vertex and fragment shaders.
      *
@@ -312,6 +325,13 @@ class CellularAutomataSketchClass {
         this.setupPreviousStateGraphicsBuffer(
             this.defaultReactProperties.worldWidth,
             this.defaultReactProperties.worldHeight
+        );
+
+        // ------ Overlay Graphics ------
+        this.setupOverlayGraphicsBuffer(
+            this.defaultReactProperties.worldWidth,
+            this.defaultReactProperties.worldHeight,
+            this.defaultReactProperties.pixelDensity
         );
 
         this.isSketchSetup = true;
@@ -371,9 +391,10 @@ class CellularAutomataSketchClass {
      */
     squareDrawOnGraphics(graphicsBuffer, x, y, color, size, borderSize) {
         graphicsBuffer.push();
-        graphicsBuffer.stroke(color);
-        graphicsBuffer.strokeWeight(borderSize);
-        graphicsBuffer.noFill();
+        graphicsBuffer.noStroke(); // Remove the stroke
+        graphicsBuffer.fill(color); // Fill the square with the color
+        graphicsBuffer.rectMode(graphicsBuffer.CENTER); // Set the rectMode to CENTER
+        graphicsBuffer.imageMode(graphicsBuffer.CENTER); // Set the imageMode to CENTER
         graphicsBuffer.rect(x, y, size, size);
         graphicsBuffer.pop();
 
@@ -392,13 +413,35 @@ class CellularAutomataSketchClass {
      *
      * @returns None
      */
-    circleDrawOnGraphics(graphicsBuffer, x, y, color, size, borderSize) {
-        graphicsBuffer.push();
-        graphicsBuffer.stroke(color);
-        graphicsBuffer.strokeWeight(borderSize);
-        graphicsBuffer.noFill();
-        graphicsBuffer.ellipse(x, y, size);
-        graphicsBuffer.pop();
+    circleDrawOnGraphics(graphicsBuffer, x0, y0, color, diameter) {
+        let radius = diameter / 2;
+        let x = radius;
+        let y = 0;
+        let err = 0;
+
+        graphicsBuffer.loadPixels();
+
+        while (x >= y) {
+            graphicsBuffer.set(x0 + x, y0 + y, color);
+            graphicsBuffer.set(x0 + y, y0 + x, color);
+            graphicsBuffer.set(x0 - y, y0 + x, color);
+            graphicsBuffer.set(x0 - x, y0 + y, color);
+            graphicsBuffer.set(x0 - x, y0 - y, color);
+            graphicsBuffer.set(x0 - y, y0 - x, color);
+            graphicsBuffer.set(x0 + y, y0 - x, color);
+            graphicsBuffer.set(x0 + x, y0 - y, color);
+
+            if (err <= 0) {
+                y += 1;
+                err += 2 * y + 1;
+            }
+            if (err > 0) {
+                x -= 1;
+                err -= 2 * x + 1;
+            }
+        }
+
+        graphicsBuffer.updatePixels();
 
         this.debugMode ? console.log('CellularAutomataSketchClass.circleDrawOnGraphics') : null;
     }
@@ -415,12 +458,6 @@ class CellularAutomataSketchClass {
      * @returns None
      */
     brushDrawOnGraphics(graphicsBuffer, x, y, color) {
-        // If the brush is not drawing, do nothing
-        // If the cursor is not on the world, do nothing
-        if (!this.isBrushDrawingActive() || !this.cursorIsOnWorld()) {
-            return;
-        }
-
         switch (this.reactProperties.brushType) {
             case 'pixel':
                 this.pixelDrawOnGraphics(graphicsBuffer, x, y, color);
@@ -442,7 +479,7 @@ class CellularAutomataSketchClass {
                     graphicsBuffer,
                     x,
                     y,
-                    color,
+                    this.p5.color(255),
                     this.reactProperties.brushSize,
                     1
                 );
@@ -479,6 +516,11 @@ class CellularAutomataSketchClass {
         // this.debugMode ? console.log('CellularAutomataSketchClass.copyGraphicsBufferImageDataToAnotherGraphicsBuffer') : null;
     }
 
+    drawOverlay() {
+        this.overlayGraphics.clear();
+        this.brushDrawOnGraphics(this.overlayGraphics);
+    }
+
     /**
      * Handles the drawing of the cellular automata sketch with p5.
      * This includes clearing the sketch, updating the previous state with the current state,
@@ -499,6 +541,7 @@ class CellularAutomataSketchClass {
         }
 
         this.p5.clear();
+        this.overlayGraphics.clear();
 
         this.copyGraphicsBufferImageDataToAnotherGraphicsBuffer(
             this.previousState,
@@ -511,7 +554,23 @@ class CellularAutomataSketchClass {
         let mouseWorldX = mouseWorldLocation.x;
         let mouseWorldY = mouseWorldLocation.y;
 
-        this.brushDrawOnGraphics(this.previousState, mouseWorldX, mouseWorldY, this.p5.color(this.reactProperties.currentDrawColor));
+        if (this.isBrushDrawingActive() && this.cursorIsOnWorld()) {
+            this.brushDrawOnGraphics(
+                this.previousState,
+                mouseWorldX,
+                mouseWorldY,
+                this.p5.color(this.reactProperties.currentDrawColor)
+            );
+        }
+
+        if (this.cursorIsOnWorld()) {
+            this.brushDrawOnGraphics(
+                this.overlayGraphics,
+                mouseWorldX,
+                mouseWorldY,
+                this.p5.color(255, 255, 255, 100)
+            );
+        }
 
         this.shader.setUniform('pause', this.reactProperties.pause);
         this.shader.setUniform('previousState', this.previousState);
@@ -529,6 +588,12 @@ class CellularAutomataSketchClass {
         // ----- Draw the CurrentState to the a Canvas Plane -----
         this.drawTexturePlane(
             this.currentState,
+            this.reactProperties.worldWidth,
+            this.reactProperties.worldHeight
+        );
+
+        this.drawTexturePlane(
+            this.overlayGraphics,
             this.reactProperties.worldWidth,
             this.reactProperties.worldHeight
         );
@@ -722,7 +787,7 @@ class CellularAutomataSketchClass {
             this.reactProperties.worldHeight
         );
 
-        return { x: cursorWorldX, y: cursorWorldY };
+        return { x: this.p5.round(cursorWorldX), y: this.p5.round(cursorWorldY) };
     }
 
     /**

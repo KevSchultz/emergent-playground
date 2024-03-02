@@ -46,8 +46,11 @@ function TopNavigationBar() {
                     justifyContent: 'flex-end',
                 }}
             >
-                <Link>
+                <Link href="community">
                     Community
+                </Link>
+                <Link href="login">
+                    Login
                 </Link>
             </Box>
         </Paper>
