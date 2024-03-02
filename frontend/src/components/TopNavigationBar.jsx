@@ -9,6 +9,8 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 import Paper from '@mui/material/Paper';
+import Button from '@mui/material/Button';
+
 
 /**
  * A functional component that renders a top navigation bar.
@@ -35,21 +37,56 @@ function TopNavigationBar() {
                 borderBottom: '2px solid rgb(0, 118, 236, 0.5)',
             }}
         >
-            <Typography>EMERGENT PLAYGROUND</Typography>
-            <Box
-                sx={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    width: '19vw',
-                    gap: '1vw',
-                    justifyContent: 'flex-end',
-                }}
-            >
-                <Link>
-                    Community
-                </Link>
-            </Box>
+            {/* <Typography>EMERGENT PLAYGROUND</Typography> */}
+
+            {/* HOME, CANVAS, and COMMUNITY buttons */}
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'left', flex: 1 }}>
+                        <a href="/welcome" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
+                            <Button 
+                                variant="text"
+                                color="primary"
+                            >
+                                Home
+                            </Button>
+                        </a>
+                        <a href="/" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
+                            <Button 
+                                variant="text" 
+                                color="primary" 
+                            >
+                                Canvas
+                            </Button>
+                        </a>
+                        <a href="/community" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
+                            <Button 
+                                variant="text"  
+                                color="primary"
+                            >
+                                Community
+                            </Button>
+                        </a>
+                    </Box>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                        <a href="/login" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
+                            <Button 
+                                variant="text" 
+                                color="primary" 
+                                sx={{ 
+                                    marginRight: '10px', 
+                                }}
+                            >
+                                Login
+                            </Button>
+                        </a>
+                        <a href="/register" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
+                            <Button 
+                                variant="contained" 
+                                color="primary" 
+                            >
+                                Sign Up
+                            </Button>
+                        </a>
+                    </Box>
         </Paper>
     );
 }
