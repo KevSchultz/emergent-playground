@@ -17,9 +17,9 @@ import {
     Paper,
     Select,
     Popover,
+    IconButton
 } from '@mui/material';
-import BrushIcon from '@mui/icons-material/Brush';
-import { Brightness1 } from '@mui/icons-material';
+import { Brightness1, Brush, FormatColorFill } from '@mui/icons-material';
 
 import Fab from '@mui/material/Fab';
 
@@ -62,6 +62,7 @@ function LeftButtonListContainer() {
         zoom,
         fullscreen,
         setFullscreen,
+        setBackgroundColor
     } = useContext(P5PropertiesContext);
 
     const [anchorEl, setAnchorEl] = useState(null);
@@ -147,7 +148,7 @@ function LeftButtonListContainer() {
                 >
                     <PlayPauseButton pause={pause} setPause={setPause} />
                     <Fab color="primary" aria-label="edit" onClick={handleClickOpen}>
-                        <BrushIcon />
+                        <Brush/>
                     </Fab>
                     <Fab color="primary" aria-label="fullscreen" onClick={handleFullScreen}>
                         {fullscreen ? <FullscreenExitIcon /> : <FullscreenIcon />}
@@ -218,6 +219,13 @@ function LeftButtonListContainer() {
                             setCurrentBrushType={setBrushType}
                         />
                     ))}
+                    <IconButton
+                        onClick={() => {
+                            setBackgroundColor(currentDrawColor);
+                        }}
+                    >
+                        <FormatColorFill/>
+                    </IconButton>
                     <FormControl fullWidth>
                         <Select
                             value={currentDrawColor}
