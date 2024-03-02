@@ -40,7 +40,9 @@ void main(){
 
     vec4 next;
 
+//CODEBEGIN
 //RULES
+//CODEEND
 
     if(pause == 1.0){
         next = curr;

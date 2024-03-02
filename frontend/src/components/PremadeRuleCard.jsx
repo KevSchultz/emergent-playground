@@ -44,7 +44,8 @@ function PremadeRuleCard({ premadeRuleName, newFragmentShader, imageUrl, newTupl
         setBackgroundColor,
         setLangNeighborhoodType,
         setLangRange,
-        setLangIncludeSelf
+        setLangIncludeSelf,
+        setCode
     } = useContext(P5PropertiesContext);
 
     const handleCardClick = () => {
@@ -55,6 +56,7 @@ function PremadeRuleCard({ premadeRuleName, newFragmentShader, imageUrl, newTupl
         setLangNeighborhoodType(newNeighborhood);
         setLangRange(newRange);
         setLangIncludeSelf(newIncludeSelf);
+        setCode(newFragmentShader.match(/\/\/CODEBEGIN([\s\S]*?)\/\/CODEEND/g)[0].replace('//CODEBEGIN','').replace('//CODEEND','').replace(/^(\t)/gm,'').replace(/uint\((\d+)\)/g, '$1'));
     };
 
     return (

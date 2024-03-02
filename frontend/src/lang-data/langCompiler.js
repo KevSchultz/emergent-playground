@@ -16,7 +16,7 @@
  * @returns {string} frag - The resultant GLSL ES 3.0 code.
  */
 function langCompiler(code, colors, include_self, range, neighborhood){
-    let frag = '#version 300 es\n\n#ifdef GL_ES\nprecision mediump float;\n#endif\n\nin vec2 vTexCoord;\nout vec4 out_col;\n\nuniform sampler2D previousState;\nuniform vec2 resolution;\nuniform float pause;\n\n//CONSTS\n\n\nvoid main(){\n\tvec2 uv = vTexCoord;\n\tuv.y = 1.0 - uv.y;\n\n\tvec2 offset = vec2(1.0/resolution.x, 1.0/resolution.y);\n\n//BUCKETS\n\n\tvec4 curr = texture(previousState, uv);\n\n\tvec4 col;\n//RANGE\n//INCLUDE_SELF\n//NEIGHBORHOOD\n\t\t\tfloat x = uv.x + i * offset.x;\n\t\t\tfloat y = uv.y + j * offset.y;\n\n\t\t\tcol = texture(previousState, vec2(x, y));\n\n//IDENTIFY\n\n\t\t}\n\t}\n\n\tvec4 next;\n\n//RULES\n\n\tif(pause == 1.0){\n\t\tnext = curr;\n\t}\n\n\tout_col = next;\n}\n'
+    let frag = '#version 300 es\n\n#ifdef GL_ES\nprecision mediump float;\n#endif\n\nin vec2 vTexCoord;\nout vec4 out_col;\n\nuniform sampler2D previousState;\nuniform vec2 resolution;\nuniform float pause;\n\n//CONSTS\n\n\nvoid main(){\n\tvec2 uv = vTexCoord;\n\tuv.y = 1.0 - uv.y;\n\n\tvec2 offset = vec2(1.0/resolution.x, 1.0/resolution.y);\n\n//BUCKETS\n\n\tvec4 curr = texture(previousState, uv);\n\n\tvec4 col;\n//RANGE\n//INCLUDE_SELF\n//NEIGHBORHOOD\n\t\t\tfloat x = uv.x + i * offset.x;\n\t\t\tfloat y = uv.y + j * offset.y;\n\n\t\t\tcol = texture(previousState, vec2(x, y));\n\n//IDENTIFY\n\n\t\t}\n\t}\n\n\tvec4 next;\n\n//CODEBEGIN\n//RULES\n//CODEEND\n\n\tif(pause == 1.0){\n\t\tnext = curr;\n\t}\n\n\tout_col = next;\n}\n';
 
     // parse instructions
     let text = code;

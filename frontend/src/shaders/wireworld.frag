@@ -65,6 +65,7 @@ void main(){
 
 	vec4 next;
 
+//CODEBEGIN
 	if(curr == empty){
 	  next = empty;
 	} else if(curr == electron_head){
@@ -77,6 +78,7 @@ void main(){
 	    next = electron_head;
 	  }
 	}
+//CODEEND
 
 	if(pause == 1.0){
 		next = curr;
