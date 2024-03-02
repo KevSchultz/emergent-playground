@@ -14,7 +14,7 @@ import { Button, Box, List } from '@mui/material';
 
 // Ace Code Editor Imports
 import AceEditor from 'react-ace';
-import 'ace-builds/src-noconflict/mode-plain_text';
+import 'ace-builds/src-noconflict/mode-glsl';
 import 'ace-builds/src-noconflict/theme-gruvbox';
 import 'ace-builds/src-noconflict/ext-language_tools';
 
@@ -25,7 +25,6 @@ import LanguageStateItem from './LanguageStateItem';
 import langCompiler from '../lang-data/langCompiler';
 import LanguageOptionsDropdown from './LanguageOptionsDropdown';
 import PrettyAlert from './PrettyAlert';
-
 import ResizableGrid from './ResizableGrid';
 
 /**
@@ -92,9 +91,13 @@ function LanguageOptionsTabContainer() {
     };
 
     const handleDebug = () => {
-        console.log(backgroundColor);
         console.log(fragmentShader);
-    }
+        console.log(langTupleList);
+    };
+
+    const handleSave = () => {
+        console.log('saved :^)');
+    };
 
     return (
         <Box>
@@ -122,7 +125,22 @@ function LanguageOptionsTabContainer() {
                     Compile 
                 </Button>
             </ResizableGrid>
-            <Button onClick={handleDebug}>Debug</Button>
+            <Button 
+                variant="contained"
+                fullWidth
+                onClick={handleSave}
+                sx={{ mt: 0, mb: 2 }}
+            >
+                Save
+            </Button>
+            <Button 
+                variant="contained"
+                fullWidth
+                onClick={handleDebug}
+                sx={{ mt: 0, mb: 2 }}
+            >
+                Debug
+            </Button>
             <PrettyAlert
                 openAlert={openError}
                 setOpenAlert={setOpenError}
@@ -136,7 +154,7 @@ function LanguageOptionsTabContainer() {
             <AceEditor
                 width="100%"
                 placeholder=""
-                mode="plain_text"
+                mode="glsl"
                 theme="gruvbox"
                 name="ed"
                 value={code}

@@ -23,11 +23,7 @@ import About from './pages/About';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Community from './pages/Community';
-<<<<<<< HEAD
-//import LangPage from './pages/LangPage';
-=======
 import { P5PropertiesProvider } from './components/P5PropertiesContext';
->>>>>>> origin/main
 
 // overriding ViewerBuilderCerator with LangPage for testing purposes
 const router = createBrowserRouter([
