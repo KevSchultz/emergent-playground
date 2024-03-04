@@ -42,6 +42,7 @@ import ResizableGrid from './ResizableGrid';
 
 //TODO: autocomplete for language in AceEditor
 //TODO: UPDATE PALETTE WHEN COLOR BECOMES UNAVAILABLE
+//TODO: CHANGE COMPILER LOOKAHEAD RANGE??? INCONSISTENT BEHAVIOR FOR SOME REASON
 function LanguageOptionsTabContainer() {
     const { 
         code, 
@@ -50,7 +51,9 @@ function LanguageOptionsTabContainer() {
         langIncludeSelf,
         langRange,
         setFragmentShader,
-        fragmentShader
+        fragmentShader,
+        langNeighborhoodType,
+        backgroundColor
     } = useContext(P5PropertiesContext);
 
     const [openError, setOpenError] = useState(false);
@@ -62,7 +65,7 @@ function LanguageOptionsTabContainer() {
 
     const handleCompile = () => {
         if(code !== ''){
-            const newFrag = langCompiler(code, langTupleList, langIncludeSelf, langRange, 'moore');
+            const newFrag = langCompiler(code, langTupleList, langIncludeSelf, langRange, langNeighborhoodType, backgroundColor);
             setFragmentShader(newFrag);
         } else {
             setOpenError(true);

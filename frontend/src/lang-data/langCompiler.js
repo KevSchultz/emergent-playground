@@ -15,8 +15,8 @@
  *
  * @returns {string} frag - The resultant GLSL ES 3.0 code.
  */
-function langCompiler(code, colors, include_self, range, neighborhood){
-    let frag = '#version 300 es\n\n#ifdef GL_ES\nprecision mediump float;\n#endif\n\nin vec2 vTexCoord;\nout vec4 out_col;\n\nuniform sampler2D previousState;\nuniform vec2 resolution;\nuniform float pause;\n\n//CONSTS\n\n\nvoid main(){\n\tvec2 uv = vTexCoord;\n\tuv.y = 1.0 - uv.y;\n\n\tvec2 offset = vec2(1.0/resolution.x, 1.0/resolution.y);\n\n//BUCKETS\n\n\tvec4 curr = texture(previousState, uv);\n\n\tvec4 col;\n//RANGE\n//INCLUDE_SELF\n//NEIGHBORHOOD\n\t\t\tfloat x = uv.x + i * offset.x;\n\t\t\tfloat y = uv.y + j * offset.y;\n\n\t\t\tcol = texture(previousState, vec2(x, y));\n\n//IDENTIFY\n\n\t\t}\n\t}\n\n\tvec4 next;\n\n//CODEBEGIN\n//RULES\n//CODEEND\n\n\tif(pause == 1.0){\n\t\tnext = curr;\n\t}\n\n\tout_col = next;\n}\n';
+function langCompiler(code, colors, include_self, range, neighborhood, background){
+    let frag = '#version 300 es\n\n#ifdef GL_ES\nprecision mediump float;\n#endif\n\nin vec2 vTexCoord;\nout vec4 out_col;\n\nuniform sampler2D previousState;\nuniform vec2 resolution;\nuniform float pause;\n\n//CONSTS\n\nbool eq(vec4 c1, vec4 c2){\n\treturn all(lessThan(abs(c1 - c2), vec4(1.19e-7)));\n}\n\nvoid main(){\n\tvec2 uv = vTexCoord;\n\tuv.y = 1.0 - uv.y;\n\n\tvec2 offset = vec2(1.0/resolution.x, 1.0/resolution.y);\n\n//BUCKETS\n\n\tvec4 curr = texture(previousState, uv);\n\n\tvec4 col;\n//RANGE\n//INCLUDE_SELF\n//NEIGHBORHOOD\n\t\t\tfloat x = uv.x + i * offset.x;\n\t\t\tfloat y = uv.y + j * offset.y;\n\n\t\t\tcol = texture(previousState, vec2(x, y));\n\n//IDENTIFY\n\n\t\t}\n\t}\n\n//DEFAULTCOLOR\n\n//CODEBEGIN\n//RULES\n//CODEEND\n\n\tif(pause == 1.0){\n\t\tnext = curr;\n\t}\n\n\tout_col = next;\n}\n';
 
     // parse instructions
     let text = code;
@@ -40,7 +40,7 @@ function langCompiler(code, colors, include_self, range, neighborhood){
 
     insert = '';
     for(const k in color_vec){
-        insert += `\t\t\telse if(col == ${k}){\n\t\t\t\t${k}_num++;\n\t\t\t}\n`;
+        insert += `\t\t\telse if(eq(col, ${k}){\n\t\t\t\t${k}_num++;\n\t\t\t}\n`;
     }
     insert = insert.replace(/else /, '');
     frag = frag.replace('//IDENTIFY', insert);
@@ -52,7 +52,11 @@ function langCompiler(code, colors, include_self, range, neighborhood){
     frag = frag.replace('//RULES', insert);
 
     //parse options
-    insert = `\tfor(float i = -${range}.0; i < ${range+1}.0; i++){\n\t\tfor(float j = -${range}.0; j < ${range+1}.0; j++){\n`;
+    if(range === 0){
+        insert = `\tfor(float i = 0.0; i == 1.0; i=0.0){\n\t\tfor(float j = -${range}.0; j < ${range+1}.0; j++){\n`;
+    } else {
+        insert = `\tfor(float i = -${range}.0; i < ${range+1}.0; i++){\n\t\tfor(float j = -${range}.0; j < ${range+1}.0; j++){\n`;
+    }
     frag = frag.replace('//RANGE', insert);
 
     if(!include_self){
@@ -71,11 +75,14 @@ function langCompiler(code, colors, include_self, range, neighborhood){
         frag = frag.replace('//NEIGHBORHOOD', '');
     }
 
+    insert = `\tvec4 next = ${translate_colors(background)};`;
+    frag = frag.replace('//DEFAULTCOLOR', insert);
+
     return frag;
 }
 
 /**
- * translate_colors is a function that takes an HTML color code and returns its vec4 and uint packed representations
+ * translate_colors is a function that takes an HTML color code and returns its vec4 representation
  *
  * @param {string} c - The input HTML color code
  *
@@ -87,7 +94,7 @@ function translate_colors(c){
     const r = ((tmp >> 16) & 0xFF) / 255.0;
     const g = ((tmp >> 8) & 0xFF) / 255.0;
     const b = (tmp & 0xFF) / 255.0;
-    return `vec4(${r}, ${g}, ${b}, 1.0)`;
+    return `vec4(${r === 0 || r === 1 ? r.toFixed(1) : r}, ${g === 0 || g === 1 ? g.toFixed(1) : g}, ${b === 0 || b === 1 ? b.toFixed(1) : b}, 1.0)`;
 }
 
 export default langCompiler;

@@ -13,6 +13,9 @@ uniform float pause;
 
 //CONSTS
 
+bool eq(vec4 c1, vec4 c2){
+    return all(lessThan(abs(c1 - c2), vec4(1.19e-7)));
+}
 
 void main(){
     vec2 uv = vTexCoord;
@@ -38,7 +41,7 @@ void main(){
         }
     }
 
-    vec4 next;
+//DEFAULTCOLOR
 
 //CODEBEGIN
 //RULES

@@ -91,7 +91,7 @@ function LanguageOptionsDropdown() {
                         defaultValue={1}
                         valueLabelDisplay='auto'
                         marks
-                        min={1}
+                        min={0}
                         max={5}
                         onChange={(e, value) => setLangRange(value)}
                     />
