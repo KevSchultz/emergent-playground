@@ -45,9 +45,9 @@ function Community() {
     // TODO: Temp test version of getPosts using example post data
     const getPosts = async () => {
         return ([
-            { title:"Post 1", content:"Text1 - welcome", link:"/welcome" },
-            { title: 'Post 2', content: 'Text2 - login', link: 'login' },
-            { title: 'Post 3', content: 'Text3 - register', link: 'register' },
+            { title:"Post 1", description:"Text1 - welcome", link:"/welcome" },
+            { title: 'Post 2', description: 'Text2 - login', link: 'login' },
+            { title: 'Post 3', description: 'Text3 - register', link: 'register' },
         ]);
     }
 
