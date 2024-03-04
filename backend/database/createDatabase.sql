@@ -37,6 +37,36 @@ CREATE TABLE posts (
     data BYTEA
 );
 
+/*
+const wireworld = {
+    name: 'Wireworld',
+    tupleList: [{color: '#000000', name: 'empty'}, {color: '#00ffff', name: 'electron_head'}, {color: '#ff0000', name: 'electron_tail'}, {color: '#ffff00', name: 'conductor'}],
+    defaultDraw: '#ffff00',
+    defaultBackground: '#000000',
+    url: 'https://upload.wikimedia.org/wikipedia/commons/1/13/Wireworld_XOR-gate.gif',
+    shader: wireworldShader,
+    neighborhood: 'moore',
+    range: 1,
+    includeSelf: false,
+};
+
+*/
+
+
+CREATE TABLE rules (
+    userid uuid,
+    ruleid uuid DEFAULT uuid_generate_v4(),
+    name,
+    tuplelist,
+    defaultdraw,
+    defaultbackground,
+    url VARCHAR(200),
+    shader,
+    neighborhood VARCHAR(65535),
+    range INT,
+    includeself BOOL,
+);
+
 -- giving client user permissions to only modify these 3 tables (cannot delete them or the database)
 GRANT SELECT, INSERT, DELETE ON users TO client;
 GRANT SELECT, INSERT, DELETE ON posts TO client;

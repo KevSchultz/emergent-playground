@@ -555,6 +555,65 @@ async function getPostsByUser(client, userid, sorting) {
     }
 }
 
+async function newRule(
+    client,
+    userID, 
+    name, 
+    tupleList, 
+    defaultDraw, 
+    defaultBackground, 
+    url, 
+    shader, 
+    neighborhood, 
+    range, 
+    includeSelf){
+    
+    // making a rule object for clean code
+    const rule = {
+        userID: userID,
+        postID: null,
+        name: name,
+        tupleList: tupleList,
+        defaultDraw: defaultDraw,
+        defaultBackground: defaultBackground,
+        url: url,
+        shader: shader,
+        neighborhood: neighborhood,
+        range: range,
+        includeSelf: includeSelf
+    };
+
+    // creating a new query for database
+    const queryString = 'INSERT INTO rules (userid, ruleid, name, tuplelist, defaultdraw, defaultbackground, url, shader, neighborhoos, range, includeself) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11);';
+    const values = [rule.user, rule.postID, rule.name, rule.name, rule.tupleList, rule.defaultDraw, rule.defaultBackground, rule.url, rule.shader, rule.neighborhood, rule.range, rule.includeSelf];
+    
+    // inserting row via query
+    await client.query(queryString, values, (err, res));
+    if (err) { // error handling
+        console.log(err.stack);
+      } else {
+        console.log('Rule inserted');
+      }
+    return true; // success
+}
+
+async function getRules(client, userID){
+    // creating select all from specific user query
+    const queryString = 'SELECT * FROM rules WHERE userid = $1;';
+    const values = [userID];
+
+    // sending query
+    const result = await client.query(queryString, values, (err, res));
+    if (err) { // error handling
+        console.log(err.stack);
+        return false;
+      } else {
+        console.log('Rules Found');
+      }
+    
+    return result;
+}
+
 module.exports = {
     connectToDatabase,
     getRandomInt,
