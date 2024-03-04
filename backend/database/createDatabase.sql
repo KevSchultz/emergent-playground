@@ -25,19 +25,33 @@ CREATE TABLE users (
 CREATE TABLE posts (
     userid uuid,
     postid INT PRIMARY KEY,
-    username VARCHAR(20),
-    creationtime TIMESTAMP,
-    title VARCHAR(30),
-    description VARCHAR(200),
-    views BIGINT,
-    visibility BOOL,
-    filename VARCHAR(30),
-    state BYTEA,
-    thumbnail BYTEA,
-    data BYTEA
+    name VARCHAR(50),
+    post BYTEA
 );
 
 /*
+    POST FORMATTING
+    const post = {
+            userID: postResult.userID,
+            postID: postResult.postID,
+            username: postResult.username,
+            creationTime: postResult.creationtime,
+            title: postResult.title,
+            description: postResult.description,
+            views: postResult.views,
+            visibility: postResult.visibility,
+            filename: postResult.filename,
+            state: postResult.state,
+            thumbnail: postResult.thumbnail,
+            data: postResult.data,
+        };
+
+*/
+
+
+
+/*
+RULE DATA EXAMPLE
 const wireworld = {
     name: 'Wireworld',
     tupleList: [{color: '#000000', name: 'empty'}, {color: '#00ffff', name: 'electron_head'}, {color: '#ff0000', name: 'electron_tail'}, {color: '#ffff00', name: 'conductor'}],
@@ -51,21 +65,6 @@ const wireworld = {
 };
 
 */
-
-
-CREATE TABLE rules (
-    userid uuid,
-    ruleid uuid DEFAULT uuid_generate_v4(),
-    name,
-    tuplelist,
-    defaultdraw,
-    defaultbackground,
-    url VARCHAR(200),
-    shader,
-    neighborhood VARCHAR(65535),
-    range INT,
-    includeself BOOL,
-);
 
 -- giving client user permissions to only modify these 3 tables (cannot delete them or the database)
 GRANT SELECT, INSERT, DELETE ON users TO client;

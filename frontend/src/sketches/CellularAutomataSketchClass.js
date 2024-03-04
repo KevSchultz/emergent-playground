@@ -1,4 +1,5 @@
 const PIXEL_DENSITY = 1;
+import { uploadPost } from "../backendRequester";
 
 /**
  * @class CellularAutomataSketchClass
@@ -804,45 +805,33 @@ class CellularAutomataSketchClass {
     }
 
     saveState(graphicsBuffer) {
-        graphicsBuffer.loadPixels();
-
         // Create an array to temporarily hold the pixel data
-        let tempArray = [];
+        let pixelArray = [];
 
         // Set the pixels of the new image to match the pixels of the graphicsBuffer
         for (let y = 0; y < graphicsBuffer.height; y++) {
+            let row = [];
             for (let x = 0; x < graphicsBuffer.width; x++) {
                 let c = graphicsBuffer.get(x, y);
-                // Push the pixel's color values into the array
-                tempArray.push(c[0], c[1], c[2], c[3]);
+                // Split out each of the values of the pixels
+                let pixel = {
+                    r: c[0],
+                    g: c[1],
+                    b: c[2],
+                    a: c[3]
+                };
+                // Push the pixel into the row
+                row.push(pixel);
             }
+            // Push the row into the tempArray
+            pixelArray.push(row);
         }
 
-        // Convert the temporary array to a Uint8Array
-        let pixelArray = new Uint8Array(tempArray);
+        console.log(pixelArray)
 
-        // Convert the Uint8Array to an ArrayBuffer
-        let buffer = pixelArray.buffer;
+    // Now tempArray is a 2D array where tempArray[y][x] is an object with the color components for the pixel at (x, y)
+        uploadPost(pixelArray);
 
-        console.log(buffer);
-
-        let url = 'https://localhost:3000/api/upload'; // replace with your API endpoint
-        let options = {
-            method: 'POST',
-            body: buffer, // your ArrayBuffer
-            headers: {
-                'Content-Type': 'application/octet-stream', // indicate that we are sending binary data
-            },
-        };
-
-        fetch(url, options)
-            .then((response) => response.json())
-            .then((data) => {
-                console.log(data);
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
     }
 }
 

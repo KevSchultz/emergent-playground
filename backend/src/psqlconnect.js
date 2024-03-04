@@ -228,6 +228,20 @@ async function logOut(client, session) {
  * @returns {(number|null)} The ID of the created post, otherwise null.
  * @throws {Error} If there is an error while querying the database.
  */
+
+async function makeNewPost(client, userID, postID, name, post){
+    const queryString = "INSERT INTO posts (userid, postid, post) VALUES ($1, $2, $3);"
+    const values = [userID, postID];
+    client.query(queryString, values, (err, res));
+}
+
+async function getNewPost(client, postID){
+    const queryString = "SELECT * FROM posts WHERE postid = $1;"
+    const values = [postID];
+    const result = client.query(queryString, values, (err, res));
+    return result.rows[0];
+}
+
 async function makePost(
     client,
     session,
@@ -632,4 +646,6 @@ module.exports = {
     getPostsByMostViews,
     getPostsByLeastViews,
     getPostsByUser,
+    makeNewPost,
+    getNewPost
 };
