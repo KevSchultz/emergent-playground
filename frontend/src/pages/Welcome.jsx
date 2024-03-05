@@ -45,7 +45,7 @@ function Welcome() {
             {/* <P5Background cellularAutomataSketch={TextureRuleCellularAutomataSketch} /> */}
 
                 {/* Play Button Box */}
-                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '90vh' }}>
+                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '60vh' }}>
                     <Box
                         sx={{
                             backgroundColor: 'rgba(0, 0, 0, 0.5)',
@@ -80,13 +80,12 @@ function Welcome() {
                 </div>
 
                 {/* About Box */}
-                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '60vh' }}>
+                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', }}>
                     <Box
                         sx={{
                             backgroundColor: 'rgba(0, 0, 0, 0.5)',
                             padding: '40px', 
                             borderRadius: '4px',
-                            marginTop: '300px'
                         }}
                     >
                         <div style={{ textAlign: 'center' }}>
@@ -130,7 +129,7 @@ function Welcome() {
                             </Typography>
 
                             {/* Avatar list */}
-                            <div style={{ display: 'flex', alignItems: 'center', marginTop: '30px' }}>
+                            {/* <div style={{ display: 'flex', alignItems: 'center', marginTop: '30px' }}>
                                 <Avatar 
                                     sx={{ height: '10vh', width: '10vh', marginRight: '10px' }}
                                 >
@@ -183,7 +182,7 @@ function Welcome() {
                                 <Typography variant="body2" gutterBottom>
                                     Text here
                                 </Typography>
-                            </div>
+                            </div> */}
                         </div>
                     </Box>
                 </div>
