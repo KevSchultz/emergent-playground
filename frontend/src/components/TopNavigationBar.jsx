@@ -40,53 +40,64 @@ function TopNavigationBar() {
             {/* <Typography>EMERGENT PLAYGROUND</Typography> */}
 
             {/* HOME, CANVAS, and COMMUNITY buttons */}
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'left', flex: 1 }}>
-                        <a href="/welcome" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
-                            <Button 
-                                variant="text"
-                                color="primary"
-                            >
-                                Home
-                            </Button>
-                        </a>
-                        <a href="/" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
-                            <Button 
-                                variant="text" 
-                                color="primary" 
-                            >
-                                Canvas
-                            </Button>
-                        </a>
-                        <a href="/community" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
-                            <Button 
-                                variant="text"  
-                                color="primary"
-                            >
-                                Community
-                            </Button>
-                        </a>
-                    </Box>
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        <a href="/login" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
-                            <Button 
-                                variant="text" 
-                                color="primary" 
-                                sx={{ 
-                                    marginRight: '10px', 
-                                }}
-                            >
-                                Login
-                            </Button>
-                        </a>
-                        <a href="/register" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
-                            <Button 
-                                variant="contained" 
-                                color="primary" 
-                            >
-                                Sign Up
-                            </Button>
-                        </a>
-                    </Box>
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'left', flex: 1, gap: '1vw', }}>
+                {/* <a href="/welcome" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
+                    <Button 
+                        variant="text"
+                        color="primary"
+                    >
+                        Home
+                    </Button>
+                </a> */}
+
+                <Link href="/welcome">
+                    HOME
+                </Link>
+
+                {/* <a href="/" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
+                    <Button 
+                        variant="text" 
+                        color="primary" 
+                    >
+                        Canvas
+                    </Button>
+                </a> */}
+
+                <Link href="/">
+                    CANVAS
+                </Link>
+
+                {/* <a href="/community" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
+                    <Button 
+                        variant="text"  
+                        color="primary"
+                    >
+                        Community
+                    </Button>
+                </a> */}
+
+                <Link href="/community">
+                    COMMUNITY
+                </Link>                        
+            </Box>
+
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: '1vw', }}>
+                {/* <a href="/login" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
+                    <Button 
+                        variant="text" 
+                        color="primary" 
+                        sx={{ 
+                            marginRight: '10px', 
+                        }}
+                    >
+                        Login
+                    </Button>
+                </a> */}
+
+                <Link href="/login">
+                    Login
+                </Link>   
+            </Box>
         </Paper>
     );
 }
