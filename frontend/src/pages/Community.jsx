@@ -15,8 +15,6 @@
 import React, { useState } from 'react';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
 import Box from '@mui/material/Box';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
@@ -24,18 +22,19 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import Button from '@mui/material/Button';
 import TopNavigationBar from '../components/TopNavigationBar';
+import Post from '../components/CommunityPost';
+// import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+// import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 function Community() {
-    // State for messages
+    // State for posts
     const [posts, setPosts] = React.useState([]);
     const [page, setPage] = useState(1);
 
-    // // Get the posts from the database
-    // // Use getPostsByNewest()
+    // // TODO: Get the posts from the database
     // const getPosts = async () => {
     //     // URL for the API
     //     let url = 'https://localhost:3010/api/getPostsByNewest';
-    //     console.log('here');
     //     return await fetch(url, {
     //         method: 'GET',
     //         headers: {
@@ -149,7 +148,12 @@ function Community() {
                         Community
                     </Typography>
                     {posts.map((post) => (
-                        <Post key={post.title} title={post.title} content={post.content} link={post.link} />
+                        <Post 
+                            key={post.title} 
+                            title={post.title} 
+                            content={post.content} 
+                            link={post.link}
+                        />
                     ))}
                     <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
                         {page > 1 && (
@@ -163,27 +167,6 @@ function Community() {
                     </Box>
                 </Container>
             </Box>
-        </div>
-    );
-}
-
-function Post({ title, content, link }) {
-    const handleClick = () => {
-        if (link) {
-            window.location.href = link;
-        }
-    };
-
-    return (
-        <div onClick={handleClick} style={{ cursor: link ? 'pointer' : 'default' }}>
-            <Card sx={{ marginY: 0.5 }}>
-                <CardContent>
-                    <Typography variant="h5" component="h2">
-                        {title}
-                    </Typography>
-                    <Typography color="text.secondary">{content}</Typography>
-                </CardContent>
-            </Card>
         </div>
     );
 }
