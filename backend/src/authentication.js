@@ -1,77 +1,141 @@
-const databaseInterface = require('./psqlconnect');
-const databaseClient = databaseInterface.connectToDatabase();
+const { postgreSQLConnection } = require('./PostgreSQLConnect');
 
 const jsonWebTokenGenerator = require('./jsonWebTokenGenerator');
 const jsonWebTokenAuthorize = require('./jsonWebTokenAuthorize');
 
-var bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt');
 
-exports.register = async (req, res) => {
-    const { username, email, password } = req.body;
+const COOKIE_EXPIRATION_TIME = 3600000;
+
+/**
+ * @description Registers a new user by creating an account in the database and setting a JWT as an HttpOnly cookie.
+ *
+ * @param {Object} request - The Express request object.
+ * @param {Object} request.body - The request body.
+ * @param {string} request.body.username - The username of the new user.
+ * @param {string} request.body.email - The email of the new user.
+ * @param {string} request.body.password - The password of the new user.
+ * @param {Object} response - The Express response object.
+ * @returns {void}
+ */
+exports.register = async (request, response) => {
+    if (!request.body.username || !request.body.email || !request.body.password) {
+        response.sendStatus(400);
+        return;
+    }
+
+    const { username, email, password } = request.body;
 
     try {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hashSync(password, salt);
 
-        const user = await databaseInterface.createAccount(
-            databaseClient,
-            username,
-            email,
-            hashedPassword
-        );
+        const user = await postgreSQLConnection.createAccount(username, email, hashedPassword);
 
         const jsonWebToken = jsonWebTokenGenerator(user.userid);
 
-        res.status(200).json({ accessToken: jsonWebToken });
+        // Set the JWT as an HttpOnly cookie
+        response.cookie('token', jsonWebToken, {
+            httpOnly: true, // The cookie is not accessible via JavaScript
+            secure: true, // The cookie will be sent only over HTTPS
+            sameSite: 'strict', // The cookie will not be sent with cross-site requests
+            expires: new Date(Date.now() + COOKIE_EXPIRATION_TIME), // 1 hour
+        });
+
+        response.status(200).json({ username: user.username });
     } catch (err) {
-
         console.log(err);
-
-        res.status(401).json('Invalid.');
+        response.sendStatus(401);
     }
 };
 
-exports.login = async (req, res) => {
-    const { email, password } = req.body;
+/**
+ * @description Logs in a user by verifying their credentials and setting a JWT as an HttpOnly cookie.
+ *
+ * @param {Object} request - The Express request object.
+ * @param {Object} request.body - The request body.
+ * @param {string} request.body.email - The email of the user.
+ * @param {string} request.body.password - The password of the user.
+ * @param {Object} response - The Express response object.
+ * @returns {void}
+ */
+exports.login = async (request, response) => {
+    console.log('login');
+
+    console.log(request.body);
+
+    if (!request.body.email || !request.body.password) {
+        response.sendStatus(400);
+        return;
+    }
+
+    const { email, password } = request.body;
 
     try {
-        const user = await databaseInterface.getAccountByEmail(databaseClient, email);
+        const user = await postgreSQLConnection.getAccount(email);
+
         const hashedPassword = user.password;
 
         const isValidPassword = await bcrypt.compare(password, hashedPassword);
 
-        if (!isValidPassword) {
+        if (isValidPassword) {
+            const jsonWebToken = jsonWebTokenGenerator(user.userid);
+
+            // Set the JWT as an HttpOnly cookie
+            response.cookie('accessToken', jsonWebToken, {
+                httpOnly: true, // The cookie is not accessible via JavaScript
+                secure: true, // The cookie will be sent only over HTTPS
+                sameSite: 'strict', // The cookie will not be sent with cross-site requests
+                expires: new Date(Date.now() + COOKIE_EXPIRATION_TIME), // 1 hour
+            });
+
+            response.status(200).json({ username: user.username });
+        } else {
             throw new Error('Invalid.');
         }
-
-        const jsonWebToken = jsonWebTokenGenerator(user.userid);
-
-        res.status(200).json({ accessToken: jsonWebToken });
     } catch (err) {
-        res.status(401).json('Invalid.');
+        response.sendStatus(401);
     }
 };
 
+/**
+ * @description Middleware to check if the user is authenticated by verifying the JWT in the HttpOnly cookie.
+ *
+ * @param {Object} request - The Express request object.
+ * @param {Object} request.cookies - The cookies in the request.
+ * @param {string} request.cookies.accessToken - The JWT for authentication.
+ * @param {Object} response - The Express response object.
+ * @param {Function} next - The next middleware function.
+ * @returns {void}
+ */
 exports.check = (request, response, next) => {
 
-    if (!request.headers.authorization) {
-        return response.sendStatus('401');
+    if (request.cookies === undefined || request.cookies.accessToken === undefined) {
+        response.sendStatus(401);
+        return;
     }
 
-    const accessTokenString = request.headers.authorization; // Bearer <token>
-    const accessToken = accessTokenString.split(' ')[1]; // <token>
+    try {
+        const accessToken = request.cookies.accessToken;
 
-    if (!accessToken) {
-        return response.sendStatus('401');
+        if (!accessToken) {
+            response.sendStatus(401);
+            return;
+        }
+
+        const isValid = jsonWebTokenAuthorize(accessToken, request);
+
+        if (isValid) {
+            next();
+        } else {
+            response.sendStatus(403);
+        }
+    } catch (err) {
+        response.sendStatus(401);
     }
+};
 
-    const isValid = jsonWebTokenAuthorize(accessToken, request);
-
-    console.log("isValid: ", isValid);
-
-    if (!isValid) {
-        return response.sendStatus(403);
-    } else {
-        next();
-    }
+exports.logout = (request, response) =>{
+    response.clearCookie('accessToken');
+    response.sendStatus(200);
 };

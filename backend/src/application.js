@@ -1,12 +1,19 @@
 const express = require('express');
 const cors = require('cors');
+
+const multer = require('multer');
+const upload = multer();
+
 const yaml = require('js-yaml');
 const swaggerUi = require('swagger-ui-express');
 const OpenApiValidator = require('express-openapi-validator');
 const path = require('path');
+const cookieParser = require('cookie-parser');
 const fs = require('fs');
 
 const authentication = require('./authentication');
+
+const { createPostRoute, downloadPostStateRoute, downloadPostPropertiesRoute, getPostsListRoute, getUsernameRoute} = require('./mainAPIRoutes');
 
 const app = express();
 
@@ -14,6 +21,7 @@ const app = express();
 
 // CORS enabled only for development!
 app.use(cors());
+app.use(cookieParser()); // for parsing cookies
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -33,23 +41,20 @@ app.use('/api/documentation', swaggerUi.serve, swaggerUi.setup(apiSwaggerDocumen
 
 app.post('/api/register', authentication.register);
 app.post('/api/login', authentication.login);
-app.get('/api/test', authentication.check, (_, res) => {
-    res.status(200).json({message: 'Hello Secure World?!'});
+app.get('/api/logout', authentication.logout);
+app.get('/api/test', authentication.check, (request, response) => {
+    console.log("userID from accessToken: ", request.userID);
+    response.status(200).json({message: 'Hello Secure World?!'});
 });
 
 
-// ------ Cellular Automata Routes ------
+// ------ Main API Routes ------
 
-app.post('/api/upload', express.raw({ type: 'application/octet-stream', limit: '10mb' }), (req, res) => {
-    let buffer = req.body;
-
-    let pixelArray = new Uint8Array(buffer);
-
-    console.log('Received', buffer.length, 'bytes of data');
-
-    console.log(pixelArray);
-});
-
+app.post('/api/upload', authentication.check, upload.fields([{ name: 'poststate', maxCount: 1 }, { name: 'postproperties', maxCount: 1 }]), createPostRoute);
+app.get('/api/downloadstate', authentication.check, downloadPostStateRoute);
+app.get('/api/downloadproperties', authentication.check, downloadPostPropertiesRoute);
+app.get('/api/list', authentication.check, getPostsListRoute);
+app.get('/api/username', authentication.check, getUsernameRoute);
 
 // ------ Static Web Page Routes (Servers the built frontend code from react.) ------
 

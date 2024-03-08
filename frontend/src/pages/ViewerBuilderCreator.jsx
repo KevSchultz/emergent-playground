@@ -19,7 +19,7 @@ import P5PropertiesContext from '../components/P5PropertiesContext';
 
 // Resizable Panel Imports
 import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 
 /**
  * A functional component that renders the Viewer Builder Creator page.
@@ -30,7 +30,6 @@ import { useContext } from 'react';
  * @returns {JSX.Element} The ViewerBuilderCreator component.
  */
 function ViewerBuilderCreator() {
-    const { fullscreen } = useContext(P5PropertiesContext);
 
     return (
         <Box
@@ -46,7 +45,7 @@ function ViewerBuilderCreator() {
             }}
         >
             <P5Background />
-            {!fullscreen ? <TopNavigationBar /> : null}
+            <TopNavigationBar/>
             <LeftButtonListContainer></LeftButtonListContainer>
             <PanelGroup direction="horizontal">
                 <Panel></Panel>

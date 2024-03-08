@@ -18,4 +18,9 @@ export const theme = createTheme({
             paper: 'rgba(0, 0, 0, 0.5)',
         },
     },
+    typography: {
+        h1 : {
+            fontSize: '5vw',
+        },
+    },
 });

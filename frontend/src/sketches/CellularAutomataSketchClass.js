@@ -1,5 +1,6 @@
 const PIXEL_DENSITY = 1;
-import { uploadPost } from "../backendRequester";
+import BinaryEncoderDecoder from '../components/BinaryEncoderDecoder';
+import BackendRequester from '../components/BackendRequester';
 
 /**
  * @class CellularAutomataSketchClass
@@ -519,6 +520,12 @@ class CellularAutomataSketchClass {
     draw() {
         // this.saveState(this.previousState);
 
+        if (this.reactProperties.pause == 0) {
+            this.reactProperties.setGeneration((previousGeneration) => {
+                return previousGeneration + 1;
+            });
+        }
+
         // If the sketch is not set up, do nothing
         if (this.isSketchSetup == false) {
             console.log('Sketch not set up');
@@ -697,7 +704,7 @@ class CellularAutomataSketchClass {
         this.reactProperties.setPreviousMouseX(this.p5.mouseX);
         this.reactProperties.setPreviousMouseY(this.p5.mouseY);
 
-        if (this.cursorIsOnWorld()) {
+        if (this.cursorIsOnWorld() && this.reactProperties.continuousPlay == false) {
             this.reactProperties.setPause(1);
         }
 
@@ -804,34 +811,22 @@ class CellularAutomataSketchClass {
         return cursorWorld.x !== null && cursorWorld.y !== null;
     }
 
+    exportStateToPNG(filename) {
+        this.currentState.save(filename + '.png');
+    }
+
     saveState(graphicsBuffer) {
-        // Create an array to temporarily hold the pixel data
-        let pixelArray = [];
+        graphicsBuffer.loadPixels();
 
-        // Set the pixels of the new image to match the pixels of the graphicsBuffer
-        for (let y = 0; y < graphicsBuffer.height; y++) {
-            let row = [];
-            for (let x = 0; x < graphicsBuffer.width; x++) {
-                let c = graphicsBuffer.get(x, y);
-                // Split out each of the values of the pixels
-                let pixel = {
-                    r: c[0],
-                    g: c[1],
-                    b: c[2],
-                    a: c[3]
-                };
-                // Push the pixel into the row
-                row.push(pixel);
-            }
-            // Push the row into the tempArray
-            pixelArray.push(row);
-        }
+        const blob = new Blob([graphicsBuffer.pixels.buffer], { type: 'application/octet-stream' });
 
-        console.log(pixelArray)
+        const binaryEncoderDecoder = new BinaryEncoderDecoder();
+        const backendRequester = new BackendRequester(
+            binaryEncoderDecoder,
+            'https://localhost:3000'
+        );
 
-    // Now tempArray is a 2D array where tempArray[y][x] is an object with the color components for the pixel at (x, y)
-        uploadPost(pixelArray);
-
+        backendRequester.uploadPost('json', blob, { test: 'test' });
     }
 }
 

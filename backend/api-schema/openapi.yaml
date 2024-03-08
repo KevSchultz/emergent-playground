@@ -20,11 +20,14 @@ paths:
               $ref: '#/components/schemas/RegistrationCredentials'
       responses:
         200:
-          description: Access Token
+          description: Sets an HttpOnly cookie for authentication
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                type: object
+                properties:
+                  username:
+                    type: string
         default:
           description: Unexpected Error
           content:
@@ -43,11 +46,26 @@ paths:
               $ref: '#/components/schemas/Credentials'
       responses:
         200:
-          description: Access Token
+          description: Sets an HttpOnly cookie for authentication
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                type: object
+                properties:
+                  username:
+                    type: string
+        default:
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnexpectedError'
+  /logout:
+    get:
+      description: Logout
+      responses:
+        200:
+          description: Clears the HttpOnly cookie for authentication
         default:
           description: Unexpected Error
           content:
@@ -78,6 +96,12 @@ paths:
   /upload:
     post:
       description: Upload a file
+      parameters:
+        - in: query
+          name: title
+          schema:
+            type: string
+            description: The title of the file
       requestBody:
         description: Request Body with a file. All fields are required.
         required: true
@@ -86,9 +110,17 @@ paths:
             schema:
               type: object
               properties:
-                file:
+                poststate:
                   type: string
                   format: binary
+                postproperties:
+                  type: string
+                  format: binary
+            encoding:
+              poststate:
+                contentType: application/octet-stream
+              postproperties:
+                contentType: application/octet-stream              
       responses:
         200:
           description: Success
@@ -105,7 +137,112 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UnexpectedError'
-                
+  /downloadstate:
+    get:
+      description: Download the state of the cellular automata as a binary blob
+      parameters:
+        - name: postid
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Success
+          content:
+            multipart/form-data:
+              schema:
+                type: object
+                properties:
+                  file:
+                    type: string
+                    format: binary
+        default:
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnexpectedError'
+  /downloadproperties:
+    get:
+      description: Download the properties of the cellular automata as a binary blob
+      parameters:
+        - name: postid
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Success
+          content:
+            multipart/form-data:
+              schema:
+                type: object
+                properties:
+                  file:
+                    type: string
+                    format: binary
+        default:
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnexpectedError'
+  /list:
+    get:
+      description: List posts with sorting
+      parameters:
+        - name: sorting
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  postsList:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        postid:
+                          type: string
+                        username:
+                          type: string
+                        title:
+                          type: string
+        default:
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnexpectedError'
+  /username:
+    get:
+      description: Get username from user ID in cookie
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  username:
+                    type: string
+        default:
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnexpectedError'
+                        
 components:
   schemas:
     UnexpectedError:
@@ -142,17 +279,3 @@ components:
       required:
         - email
         - password
-
-    User:
-      type: object
-      properties:
-        accessToken:
-          type: string
-      required:
-        - accessToken
-
-  securitySchemes:
-    bearerAuth:            # arbitrary name for the security scheme
-      type: http
-      scheme: bearer
-      bearerFormat: JWT    # optional, arbitrary value for documentation purposes

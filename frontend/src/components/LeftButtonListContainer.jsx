@@ -11,16 +11,10 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import { useContext } from 'react';
 
-import {
-    FormControl,
-    MenuItem,
-    Paper,
-    Select,
-    Popover,
-} from '@mui/material';
+import { FormControl, MenuItem, Paper, Select, Popover } from '@mui/material';
 import BrushIcon from '@mui/icons-material/Brush';
 import { Brightness1 } from '@mui/icons-material';
-
+import Box from '@mui/material/Box';
 import Fab from '@mui/material/Fab';
 
 // Custom Component Imports
@@ -29,8 +23,6 @@ import PlayPauseButton from './PlayPauseButton';
 import P5PropertiesContext from './P5PropertiesContext';
 import FullscreenIcon from '@mui/icons-material/Fullscreen';
 import FullscreenExitIcon from '@mui/icons-material/FullscreenExit';
-
-import Draggable from 'react-draggable';
 
 /**
  * A container component for the left button list.
@@ -43,8 +35,6 @@ import Draggable from 'react-draggable';
  * @returns {JSX.Element} The LeftButtonListContainer component.
  */
 function LeftButtonListContainer() {
-
-
     const {
         brushType,
         setBrushType,
@@ -55,11 +45,6 @@ function LeftButtonListContainer() {
         langTupleList,
         currentDrawColor,
         setCurrentDrawColor,
-        cameraX,
-        cameraY,
-        worldWidth,
-        worldHeight,
-        zoom,
         fullscreen,
         setFullscreen,
     } = useContext(P5PropertiesContext);
@@ -128,12 +113,20 @@ function LeftButtonListContainer() {
 
     return (
         <>
-            <Draggable>
+            <Box
+                sx={{
+                    position: 'absolute',
+                    top: '0',
+                    left: '0',
+                    display: 'flex',
+                    justifyContent: 'flex-start',
+                    alignItems: 'center',
+                    height: '100vh', // or the height of the parent container
+                    pointerEvents: 'none', // allow clicks to go "through" the Box
+                }}
+            >
                 <Paper
                     sx={{
-                        position: 'fixed',
-                        top: `calc(50% - ${cameraY}px)`,
-                        right: `calc(75% + ${cameraX}px)`,
                         display: 'flex',
                         flexDirection: 'column',
                         justifyContent: 'center',
@@ -142,7 +135,7 @@ function LeftButtonListContainer() {
                         padding: '10px',
                         boxSizing: 'border-box',
                         border: '2px solid rgb(0, 118, 236, 0.5)',
-                        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                        pointerEvents: 'auto', // make the Paper and its contents respond to pointer events
                     }}
                 >
                     <PlayPauseButton pause={pause} setPause={setPause} />
@@ -178,7 +171,7 @@ function LeftButtonListContainer() {
                 </Select>
             </FormControl> */}
                 </Paper>
-            </Draggable>
+            </Box>
 
             <Popover
                 elevation={0}

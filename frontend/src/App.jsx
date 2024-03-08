@@ -19,6 +19,7 @@ import { RouterProvider } from 'react-router-dom';
 // custom page component imports
 import ViewerBuilderCreator from './pages/ViewerBuilderCreator';
 import Welcome from './pages/Welcome';
+import MyCA from './pages/MyCA';
 import About from './pages/About';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
     {
         path: 'welcome',
         element: <Welcome />,
+    },
+    {
+        path: 'myca',
+        element: <MyCA/>
     },
     {
         path: 'about',

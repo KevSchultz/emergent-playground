@@ -19,9 +19,9 @@ import fragmentShader from '../shaders/gameOfLife.frag?raw';
 import CellularAutomataSketchClass from '../sketches/CellularAutomataSketchClass';
 
 let DefaultProperties = {
-    sketchClassType: "CellularAutomataSketchClass",
-    worldWidth: 300,
-    worldHeight: 300,
+    username: undefined,
+    worldWidth: 500,
+    worldHeight: 500,
     pixelDensity: 1,
     cameraX: 0,
     cameraY: 0,
@@ -61,6 +61,8 @@ let DefaultProperties = {
     backgroundColor: '',
     currentDrawColor: '',
     fullscreen: false,
+    generation: 0,
+    continuousPlay: false,
 };
 
 export const sketch = new CellularAutomataSketchClass(DefaultProperties);

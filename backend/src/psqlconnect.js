@@ -185,7 +185,6 @@ async function getAccountByEmail(client, email) {
 }
 
 /**
- * DONE
  * Logs out by removing the session from both server and client side
  *
  * This function deletes the session with the provided session ID and token from the database.
@@ -230,15 +229,20 @@ async function logOut(client, session) {
  */
 
 async function makeNewPost(client, userID, postID, name, post){
-    const queryString = "INSERT INTO posts (userid, postid, post) VALUES ($1, $2, $3);"
-    const values = [userID, postID];
-    client.query(queryString, values, (err, res));
+
+    const uuid = 'f47ac10b-58cc-4372-a567-0e02b2c3d479'; // your mock UUID
+    const queryString = "INSERT INTO posts (userid, postid, name, post) VALUES ($1, $2, $3, $4);"
+    const values = [uuid, postID, name, post];
+    const result = await client.query(queryString, values);
+    return result.rows[0];
 }
 
-async function getNewPost(client, postID){
-    const queryString = "SELECT * FROM posts WHERE postid = $1;"
-    const values = [postID];
-    const result = client.query(queryString, values, (err, res));
+async function getNewPost(client, name){
+    const queryString = "SELECT * FROM posts WHERE name = $1;"
+    const values = [name];
+
+    const result = await client.query(queryString, values);
+
     return result.rows[0];
 }
 

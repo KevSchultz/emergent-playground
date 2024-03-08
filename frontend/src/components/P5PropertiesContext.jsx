@@ -30,7 +30,7 @@ const P5PropertiesContext = createContext();
  * @returns {JSX.Element} A P5PropertiesContext.Provider that wraps the child components and provides them with access to the P5 properties context.
  */
 export function P5PropertiesProvider({ children }) {
-    const [sketchClass, setSketchClass] = useState(DefaultProperties.sketchClass);
+    const [username, setUsername] = useState(DefaultProperties.username);
     const [worldWidth, setWorldWidth] = useState(DefaultProperties.worldWidth);
     const [worldHeight, setWorldHeight] = useState(DefaultProperties.worldHeight);
     const [pixelDensity, setPixelDensity] = useState(DefaultProperties.pixelDensity);
@@ -65,11 +65,13 @@ export function P5PropertiesProvider({ children }) {
     const [langRange, setLangRange] = useState(DefaultProperties.langRange);
     const [backgroundColor, setBackgroundColor] = useState(DefaultProperties.backgroundColor);
     const [currentDrawColor, setCurrentDrawColor] = useState(DefaultProperties.currentDrawColor);
-    const [fullscreen, setFullscreen] = useState(false);
+    const [fullscreen, setFullscreen] = useState(DefaultProperties.fullscreen);
+    const [generation, setGeneration] = useState(DefaultProperties.generation);
+    const [continuousPlay, setContinuousPlay] = useState(DefaultProperties.continuousPlay);
 
     const value = {
-        sketchClass,
-        setSketchClass,
+        username,
+        setUsername,
         worldWidth,
         setWorldWidth,
         worldHeight,
@@ -132,6 +134,10 @@ export function P5PropertiesProvider({ children }) {
         setCurrentDrawColor,
         fullscreen,
         setFullscreen,
+        generation,
+        setGeneration,
+        continuousPlay,
+        setContinuousPlay,
     };
 
     return <P5PropertiesContext.Provider value={value}>{children}</P5PropertiesContext.Provider>;

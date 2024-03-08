@@ -12,12 +12,17 @@ import { useContext } from 'react';
 // Material UI Imports
 import Box from '@mui/material/Box';
 import { Button } from '@mui/material';
+import { Checkbox, FormControlLabel, FormGroup } from '@mui/material';
+
 import { sketch } from './DefaultProperties';
 
 // Custom Component Imports
 import InputSlider from './InputSlider';
 import P5PropertiesContext from './P5PropertiesContext';
+// import { downloadPost } from '../backendRequester';
 
+import BinaryEncoderDecoder from './BinaryEncoderDecoder';
+import BackendRequester from './BackendRequester';
 
 /**
  * A container component for the viewer options tab.
@@ -38,13 +43,24 @@ function ViewerOptionsTabContainer() {
         setWorldHeight,
         brushSize,
         setBrushSize,
+        continuousPlay,
+        setContinuousPlay,
+        setPause,
     } = useContext(P5PropertiesContext);
+
+    const binaryEncoderDecoder = new BinaryEncoderDecoder();
+    const backendRequester = new BackendRequester(binaryEncoderDecoder);
 
     return (
         <Box sx={{ width: '100%' }}>
-
-            <Button onClick={() => sketch.saveState(sketch.previousState)}>Save</Button>
-
+            <Button onClick={() => sketch.exportStateToPNG("name")}>Export</Button>
+            <Button
+                onClick={() =>
+                    backendRequester.downloadPost('c5ace6cb-80b0-43ea-a475-454135042ac2')
+                }
+            >
+                Download
+            </Button>
 
             <InputSlider
                 label="Zoom"
@@ -78,6 +94,18 @@ function ViewerOptionsTabContainer() {
                 value={brushSize}
                 setValue={setBrushSize}
             ></InputSlider>
+
+            <FormGroup>
+                <FormControlLabel
+                    checked={continuousPlay}
+                    onChange={(event) => {
+                        setContinuousPlay(event.target.checked);
+                        setPause(0);
+                    }}
+                    control={<Checkbox />}
+                    label="Continuous Play"
+                />
+            </FormGroup>
         </Box>
     );
 }

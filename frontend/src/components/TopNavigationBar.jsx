@@ -5,10 +5,19 @@
  * @authors Kevin Schultz
  * @exports TopNavigationBar
  */
+
+import { useContext } from 'react';
+import { useLocation } from 'react-router-dom';
+
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 import Paper from '@mui/material/Paper';
+
+// Custom Imports
+import P5PropertiesContext from './P5PropertiesContext';
+import TextInput from './TextInput';
+import LoginLink from './LoginLink';
 
 /**
  * A functional component that renders a top navigation bar.
@@ -20,6 +29,14 @@ import Paper from '@mui/material/Paper';
  * @returns {JSX.Element} The TopNavigationBar component.
  */
 function TopNavigationBar() {
+
+    const generation = useContext(P5PropertiesContext).generation;
+
+    const location = useLocation();
+    const currentPage = location.pathname;
+
+    console.log(currentPage);
+
     return (
         <Paper
             elevation={0}
@@ -35,23 +52,90 @@ function TopNavigationBar() {
                 borderBottom: '2px solid rgb(0, 118, 236, 0.5)',
             }}
         >
-            <Typography>EMERGENT PLAYGROUND</Typography>
+            {/* <Typography>EMERGENT PLAYGROUND</Typography> */}
+
+            {/* HOME, CANVAS, and COMMUNITY buttons */}
             <Box
                 sx={{
                     display: 'flex',
-                    flexDirection: 'row',
                     alignItems: 'center',
-                    width: '19vw',
+                    justifyContent: 'left',
+                    flexBasis: '33%',
                     gap: '1vw',
-                    justifyContent: 'flex-end',
                 }}
             >
-                <Link href="community">
-                    Community
-                </Link>
-                <Link href="login">
-                    Login
-                </Link>
+                {/* <a href="/welcome" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
+                    <Button 
+                        variant="text"
+                        color="primary"
+                    >
+                        Home
+                    </Button>
+                </a> */}
+
+                <Link href="/welcome">HOME</Link>
+
+                {/* <a href="/" rel="noimport Button from '@mui/material/Button';
+opener noreferrer" style={{ textDecoration: 'none' }}>
+                    <Button 
+                        variant="text" 
+                        color="primary" 
+                    >
+                        Canvas
+                    </Button>
+                </a> */}
+
+                <Link href="/">CANVAS</Link>
+
+                {/* <a href="/community" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
+                    <Button 
+                        variant="text"  
+                        color="primary"
+                    >
+                        Community
+                    </Button>
+                </a> */}
+
+                <Link href="/community">COMMUNITY</Link>
+
+                { currentPage == '/' ? <Typography>{"GENERATION: " + generation}</Typography> : null}
+            </Box>
+
+            <Box
+                sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    flexBasis: '33%',
+                    padding: '10px',
+                    boxSizing: 'border-box',
+                    marginTop: '10px',
+                    marginBottom: '10px',
+                }}
+            >
+                { currentPage == '/' ? <TextInput /> : null }
+            </Box>
+
+            <Box
+                sx={{
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                    flexBasis: '33%',
+                    gap: '1vw',
+                }}
+            >
+                {/* <a href="/login" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
+                    <Button 
+                        variant="text" 
+                        color="primary" 
+                        sx={{ 
+                            marginRight: '10px', 
+                        }}
+                    >
+                        Login
+                    </Button>
+                </a> */}
+
+                <LoginLink/>
             </Box>
         </Paper>
     );

@@ -8,7 +8,7 @@
  * @exports Login
  */
 
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -21,35 +21,25 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { useNavigate } from 'react-router-dom';
 
+// Custom Imports
+import backendRequester from '../components/BackendRequester';
 
 function Login() {
-
     const navigate = useNavigate(); // Get the navigate function
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
 
-        try {
-            const body = { email: data.get('email'), password: data.get('password') };
+        const email = data.get('email');
+        const password = data.get('password');
 
-            const response = await fetch('https://localhost:3000/api/login', {
-                method: 'POST',
-                headers: {
-                    'Content-type': 'application/json',
-                },
-                body: JSON.stringify(body),
-            });
+        const jsonResponse = await backendRequester.login(email, password);
 
-            const responseData = await response.json();
-
-            console.log(responseData);
-
-            if (response.ok) {
-                navigate('/');
-            }
-
-        } catch (error) {
-            console.error(error);
+        if (jsonResponse) {
+            navigate('/');
+        } else {
+            console.log('Login failed');
         }
     };
 
