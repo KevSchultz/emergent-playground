@@ -42,9 +42,6 @@ import ResizableGrid from './ResizableGrid';
 
 //TODO: autocomplete for language in AceEditor
 //TODO: UPDATE PALETTE WHEN COLOR BECOMES UNAVAILABLE
-//TODO: hex string input for color
-//TODO: loop unrolling
-//TODO: make fill brush work!
 function LanguageOptionsTabContainer() {
     const { 
         code, 

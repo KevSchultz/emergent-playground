@@ -161,8 +161,10 @@ class CellularAutomataSketchClass {
         this.reactProperties.setPause(1);
         this.currentState.clear();
         this.previousState.clear();
+        this.overlayGraphics.clear();
         this.currentState.background(newBackgroundColor);
         this.previousState.background(newBackgroundColor);
+        this.overlayGraphics.background(newBackgroundColor);
     }
 
     /**
