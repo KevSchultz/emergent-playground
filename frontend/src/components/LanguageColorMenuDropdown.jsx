@@ -11,7 +11,7 @@ import { useContext } from 'react';
 import P5PropertiesContext from './P5PropertiesContext';
 
 //MUI
-import { Accordion, AccordionSummary, Button, Box, List } from '@mui/material';
+import { Accordion, AccordionSummary, Button, Box, List, TextField } from '@mui/material';
 import { ExpandMoreOutlined } from '@mui/icons-material';
 
 //custom
@@ -55,13 +55,21 @@ function LanguageColorMenuDropdown({setAlertMessage, setOpenError}){
         }
     };
 
+    const handleColorText = (e) => {
+        var t = e.target.value;
+        setCurrentLangColor('#'.concat(t));
+    }; 
+
     return(
         <Accordion disableGutters>
             <AccordionSummary expandIcon={<ExpandMoreOutlined/>}>
                 State Definition
             </AccordionSummary>
             <ResizableGrid limit={400}>
-                <HexColorPicker color={currentLangColor} onChange={handleCurrentColorChange}/>
+                <Box>
+                    <HexColorPicker color={currentLangColor} onChange={handleCurrentColorChange}/>
+                    <TextField variant='standard' margin='none' onChange={handleColorText} value={currentLangColor.replace('#', '')} error={currentLangColor.length !== 7}/>
+                </Box>
                 <Box style={{ maxHeight: 200, overflow: 'auto' }}>
                     <List>
                         {langTupleList.map((s, index) => (

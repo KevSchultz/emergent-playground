@@ -13,7 +13,6 @@ import { useContext } from 'react';
 import { 
     Accordion, 
     AccordionSummary, 
-    Button,
     Checkbox, 
     FormControl, 
     FormControlLabel, 
@@ -47,7 +46,6 @@ import ResizableGrid from './ResizableGrid';
 function LanguageOptionsDropdown() {
     const { 
         setLangIncludeSelf, 
-        setLangRange, 
         backgroundColor, 
         setBackgroundColor,
         langTupleList,
@@ -85,7 +83,7 @@ function LanguageOptionsDropdown() {
                     </Stack>
                     </ResizableGrid>
                 </Grid>
-                <Grid item xs={12}>
+        {/*<Grid item xs={12}>
                     <Typography gutterBottom> Range </Typography>
                     <Slider
                         defaultValue={1}
@@ -95,7 +93,7 @@ function LanguageOptionsDropdown() {
                         max={5}
                         onChange={(e, value) => setLangRange(value)}
                     />
-                </Grid>
+                </Grid>*/}
                 <Grid item xs={12}>
                     <FormControl fullWidth>
                         <InputLabel id='backgroundSelectLabel'>Default State</InputLabel>

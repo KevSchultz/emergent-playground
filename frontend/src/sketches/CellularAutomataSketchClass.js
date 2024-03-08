@@ -26,7 +26,7 @@ class CellularAutomataSketchClass {
         this.defaultReactProperties = defaultReactProperties;
         this.shader;
         this.isSketchSetup = false;
-        this.debugMode = false;
+        this.debugMode = true;
         this.cursorIsOnCanvas = false;
         this.canvas;
 
@@ -111,6 +111,18 @@ class CellularAutomataSketchClass {
         this.debugMode ? console.log('CellularAutomataSketchClass.updateWorldHeight') : null;
     }
 
+    checkShaderError(shaderObj, shaderText){
+        let gl = shaderObj._renderer.GL;
+        let glFragShader = gl.createShader(gl.FRAGMENT_SHADER);
+        gl.shaderSource(glFragShader, shaderText);
+        gl.compileShader(glFragShader);
+        if (!gl.getShaderParameter(glFragShader, gl.COMPILE_STATUS)) {
+            return gl.getShaderInfoLog(glFragShader);
+        }
+        return 'no error';
+    }
+
+
     /**
      * Updates the shader of the sketch.
      *
@@ -136,6 +148,7 @@ class CellularAutomataSketchClass {
         ]);
 
         this.debugMode ? console.log('CellularAutomataSketchClass.updateShader') : null;
+        this.debugMode ? console.log(this.checkShaderError(this.shader, newFragmentShader)) : null;
     }
 
     /**

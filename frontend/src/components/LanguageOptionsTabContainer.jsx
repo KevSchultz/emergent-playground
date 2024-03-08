@@ -42,7 +42,9 @@ import ResizableGrid from './ResizableGrid';
 
 //TODO: autocomplete for language in AceEditor
 //TODO: UPDATE PALETTE WHEN COLOR BECOMES UNAVAILABLE
-//TODO: CHANGE COMPILER LOOKAHEAD RANGE??? INCONSISTENT BEHAVIOR FOR SOME REASON
+//TODO: hex string input for color
+//TODO: loop unrolling
+//TODO: make fill brush work!
 function LanguageOptionsTabContainer() {
     const { 
         code, 
@@ -66,6 +68,7 @@ function LanguageOptionsTabContainer() {
     const handleCompile = () => {
         if(code !== ''){
             const newFrag = langCompiler(code, langTupleList, langIncludeSelf, langRange, langNeighborhoodType, backgroundColor);
+            console.log(newFrag);
             setFragmentShader(newFrag);
         } else {
             setOpenError(true);
