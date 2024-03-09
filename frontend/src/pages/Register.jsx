@@ -7,7 +7,7 @@
  * @authors Kevin Schultz
  * @exports Register
  */
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useCallback } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -19,7 +19,10 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import P5PropertiesContext from '../components/P5PropertiesContext';
+import { useNavigate } from 'react-router-dom';
+import Logo from '../emergent_playground_logo.svg';
 
+import backendRequester from '../components/BackendRequester';
 
 /**
  * A functional component that renders the Register page.
@@ -27,14 +30,43 @@ import P5PropertiesContext from '../components/P5PropertiesContext';
  * @returns {JSX.Element} The Register component.
  */
 function Register() {
-    const handleSubmit = (event) => {
+    const navigate = useNavigate(); // Get the navigate function
+
+    const navigateLogin = useCallback(() => navigate('/login'), [navigate]);
+    const navigateHome = useCallback(() => navigate('/'), [navigate]);
+
+    const { setUsername } = useContext(P5PropertiesContext);
+
+    const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        console.log({
-            username: data.get('username'),
-            email: data.get('email'),
-            password: data.get('password'),
-        });
+
+        const username = data.get('username').toLowerCase();
+        const email = data.get('email').toLowerCase();
+        const retypePassword = data.get('retype-password');
+        const password = data.get('password');
+
+        if (username === '' || email === '' || retypePassword === '' || password === '') {
+            alert('Please fill out all fields.');
+            return;
+        }
+
+        if (password !== retypePassword) {
+            alert('Passwords do not match. Please try again.');
+            return;
+        }
+
+        const jsonResponse = await backendRequester.register(username, email, password);
+
+        console.log('jsonResponse: ' + jsonResponse);
+
+        if (jsonResponse) {
+            setUsername(jsonResponse.username);
+            navigate('/login');
+        } else {
+            alert('Username or Email already in use. Please try again.');
+            return;
+        }
     };
 
     return (
@@ -61,9 +93,7 @@ function Register() {
                             alignItems: 'center',
                         }}
                     >
-                        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                            <LockOutlinedIcon />
-                        </Avatar>
+                        <img src={Logo} alt="Emergent Playground Logo" style={{ width: '150px' }} />
                         <Typography component="h1" variant="h5">
                             Register
                         </Typography>
@@ -118,8 +148,15 @@ function Register() {
                             </Button>
                             <Grid container>
                                 <Grid item>
-                                    <Link href="/login" variant="body2">
-                                        {"Already have an account? Login"}
+                                    <Link onClick={navigateLogin} variant="body2">
+                                        {'Already have an account? Login.'}
+                                    </Link>
+                                </Grid>
+                            </Grid>
+                            <Grid container>
+                                <Grid item>
+                                    <Link onClick={navigateHome} variant="body2">
+                                        {'Continue without an account.'}
                                     </Link>
                                 </Grid>
                             </Grid>

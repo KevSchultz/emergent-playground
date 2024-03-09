@@ -74,7 +74,7 @@ class BackendRequester extends BackendRequesterInterface {
 
             return json;
         } catch (error) {
-            console.error('Error:', error);
+            return undefined;
         }
     }
 
@@ -103,6 +103,31 @@ class BackendRequester extends BackendRequesterInterface {
         } catch (error) {
             return undefined;
         }
+    }
+
+    /**
+     * @description Sends a logout request to the server.
+     * 
+     * @returns {Promise<Object>} A promise that resolves to the response from the server.
+     */
+    async logout() {
+        const url = this.testURL + '/api/logout';
+
+        const options = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        };
+
+        try {
+            const response = await fetch(url, options);
+            return response;
+
+        } catch(error) {
+            return undefined;
+        }
+
     }
 
     /**
@@ -156,23 +181,7 @@ class BackendRequester extends BackendRequesterInterface {
         }
     }
 
-    async downloadPostState(postID) {
-
-        const url = this.testURL + `/api/downloadstate?postid=${encodeURIComponent(postID)}`;
-
-        const options = {
-            method: 'GET',
-        };
-
-        try {
-            const response = await fetch(url, options);
-            const binary = await response.blob();
-            return binary;
-        } catch (error) {
-            console.error('Error:', error);
-        }
-
-    }
+    
 
     async serializePostProperties(width, height, ruleData) {
         const ruleDataJSONString = JSON.stringify(ruleData); // stringifes ruleData object
@@ -223,6 +232,40 @@ class BackendRequester extends BackendRequesterInterface {
             console.error('Error:', error);
         }
     }
+
+    /**
+     * @description Sends a request for downloading a cellular automata post from the server.
+     * 
+     * 
+     * @param {integer} sorting - specifies the sorting method to be used with the list ()
+     * 0 or null for no sorting, 1 to sort by userID, 2 to sort by postID, 3 to sort by creationTime 
+     * @returns {Promise<Object>} A promise that resolves to an array representing all of the posts.
+     */
+    async downloadPostList(sorting = null){
+
+
+        // getting list of all posts according to certain sorting method
+        let url = `/api/list?sorting=${encodeURIComponent(sorting)}`;
+
+        if (sorting === null) {
+            url = `/api/list`;
+        }
+
+        const options = {
+            method: 'GET',
+        };
+
+        try {
+            const response = await fetch(url, options); // getting the raw data
+
+            const postListJson = await response.json(); // putting data into json
+
+            return postListJson; // returning the postList as javascript array
+        } catch (error) {
+            return [];
+        }
+    }
+
 }
 
 const binaryEncoderDecoder = new BinaryEncoderDecoder();

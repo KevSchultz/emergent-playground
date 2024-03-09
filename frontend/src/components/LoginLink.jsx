@@ -9,6 +9,8 @@
 // React Imports
 import { useContext } from 'react';
 import { useEffect } from 'react';
+import { useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 // Material-UI Imports
 import Link from '@mui/material/Link';
@@ -27,6 +29,12 @@ export default function LoginLink() {
 
     const { username, setUsername } = useContext(P5PropertiesContext);
 
+
+    const navigate = useNavigate();
+    const navigateLogin = useCallback(() => {navigate('/login')}, [navigate]);
+    const navigateMyCa = useCallback(() => {navigate('/myca')}, [navigate]);
+
+
     useEffect(() => {
         const getUsername = async () => {
             const username = await backendRequester.getUsername();
@@ -35,14 +43,14 @@ export default function LoginLink() {
         }
 
         getUsername();
-    });
+    }, []);
 
     return (
         <>
             {username == undefined ? (
-                <Link href="/login">LOGIN</Link>
+                <Link onClick={navigateLogin}>LOGIN</Link>
             ) : (
-                <Link href="/myca">{username.toUpperCase()}</Link>
+                <Link onClick={navigateMyCa}>{username.toUpperCase()}</Link>
             )}
         </>
     );

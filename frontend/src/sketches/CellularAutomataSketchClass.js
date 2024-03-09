@@ -27,6 +27,7 @@ class CellularAutomataSketchClass {
         this.reactProperties;
         this.defaultReactProperties = defaultReactProperties;
         this.shader;
+        this.shouldCopy = false;
         this.isSketchSetup = false;
         this.debugMode = false;
         this.cursorIsOnCanvas = false;
@@ -58,6 +59,7 @@ class CellularAutomataSketchClass {
         this.screenToWorldP5WebGlCoordinates = this.screenToWorldP5WebGlCoordinates.bind(this);
         this.cursorIsOnWorld = this.cursorIsOnWorld.bind(this);
         this.saveState = this.saveState.bind(this);
+        this.loadPixelsToP2DGraphicsBuffer = this.loadPixelsToP2DGraphicsBuffer.bind(this);
 
         this.debugMode ? console.log('CellularAutomataSketchClass.constructor') : null;
     }
@@ -233,6 +235,11 @@ class CellularAutomataSketchClass {
      * @returns None
      */
     setupCurrentStateGraphicsBuffer(worldWidth, worldHeight) {
+        if (this.currentState) {
+            this.currentState.loadPixels();
+            console.log(this.currentState);
+        }
+
         this.currentState = this.p5.createGraphics(worldWidth, worldHeight, this.p5.WEBGL);
 
         this.currentState.shader(this.shader);
@@ -251,11 +258,28 @@ class CellularAutomataSketchClass {
      * @returns None
      */
     setupPreviousStateGraphicsBuffer(worldWidth, worldHeight) {
+        let oldPreviousState = undefined;
+
+        if (this.previousState) {
+            console.log("old state exists");
+            oldPreviousState = this.previousState;
+        }
+
         this.previousState = this.p5.createGraphics(worldWidth, worldHeight);
 
         this.previousState.pixelDensity(PIXEL_DENSITY);
         this.previousState.noSmooth();
         this.previousState.background(0);
+
+        if (oldPreviousState) {
+            this.copyGraphicsBufferImageDataToAnotherGraphicsBuffer(
+                this.previousState,
+                oldPreviousState,
+                0,
+                0
+            );
+            this.shouldCopy = false;
+        }
 
         this.debugMode
             ? console.log('CellularAutomataSketchClass.setupPreviousStateGraphicsBuffer')
@@ -289,6 +313,8 @@ class CellularAutomataSketchClass {
      * @returns None
      */
     setup() {
+        console.log('isSketchSetup: ' + this.isSketchSetup);
+
         // ----- Shader Setup -----
         this.setupShader(
             this.defaultReactProperties.vertexShader,
@@ -535,12 +561,15 @@ class CellularAutomataSketchClass {
         this.p5.clear();
         this.overlayGraphics.clear();
 
-        this.copyGraphicsBufferImageDataToAnotherGraphicsBuffer(
-            this.previousState,
-            this.currentState,
-            0,
-            0
-        );
+        if (this.shouldCopy) {
+            this.copyGraphicsBufferImageDataToAnotherGraphicsBuffer(
+                this.previousState,
+                this.currentState,
+                0,
+                0
+            );
+        }
+        this.shouldCopy = true;
 
         let mouseWorldLocation = this.screenToWorldP52DCoordinates(this.p5.mouseX, this.p5.mouseY);
         let mouseWorldX = mouseWorldLocation.x;
@@ -827,6 +856,23 @@ class CellularAutomataSketchClass {
         );
 
         backendRequester.uploadPost('json', blob, { test: 'test' });
+    }
+
+    loadPixelsToP2DGraphicsBuffer(graphicsBuffer, pixels) {
+        graphicsBuffer.loadPixels();
+        for (let x = 0; x < graphicsBuffer.width; x++) {
+            for (let y = 0; y < graphicsBuffer.height; y++) {
+                const index = (x + y * graphicsBuffer.width) * 4;
+                const color = [
+                    pixels[index],
+                    pixels[index + 1],
+                    pixels[index + 2],
+                    pixels[index + 3],
+                ];
+                graphicsBuffer.set(x, y, color);
+            }
+        }
+        graphicsBuffer.updatePixels();
     }
 }
 

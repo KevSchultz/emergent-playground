@@ -48,20 +48,9 @@ function ViewerOptionsTabContainer() {
         setPause,
     } = useContext(P5PropertiesContext);
 
-    const binaryEncoderDecoder = new BinaryEncoderDecoder();
-    const backendRequester = new BackendRequester(binaryEncoderDecoder);
 
     return (
         <Box sx={{ width: '100%' }}>
-            <Button onClick={() => sketch.exportStateToPNG("name")}>Export</Button>
-            <Button
-                onClick={() =>
-                    backendRequester.downloadPost('c5ace6cb-80b0-43ea-a475-454135042ac2')
-                }
-            >
-                Download
-            </Button>
-
             <InputSlider
                 label="Zoom"
                 minValue={0}

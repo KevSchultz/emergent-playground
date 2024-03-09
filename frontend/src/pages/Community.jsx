@@ -12,7 +12,9 @@
  *
  * @returns {JSX.Element} The Community component.
  */
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { useEffect } from 'react';
+
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Card from '@mui/material/Card';
@@ -24,92 +26,43 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import Button from '@mui/material/Button';
 import TopNavigationBar from '../components/TopNavigationBar';
+import backendRequester from '../components/BackendRequester';
+
 
 function Community() {
     // State for messages
-    const [posts, setPosts] = React.useState([]);
+    const [posts, setPosts] = useState([]);
     const [page, setPage] = useState(1);
 
-    // // Get the posts from the database
-    // // Use getPostsByNewest()
-    // const getPosts = async () => {
-    //     // URL for the API
-    //     let url = 'https://localhost:3010/api/getPostsByNewest';
-    //     console.log('here');
-    //     return await fetch(url, {
-    //         method: 'GET',
-    //         headers: {
-    //             'Content-type': 'application/json',
-    //         },
-    //     }).then(response => {
-    //         console.log (response);
-    //         return response.json();
-    //     }).catch(error => {
-    //         console.log(error);
-    //     })
-    // };
+    useEffect(() => {
+        const fetchPosts = async () => {
+            try {
+                const response = await backendRequester.downloadPostList();
+                if (response) {
+                    return response;
+                }
+            } catch (error) {
+                console.error("Failed to fetch posts:", error);
+            }
+            return [];
+        };
 
-    // TODO: Temp test version of getPosts using example post data
-    const getPosts = async (page) => {
-        // Simulate fetching posts from an API
-        const startIndex = (page - 1) * 7;
-        const endIndex = startIndex + 7;
-        const slicedPosts = [
-            { title:"Post 1", content:"Text1 - welcome", link:"/welcome" },
-            { title: 'Post 2', content: 'Text2 - login', link: '/login' },
-            { title: 'Post 3', content: 'Text3 - register', link: '/register' },
-            { title: 'Post 4', content: 'Text3 - register', link: '/register' },
-            { title: 'Post 5', content: 'Text3 - register', link: '/register' },
-            { title: 'Post 6', content: 'Text3 - register', link: '/register' },
-            { title: 'Post 7', content: 'Text3 - register', link: '/register' },
-            { title: 'Post 8', content: 'Text3 - register', link: '/register' },
-            { title: 'Post 9', content: 'Text3 - register', link: '/register' },
-            
-            // { title: `Post ${page * 8 - 7}`, content: `Text${page * 8 - 7} - welcome`, link: `/welcome` },
-            // { title: `Post ${page * 8 - 6}`, content: `Text${page * 8 - 6} - login`, link: `/login` },
-            // { title: `Post ${page * 8 - 5}`, content: `Text${page * 8 - 5} - register`, link: `/register` },
-            // { title: `Post ${page * 8 - 4}`, content: `Text${page * 8 - 4} - register`, link: `/register` },
-            // { title: `Post ${page * 8 - 3}`, content: `Text${page * 8 - 3} - register`, link: `/register` },
-            // { title: `Post ${page * 8 - 2}`, content: `Text${page * 8 - 2} - register`, link: `/register` },
-            // { title: `Post ${page * 8 - 1}`, content: `Text${page * 8 - 1} - register`, link: `/register` },
-            // { title: `Post ${page * 8}`, content: `Text${page * 8} - register`, link: `/register` },
-            
-            // { title: `Post ${startIndex + 1}`, content: `Text ${startIndex + 1} - welcome`, link: `/welcome` },
-            // { title: `Post ${startIndex + 2}`, content: `Text ${startIndex + 2} - login`, link: `/login` },
-            // { title: `Post ${startIndex + 3}`, content: `Text ${startIndex + 3} - register`, link: `/register` },
-            // { title: `Post ${startIndex + 4}`, content: `Text ${startIndex + 4} - register`, link: `/register` },
-            // { title: `Post ${startIndex + 5}`, content: `Text ${startIndex + 5} - register`, link: `/register` },
-            // { title: `Post ${startIndex + 6}`, content: `Text ${startIndex + 6} - register`, link: `/register` },
-            // { title: `Post ${startIndex + 7}`, content: `Text ${startIndex + 7} - register`, link: `/register` },
-            // { title: `Post ${startIndex + 8}`, content: `Text ${startIndex + 8} - register`, link: `/register` },
+        // Call the async function within useEffect
+        const getPosts = async () => {
+            const postsFromBackend = await fetchPosts();
+            setPosts(postsFromBackend);
+        };
 
-            // { title: `Post ${startIndex + 1}`, content: `Text ${startIndex + 1} - register`, link: `/register` },
-            // { title: `Post ${startIndex + 2}`, content: `Text ${startIndex + 2} - register`, link: `/register` },
-            // { title: `Post ${startIndex + 3}`, content: `Text ${startIndex + 3} - register`, link: `/register` },
-        ].slice(startIndex, endIndex);
-        return slicedPosts;
-    };
+        getPosts();
+    }, []); // Dependency array remains empty to run only once on mount
 
-    // Fetch the posts and update posts array state
-    const fetchPosts = async (page) => {
-        try {
-            const postsData = await getPosts(page);
-            setPosts(postsData);
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    // Run effect when the page first loads
-    React.useEffect(() => {
-        fetchPosts(page);
-    }, [page]);
-
+    
     // State to manage sorting options
     const [sortingOption, setSortingOption] = useState('');
 
     // Function to handle sorting option change
     const handleSortingChange = (event) => {
+        console.log("Sorting changes");
         // setSortingOption(event.target.value);
     };
 
@@ -149,7 +102,7 @@ function Community() {
                         Community
                     </Typography>
                     {posts.map((post) => (
-                        <Post key={post.title} title={post.title} content={post.content} link={post.link} />
+                        <Post key={post.title} title={post.title} content={post.username} link={post.postid} />
                     ))}
                     <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
                         {page > 1 && (

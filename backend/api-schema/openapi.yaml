@@ -61,7 +61,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/UnexpectedError'
   /logout:
-    get:
+    post:
       description: Logout
       responses:
         200:
@@ -74,8 +74,6 @@ paths:
                 $ref: '#/components/schemas/UnexpectedError'
   /test:
     get:
-      security:
-        - bearerAuth: []
       description: Test route to check if the token is working
       responses:
         200:
@@ -204,19 +202,16 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  postsList:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        postid:
-                          type: string
-                        username:
-                          type: string
-                        title:
-                          type: string
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      postid:
+                        type: string
+                      username:
+                        type: string
+                      title:
+                        type: string
         default:
           description: Unexpected Error
           content:

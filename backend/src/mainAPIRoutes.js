@@ -158,6 +158,10 @@ exports.downloadPostPropertiesRoute = async (request, response) => {
 exports.getPostsListRoute = async (request, response) => {
 
     if (!request.query.sorting) {
+        request.query.sorting = 0;
+    }
+
+    if (!request.query.sorting != 0 && !request.query.sorting != 1 && !request.query.sorting != 2 && !request.query.sorting != 3) {
         response.sendStatus(400);
         return;
     }
@@ -174,6 +178,8 @@ exports.getPostsListRoute = async (request, response) => {
         const sorting = request.query.sorting;
 
         const postsList = await postgreSQLConnection.getPostsList(sorting, userid);
+
+        console.log(postsList);
 
         response.status(200).json(postsList);
     } catch (err) {

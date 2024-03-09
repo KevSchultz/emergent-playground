@@ -30,6 +30,8 @@ const P5PropertiesContext = createContext();
  * @returns {JSX.Element} A P5PropertiesContext.Provider that wraps the child components and provides them with access to the P5 properties context.
  */
 export function P5PropertiesProvider({ children }) {
+
+
     const [username, setUsername] = useState(DefaultProperties.username);
     const [worldWidth, setWorldWidth] = useState(DefaultProperties.worldWidth);
     const [worldHeight, setWorldHeight] = useState(DefaultProperties.worldHeight);

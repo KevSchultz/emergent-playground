@@ -8,6 +8,8 @@
 
 import { useContext } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -18,6 +20,11 @@ import Paper from '@mui/material/Paper';
 import P5PropertiesContext from './P5PropertiesContext';
 import TextInput from './TextInput';
 import LoginLink from './LoginLink';
+import LogoutLink from './LogoutLink';
+import Logo from '../emergent_playground_logo.svg';
+import ButtonBase from '@mui/material/ButtonBase';
+import { Button } from '@mui/material';
+import Card from '@mui/material/Card';
 
 /**
  * A functional component that renders a top navigation bar.
@@ -29,13 +36,16 @@ import LoginLink from './LoginLink';
  * @returns {JSX.Element} The TopNavigationBar component.
  */
 function TopNavigationBar() {
-
     const generation = useContext(P5PropertiesContext).generation;
+
+    const navigate = useNavigate();
 
     const location = useLocation();
     const currentPage = location.pathname;
 
-    console.log(currentPage);
+    const navigateCommunity = useCallback(() => navigate('/community'), [navigate]);
+    const navigateWelcome = useCallback(() => navigate('/welcome'), [navigate]);
+    const navigateCanvas = useCallback(() => navigate('/'), [navigate]);
 
     return (
         <Paper
@@ -52,9 +62,8 @@ function TopNavigationBar() {
                 borderBottom: '2px solid rgb(0, 118, 236, 0.5)',
             }}
         >
-            {/* <Typography>EMERGENT PLAYGROUND</Typography> */}
 
-            {/* HOME, CANVAS, and COMMUNITY buttons */}
+            {/* HOME, CANVAS, and COMMUNITY Links */}
             <Box
                 sx={{
                     display: 'flex',
@@ -64,41 +73,24 @@ function TopNavigationBar() {
                     gap: '1vw',
                 }}
             >
-                {/* <a href="/welcome" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
-                    <Button 
-                        variant="text"
-                        color="primary"
+                <ButtonBase onClick={navigateWelcome}>
+                    <Card
+                        sx={{
+                            transition: 'opacity 0.3s', // add transition for smooth effect
+                            '&:hover': {
+                                opacity: 0.7, // change opacity on hover
+                            },
+                        }}
                     >
-                        Home
-                    </Button>
-                </a> */}
+                        <img src={Logo} alt="Emergent Playground Logo" style={{ width: '64px' }} />
+                    </Card>
+                </ButtonBase>
 
-                <Link href="/welcome">HOME</Link>
+                <Link onClick={navigateCanvas}>CANVAS</Link>
 
-                {/* <a href="/" rel="noimport Button from '@mui/material/Button';
-opener noreferrer" style={{ textDecoration: 'none' }}>
-                    <Button 
-                        variant="text" 
-                        color="primary" 
-                    >
-                        Canvas
-                    </Button>
-                </a> */}
+                <Link onClick={navigateCommunity}>COMMUNITY</Link>
 
-                <Link href="/">CANVAS</Link>
-
-                {/* <a href="/community" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
-                    <Button 
-                        variant="text"  
-                        color="primary"
-                    >
-                        Community
-                    </Button>
-                </a> */}
-
-                <Link href="/community">COMMUNITY</Link>
-
-                { currentPage == '/' ? <Typography>{"GENERATION: " + generation}</Typography> : null}
+                {currentPage == '/' ? <Typography>{'GENERATION: ' + generation}</Typography> : null}
             </Box>
 
             <Box
@@ -112,7 +104,7 @@ opener noreferrer" style={{ textDecoration: 'none' }}>
                     marginBottom: '10px',
                 }}
             >
-                { currentPage == '/' ? <TextInput /> : null }
+                {currentPage == '/' ? <TextInput /> : null}
             </Box>
 
             <Box
@@ -123,19 +115,8 @@ opener noreferrer" style={{ textDecoration: 'none' }}>
                     gap: '1vw',
                 }}
             >
-                {/* <a href="/login" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
-                    <Button 
-                        variant="text" 
-                        color="primary" 
-                        sx={{ 
-                            marginRight: '10px', 
-                        }}
-                    >
-                        Login
-                    </Button>
-                </a> */}
-
-                <LoginLink/>
+                <LoginLink />
+                <LogoutLink />
             </Box>
         </Paper>
     );

@@ -16,10 +16,12 @@ import LeftButtonListContainer from '../components/LeftButtonListContainer';
 import RightOptionsRootContainer from '../components/RightOptionsRootContainer';
 import P5Background from '../components/P5Background';
 import P5PropertiesContext from '../components/P5PropertiesContext';
+import resetP5PropertiesContext from '../components/resetP5PropertiesContext';
 
 // Resizable Panel Imports
 import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
 import { useContext, useEffect } from 'react';
+
 
 /**
  * A functional component that renders the Viewer Builder Creator page.
@@ -32,6 +34,7 @@ import { useContext, useEffect } from 'react';
 function ViewerBuilderCreator() {
 
     return (
+        
         <Box
             sx={{
                 position: 'absolute',

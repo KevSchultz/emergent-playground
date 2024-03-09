@@ -47,7 +47,7 @@ function Welcome() {
                             <img
                                 src={Logo}
                                 alt="Emergent Playground Logo"
-                                style={{ width: '50vw' }}
+                                style={{ width: '70vh' }}
                             />
                         </Paper>
                     </ButtonBase>

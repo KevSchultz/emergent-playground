@@ -9,17 +9,19 @@
  */
 
 import { useContext } from 'react';
-import Avatar from '@mui/material/Avatar';
+import { useCallback } from 'react';
+
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { useNavigate } from 'react-router-dom';
+import P5PropertiesContext from '../components/P5PropertiesContext';
+import Logo from '../emergent_playground_logo.svg';
 
 // Custom Imports
 import backendRequester from '../components/BackendRequester';
@@ -27,19 +29,26 @@ import backendRequester from '../components/BackendRequester';
 function Login() {
     const navigate = useNavigate(); // Get the navigate function
 
+    const navigateRegister = useCallback(() => navigate('/register'), [navigate]);
+    const navigateHome = useCallback(() => navigate('/'), [navigate]);
+
+
+    const { setUsername } = useContext(P5PropertiesContext);
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
 
-        const email = data.get('email');
+        const email = data.get('email').toLowerCase();
         const password = data.get('password');
 
         const jsonResponse = await backendRequester.login(email, password);
 
         if (jsonResponse) {
+            setUsername(jsonResponse.username);
             navigate('/');
         } else {
-            console.log('Login failed');
+            alert('Invalid email or password.');
         }
     };
 
@@ -67,11 +76,10 @@ function Login() {
                             alignItems: 'center',
                         }}
                     >
-                        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                            <LockOutlinedIcon />
-                        </Avatar>
+                        <img src={Logo} alt="Emergent Playground Logo" style={{ width: '150px' }} />
+
                         <Typography component="h1" variant="h5">
-                            Sign in
+                            Login
                         </Typography>
                         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                             <TextField
@@ -100,17 +108,19 @@ function Login() {
                                 variant="contained"
                                 sx={{ mt: 3, mb: 2 }}
                             >
-                                Sign In
+                                Login
                             </Button>
                             <Grid container>
-                                <Grid item xs>
-                                    <Link href="/" variant="body2">
-                                        Forgot password?
+                                <Grid item>
+                                    <Link onClick={navigateRegister} variant="body2">
+                                        {"Don't have an account? Register."}
                                     </Link>
                                 </Grid>
+                            </Grid>
+                            <Grid container>
                                 <Grid item>
-                                    <Link href="/register" variant="body2">
-                                        {"Don't have an account? Register"}
+                                    <Link onClick={navigateHome} variant="body2">
+                                        {'Continue without an account.'}
                                     </Link>
                                 </Grid>
                             </Grid>

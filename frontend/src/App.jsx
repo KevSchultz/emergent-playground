@@ -6,6 +6,10 @@
  * @project Emergent Playground
  */
 
+// React Imports
+import { useEffect } from 'react';
+
+
 // material ui imports
 import { ThemeProvider } from '@mui/material/styles/';
 import { theme } from './theme';
@@ -58,6 +62,16 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
+
+    useEffect(() => {
+        const handleBeforeunload = (e) => {
+          e.preventDefault();
+          e.returnValue = '';
+        };
+    
+        window.addEventListener('beforeunload', handleBeforeunload);
+      }, []);
+
     return (
         <ThemeProvider theme={theme}>
             <P5PropertiesProvider>

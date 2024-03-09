@@ -12,4 +12,4 @@ All environment variables are in .env in the /backend directory. Do not commit t
 - DATABASE_HOST
 - DATABASE_USER
 - DATABASE_PORT
-- DATABASE_PASSWO
+- DATABASE_PASSWORD
