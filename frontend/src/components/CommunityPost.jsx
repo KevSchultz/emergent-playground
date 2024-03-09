@@ -3,14 +3,14 @@
  * @file Community.jsx 
  * @overview The container component for the community page.
  * The community page includes a cellular automata list that users have shared with searching functionality.
- * @authors Kevin Schultz, Preston Nguyen, 
+ * @authors Kevin Schultz, Preston Nguyen, Alex Garza
  * @exports Community
  */
 
 /**
- * A functional component that renders the Community page.
+ * A functional component that renders a Community post.
  *
- * @returns {JSX.Element} The Community component.
+ * @returns {JSX.Element} The Post component.
  */
 import React from 'react';
 import Typography from '@mui/material/Typography';
@@ -18,13 +18,17 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import { CardActions, IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import P5PropertiesContext from '../components/P5PropertiesContext';
 
 
+// Card for individual posts on the Community Page
 function Post({ title, owner, content, link }) {
-    const handleClick = () => {
-        // TODO: Increment views this post's views counter in DB
+    // State for which post user has clicked
+    const {setPost} = React.useContext(P5PropertiesContext);
 
+    const handleClick = () => {
         // TODO: Navigate to the linked CA
+        setPost();  // set post to the clicked post's ID
         if (link) {
             window.location.href = link;
         }
@@ -52,18 +56,23 @@ function Post({ title, owner, content, link }) {
                         {content}
                     </Typography>
                 </CardContent>
-                <PostOwnerActions owner={true}/>  {/*TODO: Pass owner id*/}
+                <PostOwnerActions owner={true} postID={title} />  {/*TODO: Pass owner id & post id*/}
             </Card>
         </div>
     );
 }
 
 
-function PostOwnerActions({owner}) {
-    // TODO: Check if ID of the post's owner is the same as the logged in user's ID
+// Action buttons that show up on the right side of a user's own post
+function PostOwnerActions({owner, postID}) {
+    // TODO: Username of current user
+    // const {username} = React.useContext(P5PropertiesContext);
+
+    // Posts state for the post to be deleted from
+    const {posts, setPosts} = React.useContext(P5PropertiesContext);
 
     // // TODO: Delete the post on the database
-    // const getPosts = async () => {
+    // const deletePostDB = async () => {
     //     // URL for the API
     //     let url = 'https://localhost:3010/api/delete/{postID}';
     //     return await fetch(url, {
@@ -79,11 +88,26 @@ function PostOwnerActions({owner}) {
     //     })
     // };
 
-    const handleDeleteClick = () => {
-        console.log("DELETE");
+    // Deletes post on the database and in the state list
+    const deletePost = async () => {
+        // Remove post from the state list of posts
+        // TODO: Use postID rather than Title
+        var removePost = postID;
+        const findPost = (post) => post.title === removePost;  // TODO: change to post.id
+        var removePostIndex = posts.findIndex(findPost);
+        var newPosts = [...posts];
+        newPosts.splice(removePostIndex, 1);
+        setPosts(newPosts);
+        // TODO: Tell the database to delete the post
     };
 
-    if (owner) {
+    const handleDeleteClick = () => {
+        deletePost();
+        console.log("DELETE Post " + postTitle);
+    };
+
+    // Check if the post's owner is the same as the logged in user
+    if (owner) {  // TODO: Check postowner === username
         return (
             <CardActions
                 sx = {{

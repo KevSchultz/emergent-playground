@@ -23,12 +23,15 @@ import MenuItem from '@mui/material/MenuItem';
 import Button from '@mui/material/Button';
 import TopNavigationBar from '../components/TopNavigationBar';
 import Post from '../components/CommunityPost';
-// import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-// import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import P5PropertiesContext from '../components/P5PropertiesContext';
 
 function Community() {
     // State for posts
-    const [posts, setPosts] = React.useState([]);
+    const {posts, setPosts} = React.useContext(P5PropertiesContext);
+
+    // State for current page
     const [page, setPage] = useState(1);
 
     // // TODO: Get the posts from the database
@@ -158,11 +161,11 @@ function Community() {
                     <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
                         {page > 1 && (
                             <Button onClick={prevPage} variant="outlined" sx={{ marginRight: '10px' }}>
-                                {"<-"}
+                                <ArrowBackIcon />
                             </Button>
                         )}
                         <Button onClick={nextPage} variant="contained">
-                            {"->"}
+                            <ArrowForwardIcon />
                         </Button>
                     </Box>
                 </Container>
