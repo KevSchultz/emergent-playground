@@ -62,6 +62,8 @@ export function P5PropertiesProvider({ children }) {
     const [code, setCode] = useState(DefaultProperties.code);
     const [currentLangColor, setCurrentLangColor] = useState(DefaultProperties.currentLangColor);
     const [langTupleList, setLangTupleList] = useState(DefaultProperties.langTupleList);
+    const [posts, setPosts] = useState([]);  // List of posts on Community page
+    const [post, setPost] = useState();  // The post ID of the post currently being viewed
 
     const value = {
         sketchClass,
@@ -120,6 +122,8 @@ export function P5PropertiesProvider({ children }) {
         setCurrentLangColor,
         langTupleList,
         setLangTupleList,
+        posts, setPosts,
+        post, setPost,
     };
 
     return <P5PropertiesContext.Provider value={value}>{children}</P5PropertiesContext.Provider>;
