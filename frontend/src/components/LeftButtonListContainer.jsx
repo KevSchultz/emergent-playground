@@ -11,11 +11,18 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import { useContext } from 'react';
 
-import { FormControl, MenuItem, Paper, Select, Popover } from '@mui/material';
-import BrushIcon from '@mui/icons-material/Brush';
-import { Brightness1 } from '@mui/icons-material';
+// Material UI Imports
 import Box from '@mui/material/Box';
+import Paper from '@mui/material/Paper';
+import FormControl from '@mui/material/FormControl';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import Popover from '@mui/material/Popover';
+import Brightness1 from '@mui/icons-material/Brightness1';
+import Brush from '@mui/icons-material/Brush';
+import FormatColorFill from '@mui/icons-material/FormatColorFill';
 import Fab from '@mui/material/Fab';
+import IconButton from '@mui/material/IconButton';
 
 // Custom Component Imports
 import BrushIconButton from './BrushIconButton';
@@ -47,6 +54,7 @@ function LeftButtonListContainer() {
         setCurrentDrawColor,
         fullscreen,
         setFullscreen,
+        setBackgroundColor
     } = useContext(P5PropertiesContext);
 
     const [anchorEl, setAnchorEl] = useState(null);
@@ -140,7 +148,7 @@ function LeftButtonListContainer() {
                 >
                     <PlayPauseButton pause={pause} setPause={setPause} />
                     <Fab color="primary" aria-label="edit" onClick={handleClickOpen}>
-                        <BrushIcon />
+                        <Brush/>
                     </Fab>
                     <Fab color="primary" aria-label="fullscreen" onClick={handleFullScreen}>
                         {fullscreen ? <FullscreenExitIcon /> : <FullscreenIcon />}
@@ -211,6 +219,13 @@ function LeftButtonListContainer() {
                             setCurrentBrushType={setBrushType}
                         />
                     ))}
+                    <IconButton
+                        onClick={() => {
+                            setBackgroundColor(currentDrawColor);
+                        }}
+                    >
+                        <FormatColorFill/>
+                    </IconButton>
                     <FormControl fullWidth>
                         <Select
                             value={currentDrawColor}

@@ -142,3 +142,6 @@ dist
 *.njsproj
 *.sln
 *.sw?
+
+# langTemplate string
+frontend/src/lang-data/out

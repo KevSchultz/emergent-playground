@@ -30,6 +30,7 @@ import Register from './pages/Register';
 import Community from './pages/Community';
 import { P5PropertiesProvider } from './components/P5PropertiesContext';
 
+// overriding ViewerBuilderCerator with LangPage for testing purposes
 const router = createBrowserRouter([
     {
         path: '/',

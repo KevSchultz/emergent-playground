@@ -11,8 +11,9 @@ uniform sampler2D previousState;
 uniform vec2 resolution;
 uniform float pause;
 
-const vec4 dead = vec4(0.0, 0.0, 0.0, 1.0);
 const vec4 live = vec4(1.0, 1.0, 1.0, 1.0);
+const vec4 dead = vec4(0.0, 0.0, 0.0, 1.0);
+const vec4 dying = vec4(0.0, 0.14901960784313725, 1.0, 1.0);
 
 
 bool eq(vec4 c1, vec4 c2){
@@ -23,8 +24,9 @@ void main(){
 	vec2 uv = vTexCoord;
 	uv.y = 1.0 - uv.y;
 
-	int dead_num = 0;
 	int live_num = 0;
+	int dead_num = 0;
+	int dying_num = 0;
 
 	vec4 c = texture(previousState, uv);
 	vec4 curr = c;
@@ -41,11 +43,14 @@ void main(){
 
 
 	for(int idx=0; idx<8; idx++){
+		if(eq(n[idx], live)){
+			live_num++;
+		}
 		if(eq(n[idx], dead)){
 			dead_num++;
 		}
-		if(eq(n[idx], live)){
-			live_num++;
+		if(eq(n[idx], dying)){
+			dying_num++;
 		}
 	}
 
@@ -53,16 +58,13 @@ void main(){
 	vec4 next = vec4(0.0, 0.0, 0.0, 1.0);
 
 //CODEBEGIN
-	if(eq(curr, live)){
-	  if(live_num < 2){
-	    next = dead;
-	  } else if(live_num > 3){
-	    next = dead;
-	  } else {
-	    next = live;
-	  }
+	if(curr == live){
+	  next = dying;
+	} else if(curr == dying){
+	  next = dead;
 	} else {
-	  if(live_num == 3){
+	  next = dead;
+	  if(live_num == 2){
 	    next = live;
 	  }
 	}

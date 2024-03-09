@@ -11,8 +11,10 @@ uniform sampler2D previousState;
 uniform vec2 resolution;
 uniform float pause;
 
-const vec4 dead = vec4(0.0, 0.0, 0.0, 1.0);
-const vec4 live = vec4(1.0, 1.0, 1.0, 1.0);
+const vec4 empty = vec4(0.0, 0.0, 0.0, 1.0);
+const vec4 electron_head = vec4(0.0, 1.0, 1.0, 1.0);
+const vec4 electron_tail = vec4(1.0, 0.0, 0.0, 1.0);
+const vec4 conductor = vec4(1.0, 1.0, 0.0, 1.0);
 
 
 bool eq(vec4 c1, vec4 c2){
@@ -23,8 +25,10 @@ void main(){
 	vec2 uv = vTexCoord;
 	uv.y = 1.0 - uv.y;
 
-	int dead_num = 0;
-	int live_num = 0;
+	int empty_num = 0;
+	int electron_head_num = 0;
+	int electron_tail_num = 0;
+	int conductor_num = 0;
 
 	vec4 c = texture(previousState, uv);
 	vec4 curr = c;
@@ -41,11 +45,17 @@ void main(){
 
 
 	for(int idx=0; idx<8; idx++){
-		if(eq(n[idx], dead)){
-			dead_num++;
+		if(eq(n[idx], empty)){
+			empty_num++;
 		}
-		if(eq(n[idx], live)){
-			live_num++;
+		if(eq(n[idx], electron_head)){
+			electron_head_num++;
+		}
+		if(eq(n[idx], electron_tail)){
+			electron_tail_num++;
+		}
+		if(eq(n[idx], conductor)){
+			conductor_num++;
 		}
 	}
 
@@ -53,19 +63,21 @@ void main(){
 	vec4 next = vec4(0.0, 0.0, 0.0, 1.0);
 
 //CODEBEGIN
-	if(eq(curr, live)){
-	  if(live_num < 2){
-	    next = dead;
-	  } else if(live_num > 3){
-	    next = dead;
-	  } else {
-	    next = live;
-	  }
-	} else {
-	  if(live_num == 3){
-	    next = live;
-	  }
-	}
+if(eq(curr, empty)){
+  next = empty;
+} 
+if(eq(curr, electron_head)){
+  next = electron_tail;
+} 
+if(eq(curr, electron_tail)){
+  next = conductor;
+}
+if(eq(curr, conductor)){
+  next = conductor;
+  if(electron_head_num == 1 || electron_head_num == 2){
+    next = electron_head;
+  }
+}
 //CODEEND
 
 	if(pause == 1.0){

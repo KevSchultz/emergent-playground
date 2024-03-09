@@ -60,6 +60,7 @@ let DefaultProperties = {
     langRange: 1,
     backgroundColor: '',
     currentDrawColor: '',
+    langNeighborhoodType: 'moore',
     fullscreen: false,
     generation: 0,
     continuousPlay: false,

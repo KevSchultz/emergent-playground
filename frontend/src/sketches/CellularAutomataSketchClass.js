@@ -29,7 +29,7 @@ class CellularAutomataSketchClass {
         this.shader;
         this.shouldCopy = false;
         this.isSketchSetup = false;
-        this.debugMode = false;
+        this.debugMode = true;
         this.cursorIsOnCanvas = false;
         this.canvas;
 
@@ -115,6 +115,18 @@ class CellularAutomataSketchClass {
         this.debugMode ? console.log('CellularAutomataSketchClass.updateWorldHeight') : null;
     }
 
+    checkShaderError(shaderObj, shaderText){
+        let gl = shaderObj._renderer.GL;
+        let glFragShader = gl.createShader(gl.FRAGMENT_SHADER);
+        gl.shaderSource(glFragShader, shaderText);
+        gl.compileShader(glFragShader);
+        if (!gl.getShaderParameter(glFragShader, gl.COMPILE_STATUS)) {
+            return gl.getShaderInfoLog(glFragShader);
+        }
+        return 'no error';
+    }
+
+
     /**
      * Updates the shader of the sketch.
      *
@@ -129,6 +141,7 @@ class CellularAutomataSketchClass {
         this.currentState.clear();
         this.previousState.clear();
         this.currentState.resetShader();
+        this.currentState.background(this.reactProperties.backgroundColor);
         this.shader = null;
         this.shader = this.p5.createShader(newVertexShader, newFragmentShader);
         this.currentState.shader(this.shader);
@@ -139,6 +152,7 @@ class CellularAutomataSketchClass {
         ]);
 
         this.debugMode ? console.log('CellularAutomataSketchClass.updateShader') : null;
+        this.debugMode ? console.log(this.checkShaderError(this.shader, newFragmentShader)) : null;
     }
 
     /**
@@ -151,8 +165,10 @@ class CellularAutomataSketchClass {
         this.reactProperties.setPause(1);
         this.currentState.clear();
         this.previousState.clear();
+        this.overlayGraphics.clear();
         this.currentState.background(newBackgroundColor);
         this.previousState.background(newBackgroundColor);
+        this.overlayGraphics.background(newBackgroundColor);
     }
 
     /**
@@ -837,7 +853,7 @@ class CellularAutomataSketchClass {
      */
     cursorIsOnWorld() {
         let cursorWorld = this.screenToWorldP52DCoordinates(this.p5.mouseX, this.p5.mouseY);
-        return cursorWorld.x !== null && cursorWorld.y !== null;
+        return cursorWorld.x !== null && cursorWorld.y !== null && this.cursorIsOnCanvas;
     }
 
     exportStateToPNG(filename) {

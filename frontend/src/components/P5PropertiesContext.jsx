@@ -70,6 +70,7 @@ export function P5PropertiesProvider({ children }) {
     const [fullscreen, setFullscreen] = useState(DefaultProperties.fullscreen);
     const [generation, setGeneration] = useState(DefaultProperties.generation);
     const [continuousPlay, setContinuousPlay] = useState(DefaultProperties.continuousPlay);
+    const [langNeighborhoodType, setLangNeighborhoodType] = useState(DefaultProperties.langNeighborhoodType);
 
     const value = {
         username,
@@ -134,6 +135,8 @@ export function P5PropertiesProvider({ children }) {
         setBackgroundColor,
         currentDrawColor,
         setCurrentDrawColor,
+        langNeighborhoodType,
+        setLangNeighborhoodType,
         fullscreen,
         setFullscreen,
         generation,

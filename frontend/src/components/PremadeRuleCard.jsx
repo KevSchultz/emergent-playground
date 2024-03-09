@@ -30,14 +30,33 @@ import PropTypes from 'prop-types';
  * @param {string} props.premadeRuleName - The name of the premade rule.
  * @param {string} props.newFragmentShader - The new fragment shader of the premade rule.
  * @param {string} props.imageUrl - The URL of the image to display on the Card.
+ * @param {array[{string, string}]} props.newTupleList - The name/color state tuple list associated with the premade rule.
+ * @param {string} props.newDefaultDraw - The default color to draw.
+ * @param {string} props.newDefaultBackground - The default state.
  * 
  * @returns {JSX.Element} The PremadeRuleCard component.
  */
-function PremadeRuleCard({ premadeRuleName, newFragmentShader, imageUrl }) {
-    const { setFragmentShader } = useContext(P5PropertiesContext);
+function PremadeRuleCard({ premadeRuleName, newFragmentShader, imageUrl, newTupleList, newDefaultDraw, newDefaultBackground, newNeighborhood, newRange, newIncludeSelf }) {
+    const { 
+        setFragmentShader, 
+        setLangTupleList, 
+        setCurrentDrawColor,
+        setBackgroundColor,
+        setLangNeighborhoodType,
+        setLangRange,
+        setLangIncludeSelf,
+        setCode
+    } = useContext(P5PropertiesContext);
 
     const handleCardClick = () => {
         setFragmentShader(newFragmentShader);
+        setLangTupleList(newTupleList);
+        setCurrentDrawColor(newDefaultDraw);
+        setBackgroundColor(newDefaultBackground);
+        setLangNeighborhoodType(newNeighborhood);
+        setLangRange(newRange);
+        setLangIncludeSelf(newIncludeSelf);
+        setCode(newFragmentShader.match(/\/\/CODEBEGIN([\s\S]*?)\/\/CODEEND/g)[0].replace('//CODEBEGIN','').replace('//CODEEND','').replace(/^(\t)/gm,'').replace(/uint\((\d+)\)/g, '$1').trim());
     };
 
     return (

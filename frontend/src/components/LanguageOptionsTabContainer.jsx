@@ -14,18 +14,19 @@ import { Button, Box, List } from '@mui/material';
 
 // Ace Code Editor Imports
 import AceEditor from 'react-ace';
-import 'ace-builds/src-noconflict/mode-plain_text';
+import 'ace-builds/src-noconflict/mode-glsl';
 import 'ace-builds/src-noconflict/theme-gruvbox';
 import 'ace-builds/src-noconflict/ext-language_tools';
 
+// Dropdown Imports
+import LanguageOptionsDropdown from './LanguageOptionsDropdown';
+import LanguageHelpDropdown from './LanguageHelpDropdown';
+import LanguageColorMenuDropdown from './LanguageColorMenuDropdown';
+
 // Other Imports
 import P5PropertiesContext from './P5PropertiesContext';
-import { HexColorPicker } from 'react-colorful';
-import LanguageStateItem from './LanguageStateItem';
 import langCompiler from '../lang-data/langCompiler';
-import LanguageOptionsDropdown from './LanguageOptionsDropdown';
 import PrettyAlert from './PrettyAlert';
-
 import ResizableGrid from './ResizableGrid';
 
 /**
@@ -39,23 +40,19 @@ import ResizableGrid from './ResizableGrid';
  * @returns {JSX.Element} The LanguageOptionsTabContainer component.
  */
 
-//TODO: syntax highlighting & autocomplete for language in AceEditor
+//TODO: autocomplete for language in AceEditor
 //TODO: UPDATE PALETTE WHEN COLOR BECOMES UNAVAILABLE
 function LanguageOptionsTabContainer() {
-
     const { 
         code, 
         setCode, 
-        currentLangColor,
-        setCurrentLangColor,
         langTupleList,
-        setLangTupleList,
         langIncludeSelf,
         langRange,
         setFragmentShader,
-        backgroundColor,
-        setBackgroundColor,
-        fragmentShader
+        fragmentShader,
+        langNeighborhoodType,
+        backgroundColor
     } = useContext(P5PropertiesContext);
 
     const [openError, setOpenError] = useState(false);
@@ -65,25 +62,10 @@ function LanguageOptionsTabContainer() {
         setCode(newCode);
     };
 
-    const handleCurrentColorChange = (newColor) => {
-        setCurrentLangColor(newColor);
-    };
-
-    const handleAddColor = () => {
-        if(langTupleList.some(s => s.color === currentLangColor)){
-            setOpenError(true);
-            setAlertMessage('Color already in use.');
-        } else {
-            setLangTupleList([...langTupleList, {color: currentLangColor, name: ''}]);
-            if(backgroundColor === ''){
-                setBackgroundColor(currentLangColor);
-            }
-        }
-    };
-
     const handleCompile = () => {
         if(code !== ''){
-            const newFrag = langCompiler(code, langTupleList, langIncludeSelf, langRange, 'moore');
+            const newFrag = langCompiler(code, langTupleList, langIncludeSelf, langRange, langNeighborhoodType, backgroundColor);
+            console.log(newFrag);
             setFragmentShader(newFrag);
         } else {
             setOpenError(true);
@@ -91,38 +73,14 @@ function LanguageOptionsTabContainer() {
         }
     };
 
-    const handleDebug = () => {
-        console.log(backgroundColor);
+    const handleSave = () => {
         console.log(fragmentShader);
-    }
+        console.log(langTupleList);
+    };
 
     return (
         <Box>
-            <ResizableGrid limit={400}>
-                <HexColorPicker color={currentLangColor} onChange={handleCurrentColorChange}/>
-                <Box style={{ maxHeight: 200, overflow: 'auto' }}>
-                    <List>
-                        {langTupleList.map((s, index) => (
-                            <LanguageStateItem key={index} state={{color: s.color, name: s.name}}/>
-                        ))}
-                    </List>
-                </Box>
-                <Button 
-                    variant="outlined" 
-                    fullWidth
-                    onClick={handleAddColor}
-                > 
-                    Add Color 
-                </Button>
-                <Button 
-                    variant="outlined" 
-                    fullWidth
-                    onClick={handleCompile}
-                > 
-                    Compile 
-                </Button>
-            </ResizableGrid>
-            <Button onClick={handleDebug}>Debug</Button>
+            <LanguageColorMenuDropdown setOpenError={setOpenError} setAlertMessage={setAlertMessage}/>
             <PrettyAlert
                 openAlert={openError}
                 setOpenAlert={setOpenError}
@@ -133,10 +91,27 @@ function LanguageOptionsTabContainer() {
                 anchorOriginH='right'
             />
             <LanguageOptionsDropdown/>
+            <LanguageHelpDropdown/>
+            <ResizableGrid limit={400}>
+                <Button
+                    variant='outlined'
+                    onClick={handleSave}
+                    fullWidth
+                >
+                    Save
+                </Button>
+                 <Button
+                    variant='outlined'
+                    onClick={handleCompile}
+                    fullWidth
+                >
+                    Compile
+                </Button>
+            </ResizableGrid>
             <AceEditor
                 width="100%"
                 placeholder=""
-                mode="plain_text"
+                mode="glsl"
                 theme="gruvbox"
                 name="ed"
                 value={code}
