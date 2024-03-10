@@ -14,7 +14,7 @@ import Box from '@mui/material/Box';
 // Other Imports
 import { ReactP5Wrapper } from '@p5-wrapper/react';
 import P5PropertiesContext from './P5PropertiesContext';
-import { sketch } from './DefaultProperties';
+import cellularAutomataSketch from './cellularAutomataSketch';
 
 /**
  * A component for rendering the P5.js background.
@@ -46,7 +46,7 @@ function P5Background() {
             }}
         >
             <ReactP5Wrapper
-                sketch={sketch.reactP5WrapperToClassInterface}
+                sketch={cellularAutomataSketch.reactP5WrapperToClassInterface}
                 {...p5Properties}
             ></ReactP5Wrapper>
         </Box>

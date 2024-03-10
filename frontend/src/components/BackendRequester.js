@@ -24,22 +24,20 @@ uses built in fetch functions
 import BackendRequesterInterface from '../interfaces/BackendRequesterInterface';
 import BinaryEncoderDecoder from './BinaryEncoderDecoder';
 
-
 /**
  * @class BackendRequester
- * @classdesc The BackendRequester class extends the BackendRequesterInterface. 
- * It provides methods to send HTTP requests to a backend server. 
- * These requests are used to perform various operations, such as user registration. 
- * The class uses the Fetch API to send the requests and a BinaryEncoderDecoderInterface instance 
+ * @classdesc The BackendRequester class extends the BackendRequesterInterface.
+ * It provides methods to send HTTP requests to a backend server.
+ * These requests are used to perform various operations, such as user registration.
+ * The class uses the Fetch API to send the requests and a BinaryEncoderDecoderInterface instance
  * to encode and decode data.
- * 
+ *
  * @extends BackendRequesterInterface
  */
 class BackendRequester extends BackendRequesterInterface {
-
     /**
      * @description Creates an instance of BackendRequester.
-     * 
+     *
      * @param {BinaryEncoderDecoderInterface} binaryEncoderDecoder - The binary encoder/decoder to use.
      * @param {string} testURL - The URL to use for testing.
      */
@@ -107,7 +105,7 @@ class BackendRequester extends BackendRequesterInterface {
 
     /**
      * @description Sends a logout request to the server.
-     * 
+     *
      * @returns {Promise<Object>} A promise that resolves to the response from the server.
      */
     async logout() {
@@ -123,11 +121,9 @@ class BackendRequester extends BackendRequesterInterface {
         try {
             const response = await fetch(url, options);
             return response;
-
-        } catch(error) {
+        } catch (error) {
             return undefined;
         }
-
     }
 
     /**
@@ -157,8 +153,9 @@ class BackendRequester extends BackendRequesterInterface {
      * @returns {Promise<Object>} A promise that resolves to the response from the server.
      */
     async uploadPost(title, poststate, postproperties) {
-
-        const encodedPostProperties = await this.binaryEncoderDecoder.encodeJSONToBinary(postproperties);
+        const encodedPostProperties = await this.binaryEncoderDecoder.encodeJSONToBinary(
+            postproperties
+        );
 
         let formData = new FormData();
 
@@ -181,8 +178,6 @@ class BackendRequester extends BackendRequesterInterface {
         }
     }
 
-    
-
     async serializePostProperties(width, height, ruleData) {
         const ruleDataJSONString = JSON.stringify(ruleData); // stringifes ruleData object
         const postPropertiesJSONString = JSON.stringify({ username, title, ruleDataJSONString });
@@ -195,10 +190,11 @@ class BackendRequester extends BackendRequesterInterface {
         const decodedPostProperties = this.decodeBase64(serializedPost); // takes base64 and converts to json
         const jsObjectPostProperties = JSON.parse(decodedPostProperties); // takes json and converts to js object
         let ruleDataObject = JSON.parse(jsObjectPostProperties.ruleDataJSON); // takes ruledata and converts from json to js object
-        let postProperties = { // creating proper format for the properties
+        let postProperties = {
+            // creating proper format for the properties
             width: jsObjectPostProperties.width,
             height: jsObjectPostProperties.height,
-            ruleData: ruleDataObject
+            ruleData: ruleDataObject,
         };
         return postProperties;
     }
@@ -206,11 +202,45 @@ class BackendRequester extends BackendRequesterInterface {
     /**
      * @description Sends a request for downloading a cellular automata post from the server.
      *
-     * @param {string} postID - The ID of the post to download.
+     * @param {string} postid - The ID of the post to download.
      * @returns {Promise<Object>} A promise that resolves to the response from the server.
      */
-    async downloadPost(postID) {
-        const url = this.testURL + `/api/download?postid=${encodeURIComponent(postID)}`;
+    async downloadPost(postid) {
+        const responseState = await this.downloadPostState(postid);
+        const responseProperties = await this.downloadPostProperties(postid);
+
+        if (responseState == undefined || responseProperties == undefined) {
+            console.log("return undefined");
+            return undefined;
+        }
+
+
+        console.log('Reponse State:');
+        console.log(responseState);
+        console.log('Response Properties:');
+        console.log(responseProperties);
+
+        const state = await this.binaryEncoderDecoder.blobToArray(responseState);
+
+        const properties = await this.binaryEncoderDecoder.decodeBinaryToJSON(responseProperties);
+
+        console.log("Pixel Array: ", state);
+        console.log("Properties json: ", properties);
+
+        return { state: state, properties: properties };
+    }
+
+    /**
+     * @description Sends a request for downloading a cellular automata post from the server.
+     *
+     * @param {string} postid - The ID of the post to download.
+     * @returns {Promise<Object>} A promise that resolves to the blob representing the postState.
+     */
+    // reconstructs a post from the database by calling the downloadState and downloadproperties functions
+    // also gets the username and title of the post
+    // then puts all of the unserialized data into a post object and returns it
+    async downloadPostState(postid) {
+        const url = this.testURL + `/api/downloadstate?postid=${encodeURIComponent(postid)}`;
 
         const options = {
             method: 'GET',
@@ -218,32 +248,46 @@ class BackendRequester extends BackendRequesterInterface {
 
         try {
             const response = await fetch(url, options);
-
-            console.log(response);
-
-            const post = await response.json();
-
-            console.log(post);
-
-            console.log(this.binaryEncoderDecoder.decodeBinaryToJSON(post.postbinarydata))
-        
-            return post;
+            const binary = await response.blob();
+            return binary;
         } catch (error) {
             console.error('Error:', error);
+            return undefined;
         }
     }
 
     /**
      * @description Sends a request for downloading a cellular automata post from the server.
-     * 
-     * 
+     *
+     * @param {string} postid - The ID of the post to download.
+     * @returns {Promise<Object>} A promise that resolves to the unserializedPostProperties.
+     */
+    async downloadPostProperties(postid) {
+        const url = `/api/downloadproperties?postid=${encodeURIComponent(postid)}`;
+
+        const options = {
+            method: 'GET',
+        };
+
+        try {
+            const response = await fetch(url, options);
+            const binary = await response.blob();
+            return binary;
+        } catch (error) {
+            console.error('Error:', error);
+            return undefined;
+        }
+    }
+
+    /**
+     * @description Sends a request for downloading a cellular automata post from the server.
+     *
+     *
      * @param {integer} sorting - specifies the sorting method to be used with the list ()
-     * 0 or null for no sorting, 1 to sort by userID, 2 to sort by postID, 3 to sort by creationTime 
+     * 0 or null for no sorting, 1 to sort by userID, 2 to sort by postID, 3 to sort by creationTime
      * @returns {Promise<Object>} A promise that resolves to an array representing all of the posts.
      */
-    async downloadPostList(sorting = null){
-
-
+    async downloadPostList(sorting = null) {
         // getting list of all posts according to certain sorting method
         let url = `/api/list?sorting=${encodeURIComponent(sorting)}`;
 
@@ -265,7 +309,6 @@ class BackendRequester extends BackendRequesterInterface {
             return [];
         }
     }
-
 }
 
 const binaryEncoderDecoder = new BinaryEncoderDecoder();

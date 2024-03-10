@@ -8,10 +8,11 @@
 
 // Material UI Imports
 import IconButton from '@mui/material/IconButton';
+import SquareIcon from '@mui/icons-material/Square';
+import CircleIcon from '@mui/icons-material/RadioButtonUnchecked';
 
 // Other imports
 import PropTypes from 'prop-types';
-import DefaultProperties from './DefaultProperties';
 
 /**
  * A button component for selecting a brush type.
@@ -24,19 +25,16 @@ import DefaultProperties from './DefaultProperties';
  * @param {string} props.buttonBrushType - The brush type of the button.
  * @param {string} props.currentBrushType - The current brush type.
  * @param {Function} props.setCurrentBrushType - The function to update the current brush type.
- * 
+ *
  * @returns {JSX.Element} The BrushIconButton component.
  */
 function BrushIconButton({ buttonBrushType, currentBrushType, setCurrentBrushType }) {
-
-    const brushIcons = DefaultProperties.brushIcons;
-
     // Get the color of the button based on the current brush type
     function getColor() {
         if (buttonBrushType === currentBrushType) {
-            return DefaultProperties.selectedBrushIconColor;
+            return 'yellow';
         } else {
-            return DefaultProperties.deselectedBrushIconColor;
+            return 'white';
         }
     }
 
@@ -46,12 +44,14 @@ function BrushIconButton({ buttonBrushType, currentBrushType, setCurrentBrushTyp
     }
 
     return (
-        <IconButton
-            sx={{ color: getColor() }}
-            variant="contained"
-            onClick={handleOnClick}
-        >
-            {brushIcons[buttonBrushType]}
+        <IconButton sx={{ color: getColor() }} variant="contained" onClick={handleOnClick}>
+            {buttonBrushType === 'pixel' ? (
+                <SquareIcon />
+            ) : buttonBrushType === 'square' ? (
+                <SquareIcon />
+            ) : (
+                <CircleIcon />
+            )}
         </IconButton>
     );
 }

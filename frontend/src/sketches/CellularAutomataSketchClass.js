@@ -1,6 +1,4 @@
 const PIXEL_DENSITY = 1;
-import BinaryEncoderDecoder from '../components/BinaryEncoderDecoder';
-import BackendRequester from '../components/BackendRequester';
 
 /**
  * @class CellularAutomataSketchClass
@@ -25,13 +23,16 @@ class CellularAutomataSketchClass {
         this.staticOverlayGraphics;
         this.dynamicOverlayGraphics;
         this.reactProperties;
-        this.defaultReactProperties = defaultReactProperties;
         this.shader;
+        this.canvas;
+        this.initialState;
+
+        this.defaultReactProperties = defaultReactProperties;
         this.shouldCopy = false;
         this.isSketchSetup = false;
         this.debugMode = true;
         this.cursorIsOnCanvas = false;
-        this.canvas;
+
 
         // Bind 'this' to all functions
         this.updateWorldWidth = this.updateWorldWidth.bind(this);
@@ -58,8 +59,8 @@ class CellularAutomataSketchClass {
         this.screenToWorldP52DCoordinates = this.screenToWorldP52DCoordinates.bind(this);
         this.screenToWorldP5WebGlCoordinates = this.screenToWorldP5WebGlCoordinates.bind(this);
         this.cursorIsOnWorld = this.cursorIsOnWorld.bind(this);
-        this.saveState = this.saveState.bind(this);
-        this.loadPixelsToP2DGraphicsBuffer = this.loadPixelsToP2DGraphicsBuffer.bind(this);
+        this.stateToBlob = this.stateToBlob.bind(this);
+        this.loadPixelsArray = this.loadPixelsArray.bind(this);
 
         this.debugMode ? console.log('CellularAutomataSketchClass.constructor') : null;
     }
@@ -281,11 +282,18 @@ class CellularAutomataSketchClass {
             oldPreviousState = this.previousState;
         }
 
+
         this.previousState = this.p5.createGraphics(worldWidth, worldHeight);
 
         this.previousState.pixelDensity(PIXEL_DENSITY);
         this.previousState.noSmooth();
         this.previousState.background(0);
+
+        if (this.initialState) {
+            this.loadPixelsArray(this.initialState);
+            this.initialState = null;
+            return;
+        }
 
         if (oldPreviousState) {
             this.copyGraphicsBufferImageDataToAnotherGraphicsBuffer(
@@ -302,10 +310,10 @@ class CellularAutomataSketchClass {
             : null;
     }
 
-    setupOverlayGraphicsBuffer(worldWidth, worldHeight, pixelDensity) {
+    setupOverlayGraphicsBuffer(worldWidth, worldHeight) {
         this.overlayGraphics = this.p5.createGraphics(worldWidth, worldHeight);
 
-        this.overlayGraphics.pixelDensity(pixelDensity);
+        this.overlayGraphics.pixelDensity(PIXEL_DENSITY);
         this.overlayGraphics.noSmooth();
 
         this.overlayGraphics.noStroke();
@@ -329,7 +337,6 @@ class CellularAutomataSketchClass {
      * @returns None
      */
     setup() {
-        console.log('isSketchSetup: ' + this.isSketchSetup);
 
         // ----- Shader Setup -----
         this.setupShader(
@@ -359,7 +366,6 @@ class CellularAutomataSketchClass {
         this.setupOverlayGraphicsBuffer(
             this.defaultReactProperties.worldWidth,
             this.defaultReactProperties.worldHeight,
-            this.defaultReactProperties.pixelDensity
         );
 
         this.isSketchSetup = true;
@@ -860,35 +866,29 @@ class CellularAutomataSketchClass {
         this.currentState.save(filename + '.png');
     }
 
-    saveState(graphicsBuffer) {
-        graphicsBuffer.loadPixels();
-
-        const blob = new Blob([graphicsBuffer.pixels.buffer], { type: 'application/octet-stream' });
-
-        const binaryEncoderDecoder = new BinaryEncoderDecoder();
-        const backendRequester = new BackendRequester(
-            binaryEncoderDecoder,
-            'https://localhost:3000'
-        );
-
-        backendRequester.uploadPost('json', blob, { test: 'test' });
+    stateToBlob() {
+        this.currentState.loadPixels();
+        const blob = new Blob([this.currentState.pixels.buffer], { type: 'application/octet-stream' });
+        return blob;
     }
 
-    loadPixelsToP2DGraphicsBuffer(graphicsBuffer, pixels) {
-        graphicsBuffer.loadPixels();
-        for (let x = 0; x < graphicsBuffer.width; x++) {
-            for (let y = 0; y < graphicsBuffer.height; y++) {
-                const index = (x + y * graphicsBuffer.width) * 4;
+    loadPixelsArray(pixels) {
+        this.previousState.loadPixels();
+        for (let x = 0; x < this.previousState.width; x++) {
+            for (let y = 0; y < this.previousState.height; y++) {
+                console.log("x : " + x + " , y: " + y);
+                const index = (x + y * this.previousState.width) * 4;
                 const color = [
                     pixels[index],
                     pixels[index + 1],
                     pixels[index + 2],
                     pixels[index + 3],
                 ];
-                graphicsBuffer.set(x, y, color);
+                this.previousState.set(x, y, color);
             }
         }
-        graphicsBuffer.updatePixels();
+        this.previousState.updatePixels();
+        this.shouldCopy = false;
     }
 }
 

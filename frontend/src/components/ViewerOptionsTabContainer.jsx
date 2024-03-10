@@ -11,18 +11,14 @@ import { useContext } from 'react';
 
 // Material UI Imports
 import Box from '@mui/material/Box';
-import { Button } from '@mui/material';
 import { Checkbox, FormControlLabel, FormGroup } from '@mui/material';
 
-import { sketch } from './DefaultProperties';
 
 // Custom Component Imports
 import InputSlider from './InputSlider';
 import P5PropertiesContext from './P5PropertiesContext';
 // import { downloadPost } from '../backendRequester';
 
-import BinaryEncoderDecoder from './BinaryEncoderDecoder';
-import BackendRequester from './BackendRequester';
 
 /**
  * A container component for the viewer options tab.

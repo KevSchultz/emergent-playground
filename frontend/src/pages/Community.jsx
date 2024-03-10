@@ -12,13 +12,14 @@
  *
  * @returns {JSX.Element} The Community component.
  */
+
+// React Imports
 import { useState } from 'react';
 import { useEffect } from 'react';
+import { useContext } from 'react';
 
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
 import Box from '@mui/material/Box';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
@@ -28,11 +29,25 @@ import Button from '@mui/material/Button';
 import TopNavigationBar from '../components/TopNavigationBar';
 import backendRequester from '../components/BackendRequester';
 
+// Custom Component Imports
+import PostCard from '../components/PostCard';
+import P5PropertiesContext from '../components/P5PropertiesContext';
+
 
 function Community() {
     // State for messages
+
+    const { username } = useContext(P5PropertiesContext);
     const [posts, setPosts] = useState([]);
     const [page, setPage] = useState(1);
+
+    const slicePosts = (posts, page) => {
+        // Simulate fetching posts from an API
+        const startIndex = (page - 1) * 7;
+        const endIndex = startIndex + 7;
+        const slicedPosts = posts.slice(startIndex, endIndex);
+        return slicedPosts;
+    };
 
     useEffect(() => {
         const fetchPosts = async () => {
@@ -54,7 +69,7 @@ function Community() {
         };
 
         getPosts();
-    }, []); // Dependency array remains empty to run only once on mount
+    }, [username]); // Dependency array remains empty to run only once on mount
 
     
     // State to manage sorting options
@@ -82,10 +97,11 @@ function Community() {
             <Box style={{ display: 'flex' }}>
                 <Box sx={{ width: 200, padding: '1rem' }}>
                     <FormControl fullWidth sx={{ mb: 2 }}>
-                        <InputLabel id="sorting-select-label">Sort By</InputLabel>
+                        <InputLabel id="sort-select-label">Sort By</InputLabel>
                         <Select
                             labelId="sorting-select-label"
                             id="sorting-select"
+                            label="Sort By"
                             value={sortingOption}
                             onChange={handleSortingChange}
                         >
@@ -101,8 +117,8 @@ function Community() {
                     <Typography variant="h3" component="h1" gutterBottom>
                         Community
                     </Typography>
-                    {posts.map((post) => (
-                        <Post key={post.title} title={post.title} content={post.username} link={post.postid} />
+                    {slicePosts(posts, page).map((post) => (
+                        <PostCard key={post.title} title={post.title} username={post.username.toUpperCase()} postid={post.postid} />
                     ))}
                     <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
                         {page > 1 && (
@@ -116,27 +132,6 @@ function Community() {
                     </Box>
                 </Container>
             </Box>
-        </div>
-    );
-}
-
-function Post({ title, content, link }) {
-    const handleClick = () => {
-        if (link) {
-            window.location.href = link;
-        }
-    };
-
-    return (
-        <div onClick={handleClick} style={{ cursor: link ? 'pointer' : 'default' }}>
-            <Card sx={{ marginY: 0.5 }}>
-                <CardContent>
-                    <Typography variant="h5" component="h2">
-                        {title}
-                    </Typography>
-                    <Typography color="text.secondary">{content}</Typography>
-                </CardContent>
-            </Card>
         </div>
     );
 }

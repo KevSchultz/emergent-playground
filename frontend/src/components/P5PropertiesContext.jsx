@@ -54,7 +54,6 @@ export function P5PropertiesProvider({ children }) {
         DefaultProperties.deselectedBrushIconColor
     );
     const [brushSize, setBrushSize] = useState(DefaultProperties.brushSize);
-    const [cursorStyles, setCursorStyles] = useState(DefaultProperties.cursorStyles);
     const [previousMouseX, setPreviousMouseX] = useState(DefaultProperties.previousMouseX);
     const [previousMouseY, setPreviousMouseY] = useState(DefaultProperties.previousMouseY);
     const [vertexShader, setVertexShader] = useState(DefaultProperties.vertexShader);
@@ -109,8 +108,6 @@ export function P5PropertiesProvider({ children }) {
         setDeselectedBrushIconColor,
         brushSize,
         setBrushSize,
-        cursorStyles,
-        setCursorStyles,
         previousMouseX,
         setPreviousMouseX,
         previousMouseY,
