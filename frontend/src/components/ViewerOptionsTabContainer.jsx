@@ -11,12 +11,14 @@ import { useContext } from 'react';
 
 // Material UI Imports
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import { Checkbox, FormControlLabel, FormGroup } from '@mui/material';
 
 
 // Custom Component Imports
 import InputSlider from './InputSlider';
 import P5PropertiesContext from './P5PropertiesContext';
+import cellularAutomataSketch from './cellularAutomataSketch';
 // import { downloadPost } from '../backendRequester';
 
 
@@ -31,6 +33,7 @@ import P5PropertiesContext from './P5PropertiesContext';
  */
 function ViewerOptionsTabContainer() {
     const {
+        title,
         zoom,
         setZoom,
         worldWidth,
@@ -91,6 +94,10 @@ function ViewerOptionsTabContainer() {
                     label="Continuous Play"
                 />
             </FormGroup>
+
+            <Button variant="contained" onClick={() => {cellularAutomataSketch.exportStateToPNG(title)}}>
+                EXPORT
+            </Button>
         </Box>
     );
 }

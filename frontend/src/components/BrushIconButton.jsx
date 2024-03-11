@@ -8,6 +8,7 @@
 
 // Material UI Imports
 import IconButton from '@mui/material/IconButton';
+import EditIcon from '@mui/icons-material/Edit';
 import SquareIcon from '@mui/icons-material/Square';
 import CircleIcon from '@mui/icons-material/RadioButtonUnchecked';
 
@@ -46,7 +47,7 @@ function BrushIconButton({ buttonBrushType, currentBrushType, setCurrentBrushTyp
     return (
         <IconButton sx={{ color: getColor() }} variant="contained" onClick={handleOnClick}>
             {buttonBrushType === 'pixel' ? (
-                <SquareIcon />
+                <EditIcon/>
             ) : buttonBrushType === 'square' ? (
                 <SquareIcon />
             ) : (

@@ -12,13 +12,14 @@ import vertexShader from '../shaders/basic.vert?raw';
 import fragmentShader from '../shaders/gameOfLife.frag?raw';
 
 let DefaultProperties = {
+    title: 'untitled',
     username: undefined,
-    worldWidth: 500,
-    worldHeight: 500,
+    worldWidth: 300,
+    worldHeight: 300,
     cameraX: 0,
     cameraY: 0,
     cameraZ: 1,
-    zoom: 1,
+    zoom: 10,
     minZoom: 0.1,
     maxZoom: 100,
     zoomSensitivity: 0.001,

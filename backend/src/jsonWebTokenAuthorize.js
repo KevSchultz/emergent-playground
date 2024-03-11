@@ -1,3 +1,12 @@
+/**
+ * @project Emergent Playground
+ * @file jsonWebTokenAuthorize
+ * @overview This file exports a function that verifies a provided JSON Web Token (JWT) and assigns the decoded userid 
+ * to the request object. It returns true if the JWT is successfully verified and the user ID is assigned, false otherwise. 
+ * @authors Kevin Schultz
+ * @exports jsonWebTokenAuthorize
+ */
+
 const jsonWebToken = require('jsonwebtoken');
 require('dotenv').config();
 
@@ -6,7 +15,7 @@ require('dotenv').config();
  * 
  * @function
  * @param {string} accessToken - The JWT to verify.
- * @param {Object} request - The request object where the decoded user ID will be assigned.
+ * @param {Object} request - The request object where the decoded userid will be assigned.
  * @returns {boolean} - Returns true if the JWT is successfully verified and the user ID is assigned, false otherwise.
  */
 function jsonWebTokenAuthorize (accessToken, request) {

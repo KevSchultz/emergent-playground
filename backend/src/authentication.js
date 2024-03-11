@@ -1,4 +1,16 @@
-const { postgreSQLConnection } = require('./PostgreSQLConnect');
+/**
+ * @project Emergent Playground
+ * @file authentication.js
+ * @overview This file handles user authentication middleware and routes. It exports functions for 
+ * registering a new user and logging in an existing user. The register function creates a new user account in the 
+ * PostgreSQL database, hashes the user's password using bcrypt, and sets a JSON Web Token (JWT) as an HttpOnly cookie. 
+ * @authors Kevin Schultz
+ * @exports register
+ * @exports login
+ * @exports check
+ */
+
+const { postgreSQLConnection } = require('./postgreSQLConnect');
 
 const jsonWebTokenGenerator = require('./jsonWebTokenGenerator');
 const jsonWebTokenAuthorize = require('./jsonWebTokenAuthorize');
@@ -19,6 +31,7 @@ const COOKIE_EXPIRATION_TIME = 3600000;
  * @returns {void}
  */
 exports.register = async (request, response) => {
+
     if (!request.body.username || !request.body.email || !request.body.password) {
         response.sendStatus(400);
         return;
@@ -35,7 +48,7 @@ exports.register = async (request, response) => {
         const jsonWebToken = jsonWebTokenGenerator(user.userid);
 
         // Set the JWT as an HttpOnly cookie
-        response.cookie('token', jsonWebToken, {
+        response.cookie('accessToken', jsonWebToken, {
             httpOnly: true, // The cookie is not accessible via JavaScript
             secure: true, // The cookie will be sent only over HTTPS
             sameSite: 'strict', // The cookie will not be sent with cross-site requests
@@ -60,9 +73,6 @@ exports.register = async (request, response) => {
  * @returns {void}
  */
 exports.login = async (request, response) => {
-    console.log('login');
-
-    console.log(request.body);
 
     if (!request.body.email || !request.body.password) {
         response.sendStatus(400);
@@ -135,7 +145,15 @@ exports.check = (request, response, next) => {
     }
 };
 
-exports.logout = (request, response) =>{
+/**
+ * @description Logs out the user by clearing the 'accessToken' cookie.
+ *
+ * @function
+ * @param {object} request - Express request object.
+ * @param {object} response - Express response object.
+ * @returns {void}
+ */
+exports.logout = (request, response) => {
     response.clearCookie('accessToken');
     response.sendStatus(200);
 };

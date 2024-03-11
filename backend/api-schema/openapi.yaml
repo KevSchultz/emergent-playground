@@ -72,25 +72,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UnexpectedError'
-  /test:
-    get:
-      description: Test route to check if the token is working
-      responses:
-        200:
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-        default:
-          description: Unexpected Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UnexpectedError'
   /upload:
     post:
       description: Upload a file
@@ -119,6 +100,25 @@ paths:
                 contentType: application/octet-stream
               postproperties:
                 contentType: application/octet-stream              
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        default:
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnexpectedError'
+  /test:
+    get:
+      description: Test route to check if the token is working
       responses:
         200:
           description: Success

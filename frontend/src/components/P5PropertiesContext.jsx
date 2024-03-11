@@ -32,6 +32,7 @@ const P5PropertiesContext = createContext();
 export function P5PropertiesProvider({ children }) {
 
 
+    const [title, setTitle] = useState(DefaultProperties.title)
     const [username, setUsername] = useState(DefaultProperties.username);
     const [worldWidth, setWorldWidth] = useState(DefaultProperties.worldWidth);
     const [worldHeight, setWorldHeight] = useState(DefaultProperties.worldHeight);
@@ -66,6 +67,8 @@ export function P5PropertiesProvider({ children }) {
     const [langNeighborhoodType, setLangNeighborhoodType] = useState(DefaultProperties.langNeighborhoodType);
 
     const value = {
+        title,
+        setTitle,
         username,
         setUsername,
         worldWidth,

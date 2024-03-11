@@ -26,7 +26,7 @@ class CellularAutomataSketchClass {
         this.canvas;
         this.initialState;
 
-        this.reactProperties = defaultReactProperties
+        this.reactProperties = defaultReactProperties;
         this.shouldCopy = false;
         this.isSketchSetup = false;
         this.debugMode = false;
@@ -70,7 +70,6 @@ class CellularAutomataSketchClass {
      * @param {number} newWorldWidth - The new world width.
      */
     updateWorldWidth(newWorldWidth) {
-
         const previousStateCopy = this.previousState.get();
 
         this.currentState.clear();
@@ -137,7 +136,7 @@ class CellularAutomataSketchClass {
         this.debugMode ? console.log('CellularAutomataSketchClass.updateWorldHeight') : null;
     }
 
-    checkShaderError(shaderObj, shaderText){
+    checkShaderError(shaderObj, shaderText) {
         let gl = shaderObj._renderer.GL;
         let glFragShader = gl.createShader(gl.FRAGMENT_SHADER);
         gl.shaderSource(glFragShader, shaderText);
@@ -147,7 +146,6 @@ class CellularAutomataSketchClass {
         }
         return 'no error';
     }
-
 
     /**
      * Updates the shader of the sketch.
@@ -181,7 +179,6 @@ class CellularAutomataSketchClass {
      * @param {string} newBackgroundColor - The new background color in hex format.
      */
     updateBackgroundColor(newBackgroundColor) {
-
         if (!this.shouldCopy) {
             return;
         }
@@ -279,7 +276,6 @@ class CellularAutomataSketchClass {
      * @returns None
      */
     setupCurrentStateGraphicsBuffer(worldWidth, worldHeight) {
-
         this.currentState = this.p5.createGraphics(worldWidth, worldHeight, this.p5.WEBGL);
 
         this.currentState.shader(this.shader);
@@ -301,7 +297,7 @@ class CellularAutomataSketchClass {
         let oldPreviousState = undefined;
 
         if (this.previousState != undefined) {
-            console.log("old state exists");
+            console.log('old state exists');
             oldPreviousState = this.previousState.get();
         }
 
@@ -359,19 +355,11 @@ class CellularAutomataSketchClass {
      * @returns None
      */
     setup() {
-
-
         // ----- Shader Setup -----
-        this.setupShader(
-            this.reactProperties.vertexShader,
-            this.reactProperties.fragmentShader
-        );
+        this.setupShader(this.reactProperties.vertexShader, this.reactProperties.fragmentShader);
 
         // ----- Main Canvas Setup -----
-        this.setupMainCanvas(
-            this.reactProperties.worldWidth,
-            this.reactProperties.worldHeight
-        );
+        this.setupMainCanvas(this.reactProperties.worldWidth, this.reactProperties.worldHeight);
 
         // ----- Cellular Automata Current State Graphics Buffer Setup -----
         this.setupCurrentStateGraphicsBuffer(
@@ -388,7 +376,7 @@ class CellularAutomataSketchClass {
         // ------ Overlay Graphics ------
         this.setupOverlayGraphicsBuffer(
             this.reactProperties.worldWidth,
-            this.reactProperties.worldHeight,
+            this.reactProperties.worldHeight
         );
 
         this.isSketchSetup = true;
@@ -412,6 +400,10 @@ class CellularAutomataSketchClass {
      */
     isBrushDrawingActive() {
         // this.debugMode ? console.log('CellularAutomataSketchClass.isBrushDrawingActive') : null;
+
+        if (this.p5.keyIsDown(this.p5.SHIFT)) {
+            return false;
+        }
 
         return (
             this.p5.mouseIsPressed && this.p5.mouseButton === this.p5.LEFT && this.cursorIsOnCanvas
@@ -537,7 +529,7 @@ class CellularAutomataSketchClass {
                     graphicsBuffer,
                     x,
                     y,
-                    this.p5.color(255),
+                    color,
                     this.reactProperties.brushSize,
                     1
                 );
@@ -745,9 +737,14 @@ class CellularAutomataSketchClass {
      * @returns None
      */
     mouseDragged() {
+
         // Update the camera's X position
         this.reactProperties.setCameraX((previousCameraX) => {
-            if (this.p5.mouseButton === this.p5.CENTER) {
+            if (
+                this.p5.mouseButton === this.p5.CENTER ||
+                (this.p5.mouseButton === this.p5.LEFT && this.p5.keyIsDown(this.p5.SHIFT))
+            ) {
+                console.log('MOVE');
                 previousCameraX -= this.p5.mouseX - this.reactProperties.previousMouseX;
             }
 
@@ -757,7 +754,10 @@ class CellularAutomataSketchClass {
 
         // Update the camera's Y position
         this.reactProperties.setCameraY((previousCameraY) => {
-            if (this.p5.mouseButton === this.p5.CENTER) {
+            if (
+                this.p5.mouseButton === this.p5.CENTER ||
+                (this.p5.mouseButton === this.p5.LEFT && this.p5.keyIsDown(this.p5.SHIFT))
+            ) {
                 previousCameraY -= this.p5.mouseY - this.reactProperties.previousMouseY;
             }
 
@@ -892,7 +892,9 @@ class CellularAutomataSketchClass {
 
     stateToBlob() {
         this.currentState.loadPixels();
-        const blob = new Blob([this.currentState.pixels.buffer], { type: 'application/octet-stream' });
+        const blob = new Blob([this.currentState.pixels.buffer], {
+            type: 'application/octet-stream',
+        });
         return blob;
     }
 

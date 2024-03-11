@@ -1,5 +1,19 @@
+/**
+ * @project Emergent Playground
+ * @file mainAPIRoutes.js
+ * @overview This file exports several route handlers for the Emergent Playground project. These include handlers for 
+ * creating a new post, downloading post state, downloading post properties, downloading a list of posts, and getting a 
+ * username. Each handler interacts with the PostgreSQL database to perform its function. 
+ * @authors Kevin Schultz
+ * @exports createPostRoute
+ * @exports downloadPostStateRoute
+ * @exports downloadPostPropertiesRoute
+ * @exports downloadPostListRoute
+ * @exports getUsernameRoute
+ */
+
 const { request } = require('https');
-const { postgreSQLConnection } = require('./PostgreSQLConnect');
+const { postgreSQLConnection } = require('./postgreSQLConnect');
 
 
 /**
@@ -9,7 +23,7 @@ const { postgreSQLConnection } = require('./PostgreSQLConnect');
  * @exports
  * @function
  * @param {Object} request - The Express request object.
- * @param {string} request.userID - The ID of the user making the request.
+ * @param {string} request.userid - The ID of the user making the request.
  * @param {Object} request.query - The query parameters.
  * @param {string} request.query.title - The title of the post.
  * @param {Object} request.files - The files sent in the request.

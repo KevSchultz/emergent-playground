@@ -304,6 +304,10 @@ class BackendRequester extends BackendRequesterInterface {
 
             const postListJson = await response.json(); // putting data into json
 
+            if (postListJson == {}) {
+                return [];
+            }
+
             return postListJson; // returning the postList as javascript array
         } catch (error) {
             return [];

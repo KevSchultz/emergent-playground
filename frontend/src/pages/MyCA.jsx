@@ -1,17 +1,17 @@
-/**
- * @project Emergent Playground
- * @file MyCA.jsx 
- * @overview The container component for the myca page which contains a the current user's list of cellular automata posts.
- * @authors Kevin Schultz
- * @exports MyCA
- */
+
 
 /**
- * @component
- * @returns {JSX.Element} A container component that renders the myca page.
+ * A functional component that renders the Community page.
+ *
+ * @returns {JSX.Element} The Community component.
  */
+
+// Custom Component Imports
+import PostListing from "../components/PostListing";
+
+
 function MyCA() {
-    return <h1>MyCA</h1>;
+    return <PostListing title="My Posts" sorting={1}/>
 }
 
 export default MyCA;

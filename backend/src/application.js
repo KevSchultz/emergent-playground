@@ -1,3 +1,13 @@
+/**
+ * @project Emergent Playground
+ * @file application.js
+ * @overview This file sets up an Express.js server application. It imports necessary modules, configures middleware, 
+ * sets up authentication routes, and defines main API routes. It also loads an OpenAPI specification from a YAML file 
+ * and sets up a Swagger UI page for API documentation and testing. 
+ * @authors Ethan Foster, Kevin Schultz
+ * @exports application
+ */
+
 const express = require('express');
 const cors = require('cors');
 

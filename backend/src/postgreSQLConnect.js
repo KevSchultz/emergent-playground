@@ -1,13 +1,22 @@
+/**
+ * @project Emergent Playground
+ * @file postgreSQLConnect.js
+ * @overview This file exports a class, PostgreSQLConnect, that provides a connection to a PostgreSQL database and 
+ * implements methods for interacting with the database. The class constructor takes in the host, user, port, password, 
+ * and database name, and attempts to connect to the database. The class also includes a method for getting the current 
+ * date and time and formatting it as a timestamp string. 
+ * @authors Ethan Foster, Kevin Schultz
+ * @exports postgreSQLConnect
+ */
+
 const { Client } = require('pg'); // declares that the client data type requires pg
-const PostgreSQLConnectionInterface = require('./interfaces/PostgreSQLConnectInterface');
 require('dotenv').config();
 
-class PostgreSQLConnect extends PostgreSQLConnectionInterface {
+class PostgreSQLConnect {
     /**
      * This class provides a connection to a PostgreSQL database and implements methods for interacting with the database.
      *
      * @class
-     * @extends PostgreSQLConnectionInterface
      *
      * @property {Client} client - The PostgreSQL client.
      *
@@ -21,7 +30,6 @@ class PostgreSQLConnect extends PostgreSQLConnectionInterface {
      * @throws Will throw an error if the connection to the database fails.
      */
     constructor(host, user, port, password, database) {
-        super();
         this.client = new Client({
             host: host,
             user: user,
@@ -279,7 +287,7 @@ class PostgreSQLConnect extends PostgreSQLConnectionInterface {
                 // sort by userID
                 const userIDSearchQuery =
                     defaultString + conditionalString + 'userid = $1' + endString;
-                const values = [userID];
+                const values = [userid];
                 const result = await this.client.query(userIDSearchQuery, values);
                 return result.rows;
             } else if (sorting == 2) {

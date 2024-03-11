@@ -1,3 +1,12 @@
+/**
+ * @project Emergent Playground
+ * @file jsonWebTokenGenerator
+ * @overview This file exports a function that generates a JSON Web Token (JWT) for a provided userid. The JWT is signed 
+ * using a secret key stored in environment variables and is set to expire in 1 hour. 
+ * @authors Kevin Schultz
+ * @exports jsonWebTokenGenerator
+ */
+
 const jsonWebToken = require('jsonwebtoken');
 require('dotenv').config();
 

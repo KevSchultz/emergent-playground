@@ -14,7 +14,6 @@ import LoadingDialog from './LoadingDialog';
 
 export default function SavePostInput() {
     const properties = useContext(P5PropertiesContext);
-    const [title, setTitle] = useState('untitled');
     const [loading, setLoading] = useState(false);
 
     const savePost = async () => {
@@ -22,11 +21,7 @@ export default function SavePostInput() {
 
         properties.setPause(1);
 
-        console.log(cellularAutomataSketch.stateToBlob());
-        console.log(title);
-        console.log(properties);
-
-        const response = await backendRequester.uploadPost(title, cellularAutomataSketch.stateToBlob(), properties);
+        const response = await backendRequester.uploadPost(properties.title, cellularAutomataSketch.stateToBlob(), properties);
 
         if (response.status != 200) {
             alert("Save failed. Make sure you are logged in.");
@@ -47,8 +42,8 @@ export default function SavePostInput() {
                 <InputBase
                     sx={{ ml: 1, flex: 1 }}
                     placeholder="Enter title here ... "
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)} // Update the state when the input changes
+                    value={properties.title}
+                    onChange={(e) => properties.setTitle(e.target.value)} // Update the state when the input changes
                 />
                 <Button onClick={savePost}>SAVE</Button>
             </Paper>
