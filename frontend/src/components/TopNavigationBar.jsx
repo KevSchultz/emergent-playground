@@ -18,7 +18,7 @@ import Paper from '@mui/material/Paper';
 
 // Custom Imports
 import P5PropertiesContext from './P5PropertiesContext';
-import TextInput from './TextInput';
+import SavePostInput from './SavePostInput';
 import LoginLink from './LoginLink';
 import LogoutLink from './LogoutLink';
 import Logo from '../emergent_playground_logo.svg';
@@ -104,7 +104,7 @@ function TopNavigationBar() {
                     marginBottom: '10px',
                 }}
             >
-                {currentPage == '/' ? <TextInput /> : null}
+                {currentPage == '/' ? <SavePostInput /> : null}
             </Box>
 
             <Box

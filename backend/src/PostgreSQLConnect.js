@@ -5,19 +5,19 @@ require('dotenv').config();
 class PostgreSQLConnect extends PostgreSQLConnectionInterface {
     /**
      * This class provides a connection to a PostgreSQL database and implements methods for interacting with the database.
-     * 
+     *
      * @class
      * @extends PostgreSQLConnectionInterface
-     * 
+     *
      * @property {Client} client - The PostgreSQL client.
-     * 
+     *
      * @constructor
      * @param {string} host - The host of the PostgreSQL server.
      * @param {string} user - The username to connect to the PostgreSQL server.
      * @param {number} port - The port of the PostgreSQL server.
      * @param {string} password - The password to connect to the PostgreSQL server.
      * @param {string} database - The name of the database to connect to.
-     * 
+     *
      * @throws Will throw an error if the connection to the database fails.
      */
     constructor(host, user, port, password, database) {
@@ -108,19 +108,19 @@ class PostgreSQLConnect extends PostgreSQLConnectionInterface {
             [username, email, password]
         );
 
-        console.log("Server created account: ", username);
+        console.log('Server created account: ', username);
 
         return userResult.rows[0]; // returns the user object
     }
 
     /**
      * @description Retrieves a user account from the database using either the user's email or user ID.
-     * 
+     *
      * @async
      * @method
-     * @param {string} [email] - The email of the user. 
+     * @param {string} [email] - The email of the user.
      * @param {string} [userid] - The ID of the user.
-     * @returns {Promise<Object>} - A Promise that resolves to an object representing the user account. 
+     * @returns {Promise<Object>} - A Promise that resolves to an object representing the user account.
      * User account object contains the following fields: userid, username, email, password, and creationtime.
      * @throws Will throw an error if both email and userid are null, or if the specified email or userid does not exist in the database.
      */
@@ -147,7 +147,7 @@ class PostgreSQLConnect extends PostgreSQLConnectionInterface {
     }
 
     /**
-     * @description Creates a new post to save a cellular automata in the database.
+     * @description Creates a new post or updates to save a cellular automata in the database.
      *
      * @async
      * @method
@@ -170,18 +170,39 @@ class PostgreSQLConnect extends PostgreSQLConnectionInterface {
             throw new Error('Invalid input to createPost.');
         }
 
-        const creationtime = this.getCurrentTimeStamp();
+        // determining whether the post exists and must be updated or if new post and must be created
+        const pathwayDeterminationString = 'SELECT * FROM posts WHERE userid = $1 AND title = $2;';
+        const pathwayValues = [userid, title];
 
-        const queryString =
-            'INSERT INTO posts (userid, username, title, poststate, postproperties, creationtime) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *;';
-        const values = [userid, username, title, poststate, postproperties, creationtime];
-        const results = await this.client.query(queryString, values);
+        const pathwayResults = await this.client.query(pathwayDeterminationString, pathwayValues);
 
-        const post = results.rows[0];
+        console.log("pathwayResults: ", pathwayResults.rows);
 
-        return post;
+        if (pathwayResults.rows.length > 0) {
+            // UPDATE PATHWAY
+            console.log('Row found:', pathwayResults.rows[0]);
+            const updateQuery =
+                'UPDATE posts SET poststate = $1, postproperties = $2 WHERE userid = $3 AND title = $4;';
+            const updateValues = [poststate, postproperties, userid, title];
+
+            const updateResults = await this.client.query(updateQuery, updateValues);
+            postUpdate = updateResults.row[0];
+            return postUpdate;
+        } else {
+            // CREATION PATHWAY
+            console.log('No row found: creating new post');
+            const creationtime = this.getCurrentTimeStamp();
+
+            const queryString =
+                'INSERT INTO posts (userid, username, title, poststate, postproperties, creationtime) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *;';
+            const values = [userid, username, title, poststate, postproperties, creationtime];
+            const creationResults = await this.client.query(queryString, values);
+
+            const post = creationResults.rows[0];
+
+            return post;
+        }
     }
-
 
     /**
      * @description Retrieves the state of a post from the database.

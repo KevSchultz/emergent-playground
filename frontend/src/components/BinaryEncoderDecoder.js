@@ -24,15 +24,9 @@ export default class BinaryEncoderDecoder extends BinaryEncoderDecoderInterface 
      * @returns {Uint8Array} The encoded binary string.
      */
     async encodeJSONToBinary(json) {
-        const encoder = new TextEncoder();
         const jsonString = JSON.stringify(json);
-
-        console.log('jsonString: ', jsonString);
-        const binaryBuffer = await encoder.encode(jsonString);
-
-        const binary = new Blob([binaryBuffer], { type: 'application/octet-stream' })
-    
-        return binary;
+        const blob = new Blob([jsonString], { type: 'application/octet-stream' });
+        return blob;
     }
 
     /**
@@ -41,10 +35,29 @@ export default class BinaryEncoderDecoder extends BinaryEncoderDecoderInterface 
      * @param {Uint8Array} binary - The binary input to decode.
      * @returns {Object} The decoded JSON object.
      */
-    async decodeBinaryToJSON(binary) {
-        const decoder = new TextDecoder();
-        const jsonString =  await decoder.decode(binary);
-    
-        return JSON.parse(jsonString);
+    async decodeBinaryToJSON(blob) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                const jsonString = reader.result;
+                resolve(JSON.parse(jsonString));
+            };
+            reader.onerror = reject;
+            reader.readAsText(blob);
+        });
     }
+
+
+    async blobToArray(blob) {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            const arrayBuffer = reader.result;
+            const array = new Uint8Array(arrayBuffer);
+            resolve(array);
+          };
+          reader.onerror = reject;
+          reader.readAsArrayBuffer(blob);
+        });
+      }
 }

@@ -98,9 +98,9 @@ exports.downloadPostStateRoute = async (request, response) => {
     }
 
     try {
-        const postID = request.query.postid;
+        const postid = request.query.postid;
 
-        const post = await postgreSQLConnection.getPostState(postID);
+        const post = await postgreSQLConnection.getPostState(postid);
 
         response.status(200).send(post.poststate);
 
@@ -112,7 +112,7 @@ exports.downloadPostStateRoute = async (request, response) => {
 
 exports.downloadPostPropertiesRoute = async (request, response) => {
 
-    if (!request.userID) {
+    if (!request.userid) {
         response.sendStatus(401);
         return;
     }
@@ -123,9 +123,9 @@ exports.downloadPostPropertiesRoute = async (request, response) => {
     }
 
     try {
-        const postID = request.query.postid;
+        const postid = request.query.postid;
 
-        const post = await postgreSQLConnection.getPostProperties(postID);
+        const post = await postgreSQLConnection.getPostProperties(postid);
 
         response.status(200).send(post.postproperties);
 

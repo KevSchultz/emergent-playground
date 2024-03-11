@@ -47,8 +47,6 @@ function LeftButtonListContainer() {
         setBrushType,
         pause,
         setPause,
-        listBrushTypes,
-        cursorStyles,
         langTupleList,
         currentDrawColor,
         setCurrentDrawColor,
@@ -69,11 +67,6 @@ function LeftButtonListContainer() {
 
     const open = Boolean(anchorEl);
     const id = open ? 'simple-popover' : undefined;
-
-    // Set the cursor to the current brush type when the brush type changes
-    useEffect(() => {
-        document.body.style.cursor = cursorStyles[brushType];
-    }, [brushType, cursorStyles]);
 
     useEffect(() => {
         function handleFullScreenChange() {
@@ -153,31 +146,6 @@ function LeftButtonListContainer() {
                     <Fab color="primary" aria-label="fullscreen" onClick={handleFullScreen}>
                         {fullscreen ? <FullscreenExitIcon /> : <FullscreenIcon />}
                     </Fab>
-
-                    {/* Create the button list from all the types */}
-                    {/* {listBrushTypes.map((buttonBrushType) => (
-                    <BrushIconButton
-                        key={buttonBrushType}
-                        buttonBrushType={buttonBrushType}
-                        currentBrushType={brushType}
-                        setCurrentBrushType={setBrushType}
-                    />
-                ))} */}
-                    {/* <FormControl fullWidth>
-                <Select
-                    value={currentDrawColor}
-                    onChange={(e) => {
-                        setCurrentDrawColor(e.target.value);
-                    }}
-                    variant="standard"
-                >
-                    {langTupleList.map((s, index) => (
-                        <MenuItem key={index} value={s.color}>
-                            <Brightness1 sx={{ color: s.color }} />
-                        </MenuItem>
-                    ))}
-                </Select>
-            </FormControl> */}
                 </Paper>
             </Box>
 
@@ -210,15 +178,22 @@ function LeftButtonListContainer() {
                         border: '2px solid rgb(0, 118, 236, 0.5)',
                     }}
                 >
-                    {/* Create the button list from all the types */}
-                    {listBrushTypes.map((buttonBrushType) => (
-                        <BrushIconButton
-                            key={buttonBrushType}
-                            buttonBrushType={buttonBrushType}
-                            currentBrushType={brushType}
-                            setCurrentBrushType={setBrushType}
-                        />
-                    ))}
+
+                    <BrushIconButton
+                        buttonBrushType="pixel"
+                        currentBrushType={brushType}
+                        setCurrentBrushType={setBrushType}
+                    />
+                    <BrushIconButton
+                        buttonBrushType="square"
+                        currentBrushType={brushType}
+                        setCurrentBrushType={setBrushType}
+                    />
+                    <BrushIconButton
+                        buttonBrushType="circle"
+                        currentBrushType={brushType}
+                        setCurrentBrushType={setBrushType}
+                    />
                     <IconButton
                         onClick={() => {
                             setBackgroundColor(currentDrawColor);
@@ -241,12 +216,6 @@ function LeftButtonListContainer() {
                             ))}
                         </Select>
                     </FormControl>
-                    {/* <Box mt={2} display="flex" justifyContent="flex-end">
-                        <Button onClick={handleClose}>Cancel</Button>
-                        <Button onClick={handleClose} style={{ marginLeft: '10px' }}>
-                            Save
-                        </Button>
-                    </Box> */}
                 </Paper>
             </Popover>
         </>

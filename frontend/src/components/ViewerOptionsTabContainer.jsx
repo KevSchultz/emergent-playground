@@ -11,18 +11,14 @@ import { useContext } from 'react';
 
 // Material UI Imports
 import Box from '@mui/material/Box';
-import { Button } from '@mui/material';
 import { Checkbox, FormControlLabel, FormGroup } from '@mui/material';
 
-import { sketch } from './DefaultProperties';
 
 // Custom Component Imports
 import InputSlider from './InputSlider';
 import P5PropertiesContext from './P5PropertiesContext';
 // import { downloadPost } from '../backendRequester';
 
-import BinaryEncoderDecoder from './BinaryEncoderDecoder';
-import BackendRequester from './BackendRequester';
 
 /**
  * A container component for the viewer options tab.
@@ -53,7 +49,7 @@ function ViewerOptionsTabContainer() {
         <Box sx={{ width: '100%' }}>
             <InputSlider
                 label="Zoom"
-                minValue={0}
+                minValue={0.1}
                 maxValue={100}
                 stepValue={1}
                 value={zoom}
@@ -62,7 +58,7 @@ function ViewerOptionsTabContainer() {
             <InputSlider
                 label="World Width"
                 minValue={1}
-                maxValue={6000}
+                maxValue={5000}
                 stepValue={1}
                 value={worldWidth}
                 setValue={setWorldWidth}
@@ -70,15 +66,15 @@ function ViewerOptionsTabContainer() {
             <InputSlider
                 label="World Height"
                 minValue={1}
-                maxValue={6000}
+                maxValue={5000}
                 stepValue={1}
                 value={worldHeight}
                 setValue={setWorldHeight}
             />
             <InputSlider
                 label="Brush Size"
-                minValue={1}
-                maxValue={4000}
+                minValue={2}
+                maxValue={5000}
                 stepValue={1}
                 value={brushSize}
                 setValue={setBrushSize}
