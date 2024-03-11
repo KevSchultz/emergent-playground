@@ -35,7 +35,7 @@ let DefaultProperties = {
     langTupleList: [],
     langIncludeSelf: false,
     langRange: 1,
-    backgroundColor: '',
+    backgroundColor: '#000000',
     currentDrawColor: '',
     langNeighborhoodType: 'moore',
     fullscreen: false,

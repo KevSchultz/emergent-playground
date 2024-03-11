@@ -29,6 +29,36 @@ import PropTypes from 'prop-types';
 
 function PostCard({ title, username, postid }) {
 
+    const {
+        setWorldWidth,
+        setWorldHeight,
+        setCameraX,
+        setCameraY,
+        setCameraZ,
+        setZoom,
+        setMinZoom,
+        setMaxZoom,
+        setZoomSensitivity,
+        setPanSensitivity,
+        setBrushType,
+        setBrushSize,
+        setPreviousMouseX,
+        setPreviousMouseY,
+        setVertexShader,
+        setFragmentShader,
+        setPause,
+        setCode,
+        setCurrentLangColor,
+        setLangTupleList,
+        setLangIncludeSelf,
+        setLangRange,
+        setBackgroundColor,
+        setCurrentDrawColor,
+        setLangNeighborhoodType,
+        setFullscreen,
+        setGeneration,
+        setContinuousPlay,
+    } = useContext(P5PropertiesContext);
 
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
@@ -46,11 +76,28 @@ function PostCard({ title, username, postid }) {
             return;
         }
 
+        setWorldWidth(properties.worldWidth);
+        setWorldHeight(properties.worldHeight);
+        setZoom(properties.zoom);
+        setMinZoom(properties.minZoom);
+        setMaxZoom(properties.maxZoom);
+        setBrushType(properties.brushType);
+        setBrushSize(properties.brushSize);
+        setVertexShader(properties.vertexShader);
+        setFragmentShader(properties.fragmentShader);
+        setCode(properties.code);
+        setCurrentLangColor(properties.currentLangColor);
+        setLangTupleList(properties.langTupleList);
+        setLangIncludeSelf(properties.langIncludeSelf);
+        setLangRange(properties.langRange);
+        setCurrentDrawColor(properties.currentDrawColor);
+        setLangNeighborhoodType(properties.langNeighborhoodType);
+        setGeneration(properties.generation);
+        setContinuousPlay(properties.continuousPlay);
 
 
         cellularAutomataSketch.initialState = state;
-
-
+        cellularAutomataSketch.reactProperties = properties;
 
         navigate('/');
 

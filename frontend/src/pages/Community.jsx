@@ -94,7 +94,7 @@ function Community() {
             <TopNavigationBar />
 
             {/* Sorter */}
-            <Box style={{ display: 'flex' }}>
+            <Box style={{ display: 'flex', height: '95vh' }}>
                 <Box sx={{ width: 200, padding: '1rem' }}>
                     <FormControl fullWidth sx={{ mb: 2 }}>
                         <InputLabel id="sort-select-label">Sort By</InputLabel>

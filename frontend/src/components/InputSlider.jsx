@@ -1,11 +1,14 @@
 /**
  * @project Emergent Playground
- * @file InputSlider.jsx 
+ * @file InputSlider.jsx
  * @overview Renders a Material-UI slider input component with a label and input field.
  * It is a modified version of the InputSlider component from the Material-UI documentation. The original code can be found at https://mui.com/components/slider/
  * @authors Kevin Schultz
  * @exports InputSlider
  */
+
+// React Imports
+import { useState } from 'react';
 
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -28,20 +31,13 @@ import PropTypes from 'prop-types';
  * @param {number} props.stepValue - The step size of the slider.
  * @param {number} props.value - The value of the slider (controlled component).
  * @param {Function} props.setValue - The function to call when the slider's value changes.
- * 
+ *
  * @returns {JSX.Element} The InputSlider component.
  */
-function InputSlider({
-    className,
-    sx,
-    label,
-    minValue,
-    maxValue,
-    stepValue,
-    value,
-    setValue,
-}) {
-    
+function InputSlider({ className, sx, label, minValue, maxValue, stepValue, value, setValue }) {
+
+    const [ inputValue, setInputValue ] = useState(value);
+
     /**
      * Updates the slider's value.
      *
@@ -50,6 +46,7 @@ function InputSlider({
      */
     const handleSliderChange = (event, newValue) => {
         // setValue(newValue);
+        setInputValue(newValue);
         setValue(newValue);
     };
 
@@ -59,27 +56,28 @@ function InputSlider({
      * @param {Object} event - The event object.
      */
     const handleTextInputChange = (event) => {
-        let newValue =
-            event.target.value === '' ? '' : Number(event.target.value);
-        // setValue(newValue);
-        setValue(newValue);
+        if (isNaN(event.target.value) || event.target.value === '') {
+            setInputValue(event.target.value);
+            return;
+        }
+
+        let newValue = Number(event.target.value);
+
+        if (!isNaN(newValue)) {
+            newValue = Math.min(Math.max(minValue, newValue), maxValue); // constrain newValue to the range [minValue, maxValue]
+            setInputValue(newValue);
+            setValue(newValue);
+        }
     };
 
     /**
      * Ensures the slider's value is within the allowed range.
      */
     const handleBlur = () => {
-
         if (value < minValue) {
-
-            // setValue(minValue);
-            setValue(minValue)
-
+            setValue(minValue);
         } else if (value > maxValue) {
-
-            // setValue(maxValue);
-            setValue(maxValue)
-
+            setValue(maxValue);
         }
     };
 
@@ -91,7 +89,7 @@ function InputSlider({
             <Grid container spacing={2} alignItems="center">
                 <Grid item xs>
                     <Slider
-                        value={value}
+                        value={inputValue}
                         onChange={handleSliderChange}
                         aria-labelledby="input-slider"
                         step={stepValue}
@@ -102,7 +100,7 @@ function InputSlider({
                 <Grid item>
                     <Input
                         style={{ width: '50px', color: 'white' }}
-                        value={value}
+                        value={inputValue}
                         size="small"
                         onChange={handleTextInputChange}
                         onBlur={handleBlur}

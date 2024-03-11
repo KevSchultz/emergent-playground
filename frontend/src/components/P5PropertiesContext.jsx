@@ -35,7 +35,6 @@ export function P5PropertiesProvider({ children }) {
     const [username, setUsername] = useState(DefaultProperties.username);
     const [worldWidth, setWorldWidth] = useState(DefaultProperties.worldWidth);
     const [worldHeight, setWorldHeight] = useState(DefaultProperties.worldHeight);
-    const [pixelDensity, setPixelDensity] = useState(DefaultProperties.pixelDensity);
     const [cameraX, setCameraX] = useState(DefaultProperties.cameraX);
     const [cameraY, setCameraY] = useState(DefaultProperties.cameraY);
     const [cameraZ, setCameraZ] = useState(DefaultProperties.cameraZ);
@@ -45,11 +44,6 @@ export function P5PropertiesProvider({ children }) {
     const [zoomSensitivity, setZoomSensitivity] = useState(DefaultProperties.zoomSensitivity);
     const [panSensitivity, setPanSensitivity] = useState(DefaultProperties.panSensitivity);
     const [brushType, setBrushType] = useState(DefaultProperties.brushType);
-    const [listBrushTypes, setListBrushTypes] = useState(DefaultProperties.listBrushTypes);
-    const [brushIcons, setBrushIcons] = useState(DefaultProperties.brushIcons);
-    const [selectedBrushIconColor, setSelectedBrushIconColor] = useState(
-        DefaultProperties.selectedBrushIconColor
-    );
     const [deselectedBrushIconColor, setDeselectedBrushIconColor] = useState(
         DefaultProperties.deselectedBrushIconColor
     );
@@ -78,8 +72,6 @@ export function P5PropertiesProvider({ children }) {
         setWorldWidth,
         worldHeight,
         setWorldHeight,
-        pixelDensity,
-        setPixelDensity,
         cameraX,
         setCameraX,
         cameraY,
@@ -98,12 +90,6 @@ export function P5PropertiesProvider({ children }) {
         setPanSensitivity,
         brushType,
         setBrushType,
-        listBrushTypes,
-        setListBrushTypes,
-        brushIcons,
-        setBrushIcons,
-        selectedBrushIconColor,
-        setSelectedBrushIconColor,
         deselectedBrushIconColor,
         setDeselectedBrushIconColor,
         brushSize,

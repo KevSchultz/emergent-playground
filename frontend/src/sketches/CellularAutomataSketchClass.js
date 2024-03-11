@@ -22,17 +22,15 @@ class CellularAutomataSketchClass {
         this.previousState;
         this.staticOverlayGraphics;
         this.dynamicOverlayGraphics;
-        this.reactProperties;
         this.shader;
         this.canvas;
         this.initialState;
 
-        this.defaultReactProperties = defaultReactProperties;
+        this.reactProperties = defaultReactProperties
         this.shouldCopy = false;
         this.isSketchSetup = false;
-        this.debugMode = true;
+        this.debugMode = false;
         this.cursorIsOnCanvas = false;
-
 
         // Bind 'this' to all functions
         this.updateWorldWidth = this.updateWorldWidth.bind(this);
@@ -72,12 +70,13 @@ class CellularAutomataSketchClass {
      * @param {number} newWorldWidth - The new world width.
      */
     updateWorldWidth(newWorldWidth) {
+
+        const previousStateCopy = this.previousState.get();
+
         this.currentState.clear();
         this.previousState.clear();
         this.overlayGraphics.clear();
 
-        this.reactProperties.setPause(1);
-        this.shader.setUniform('pause', 1);
         this.shader.setUniform('resolution', [
             this.reactProperties.worldWidth,
             this.reactProperties.worldHeight,
@@ -86,6 +85,17 @@ class CellularAutomataSketchClass {
         this.currentState.resizeCanvas(newWorldWidth, this.reactProperties.worldHeight);
         this.previousState.resizeCanvas(newWorldWidth, this.reactProperties.worldHeight);
         this.overlayGraphics.resizeCanvas(newWorldWidth, this.reactProperties.worldHeight);
+
+        this.currentState.background(this.reactProperties.backgroundColor);
+        this.previousState.background(this.reactProperties.backgroundColor);
+
+        this.copyGraphicsBufferImageDataToAnotherGraphicsBuffer(
+            this.previousState,
+            previousStateCopy,
+            0,
+            0
+        );
+        this.shouldCopy = false;
 
         this.debugMode ? console.log('CellularAutomataSketchClass.updateWorldWidth') : null;
     }
@@ -98,12 +108,12 @@ class CellularAutomataSketchClass {
      * @param {number} newWorldHeight - The new world height.
      */
     updateWorldHeight(newWorldHeight) {
+        const previousStateCopy = this.previousState.get();
+
         this.currentState.clear();
         this.previousState.clear();
         this.overlayGraphics.clear();
 
-        this.reactProperties.setPause(1);
-        this.shader.setUniform('pause', 1);
         this.shader.setUniform('resolution', [
             this.reactProperties.worldWidth,
             this.reactProperties.worldHeight,
@@ -112,6 +122,17 @@ class CellularAutomataSketchClass {
         this.currentState.resizeCanvas(this.reactProperties.worldWidth, newWorldHeight);
         this.previousState.resizeCanvas(this.reactProperties.worldWidth, newWorldHeight);
         this.overlayGraphics.resizeCanvas(this.reactProperties.worldWidth, newWorldHeight);
+
+        this.currentState.background(this.reactProperties.backgroundColor);
+        this.previousState.background(this.reactProperties.backgroundColor);
+
+        this.copyGraphicsBufferImageDataToAnotherGraphicsBuffer(
+            this.previousState,
+            previousStateCopy,
+            0,
+            0
+        );
+        this.shouldCopy = false;
 
         this.debugMode ? console.log('CellularAutomataSketchClass.updateWorldHeight') : null;
     }
@@ -139,10 +160,7 @@ class CellularAutomataSketchClass {
      * @param {string} newFragmentShader - The new fragment shader.
      */
     updateShader(newVertexShader, newFragmentShader) {
-        this.currentState.clear();
-        this.previousState.clear();
         this.currentState.resetShader();
-        this.currentState.background(this.reactProperties.backgroundColor);
         this.shader = null;
         this.shader = this.p5.createShader(newVertexShader, newFragmentShader);
         this.currentState.shader(this.shader);
@@ -163,6 +181,11 @@ class CellularAutomataSketchClass {
      * @param {string} newBackgroundColor - The new background color in hex format.
      */
     updateBackgroundColor(newBackgroundColor) {
+
+        if (!this.shouldCopy) {
+            return;
+        }
+
         this.reactProperties.setPause(1);
         this.currentState.clear();
         this.previousState.clear();
@@ -210,10 +233,12 @@ class CellularAutomataSketchClass {
         }
 
         if (oldReactProperties.worldHeight !== newReactProperties.worldHeight) {
+            console.log('world height changed');
             this.updateWorldHeight(newReactProperties.worldHeight);
         }
 
         if (oldReactProperties.worldWidth !== newReactProperties.worldWidth) {
+            console.log('world width changed');
             this.updateWorldWidth(newReactProperties.worldWidth);
         }
 
@@ -221,10 +246,12 @@ class CellularAutomataSketchClass {
             oldReactProperties.vertexShader !== newReactProperties.vertexShader ||
             oldReactProperties.fragmentShader !== newReactProperties.fragmentShader
         ) {
+            console.log('shader changed');
             this.updateShader(newReactProperties.vertexShader, newReactProperties.fragmentShader);
         }
 
         if (oldReactProperties.backgroundColor !== newReactProperties.backgroundColor) {
+            console.log('background color changed');
             this.updateBackgroundColor(newReactProperties.backgroundColor);
         }
 
@@ -252,10 +279,6 @@ class CellularAutomataSketchClass {
      * @returns None
      */
     setupCurrentStateGraphicsBuffer(worldWidth, worldHeight) {
-        if (this.currentState) {
-            this.currentState.loadPixels();
-            console.log(this.currentState);
-        }
 
         this.currentState = this.p5.createGraphics(worldWidth, worldHeight, this.p5.WEBGL);
 
@@ -277,11 +300,10 @@ class CellularAutomataSketchClass {
     setupPreviousStateGraphicsBuffer(worldWidth, worldHeight) {
         let oldPreviousState = undefined;
 
-        if (this.previousState) {
+        if (this.previousState != undefined) {
             console.log("old state exists");
-            oldPreviousState = this.previousState;
+            oldPreviousState = this.previousState.get();
         }
-
 
         this.previousState = this.p5.createGraphics(worldWidth, worldHeight);
 
@@ -338,34 +360,35 @@ class CellularAutomataSketchClass {
      */
     setup() {
 
+
         // ----- Shader Setup -----
         this.setupShader(
-            this.defaultReactProperties.vertexShader,
-            this.defaultReactProperties.fragmentShader
+            this.reactProperties.vertexShader,
+            this.reactProperties.fragmentShader
         );
 
         // ----- Main Canvas Setup -----
         this.setupMainCanvas(
-            this.defaultReactProperties.worldWidth,
-            this.defaultReactProperties.worldHeight
+            this.reactProperties.worldWidth,
+            this.reactProperties.worldHeight
         );
 
         // ----- Cellular Automata Current State Graphics Buffer Setup -----
         this.setupCurrentStateGraphicsBuffer(
-            this.defaultReactProperties.worldWidth,
-            this.defaultReactProperties.worldHeight
+            this.reactProperties.worldWidth,
+            this.reactProperties.worldHeight
         );
 
         // ----- Cellular Automata Previous State Graphics Buffer Setup -----
         this.setupPreviousStateGraphicsBuffer(
-            this.defaultReactProperties.worldWidth,
-            this.defaultReactProperties.worldHeight
+            this.reactProperties.worldWidth,
+            this.reactProperties.worldHeight
         );
 
         // ------ Overlay Graphics ------
         this.setupOverlayGraphicsBuffer(
-            this.defaultReactProperties.worldWidth,
-            this.defaultReactProperties.worldHeight,
+            this.reactProperties.worldWidth,
+            this.reactProperties.worldHeight,
         );
 
         this.isSketchSetup = true;
@@ -378,6 +401,7 @@ class CellularAutomataSketchClass {
             this.cursorIsOnCanvas = false;
         });
 
+        this.keepDimensions = false;
         this.debugMode ? console.log('CellularAutomataSketchClass.setup') : null;
     }
 
@@ -423,7 +447,7 @@ class CellularAutomataSketchClass {
      *
      * @returns None
      */
-    squareDrawOnGraphics(graphicsBuffer, x, y, color, size, borderSize) {
+    squareDrawOnGraphics(graphicsBuffer, x, y, color, size) {
         graphicsBuffer.push();
         graphicsBuffer.noStroke(); // Remove the stroke
         graphicsBuffer.fill(color); // Fill the square with the color
@@ -876,7 +900,6 @@ class CellularAutomataSketchClass {
         this.previousState.loadPixels();
         for (let x = 0; x < this.previousState.width; x++) {
             for (let y = 0; y < this.previousState.height; y++) {
-                console.log("x : " + x + " , y: " + y);
                 const index = (x + y * this.previousState.width) * 4;
                 const color = [
                     pixels[index],

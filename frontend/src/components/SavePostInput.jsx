@@ -34,8 +34,7 @@ export default function SavePostInput() {
             alert("Save successful.");
         }
 
-        console.log(response);
-
+    
         setLoading(false);
     };
 

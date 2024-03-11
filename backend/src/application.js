@@ -19,8 +19,6 @@ const app = express();
 
 // ------ Pre-routing Middleware ------
 
-// CORS enabled only for development!
-app.use(cors());
 app.use(cookieParser()); // for parsing cookies
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
