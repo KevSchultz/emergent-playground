@@ -104,6 +104,7 @@ exports.login = async (request, response) => {
             throw new Error('Invalid.');
         }
     } catch (err) {
+        console.log(err);
         response.sendStatus(401);
     }
 };
@@ -141,6 +142,7 @@ exports.check = (request, response, next) => {
             response.sendStatus(403);
         }
     } catch (err) {
+        console.log(err);
         response.sendStatus(401);
     }
 };
