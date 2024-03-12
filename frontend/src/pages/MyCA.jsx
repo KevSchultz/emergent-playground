@@ -1,5 +1,3 @@
-
-
 /**
  * A functional component that renders the Community page.
  *
@@ -9,9 +7,8 @@
 // Custom Component Imports
 import PostListing from "../components/PostListing";
 
-
 function MyCA() {
-    return <PostListing title="My Posts" sorting={1}/>
+  return <PostListing title="My Posts" sorting={1} />;
 }
 
 export default MyCA;

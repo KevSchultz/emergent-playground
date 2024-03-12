@@ -8,20 +8,19 @@
  */
 
 // Material-UI Imports
-import Box from '@mui/material/Box';
+import Box from "@mui/material/Box";
 
 // Custom component imports
-import TopNavigationBar from '../components/TopNavigationBar';
-import LeftButtonListContainer from '../components/LeftButtonListContainer';
-import RightOptionsRootContainer from '../components/RightOptionsRootContainer';
-import P5Background from '../components/P5Background';
-import P5PropertiesContext from '../components/P5PropertiesContext';
-import resetP5PropertiesContext from '../components/resetP5PropertiesContext';
+import TopNavigationBar from "../components/TopNavigationBar";
+import LeftButtonListContainer from "../components/LeftButtonListContainer";
+import RightOptionsRootContainer from "../components/RightOptionsRootContainer";
+import P5Background from "../components/P5Background";
+import P5PropertiesContext from "../components/P5PropertiesContext";
+import resetP5PropertiesContext from "../components/resetP5PropertiesContext";
 
 // Resizable Panel Imports
-import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
-import { useContext, useEffect } from 'react';
-
+import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
+import { useContext, useEffect } from "react";
 
 /**
  * A functional component that renders the Viewer Builder Creator page.
@@ -32,33 +31,31 @@ import { useContext, useEffect } from 'react';
  * @returns {JSX.Element} The ViewerBuilderCreator component.
  */
 function ViewerBuilderCreator() {
-
-    return (
-        
-        <Box
-            sx={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                width: '100vw',
-                overflow: 'hidden',
-                background:
-                    'linear-gradient(109.6deg, rgb(36, 45, 57) 11.2%, rgb(16, 37, 60) 51.2%, rgb(0, 0, 0) 98.6%)',
-                height: '100vh',
-            }}
-        >
-            <P5Background />
-            <TopNavigationBar/>
-            <LeftButtonListContainer></LeftButtonListContainer>
-            <PanelGroup direction="horizontal">
-                <Panel></Panel>
-                <PanelResizeHandle />
-                <Panel defaultSize={30} minSize={10}>
-                    <RightOptionsRootContainer />
-                </Panel>
-            </PanelGroup>
-        </Box>
-    );
+  return (
+    <Box
+      sx={{
+        position: "absolute",
+        top: 0,
+        left: 0,
+        width: "100vw",
+        overflow: "hidden",
+        background:
+          "linear-gradient(109.6deg, rgb(36, 45, 57) 11.2%, rgb(16, 37, 60) 51.2%, rgb(0, 0, 0) 98.6%)",
+        height: "100vh",
+      }}
+    >
+      <P5Background />
+      <TopNavigationBar />
+      <LeftButtonListContainer></LeftButtonListContainer>
+      <PanelGroup direction="horizontal">
+        <Panel></Panel>
+        <PanelResizeHandle />
+        <Panel defaultSize={30} minSize={10}>
+          <RightOptionsRootContainer />
+        </Panel>
+      </PanelGroup>
+    </Box>
+  );
 }
 
 export default ViewerBuilderCreator;

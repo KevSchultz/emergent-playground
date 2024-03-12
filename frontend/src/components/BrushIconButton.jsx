@@ -7,13 +7,13 @@
  */
 
 // Material UI Imports
-import IconButton from '@mui/material/IconButton';
-import EditIcon from '@mui/icons-material/Edit';
-import SquareIcon from '@mui/icons-material/Square';
-import CircleIcon from '@mui/icons-material/RadioButtonUnchecked';
+import IconButton from "@mui/material/IconButton";
+import EditIcon from "@mui/icons-material/Edit";
+import SquareIcon from "@mui/icons-material/Square";
+import CircleIcon from "@mui/icons-material/RadioButtonUnchecked";
 
 // Other imports
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
 /**
  * A button component for selecting a brush type.
@@ -29,38 +29,46 @@ import PropTypes from 'prop-types';
  *
  * @returns {JSX.Element} The BrushIconButton component.
  */
-function BrushIconButton({ buttonBrushType, currentBrushType, setCurrentBrushType }) {
-    // Get the color of the button based on the current brush type
-    function getColor() {
-        if (buttonBrushType === currentBrushType) {
-            return 'yellow';
-        } else {
-            return 'white';
-        }
+function BrushIconButton({
+  buttonBrushType,
+  currentBrushType,
+  setCurrentBrushType,
+}) {
+  // Get the color of the button based on the current brush type
+  function getColor() {
+    if (buttonBrushType === currentBrushType) {
+      return "yellow";
+    } else {
+      return "white";
     }
+  }
 
-    // Handle the button click to change the brush type
-    function handleOnClick() {
-        setCurrentBrushType(buttonBrushType);
-    }
+  // Handle the button click to change the brush type
+  function handleOnClick() {
+    setCurrentBrushType(buttonBrushType);
+  }
 
-    return (
-        <IconButton sx={{ color: getColor() }} variant="contained" onClick={handleOnClick}>
-            {buttonBrushType === 'pixel' ? (
-                <EditIcon/>
-            ) : buttonBrushType === 'square' ? (
-                <SquareIcon />
-            ) : (
-                <CircleIcon />
-            )}
-        </IconButton>
-    );
+  return (
+    <IconButton
+      sx={{ color: getColor() }}
+      variant="contained"
+      onClick={handleOnClick}
+    >
+      {buttonBrushType === "pixel" ? (
+        <EditIcon />
+      ) : buttonBrushType === "square" ? (
+        <SquareIcon />
+      ) : (
+        <CircleIcon />
+      )}
+    </IconButton>
+  );
 }
 
 BrushIconButton.propTypes = {
-    buttonBrushType: PropTypes.string.isRequired,
-    currentBrushType: PropTypes.string.isRequired,
-    setCurrentBrushType: PropTypes.func.isRequired,
+  buttonBrushType: PropTypes.string.isRequired,
+  currentBrushType: PropTypes.string.isRequired,
+  setCurrentBrushType: PropTypes.func.isRequired,
 };
 
 export default BrushIconButton;

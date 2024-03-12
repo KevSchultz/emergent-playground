@@ -1,37 +1,38 @@
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@700&family=Pixelify+Sans:wght@400..700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@700&family=Pixelify+Sans:wght@400..700&display=swap");
 
-@import url('https://fonts.googleapis.com/css2?family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
-
+@import url("https://fonts.googleapis.com/css2?family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap");
 
 :root {
-    user-select: none;
+  user-select: none;
 }
 
 body {
-    background: linear-gradient(109.6deg, rgb(36, 45, 57) 11.2%, rgb(16, 37, 60) 51.2%, rgb(0, 0, 0) 98.6%);
+  background: linear-gradient(
+    109.6deg,
+    rgb(36, 45, 57) 11.2%,
+    rgb(16, 37, 60) 51.2%,
+    rgb(0, 0, 0) 98.6%
+  );
 }
 
 .MuiPaper-root {
-    backdrop-filter: blur(10px) !important;
-    border-radius: 0 !important; 
+  backdrop-filter: blur(10px) !important;
+  border-radius: 0 !important;
 }
 
-.MuiAvatar-root
-{
-    background-color: rgba(0, 0, 0, 0) !important;
-    color: white !important;
+.MuiAvatar-root {
+  background-color: rgba(0, 0, 0, 0) !important;
+  color: white !important;
 }
 
-.MuiTypography-root
-{
-    font-family: 'Pixelify Sans' !important;
+.MuiTypography-root {
+  font-family: "Pixelify Sans" !important;
 }
 
-.MuiButton-root
-{
-    font-family: 'Ubuntu Mono' !important;
+.MuiButton-root {
+  font-family: "Ubuntu Mono" !important;
 }
 .MuiAccordion-root {
-    backdrop-filter: blur(10px) !important;
-    border-radius: 0 !important;
+  backdrop-filter: blur(10px) !important;
+  border-radius: 0 !important;
 }

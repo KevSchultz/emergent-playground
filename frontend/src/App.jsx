@@ -7,80 +7,77 @@
  */
 
 // React Imports
-import { useEffect } from 'react';
-
+import { useEffect } from "react";
 
 // material ui imports
-import { ThemeProvider } from '@mui/material/styles/';
-import { theme } from './theme';
-import CssBaseline from '@mui/material/CssBaseline';
-
+import { ThemeProvider } from "@mui/material/styles/";
+import { theme } from "./theme";
+import CssBaseline from "@mui/material/CssBaseline";
 
 // react router imports
-import { createBrowserRouter } from 'react-router-dom';
-import { RouterProvider } from 'react-router-dom';
+import { createBrowserRouter } from "react-router-dom";
+import { RouterProvider } from "react-router-dom";
 
 // custom page component imports
-import ViewerBuilderCreator from './pages/ViewerBuilderCreator';
-import Welcome from './pages/Welcome';
-import MyCA from './pages/MyCA';
-import About from './pages/About';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import Community from './pages/Community';
-import { P5PropertiesProvider } from './components/P5PropertiesContext';
+import ViewerBuilderCreator from "./pages/ViewerBuilderCreator";
+import Welcome from "./pages/Welcome";
+import MyCA from "./pages/MyCA";
+import About from "./pages/About";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Community from "./pages/Community";
+import { P5PropertiesProvider } from "./components/P5PropertiesContext";
 
 // overriding ViewerBuilderCerator with LangPage for testing purposes
 const router = createBrowserRouter([
-    {
-        path: '/',
-        element: <ViewerBuilderCreator />,
-    },
-    {
-        path: 'welcome',
-        element: <Welcome />,
-    },
-    {
-        path: 'myca',
-        element: <MyCA/>
-    },
-    {
-        path: 'about',
-        element: <About />,
-    },
-    {
-        path: 'login',
-        element: <Login />,
-    },
-    {
-        path: 'register',
-        element: <Register />,
-    },
-    {
-        path: 'community',
-        element: <Community />,
-    },
+  {
+    path: "/",
+    element: <ViewerBuilderCreator />,
+  },
+  {
+    path: "welcome",
+    element: <Welcome />,
+  },
+  {
+    path: "myca",
+    element: <MyCA />,
+  },
+  {
+    path: "about",
+    element: <About />,
+  },
+  {
+    path: "login",
+    element: <Login />,
+  },
+  {
+    path: "register",
+    element: <Register />,
+  },
+  {
+    path: "community",
+    element: <Community />,
+  },
 ]);
 
 function App() {
+  useEffect(() => {
+    const handleBeforeunload = (e) => {
+      e.preventDefault();
+      e.returnValue = "";
+    };
 
-    useEffect(() => {
-        const handleBeforeunload = (e) => {
-          e.preventDefault();
-          e.returnValue = '';
-        };
-    
-        window.addEventListener('beforeunload', handleBeforeunload);
-      }, []);
+    window.addEventListener("beforeunload", handleBeforeunload);
+  }, []);
 
-    return (
-        <ThemeProvider theme={theme}>
-            <P5PropertiesProvider>
-                <CssBaseline />
-                <RouterProvider router={router} />
-            </P5PropertiesProvider>
-        </ThemeProvider>
-    );
+  return (
+    <ThemeProvider theme={theme}>
+      <P5PropertiesProvider>
+        <CssBaseline />
+        <RouterProvider router={router} />
+      </P5PropertiesProvider>
+    </ThemeProvider>
+  );
 }
 
 export default App;

@@ -7,17 +7,17 @@
  */
 
 // React Imports
-import { useContext } from 'react';
-import { useEffect } from 'react';
-import { useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useContext } from "react";
+import { useEffect } from "react";
+import { useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 
 // Material-UI Imports
-import Link from '@mui/material/Link';
+import Link from "@mui/material/Link";
 
 // Custom Imports
-import P5PropertiesContext from './P5PropertiesContext';
-import backendRequester from './BackendRequester';
+import P5PropertiesContext from "./P5PropertiesContext";
+import backendRequester from "./BackendRequester";
 
 /**
  * @description`LoginLink` is a functional component that displays a link to the login page
@@ -26,32 +26,33 @@ import backendRequester from './BackendRequester';
  * @returns {JSX.Element} The LoginLink component.
  */
 export default function LoginLink() {
+  const { username, setUsername } = useContext(P5PropertiesContext);
 
-    const { username, setUsername } = useContext(P5PropertiesContext);
+  const navigate = useNavigate();
+  const navigateLogin = useCallback(() => {
+    navigate("/login");
+  }, [navigate]);
+  const navigateMyCa = useCallback(() => {
+    navigate("/myca");
+  }, [navigate]);
 
+  useEffect(() => {
+    const getUsername = async () => {
+      const username = await backendRequester.getUsername();
+      console.log("received username: ", username);
+      setUsername(username);
+    };
 
-    const navigate = useNavigate();
-    const navigateLogin = useCallback(() => {navigate('/login')}, [navigate]);
-    const navigateMyCa = useCallback(() => {navigate('/myca')}, [navigate]);
+    getUsername();
+  }, []);
 
-
-    useEffect(() => {
-        const getUsername = async () => {
-            const username = await backendRequester.getUsername();
-            console.log("received username: ", username);
-            setUsername(username);
-        }
-
-        getUsername();
-    }, []);
-
-    return (
-        <>
-            {username == undefined ? (
-                <Link onClick={navigateLogin}>LOGIN</Link>
-            ) : (
-                <Link onClick={navigateMyCa}>{username.toUpperCase()}</Link>
-            )}
-        </>
-    );
+  return (
+    <>
+      {username == undefined ? (
+        <Link onClick={navigateLogin}>LOGIN</Link>
+      ) : (
+        <Link onClick={navigateMyCa}>{username.toUpperCase()}</Link>
+      )}
+    </>
+  );
 }

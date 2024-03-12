@@ -8,7 +8,7 @@
 
 /**
  * @typedef {'success' | 'info' | 'warning' | 'error'} Severity
- * @typedef {'top' | 'bottom'} OriginV 
+ * @typedef {'top' | 'bottom'} OriginV
  * @typedef {'left' | 'center' | 'right'} OriginH
  */
 
@@ -26,34 +26,41 @@
  * @param {OriginV} anchorOriginV - Controls vertical position of PrettyAlert. Can be one of 'top' or 'bottom'.
  * @param {OriginH} anchorOriginH - Controls horizontal position of PrettyAlert. Can be one of 'left', 'center', or 'right'.
  */
-import { Alert, Snackbar } from '@mui/material';
+import { Alert, Snackbar } from "@mui/material";
 
-function PrettyAlert({openAlert, setOpenAlert, alertSeverity, alertMessage, alertDuration, anchorOriginV, anchorOriginH}){
+function PrettyAlert({
+  openAlert,
+  setOpenAlert,
+  alertSeverity,
+  alertMessage,
+  alertDuration,
+  anchorOriginV,
+  anchorOriginH,
+}) {
+  const handleAlertClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenAlert(false);
+  };
 
-    const handleAlertClose = (event, reason) => {
-        if(reason === 'clickaway'){
-            return;
-        }
-        setOpenAlert(false);
-    };
-
-    return(
-        <Snackbar
-            open={openAlert}
-            autoHideDuration={alertDuration}
-            onClose={handleAlertClose}
-            anchorOrigin={{ vertical: anchorOriginV, horizontal: anchorOriginH }}
-        >
-            <Alert
-                onClose={handleAlertClose}
-                severity={alertSeverity}
-                variant='outlined'
-                sx={{ width: '100%' }}
-            >
-                {alertMessage}
-            </Alert>
-        </Snackbar>
-    );
+  return (
+    <Snackbar
+      open={openAlert}
+      autoHideDuration={alertDuration}
+      onClose={handleAlertClose}
+      anchorOrigin={{ vertical: anchorOriginV, horizontal: anchorOriginH }}
+    >
+      <Alert
+        onClose={handleAlertClose}
+        severity={alertSeverity}
+        variant="outlined"
+        sx={{ width: "100%" }}
+      >
+        {alertMessage}
+      </Alert>
+    </Snackbar>
+  );
 }
 
 export default PrettyAlert;

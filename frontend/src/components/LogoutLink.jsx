@@ -7,14 +7,14 @@
  */
 
 // React Imports
-import { useContext } from 'react';
+import { useContext } from "react";
 
 // Material-UI Imports
-import Link from '@mui/material/Link';
+import Link from "@mui/material/Link";
 
 // Custom Imports
-import P5PropertiesContext from './P5PropertiesContext';
-import backendRequester from './BackendRequester';
+import P5PropertiesContext from "./P5PropertiesContext";
+import backendRequester from "./BackendRequester";
 
 /**
  * @description`LogoutLink` is a functional component that logs out the current user.
@@ -22,23 +22,21 @@ import backendRequester from './BackendRequester';
  * @returns {JSX.Element} The LogoutLink component.
  */
 export default function LogoutLink() {
-    const { setUsername } = useContext(P5PropertiesContext);
+  const { setUsername } = useContext(P5PropertiesContext);
 
-    return (
-        <>
-            <Link
-                onClick={async () => {
+  return (
+    <>
+      <Link
+        onClick={async () => {
+          const response = await backendRequester.logout();
 
+          console.log("response: ", response);
 
-                    const response = await backendRequester.logout();
-
-                    console.log("response: ", response);
-
-                    setUsername(undefined);
-                }}
-            >
-                LOGOUT
-            </Link>
-        </>
-    );
+          setUsername(undefined);
+        }}
+      >
+        LOGOUT
+      </Link>
+    </>
+  );
 }

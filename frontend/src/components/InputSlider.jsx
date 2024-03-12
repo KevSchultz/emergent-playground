@@ -8,14 +8,14 @@
  */
 
 // React Imports
-import { useState } from 'react';
+import { useState } from "react";
 
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
-import Slider from '@mui/material/Slider';
-import Input from '@mui/material/Input';
-import PropTypes from 'prop-types';
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
+import Slider from "@mui/material/Slider";
+import Input from "@mui/material/Input";
+import PropTypes from "prop-types";
 
 /**
  * Renders a Material-UI slider input component with a label and input field.
@@ -34,100 +34,108 @@ import PropTypes from 'prop-types';
  *
  * @returns {JSX.Element} The InputSlider component.
  */
-function InputSlider({ className, sx, label, minValue, maxValue, stepValue, value, setValue }) {
+function InputSlider({
+  className,
+  sx,
+  label,
+  minValue,
+  maxValue,
+  stepValue,
+  value,
+  setValue,
+}) {
+  const [inputValue, setInputValue] = useState(value);
 
-    const [ inputValue, setInputValue ] = useState(value);
+  /**
+   * Updates the slider's value.
+   *
+   * @param {Object} event - The event object.
+   * @param {number} newValue - The new value of the slider.
+   */
+  const handleSliderChange = (event, newValue) => {
+    // setValue(newValue);
+    setInputValue(newValue);
+    setValue(newValue);
+  };
 
-    /**
-     * Updates the slider's value.
-     *
-     * @param {Object} event - The event object.
-     * @param {number} newValue - The new value of the slider.
-     */
-    const handleSliderChange = (event, newValue) => {
-        // setValue(newValue);
-        setInputValue(newValue);
-        setValue(newValue);
-    };
+  /**
+   * Updates the slider's value based on the text input field.
+   *
+   * @param {Object} event - The event object.
+   */
+  const handleTextInputChange = (event) => {
+    if (isNaN(event.target.value) || event.target.value === "") {
+      setInputValue(event.target.value);
+      return;
+    }
 
-    /**
-     * Updates the slider's value based on the text input field.
-     *
-     * @param {Object} event - The event object.
-     */
-    const handleTextInputChange = (event) => {
-        if (isNaN(event.target.value) || event.target.value === '') {
-            setInputValue(event.target.value);
-            return;
-        }
+    let newValue = Number(event.target.value);
 
-        let newValue = Number(event.target.value);
+    if (!isNaN(newValue)) {
+      newValue = Math.min(Math.max(minValue, newValue), maxValue); // constrain newValue to the range [minValue, maxValue]
+      setInputValue(newValue);
+      setValue(newValue);
+    }
+  };
 
-        if (!isNaN(newValue)) {
-            newValue = Math.min(Math.max(minValue, newValue), maxValue); // constrain newValue to the range [minValue, maxValue]
-            setInputValue(newValue);
-            setValue(newValue);
-        }
-    };
+  /**
+   * Ensures the slider's value is within the allowed range.
+   */
+  const handleBlur = () => {
+    if (value < minValue) {
+      setValue(minValue);
+    } else if (value > maxValue) {
+      setValue(maxValue);
+    }
+  };
 
-    /**
-     * Ensures the slider's value is within the allowed range.
-     */
-    const handleBlur = () => {
-        if (value < minValue) {
-            setValue(minValue);
-        } else if (value > maxValue) {
-            setValue(maxValue);
-        }
-    };
-
-    return (
-        <Box className={className} sx={sx}>
-            <Typography id="input-slider" gutterBottom>
-                {label}
-            </Typography>
-            <Grid container spacing={2} alignItems="center">
-                <Grid item xs>
-                    <Slider
-                        value={inputValue}
-                        onChange={handleSliderChange}
-                        aria-labelledby="input-slider"
-                        step={stepValue}
-                        min={minValue}
-                        max={maxValue}
-                    />
-                </Grid>
-                <Grid item>
-                    <Input
-                        style={{ width: '50px', color: 'white' }}
-                        value={inputValue}
-                        size="small"
-                        onChange={handleTextInputChange}
-                        onBlur={handleBlur}
-                        inputProps={{
-                            step: stepValue,
-                            min: minValue,
-                            max: maxValue,
-                            type: 'number',
-                            'aria-labelledby': 'input-slider',
-                        }}
-                    />
-                </Grid>
-            </Grid>
-        </Box>
-    );
+  return (
+    <Box className={className} sx={sx}>
+      <Typography id="input-slider" gutterBottom>
+        {label}
+      </Typography>
+      <Grid container spacing={2} alignItems="center">
+        <Grid item xs>
+          <Slider
+            value={inputValue}
+            onChange={handleSliderChange}
+            aria-labelledby="input-slider"
+            step={stepValue}
+            min={minValue}
+            max={maxValue}
+          />
+        </Grid>
+        <Grid item>
+          <Input
+            style={{ width: "50px", color: "white" }}
+            value={inputValue}
+            size="small"
+            onChange={handleTextInputChange}
+            onBlur={handleBlur}
+            inputProps={{
+              step: stepValue,
+              min: minValue,
+              max: maxValue,
+              type: "number",
+              "aria-labelledby": "input-slider",
+            }}
+          />
+        </Grid>
+      </Grid>
+    </Box>
+  );
 }
 
 // This is a type check for the props of the component
 InputSlider.propTypes = {
-    className: PropTypes.string,
-    sx: PropTypes.object,
-    label: PropTypes.string.isRequired,
-    minValue: PropTypes.number.isRequired,
-    maxValue: PropTypes.number.isRequired,
-    stepValue: PropTypes.number.isRequired,
-    value: PropTypes.number.isRequired,
-    setValue: PropTypes.func.isRequired,
+  className: PropTypes.string,
+  sx: PropTypes.object,
+  label: PropTypes.string.isRequired,
+  minValue: PropTypes.number.isRequired,
+  maxValue: PropTypes.number.isRequired,
+  stepValue: PropTypes.number.isRequired,
+  value: PropTypes.number.isRequired,
+  setValue: PropTypes.func.isRequired,
 };
 
 export default InputSlider;

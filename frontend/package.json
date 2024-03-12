@@ -18,6 +18,7 @@
     "ace-builds": "^1.32.6",
     "jsdoc": "^4.0.2",
     "p5": "^1.9.0",
+    "prettier": "^3.2.5",
     "react": "^18.2.0",
     "react-ace": "^10.1.0",
     "react-colorful": "^5.6.1",

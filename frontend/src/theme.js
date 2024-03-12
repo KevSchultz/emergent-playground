@@ -3,24 +3,24 @@
  * @author Kevin Schultz
  * @project Emergent Playground
  */
-import { createTheme } from '@mui/material/styles';
+import { createTheme } from "@mui/material/styles";
 
 export const theme = createTheme({
-    palette: {
-        mode: 'dark',
-        primary: {
-            main: '#0076EC',
-        },
-        secondary: {
-            main: '#f50057',
-        },
-        background: {
-            paper: 'rgba(0, 0, 0, 0.5)',
-        },
+  palette: {
+    mode: "dark",
+    primary: {
+      main: "#0076EC",
     },
-    typography: {
-        h1 : {
-            fontSize: '5vw',
-        },
+    secondary: {
+      main: "#f50057",
     },
+    background: {
+      paper: "rgba(0, 0, 0, 0.5)",
+    },
+  },
+  typography: {
+    h1: {
+      fontSize: "5vw",
+    },
+  },
 });

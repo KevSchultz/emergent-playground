@@ -7,12 +7,12 @@
  */
 
 // React Imports
-import { createContext } from 'react';
-import { useState } from 'react';
+import { createContext } from "react";
+import { useState } from "react";
 
 // Other Imports
-import DefaultProperties from './DefaultProperties';
-import PropTypes from 'prop-types';
+import DefaultProperties from "./DefaultProperties";
+import PropTypes from "prop-types";
 
 const P5PropertiesContext = createContext();
 
@@ -30,112 +30,140 @@ const P5PropertiesContext = createContext();
  * @returns {JSX.Element} A P5PropertiesContext.Provider that wraps the child components and provides them with access to the P5 properties context.
  */
 export function P5PropertiesProvider({ children }) {
+  const [title, setTitle] = useState(DefaultProperties.title);
+  const [username, setUsername] = useState(DefaultProperties.username);
+  const [worldWidth, setWorldWidth] = useState(DefaultProperties.worldWidth);
+  const [worldHeight, setWorldHeight] = useState(DefaultProperties.worldHeight);
+  const [cameraX, setCameraX] = useState(DefaultProperties.cameraX);
+  const [cameraY, setCameraY] = useState(DefaultProperties.cameraY);
+  const [cameraZ, setCameraZ] = useState(DefaultProperties.cameraZ);
+  const [zoom, setZoom] = useState(DefaultProperties.zoom);
+  const [minZoom, setMinZoom] = useState(DefaultProperties.minZoom);
+  const [maxZoom, setMaxZoom] = useState(DefaultProperties.maxZoom);
+  const [zoomSensitivity, setZoomSensitivity] = useState(
+    DefaultProperties.zoomSensitivity,
+  );
+  const [panSensitivity, setPanSensitivity] = useState(
+    DefaultProperties.panSensitivity,
+  );
+  const [brushType, setBrushType] = useState(DefaultProperties.brushType);
+  const [deselectedBrushIconColor, setDeselectedBrushIconColor] = useState(
+    DefaultProperties.deselectedBrushIconColor,
+  );
+  const [brushSize, setBrushSize] = useState(DefaultProperties.brushSize);
+  const [previousMouseX, setPreviousMouseX] = useState(
+    DefaultProperties.previousMouseX,
+  );
+  const [previousMouseY, setPreviousMouseY] = useState(
+    DefaultProperties.previousMouseY,
+  );
+  const [vertexShader, setVertexShader] = useState(
+    DefaultProperties.vertexShader,
+  );
+  const [fragmentShader, setFragmentShader] = useState(
+    DefaultProperties.fragmentShader,
+  );
+  const [pause, setPause] = useState(DefaultProperties.pause);
+  const [code, setCode] = useState(DefaultProperties.code);
+  const [currentLangColor, setCurrentLangColor] = useState(
+    DefaultProperties.currentLangColor,
+  );
+  const [langTupleList, setLangTupleList] = useState(
+    DefaultProperties.langTupleList,
+  );
+  const [langIncludeSelf, setLangIncludeSelf] = useState(
+    DefaultProperties.langIncludeSelf,
+  );
+  const [langRange, setLangRange] = useState(DefaultProperties.langRange);
+  const [backgroundColor, setBackgroundColor] = useState(
+    DefaultProperties.backgroundColor,
+  );
+  const [currentDrawColor, setCurrentDrawColor] = useState(
+    DefaultProperties.currentDrawColor,
+  );
+  const [fullscreen, setFullscreen] = useState(DefaultProperties.fullscreen);
+  const [generation, setGeneration] = useState(DefaultProperties.generation);
+  const [continuousPlay, setContinuousPlay] = useState(
+    DefaultProperties.continuousPlay,
+  );
+  const [langNeighborhoodType, setLangNeighborhoodType] = useState(
+    DefaultProperties.langNeighborhoodType,
+  );
 
+  const value = {
+    title,
+    setTitle,
+    username,
+    setUsername,
+    worldWidth,
+    setWorldWidth,
+    worldHeight,
+    setWorldHeight,
+    cameraX,
+    setCameraX,
+    cameraY,
+    setCameraY,
+    cameraZ,
+    setCameraZ,
+    zoom,
+    setZoom,
+    minZoom,
+    setMinZoom,
+    maxZoom,
+    setMaxZoom,
+    zoomSensitivity,
+    setZoomSensitivity,
+    panSensitivity,
+    setPanSensitivity,
+    brushType,
+    setBrushType,
+    deselectedBrushIconColor,
+    setDeselectedBrushIconColor,
+    brushSize,
+    setBrushSize,
+    previousMouseX,
+    setPreviousMouseX,
+    previousMouseY,
+    setPreviousMouseY,
+    vertexShader,
+    setVertexShader,
+    fragmentShader,
+    setFragmentShader,
+    pause,
+    setPause,
+    code,
+    setCode,
+    currentLangColor,
+    setCurrentLangColor,
+    langTupleList,
+    setLangTupleList,
+    langIncludeSelf,
+    setLangIncludeSelf,
+    langRange,
+    setLangRange,
+    backgroundColor,
+    setBackgroundColor,
+    currentDrawColor,
+    setCurrentDrawColor,
+    langNeighborhoodType,
+    setLangNeighborhoodType,
+    fullscreen,
+    setFullscreen,
+    generation,
+    setGeneration,
+    continuousPlay,
+    setContinuousPlay,
+  };
 
-    const [title, setTitle] = useState(DefaultProperties.title)
-    const [username, setUsername] = useState(DefaultProperties.username);
-    const [worldWidth, setWorldWidth] = useState(DefaultProperties.worldWidth);
-    const [worldHeight, setWorldHeight] = useState(DefaultProperties.worldHeight);
-    const [cameraX, setCameraX] = useState(DefaultProperties.cameraX);
-    const [cameraY, setCameraY] = useState(DefaultProperties.cameraY);
-    const [cameraZ, setCameraZ] = useState(DefaultProperties.cameraZ);
-    const [zoom, setZoom] = useState(DefaultProperties.zoom);
-    const [minZoom, setMinZoom] = useState(DefaultProperties.minZoom);
-    const [maxZoom, setMaxZoom] = useState(DefaultProperties.maxZoom);
-    const [zoomSensitivity, setZoomSensitivity] = useState(DefaultProperties.zoomSensitivity);
-    const [panSensitivity, setPanSensitivity] = useState(DefaultProperties.panSensitivity);
-    const [brushType, setBrushType] = useState(DefaultProperties.brushType);
-    const [deselectedBrushIconColor, setDeselectedBrushIconColor] = useState(
-        DefaultProperties.deselectedBrushIconColor
-    );
-    const [brushSize, setBrushSize] = useState(DefaultProperties.brushSize);
-    const [previousMouseX, setPreviousMouseX] = useState(DefaultProperties.previousMouseX);
-    const [previousMouseY, setPreviousMouseY] = useState(DefaultProperties.previousMouseY);
-    const [vertexShader, setVertexShader] = useState(DefaultProperties.vertexShader);
-    const [fragmentShader, setFragmentShader] = useState(DefaultProperties.fragmentShader);
-    const [pause, setPause] = useState(DefaultProperties.pause);
-    const [code, setCode] = useState(DefaultProperties.code);
-    const [currentLangColor, setCurrentLangColor] = useState(DefaultProperties.currentLangColor);
-    const [langTupleList, setLangTupleList] = useState(DefaultProperties.langTupleList);
-    const [langIncludeSelf, setLangIncludeSelf] = useState(DefaultProperties.langIncludeSelf);
-    const [langRange, setLangRange] = useState(DefaultProperties.langRange);
-    const [backgroundColor, setBackgroundColor] = useState(DefaultProperties.backgroundColor);
-    const [currentDrawColor, setCurrentDrawColor] = useState(DefaultProperties.currentDrawColor);
-    const [fullscreen, setFullscreen] = useState(DefaultProperties.fullscreen);
-    const [generation, setGeneration] = useState(DefaultProperties.generation);
-    const [continuousPlay, setContinuousPlay] = useState(DefaultProperties.continuousPlay);
-    const [langNeighborhoodType, setLangNeighborhoodType] = useState(DefaultProperties.langNeighborhoodType);
-
-    const value = {
-        title,
-        setTitle,
-        username,
-        setUsername,
-        worldWidth,
-        setWorldWidth,
-        worldHeight,
-        setWorldHeight,
-        cameraX,
-        setCameraX,
-        cameraY,
-        setCameraY,
-        cameraZ,
-        setCameraZ,
-        zoom,
-        setZoom,
-        minZoom,
-        setMinZoom,
-        maxZoom,
-        setMaxZoom,
-        zoomSensitivity,
-        setZoomSensitivity,
-        panSensitivity,
-        setPanSensitivity,
-        brushType,
-        setBrushType,
-        deselectedBrushIconColor,
-        setDeselectedBrushIconColor,
-        brushSize,
-        setBrushSize,
-        previousMouseX,
-        setPreviousMouseX,
-        previousMouseY,
-        setPreviousMouseY,
-        vertexShader,
-        setVertexShader,
-        fragmentShader,
-        setFragmentShader,
-        pause,
-        setPause,
-        code,
-        setCode,
-        currentLangColor,
-        setCurrentLangColor,
-        langTupleList,
-        setLangTupleList,
-        langIncludeSelf,
-        setLangIncludeSelf,
-        langRange,
-        setLangRange,
-        backgroundColor,
-        setBackgroundColor,
-        currentDrawColor,
-        setCurrentDrawColor,
-        langNeighborhoodType,
-        setLangNeighborhoodType,
-        fullscreen,
-        setFullscreen,
-        generation,
-        setGeneration,
-        continuousPlay,
-        setContinuousPlay,
-    };
-
-    return <P5PropertiesContext.Provider value={value}>{children}</P5PropertiesContext.Provider>;
+  return (
+    <P5PropertiesContext.Provider value={value}>
+      {children}
+    </P5PropertiesContext.Provider>
+  );
 }
 
 P5PropertiesProvider.propTypes = {
-    children: PropTypes.node.isRequired,
+  children: PropTypes.node.isRequired,
 };
 
 export default P5PropertiesContext;

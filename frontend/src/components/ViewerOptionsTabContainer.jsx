@@ -7,20 +7,18 @@
  */
 
 // React Imports
-import { useContext } from 'react';
+import { useContext } from "react";
 
 // Material UI Imports
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import { Checkbox, FormControlLabel, FormGroup } from '@mui/material';
-
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import { Checkbox, FormControlLabel, FormGroup } from "@mui/material";
 
 // Custom Component Imports
-import InputSlider from './InputSlider';
-import P5PropertiesContext from './P5PropertiesContext';
-import cellularAutomataSketch from './cellularAutomataSketch';
+import InputSlider from "./InputSlider";
+import P5PropertiesContext from "./P5PropertiesContext";
+import cellularAutomataSketch from "./cellularAutomataSketch";
 // import { downloadPost } from '../backendRequester';
-
 
 /**
  * A container component for the viewer options tab.
@@ -32,74 +30,78 @@ import cellularAutomataSketch from './cellularAutomataSketch';
  * @returns {JSX.Element} The ViewerOptionsTabContainer component.
  */
 function ViewerOptionsTabContainer() {
-    const {
-        title,
-        zoom,
-        setZoom,
-        worldWidth,
-        setWorldWidth,
-        worldHeight,
-        setWorldHeight,
-        brushSize,
-        setBrushSize,
-        continuousPlay,
-        setContinuousPlay,
-        setPause,
-    } = useContext(P5PropertiesContext);
+  const {
+    title,
+    zoom,
+    setZoom,
+    worldWidth,
+    setWorldWidth,
+    worldHeight,
+    setWorldHeight,
+    brushSize,
+    setBrushSize,
+    continuousPlay,
+    setContinuousPlay,
+    setPause,
+  } = useContext(P5PropertiesContext);
 
+  return (
+    <Box sx={{ width: "100%" }}>
+      <InputSlider
+        label="Zoom"
+        minValue={0.1}
+        maxValue={100}
+        stepValue={1}
+        value={zoom}
+        setValue={setZoom}
+      />
+      <InputSlider
+        label="World Width"
+        minValue={1}
+        maxValue={5000}
+        stepValue={1}
+        value={worldWidth}
+        setValue={setWorldWidth}
+      />
+      <InputSlider
+        label="World Height"
+        minValue={1}
+        maxValue={5000}
+        stepValue={1}
+        value={worldHeight}
+        setValue={setWorldHeight}
+      />
+      <InputSlider
+        label="Brush Size"
+        minValue={2}
+        maxValue={5000}
+        stepValue={1}
+        value={brushSize}
+        setValue={setBrushSize}
+      ></InputSlider>
 
-    return (
-        <Box sx={{ width: '100%' }}>
-            <InputSlider
-                label="Zoom"
-                minValue={0.1}
-                maxValue={100}
-                stepValue={1}
-                value={zoom}
-                setValue={setZoom}
-            />
-            <InputSlider
-                label="World Width"
-                minValue={1}
-                maxValue={5000}
-                stepValue={1}
-                value={worldWidth}
-                setValue={setWorldWidth}
-            />
-            <InputSlider
-                label="World Height"
-                minValue={1}
-                maxValue={5000}
-                stepValue={1}
-                value={worldHeight}
-                setValue={setWorldHeight}
-            />
-            <InputSlider
-                label="Brush Size"
-                minValue={2}
-                maxValue={5000}
-                stepValue={1}
-                value={brushSize}
-                setValue={setBrushSize}
-            ></InputSlider>
+      <FormGroup>
+        <FormControlLabel
+          checked={continuousPlay}
+          onChange={(event) => {
+            setContinuousPlay(event.target.checked);
+            setPause(0);
+          }}
+          control={<Checkbox />}
+          label="Continuous Play"
+        />
+      </FormGroup>
 
-            <FormGroup>
-                <FormControlLabel
-                    checked={continuousPlay}
-                    onChange={(event) => {
-                        setContinuousPlay(event.target.checked);
-                        setPause(0);
-                    }}
-                    control={<Checkbox />}
-                    label="Continuous Play"
-                />
-            </FormGroup>
-
-            <Button variant="contained" onClick={() => {cellularAutomataSketch.exportStateToPNG(title)}}>
-                EXPORT
-            </Button>
-        </Box>
-    );
+      <Button
+        variant="contained"
+        onClick={() => {
+          cellularAutomataSketch.exportStateToPNG(title);
+        }}
+      >
+        EXPORT
+      </Button>
+    </Box>
+  );
 }
 
 export default ViewerOptionsTabContainer;

@@ -7,14 +7,14 @@
  */
 
 // React Imports
-import {useContext} from 'react';
+import { useContext } from "react";
 // Material UI Imports
-import Box from '@mui/material/Box';
+import Box from "@mui/material/Box";
 
 // Other Imports
-import { ReactP5Wrapper } from '@p5-wrapper/react';
-import P5PropertiesContext from './P5PropertiesContext';
-import cellularAutomataSketch from './cellularAutomataSketch';
+import { ReactP5Wrapper } from "@p5-wrapper/react";
+import P5PropertiesContext from "./P5PropertiesContext";
+import cellularAutomataSketch from "./cellularAutomataSketch";
 
 /**
  * A component for rendering the P5.js background.
@@ -30,27 +30,27 @@ import cellularAutomataSketch from './cellularAutomataSketch';
  * @returns {JSX.Element} The P5Background component.
  */
 function P5Background() {
-    const p5Properties = useContext(P5PropertiesContext);
+  const p5Properties = useContext(P5PropertiesContext);
 
-    return (
-        <Box
-            sx={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                height: '100%',
-                overflow: 'hidden',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-            }}
-        >
-            <ReactP5Wrapper
-                sketch={cellularAutomataSketch.reactP5WrapperToClassInterface}
-                {...p5Properties}
-            ></ReactP5Wrapper>
-        </Box>
-    );
+  return (
+    <Box
+      sx={{
+        position: "absolute",
+        top: 0,
+        left: 0,
+        height: "100%",
+        overflow: "hidden",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <ReactP5Wrapper
+        sketch={cellularAutomataSketch.reactP5WrapperToClassInterface}
+        {...p5Properties}
+      ></ReactP5Wrapper>
+    </Box>
+  );
 }
 
 export default P5Background;

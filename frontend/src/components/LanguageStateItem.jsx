@@ -7,14 +7,21 @@
  */
 
 // React Imports
-import { useContext } from 'react';
+import { useContext } from "react";
 
 // Material UI Imports
-import { Avatar, IconButton, ListItem, ListItemAvatar, ListItemText, TextField } from '@mui/material';
-import { Brightness1, RemoveCircleOutline } from '@mui/icons-material';
+import {
+  Avatar,
+  IconButton,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  TextField,
+} from "@mui/material";
+import { Brightness1, RemoveCircleOutline } from "@mui/icons-material";
 
 // Other Imports
-import P5PropertiesContext from './P5PropertiesContext';
+import P5PropertiesContext from "./P5PropertiesContext";
 
 /**
  * An entry component in the LanguageOptionsTabContainer list of states, represented by langTupleList.
@@ -30,43 +37,53 @@ import P5PropertiesContext from './P5PropertiesContext';
  *
  * @returns {JSX.Element} The LanguageStateItem component.
  */
-function LanguageStateItem({state}) {
-    const { langTupleList, setLangTupleList } = useContext(P5PropertiesContext);
-    
-    const handleName = (event) => {
-        setLangTupleList(langTupleList.map(s => {
-            if(s.color === state.color){
-                return {color: s.color, name: event.target.value}
-            } 
-            return s;
-        }));
-    };
+function LanguageStateItem({ state }) {
+  const { langTupleList, setLangTupleList } = useContext(P5PropertiesContext);
 
-    return(
-        <ListItem
-            secondaryAction={
-                <IconButton 
-                    edge='end'
-                    onClick={() => {
-                        setLangTupleList(langTupleList.filter(t => t.color !== state.color));
-                    }}
-                >
-                    <RemoveCircleOutline/>
-                </IconButton>
-            }
-        >
-            <ListItemAvatar>
-                <Avatar>
-                    <Brightness1 sx={{ color: state.color }}/>
-                </Avatar>
-            </ListItemAvatar>
-            <ListItemText
-                primary={
-                    <TextField variant='standard' margin='none' onChange={handleName} value={state.name} error={state.name===''}/>
-                }
-            />
-        </ListItem>
+  const handleName = (event) => {
+    setLangTupleList(
+      langTupleList.map((s) => {
+        if (s.color === state.color) {
+          return { color: s.color, name: event.target.value };
+        }
+        return s;
+      }),
     );
+  };
+
+  return (
+    <ListItem
+      secondaryAction={
+        <IconButton
+          edge="end"
+          onClick={() => {
+            setLangTupleList(
+              langTupleList.filter((t) => t.color !== state.color),
+            );
+          }}
+        >
+          <RemoveCircleOutline />
+        </IconButton>
+      }
+    >
+      <ListItemAvatar>
+        <Avatar>
+          <Brightness1 sx={{ color: state.color }} />
+        </Avatar>
+      </ListItemAvatar>
+      <ListItemText
+        primary={
+          <TextField
+            variant="standard"
+            margin="none"
+            onChange={handleName}
+            value={state.name}
+            error={state.name === ""}
+          />
+        }
+      />
+    </ListItem>
+  );
 }
 
 export default LanguageStateItem;

@@ -7,11 +7,11 @@
  */
 
 // Shader Imports (for the premade rules)
-import premadeConstants from '../lang-data/premadeConstants';
+import premadeConstants from "../lang-data/premadeConstants";
 
 // Other Imports
-import PremadeRuleCard from './PremadeRuleCard';
-import ResizableGrid from './ResizableGrid';
+import PremadeRuleCard from "./PremadeRuleCard";
+import ResizableGrid from "./ResizableGrid";
 
 /**
  * A container component for the premade rules options tab.
@@ -22,24 +22,24 @@ import ResizableGrid from './ResizableGrid';
  * @returns {JSX.Element} The PremadeRulesOptionsTabContainer component.
  */
 function PremadeRulesOptionsTabContainer() {
-    return (
-        <ResizableGrid limit={400}>
-            {premadeConstants.map((p, index) => (
-                <PremadeRuleCard
-                    key={index}
-                    newFragmentShader={p.shader}
-                    newTupleList={p.tupleList}
-                    newDefaultDraw={p.defaultDraw}
-                    newDefaultBackground={p.defaultBackground}
-                    premadeRuleName={p.name}
-                    imageUrl={p.url}
-                    newNeighborhood={p.neighborhood}
-                    newRange={p.range}
-                    newIncludeSelf={p.includeSelf}
-                />
-            ))}
-        </ResizableGrid>
-    );
+  return (
+    <ResizableGrid limit={400}>
+      {premadeConstants.map((p, index) => (
+        <PremadeRuleCard
+          key={index}
+          newFragmentShader={p.shader}
+          newTupleList={p.tupleList}
+          newDefaultDraw={p.defaultDraw}
+          newDefaultBackground={p.defaultBackground}
+          premadeRuleName={p.name}
+          imageUrl={p.url}
+          newNeighborhood={p.neighborhood}
+          newRange={p.range}
+          newIncludeSelf={p.includeSelf}
+        />
+      ))}
+    </ResizableGrid>
+  );
 }
 
 export default PremadeRulesOptionsTabContainer;

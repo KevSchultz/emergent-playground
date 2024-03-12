@@ -7,123 +7,120 @@
  */
 
 // React Imports
-import { useState } from 'react';
-import { useContext } from 'react';
-import { useNavigate } from 'react-router-dom'
+import { useState } from "react";
+import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 
 // Material UI Imports
-import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
-import Link from '@mui/material/Link';
+import Box from "@mui/material/Box";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Typography from "@mui/material/Typography";
+import Link from "@mui/material/Link";
 
 // Custom Component Imports
-import LoadingDialog from './LoadingDialog';
-import backendRequester from './BackendRequester';
-import cellularAutomataSketch from './cellularAutomataSketch';
-import P5PropertiesContext from './P5PropertiesContext';
+import LoadingDialog from "./LoadingDialog";
+import backendRequester from "./BackendRequester";
+import cellularAutomataSketch from "./cellularAutomataSketch";
+import P5PropertiesContext from "./P5PropertiesContext";
 
 // Other Imports
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
 function PostCard({ title, username, postid }) {
+  const {
+    setWorldWidth,
+    setWorldHeight,
+    setCameraX,
+    setCameraY,
+    setCameraZ,
+    setZoom,
+    setMinZoom,
+    setMaxZoom,
+    setZoomSensitivity,
+    setPanSensitivity,
+    setBrushType,
+    setBrushSize,
+    setPreviousMouseX,
+    setPreviousMouseY,
+    setVertexShader,
+    setFragmentShader,
+    setPause,
+    setCode,
+    setCurrentLangColor,
+    setLangTupleList,
+    setLangIncludeSelf,
+    setLangRange,
+    setBackgroundColor,
+    setCurrentDrawColor,
+    setLangNeighborhoodType,
+    setFullscreen,
+    setGeneration,
+    setContinuousPlay,
+  } = useContext(P5PropertiesContext);
 
-    const {
-        setWorldWidth,
-        setWorldHeight,
-        setCameraX,
-        setCameraY,
-        setCameraZ,
-        setZoom,
-        setMinZoom,
-        setMaxZoom,
-        setZoomSensitivity,
-        setPanSensitivity,
-        setBrushType,
-        setBrushSize,
-        setPreviousMouseX,
-        setPreviousMouseY,
-        setVertexShader,
-        setFragmentShader,
-        setPause,
-        setCode,
-        setCurrentLangColor,
-        setLangTupleList,
-        setLangIncludeSelf,
-        setLangRange,
-        setBackgroundColor,
-        setCurrentDrawColor,
-        setLangNeighborhoodType,
-        setFullscreen,
-        setGeneration,
-        setContinuousPlay,
-    } = useContext(P5PropertiesContext);
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
-    const navigate = useNavigate();
-    const [loading, setLoading] = useState(false);
+  const handleClick = async () => {
+    setLoading(true);
 
-    const handleClick = async () => {
-        setLoading(true);
+    const post = await backendRequester.downloadPost(postid);
 
-        const post = await backendRequester.downloadPost(postid);
+    const state = post.state;
+    const properties = post.properties;
 
-        const state = post.state;
-        const properties = post.properties;
+    if (post == undefined) {
+      alert("Download failed.");
+      return;
+    }
 
-        if (post == undefined) {
-            alert("Download failed.");
-            return;
-        }
+    setWorldWidth(properties.worldWidth);
+    setWorldHeight(properties.worldHeight);
+    setZoom(properties.zoom);
+    setMinZoom(properties.minZoom);
+    setMaxZoom(properties.maxZoom);
+    setBrushType(properties.brushType);
+    setBrushSize(properties.brushSize);
+    setVertexShader(properties.vertexShader);
+    setFragmentShader(properties.fragmentShader);
+    setCode(properties.code);
+    setCurrentLangColor(properties.currentLangColor);
+    setLangTupleList(properties.langTupleList);
+    setLangIncludeSelf(properties.langIncludeSelf);
+    setLangRange(properties.langRange);
+    setCurrentDrawColor(properties.currentDrawColor);
+    setLangNeighborhoodType(properties.langNeighborhoodType);
+    setGeneration(properties.generation);
+    setContinuousPlay(properties.continuousPlay);
 
-        setWorldWidth(properties.worldWidth);
-        setWorldHeight(properties.worldHeight);
-        setZoom(properties.zoom);
-        setMinZoom(properties.minZoom);
-        setMaxZoom(properties.maxZoom);
-        setBrushType(properties.brushType);
-        setBrushSize(properties.brushSize);
-        setVertexShader(properties.vertexShader);
-        setFragmentShader(properties.fragmentShader);
-        setCode(properties.code);
-        setCurrentLangColor(properties.currentLangColor);
-        setLangTupleList(properties.langTupleList);
-        setLangIncludeSelf(properties.langIncludeSelf);
-        setLangRange(properties.langRange);
-        setCurrentDrawColor(properties.currentDrawColor);
-        setLangNeighborhoodType(properties.langNeighborhoodType);
-        setGeneration(properties.generation);
-        setContinuousPlay(properties.continuousPlay);
+    cellularAutomataSketch.initialState = state;
+    cellularAutomataSketch.reactProperties = properties;
 
+    navigate("/");
 
-        cellularAutomataSketch.initialState = state;
-        cellularAutomataSketch.reactProperties = properties;
+    setLoading(false);
+  };
 
-        navigate('/');
-
-
-        setLoading(false);
-    };
-
-    return (
-        <Box>
-            <Card sx={{ marginY: 0.5 }}>
-                <CardContent>
-                    <Link variant='h5' onClick={handleClick}>
-                        {title}
-                    </Link>
-                    <Typography color="text.secondary">{"By: " + username}</Typography>
-                </CardContent>
-            </Card>
-            <LoadingDialog open={loading}></LoadingDialog>
-        </Box>
-    );
+  return (
+    <Box>
+      <Card sx={{ marginY: 0.5 }}>
+        <CardContent>
+          <Link variant="h5" onClick={handleClick}>
+            {title}
+          </Link>
+          <Typography color="text.secondary">{"By: " + username}</Typography>
+        </CardContent>
+      </Card>
+      <LoadingDialog open={loading}></LoadingDialog>
+    </Box>
+  );
 }
 
 PostCard.propTypes = {
-    title: PropTypes.string.isRequired,
-    username: PropTypes.string.isRequired,
-    postid: PropTypes.string.isRequired
+  title: PropTypes.string.isRequired,
+  username: PropTypes.string.isRequired,
+  postid: PropTypes.string.isRequired,
 };
 
-export default PostCard
+export default PostCard;
