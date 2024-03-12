@@ -205,6 +205,8 @@ class CellularAutomataSketchClass {
     if (err == "") {
       this.shader = null;
       this.shader = this.p5.createShader(newVertexShader, newFragmentShader);
+    } else {
+      console.log(err);
     }
 
     this.currentState.shader(this.shader);
