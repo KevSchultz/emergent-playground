@@ -13,6 +13,10 @@
 * [Preston Nguyen](mailto:prhunguy@ucsc.edu)
 * [Kevin Schultz](mailto:ksschult@ucsc.edu)
 
+## Project Documentation
+
+The code is documented with JSDOC, and hosted [here](https://kevschultz.github.io/emergent-playground/). 
+
 ## Requirements
 
 To run this project locally, you will need the following:
