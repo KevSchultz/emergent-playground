@@ -465,7 +465,8 @@ class CellularAutomataSketchClass {
       this.cursorIsOnCanvas = false;
     });
 
-    this.keepDimensions = false;
+    this.windowResized();
+
     this.debugMode ? console.log("CellularAutomataSketchClass.setup") : null;
   }
 
