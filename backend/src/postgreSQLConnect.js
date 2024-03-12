@@ -1,10 +1,10 @@
 /**
  * @project Emergent Playground
  * @file postgreSQLConnect.js
- * @overview This file exports a class, PostgreSQLConnect, that provides a connection to a PostgreSQL database and 
- * implements methods for interacting with the database. The class constructor takes in the host, user, port, password, 
- * and database name, and attempts to connect to the database. The class also includes a method for getting the current 
- * date and time and formatting it as a timestamp string. 
+ * @overview This file exports a class, PostgreSQLConnect, that provides a connection to a PostgreSQL database and
+ * implements methods for interacting with the database. The class constructor takes in the host, user, port, password,
+ * and database name, and attempts to connect to the database. The class also includes a method for getting the current
+ * date and time and formatting it as a timestamp string.
  * @authors Ethan Foster, Kevin Schultz
  * @exports postgreSQLConnect
  */
@@ -93,32 +93,37 @@ class PostgreSQLConnect {
      * @throws {Error} If there is an error while querying the database.
      */
     async createAccount(username, email, password) {
-        // check if there is already an account with that username
-        const resultUserName = await this.client.query('SELECT * FROM users WHERE username = $1', [
-            username,
-        ]);
+        try {
+            // check if there is already an account with that username
+            const resultUserName = await this.client.query(
+                'SELECT * FROM users WHERE username = $1',
+                [username]
+            );
 
-        const countUserName = parseInt(resultUserName.rows.length); // Extract the count from the query result
+            const countUserName = parseInt(resultUserName.rows.length); // Extract the count from the query result
 
-        // check if there is already an account with that email
-        const resultEmail = await this.client.query('SELECT * FROM users WHERE email = $1', [
-            email,
-        ]);
-        const countEmail = parseInt(resultEmail.rows.length); // Extract the count from the query result
+            // check if there is already an account with that email
+            const resultEmail = await this.client.query('SELECT * FROM users WHERE email = $1', [
+                email,
+            ]);
+            const countEmail = parseInt(resultEmail.rows.length); // Extract the count from the query result
 
-        if (countUserName > 0 || countEmail > 0) {
-            // if match found
-            throw new Error('Username or email already taken');
+            if (countUserName > 0 || countEmail > 0) {
+                // if match found
+                throw new Error('Username or email already taken');
+            }
+
+            const userResult = await this.client.query(
+                'INSERT INTO users (username, email, password) VALUES ($1, $2, $3) RETURNING *',
+                [username, email, password]
+            );
+
+            console.log('Server created account: ', username);
+
+            return userResult.rows[0]; // returns the user object
+        } catch (err) {
+            throw new Error('Error executing query:', err);
         }
-
-        const userResult = await this.client.query(
-            'INSERT INTO users (username, email, password) VALUES ($1, $2, $3) RETURNING *',
-            [username, email, password]
-        );
-
-        console.log('Server created account: ', username);
-
-        return userResult.rows[0]; // returns the user object
     }
 
     /**
@@ -137,21 +142,25 @@ class PostgreSQLConnect {
             throw new Error('Invalid input to getAccount.');
         }
 
-        let result = null;
+        try {
+            let result = null;
 
-        if (userid != null) {
-            result = await this.client.query('SELECT * from users WHERE userid = $1', [userid]);
-        } else {
-            result = await this.client.query('SELECT * from users WHERE email = $1', [email]);
+            if (userid != null) {
+                result = await this.client.query('SELECT * from users WHERE userid = $1', [userid]);
+            } else {
+                result = await this.client.query('SELECT * from users WHERE email = $1', [email]);
+            }
+
+            if (result.rows.length == 0) {
+                throw new Error('email not found.');
+            }
+
+            const user = result.rows[0];
+
+            return user;
+        } catch (err) {
+            throw new Error('Error executing query:', err);
         }
-
-        if (result.rows.length == 0) {
-            throw new Error('email not found.');
-        }
-
-        const user = result.rows[0];
-
-        return user;
     }
 
     /**
@@ -178,35 +187,43 @@ class PostgreSQLConnect {
             throw new Error('Invalid input to createPost.');
         }
 
-        // determining whether the post exists and must be updated or if new post and must be created
-        const pathwayDeterminationString = 'SELECT * FROM posts WHERE userid = $1 AND title = $2;';
-        const pathwayValues = [userid, title];
+        try {
+            // determining whether the post exists and must be updated or if new post and must be created
+            const pathwayDeterminationString =
+                'SELECT * FROM posts WHERE userid = $1 AND title = $2;';
+            const pathwayValues = [userid, title];
 
-        const pathwayResults = await this.client.query(pathwayDeterminationString, pathwayValues);
+            const pathwayResults = await this.client.query(
+                pathwayDeterminationString,
+                pathwayValues
+            );
 
-        if (pathwayResults.rows.length > 0) {
-            // UPDATE PATHWAY
-            console.log('Row found:', pathwayResults.rows[0]);
-            const updateQuery =
-                'UPDATE posts SET poststate = $1, postproperties = $2 WHERE userid = $3 AND title = $4;';
-            const updateValues = [poststate, postproperties, userid, title];
+            if (pathwayResults.rows.length > 0) {
+                // UPDATE PATHWAY
+                console.log('Row found:', pathwayResults.rows[0]);
+                const updateQuery =
+                    'UPDATE posts SET poststate = $1, postproperties = $2 WHERE userid = $3 AND title = $4;';
+                const updateValues = [poststate, postproperties, userid, title];
 
-            const updateResults = await this.client.query(updateQuery, updateValues);
-            postUpdate = updateResults.row[0];
-            return postUpdate;
-        } else {
-            // CREATION PATHWAY
-            console.log('No row found: creating new post');
-            const creationtime = this.getCurrentTimeStamp();
+                const updateResults = await this.client.query(updateQuery, updateValues);
+                postUpdate = updateResults.row[0];
+                return postUpdate;
+            } else {
+                // CREATION PATHWAY
+                console.log('No row found: creating new post');
+                const creationtime = this.getCurrentTimeStamp();
 
-            const queryString =
-                'INSERT INTO posts (userid, username, title, poststate, postproperties, creationtime) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *;';
-            const values = [userid, username, title, poststate, postproperties, creationtime];
-            const creationResults = await this.client.query(queryString, values);
+                const queryString =
+                    'INSERT INTO posts (userid, username, title, poststate, postproperties, creationtime) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *;';
+                const values = [userid, username, title, poststate, postproperties, creationtime];
+                const creationResults = await this.client.query(queryString, values);
 
-            const post = creationResults.rows[0];
+                const post = creationResults.rows[0];
 
-            return post;
+                return post;
+            }
+        } catch (err) {
+            throw new Error('Error executing query:', err);
         }
     }
 
@@ -220,15 +237,19 @@ class PostgreSQLConnect {
      * @throws Will throw an error if there is an error executing the query.
      */
     async getPostState(postid) {
-        const queryString = 'SELECT poststate FROM posts WHERE postid = $1;';
+        try {
+            const queryString = 'SELECT poststate FROM posts WHERE postid = $1;';
 
-        const values = [postid];
+            const values = [postid];
 
-        const result = await this.client.query(queryString, values);
+            const result = await this.client.query(queryString, values);
 
-        const postState = result.rows[0];
+            const postState = result.rows[0];
 
-        return postState;
+            return postState;
+        } catch (err) {
+            throw new Error('Error executing query:', err);
+        }
     }
 
     /**
@@ -241,15 +262,19 @@ class PostgreSQLConnect {
      * @throws Will throw an error if there is an error executing the query.
      */
     async getPostProperties(postid) {
-        const queryString = 'SELECT postproperties FROM posts WHERE postid = $1;';
+        try {
+            const queryString = 'SELECT postproperties FROM posts WHERE postid = $1;';
 
-        const values = [postid];
+            const values = [postid];
 
-        const result = await this.client.query(queryString, values);
+            const result = await this.client.query(queryString, values);
 
-        const postProperties = result.rows[0];
+            const postProperties = result.rows[0];
 
-        return postProperties;
+            return postProperties;
+        } catch (err) {
+            throw new Error('Error executing query:', err);
+        }
     }
 
     /**
@@ -301,8 +326,7 @@ class PostgreSQLConnect {
                 return result.rows;
             }
         } catch (err) {
-            console.log(err);
-            return err;
+            throw new Error('Error executing query:', err);
         }
     }
 }
