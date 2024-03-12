@@ -174,35 +174,10 @@ class BackendRequester extends BackendRequesterInterface {
       return response;
     } catch (error) {
       console.error("Error:", error);
+      return undefined;
     }
   }
 
-  async serializePostProperties(width, height, ruleData) {
-    const ruleDataJSONString = JSON.stringify(ruleData); // stringifes ruleData object
-    const postPropertiesJSONString = JSON.stringify({
-      username,
-      title,
-      ruleDataJSONString,
-    });
-    const serializedPostProperties = this.encodeBase64(
-      postPropertiesJSONString,
-    ); // putting rule into binary
-    return serializedPostProperties;
-  }
-
-  // takes a json that has been sent to the frontend and returns it as a javascript post object
-  async unserializePostProperties(serializedPost) {
-    const decodedPostProperties = this.decodeBase64(serializedPost); // takes base64 and converts to json
-    const jsObjectPostProperties = JSON.parse(decodedPostProperties); // takes json and converts to js object
-    let ruleDataObject = JSON.parse(jsObjectPostProperties.ruleDataJSON); // takes ruledata and converts from json to js object
-    let postProperties = {
-      // creating proper format for the properties
-      width: jsObjectPostProperties.width,
-      height: jsObjectPostProperties.height,
-      ruleData: ruleDataObject,
-    };
-    return postProperties;
-  }
 
   /**
    * @description Sends a request for downloading a cellular automata post from the server.
@@ -215,22 +190,14 @@ class BackendRequester extends BackendRequesterInterface {
     const responseProperties = await this.downloadPostProperties(postid);
 
     if (responseState == undefined || responseProperties == undefined) {
-      console.log("return undefined");
       return undefined;
     }
-
-    console.log("Reponse State:");
-    console.log(responseState);
-    console.log("Response Properties:");
-    console.log(responseProperties);
 
     const state = await this.binaryEncoderDecoder.blobToArray(responseState);
 
     const properties =
       await this.binaryEncoderDecoder.decodeBinaryToJSON(responseProperties);
 
-    console.log("Pixel Array: ", state);
-    console.log("Properties json: ", properties);
 
     return { state: state, properties: properties };
   }

@@ -57,13 +57,13 @@ function PostCard({ title, username, postid }) {
 
     const post = await backendRequester.downloadPost(postid);
 
-    const state = post.state;
-    const properties = post.properties;
-
     if (post == undefined) {
       alert("Download failed.");
       return;
     }
+
+    const state = post.state;
+    const properties = post.properties;
 
     setWorldWidth(properties.worldWidth);
     setWorldHeight(properties.worldHeight);
