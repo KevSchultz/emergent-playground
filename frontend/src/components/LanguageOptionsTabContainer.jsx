@@ -28,6 +28,7 @@ import P5PropertiesContext from "./P5PropertiesContext";
 import langCompiler from "../lang-data/langCompiler";
 import PrettyAlert from "./PrettyAlert";
 import ResizableGrid from "./ResizableGrid";
+import LanguageShaderDropdown from "./LanguageShaderDropdown";
 
 /**
  * A container component for that shows on the language options tab.
@@ -124,6 +125,7 @@ function LanguageOptionsTabContainer() {
           tabSize: 2,
         }}
       />
+      <LanguageShaderDropdown />
     </Box>
   );
 }
