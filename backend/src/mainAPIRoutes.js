@@ -20,7 +20,6 @@ const { postgreSQLConnection } = require('./postgreSQLConnect');
  * @description Handles the creation of a new post.
  * 
  * @async
- * @exports
  * @function
  * @param {Object} request - The Express request object.
  * @param {string} request.userid - The ID of the user making the request.
@@ -82,7 +81,6 @@ exports.createPostRoute = async (request, response) => {
  * @description Handles the request to download the state of a post.
  * 
  * @async
- * @exports
  * @function
  * @param {Object} request - The Express request object.
  * @param {string} request.userid - The ID of the user making the request.
@@ -117,6 +115,16 @@ exports.downloadPostStateRoute = async (request, response) => {
     }
 };
 
+/**
+ * @description This function handles the route for downloading post properties.
+ *
+ * @param {Object} request - The HTTP request object, expected to contain `userid` in its body and `postid` as a query parameter.
+ * @param {string} request.userid - The ID of the user making the request.
+ * @param {Object} request.query - The query parameters.
+ * @param {string} request.query.postid - The ID of the post whose properties are to be downloaded.
+ * @param {Object} response - The HTTP response object, used to send the HTTP response.
+ * @returns {Promise<void>} - A Promise that resolves when the function has completed.
+ */
 exports.downloadPostPropertiesRoute = async (request, response) => {
 
     if (!request.userid) {
@@ -152,7 +160,6 @@ exports.downloadPostPropertiesRoute = async (request, response) => {
  * 3: sort by creationtime
  * 
  * @async
- * @exports
  * @function
  * @param {Object} request - The Express request object.
  * @param {string} request.userid - The ID of the user making the request.

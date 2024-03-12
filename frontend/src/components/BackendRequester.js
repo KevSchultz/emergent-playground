@@ -26,22 +26,22 @@ import BinaryEncoderDecoder from "./BinaryEncoderDecoder";
  * These requests are used to perform various operations, such as user registration.
  * The class uses the Fetch API to send the requests and a BinaryEncoderDecoder instance
  * to encode and decode data.
+ * @constructor
+ * @param {BinaryEncoderDecoderInterface} binaryEncoderDecoder - The binary encoder/decoder to use.
+ * @param {string} testURL - The URL to use for testing.
+ * 
  */
 class BackendRequester {
-  /**
-   * @description Creates an instance of BackendRequester.
-   *
-   * @param {BinaryEncoderDecoderInterface} binaryEncoderDecoder - The binary encoder/decoder to use.
-   * @param {string} testURL - The URL to use for testing.
-   */
+  
   constructor(binaryEncoderDecoder, testURL = "") {
     this.binaryEncoderDecoder = binaryEncoderDecoder;
     this.testURL = testURL;
   }
 
   /**
+   * 
    * @description Sends a registration request to the server.
-   *
+   * @async
    * @param {string} username - The username of the user.
    * @param {string} email - The email of the user.
    * @param {string} password - The password of the user.
@@ -70,8 +70,9 @@ class BackendRequester {
   }
 
   /**
+   * 
    * @description Sends a login request to the server.
-   *
+   * @async
    * @param {string} email - The email of the user.
    * @param {string} password - The password of the user.
    * @returns {Promise<Object>} A promise that resolves to the response from the server.
@@ -98,8 +99,9 @@ class BackendRequester {
   }
 
   /**
+   * 
    * @description Sends a logout request to the server.
-   *
+   * @async
    * @returns {Promise<Object>} A promise that resolves to the response from the server or undefined.
    */
   async logout() {
@@ -122,8 +124,9 @@ class BackendRequester {
   }
 
   /**
+   * 
    * @description Gets the username of a logged in user.
-   *
+   * @async
    * @returns {Promise<Object>} A promise that resolves to the username from the server or undefined.
    */
   async getUsername() {
@@ -143,7 +146,8 @@ class BackendRequester {
   }
 
 /**
- * Uploads a full post to the server.
+ * 
+ * @description Uploads a full post to the server.
  *
  * @async
  * @param {string} title - The title of the post.
@@ -180,8 +184,10 @@ class BackendRequester {
 
 
   /**
+   * 
    * @description Sends a request for downloading a cellular automata post from the server.
    *
+   * @async
    * @param {string} postid - The ID of the post to download.
    * @returns {Promise<Object>} A promise that resolves to the {state: state, properties: properties} from the server or undefined.
    */
@@ -203,6 +209,7 @@ class BackendRequester {
   }
 
   /**
+   * 
    * @description Downloads the state of a post from the server.
    *
    * @async
@@ -229,6 +236,7 @@ class BackendRequester {
   }
 
   /**
+   * 
    * @description Downloads the properties of a post from the server.
    *
    * @async

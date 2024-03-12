@@ -11,9 +11,8 @@
 /**
  * @class
  * @classdesc A class for encoding and decoding binary data.
- * @extends BinaryEncoderDecoderInterface
  */
-export default class BinaryEncoderDecoder {
+class BinaryEncoderDecoder {
 
   /**
    * @description Encodes a JSON object into a binary string.
@@ -58,3 +57,5 @@ export default class BinaryEncoderDecoder {
     });
   }
 }
+
+export default BinaryEncoderDecoder;

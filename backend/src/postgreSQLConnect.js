@@ -1,10 +1,7 @@
 /**
  * @project Emergent Playground
  * @file postgreSQLConnect.js
- * @overview This file exports a class, PostgreSQLConnect, that provides a connection to a PostgreSQL database and
- * implements methods for interacting with the database. The class constructor takes in the host, user, port, password,
- * and database name, and attempts to connect to the database. The class also includes a method for getting the current
- * date and time and formatting it as a timestamp string.
+ * @overview 
  * @authors Ethan Foster, Kevin Schultz
  * @exports postgreSQLConnect
  */
