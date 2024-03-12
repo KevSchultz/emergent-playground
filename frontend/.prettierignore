@@ -1,0 +1,8 @@
+# Ignore artifacts:
+node_modules
+public
+*.frag
+*.vert
+*.sh
+*.md
+*.svg
