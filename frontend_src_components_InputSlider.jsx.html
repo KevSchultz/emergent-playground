@@ -28,22 +28,26 @@
         <article>
             <pre class="prettyprint source linenums"><code>/**
  * @project Emergent Playground
- * @file InputSlider.jsx 
+ * @file InputSlider.jsx
  * @overview Renders a Material-UI slider input component with a label and input field.
- * It is a modified version of the InputSlider component from the Material-UI documentation. The original code can be found at https://mui.com/components/slider/
+ * It is a modified version of the InputSlider component from the Material-UI documentation. 
+ * The original code can be found at https://mui.com/components/slider/
  * @authors Kevin Schultz
  * @exports InputSlider
  */
 
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
-import Slider from '@mui/material/Slider';
-import Input from '@mui/material/Input';
-import PropTypes from 'prop-types';
+// React Imports
+import { useState } from "react";
+
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
+import Slider from "@mui/material/Slider";
+import Input from "@mui/material/Input";
+import PropTypes from "prop-types";
 
 /**
- * Renders a Material-UI slider input component with a label and input field.
+ * @description Renders a Material-UI slider input component with a label and input field.
  * The slider's value, minimum and maximum values, step size, and label can be customized via props.
  * The component also accepts a callback function that will be called whenever the slider's value changes.
  *
@@ -56,108 +60,110 @@ import PropTypes from 'prop-types';
  * @param {number} props.stepValue - The step size of the slider.
  * @param {number} props.value - The value of the slider (controlled component).
  * @param {Function} props.setValue - The function to call when the slider's value changes.
- * 
+ *
  * @returns {JSX.Element} The InputSlider component.
  */
 function InputSlider({
-    className,
-    sx,
-    label,
-    minValue,
-    maxValue,
-    stepValue,
-    value,
-    setValue,
+  className,
+  sx,
+  label,
+  minValue,
+  maxValue,
+  stepValue,
+  value,
+  setValue,
 }) {
-    
-    /**
-     * Updates the slider's value.
-     *
-     * @param {Object} event - The event object.
-     * @param {number} newValue - The new value of the slider.
-     */
-    const handleSliderChange = (event, newValue) => {
-        // setValue(newValue);
-        setValue(newValue);
-    };
+  const [inputValue, setInputValue] = useState(value);
 
-    /**
-     * Updates the slider's value based on the text input field.
-     *
-     * @param {Object} event - The event object.
-     */
-    const handleTextInputChange = (event) => {
-        let newValue =
-            event.target.value === '' ? '' : Number(event.target.value);
-        // setValue(newValue);
-        setValue(newValue);
-    };
+  /**
+   * Updates the slider's value.
+   *
+   * @param {Object} event - The event object.
+   * @param {number} newValue - The new value of the slider.
+   */
+  const handleSliderChange = (event, newValue) => {
+    setInputValue(newValue);
+    setValue(newValue);
+  };
 
-    /**
-     * Ensures the slider's value is within the allowed range.
-     */
-    const handleBlur = () => {
+  /**
+   * Updates the slider's value based on the text input field.
+   *
+   * @param {Object} event - The event object.
+   */
+  const handleTextInputChange = (event) => {
+    if (isNaN(event.target.value) || event.target.value === "") {
+      setInputValue(event.target.value);
+      return;
+    }
 
-        if (value &lt; minValue) {
+    let newValue = Number(event.target.value);
 
-            // setValue(minValue);
-            setValue(minValue)
+    if (!isNaN(newValue)) {
+      newValue = Math.min(Math.max(minValue, newValue), maxValue); // constrain newValue to the range [minValue, maxValue]
+      setInputValue(newValue);
+      setValue(newValue);
+    }
+  };
 
-        } else if (value > maxValue) {
+  /**
+   * Ensures the slider's value is within the allowed range.
+   */
+  const handleBlur = () => {
+    if (value &lt; minValue) {
+      setValue(minValue);
+    } else if (value > maxValue) {
+      setValue(maxValue);
+    }
+  };
 
-            // setValue(maxValue);
-            setValue(maxValue)
-
-        }
-    };
-
-    return (
-        &lt;Box className={className} sx={sx}>
-            &lt;Typography id="input-slider" gutterBottom>
-                {label}
-            &lt;/Typography>
-            &lt;Grid container spacing={2} alignItems="center">
-                &lt;Grid item xs>
-                    &lt;Slider
-                        value={value}
-                        onChange={handleSliderChange}
-                        aria-labelledby="input-slider"
-                        step={stepValue}
-                        min={minValue}
-                        max={maxValue}
-                    />
-                &lt;/Grid>
-                &lt;Grid item>
-                    &lt;Input
-                        style={{ width: '50px', color: 'white' }}
-                        value={value}
-                        size="small"
-                        onChange={handleTextInputChange}
-                        onBlur={handleBlur}
-                        inputProps={{
-                            step: stepValue,
-                            min: minValue,
-                            max: maxValue,
-                            type: 'number',
-                            'aria-labelledby': 'input-slider',
-                        }}
-                    />
-                &lt;/Grid>
-            &lt;/Grid>
-        &lt;/Box>
-    );
+  return (
+    &lt;Box className={className} sx={sx}>
+      &lt;Typography id="input-slider" gutterBottom>
+        {label}
+      &lt;/Typography>
+      &lt;Grid container spacing={2} alignItems="center">
+        &lt;Grid item xs>
+          &lt;Slider
+            value={inputValue}
+            onChange={handleSliderChange}
+            aria-labelledby="input-slider"
+            step={stepValue}
+            min={minValue}
+            max={maxValue}
+          />
+        &lt;/Grid>
+        &lt;Grid item>
+          &lt;Input
+            style={{ width: "50px", color: "white" }}
+            value={inputValue}
+            size="small"
+            onChange={handleTextInputChange}
+            onBlur={handleBlur}
+            inputProps={{
+              step: stepValue,
+              min: minValue,
+              max: maxValue,
+              type: "number",
+              "aria-labelledby": "input-slider",
+            }}
+          />
+        &lt;/Grid>
+      &lt;/Grid>
+    &lt;/Box>
+  );
 }
 
 // This is a type check for the props of the component
 InputSlider.propTypes = {
-    className: PropTypes.string,
-    sx: PropTypes.object,
-    label: PropTypes.string.isRequired,
-    minValue: PropTypes.number.isRequired,
-    maxValue: PropTypes.number.isRequired,
-    stepValue: PropTypes.number.isRequired,
-    value: PropTypes.number.isRequired,
-    setValue: PropTypes.func.isRequired,
+  className: PropTypes.string,
+  sx: PropTypes.object,
+  label: PropTypes.string.isRequired,
+  minValue: PropTypes.number.isRequired,
+  maxValue: PropTypes.number.isRequired,
+  stepValue: PropTypes.number.isRequired,
+  value: PropTypes.number.isRequired,
+  setValue: PropTypes.func.isRequired,
 };
 
 export default InputSlider;
@@ -171,13 +177,13 @@ export default InputSlider;
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="frontend_src_components_BrushIconButton.module_jsx.html">frontend/src/components/BrushIconButton.jsx</a></li><li><a href="frontend_src_components_DefaultProperties.module_jsx.html">frontend/src/components/DefaultProperties.jsx</a></li><li><a href="frontend_src_components_InputSlider.module_jsx.html">frontend/src/components/InputSlider.jsx</a></li><li><a href="frontend_src_components_LanguageOptionsTabContainer.module_jsx.html">frontend/src/components/LanguageOptionsTabContainer.jsx</a></li><li><a href="frontend_src_components_LeftButtonListContainer.module_jsx.html">frontend/src/components/LeftButtonListContainer.jsx</a></li><li><a href="frontend_src_components_P5Background.module_jsx.html">frontend/src/components/P5Background.jsx</a></li><li><a href="frontend_src_components_P5PropertiesContext.module_jsx.html">frontend/src/components/P5PropertiesContext.jsx</a></li><li><a href="frontend_src_components_PlayPauseButton.module_jsx.html">frontend/src/components/PlayPauseButton.jsx</a></li><li><a href="frontend_src_components_PremadeRuleCard.module_jsx.html">frontend/src/components/PremadeRuleCard.jsx</a></li><li><a href="frontend_src_components_PremadeRulesOptionsTabContainer.module_jsx.html">frontend/src/components/PremadeRulesOptionsTabContainer.jsx</a></li><li><a href="frontend_src_components_RightOptionsRootContainer.module_jsx.html">frontend/src/components/RightOptionsRootContainer.jsx</a></li><li><a href="frontend_src_components_TopNavigationBar.module_jsx.html">frontend/src/components/TopNavigationBar.jsx</a></li><li><a href="frontend_src_components_ViewerOptionsTabContainer.module_jsx.html">frontend/src/components/ViewerOptionsTabContainer.jsx</a></li><li><a href="frontend_src_pages_About.module_jsx.html">frontend/src/pages/About.jsx</a></li><li><a href="frontend_src_pages_Community.module_jsx.html">frontend/src/pages/Community.jsx</a></li><li><a href="frontend_src_pages_Login.module_jsx.html">frontend/src/pages/Login.jsx</a></li><li><a href="frontend_src_pages_Signup.module_jsx.html">frontend/src/pages/Signup.jsx</a></li><li><a href="frontend_src_pages_ViewerBuilderCreator.module_jsx.html">frontend/src/pages/ViewerBuilderCreator.jsx</a></li><li><a href="frontend_src_pages_Welcome.module_jsx.html">frontend/src/pages/Welcome.jsx</a></li></ul><h3>Classes</h3><ul><li><a href="CellularAutomataSketchClass.html">CellularAutomataSketchClass</a></li><li><a href="TextureRuleCellularAutomataSketchClass.html">TextureRuleCellularAutomataSketchClass</a></li></ul><h3>Global</h3><ul><li><a href="global.html#connectToDatabase">connectToDatabase</a></li><li><a href="global.html#createAccount">createAccount</a></li><li><a href="global.html#deletePost">deletePost</a></li><li><a href="global.html#getCurrentTimestamp">getCurrentTimestamp</a></li><li><a href="global.html#getPostInfo">getPostInfo</a></li><li><a href="global.html#getPostsByLeastViews">getPostsByLeastViews</a></li><li><a href="global.html#getPostsByMostViews">getPostsByMostViews</a></li><li><a href="global.html#getPostsByNewest">getPostsByNewest</a></li><li><a href="global.html#getPostsByOldest">getPostsByOldest</a></li><li><a href="global.html#getPostsByUser">getPostsByUser</a></li><li><a href="global.html#getRandomInt">getRandomInt</a></li><li><a href="global.html#getTimestampThreeHoursAhead">getTimestampThreeHoursAhead</a></li><li><a href="global.html#hidePost">hidePost</a></li><li><a href="global.html#logIn">logIn</a></li><li><a href="global.html#logOut">logOut</a></li><li><a href="global.html#makePost">makePost</a></li><li><a href="global.html#unhidePost">unhidePost</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="backend_src_application.module_js.html">backend/src/application.js</a></li><li><a href="backend_src_authentication.module_js.html">backend/src/authentication.js</a></li><li><a href="backend_src_jsonWebTokenAuthorize.module_js.html">backend/src/jsonWebTokenAuthorize.js</a></li><li><a href="backend_src_jsonWebTokenGenerator.module_js.html">backend/src/jsonWebTokenGenerator.js</a></li><li><a href="backend_src_mainAPIRoutes.module_js.html">backend/src/mainAPIRoutes.js</a></li><li><a href="backend_src_postgreSQLConnect.module_js.html">backend/src/postgreSQLConnect.js</a></li><li><a href="frontend_src_components_BackendRequester.module_js.html">frontend/src/components/BackendRequester.js</a></li><li><a href="frontend_src_components_BinaryEncoderDecoder.module_js.html">frontend/src/components/BinaryEncoderDecoder.js</a></li><li><a href="frontend_src_components_BrushIconButton.module_jsx.html">frontend/src/components/BrushIconButton.jsx</a></li><li><a href="frontend_src_components_DefaultProperties.module_jsx.html">frontend/src/components/DefaultProperties.jsx</a></li><li><a href="frontend_src_components_InputSlider.module_jsx.html">frontend/src/components/InputSlider.jsx</a></li><li><a href="frontend_src_components_LanguageColorMenuDropdown.module_jsx.html">frontend/src/components/LanguageColorMenuDropdown.jsx</a></li><li><a href="frontend_src_components_LanguageHelpDropdown.module_jsx.html">frontend/src/components/LanguageHelpDropdown.jsx</a></li><li><a href="frontend_src_components_LanguageOptionsDropdown.module_jsx.html">frontend/src/components/LanguageOptionsDropdown.jsx</a></li><li><a href="frontend_src_components_LanguageOptionsTabContainer.module_jsx.html">frontend/src/components/LanguageOptionsTabContainer.jsx</a></li><li><a href="frontend_src_components_LanguageShaderDropdown.module_jsx.html">frontend/src/components/LanguageShaderDropdown.jsx</a></li><li><a href="frontend_src_components_LanguageStateItem.module_jsx.html">frontend/src/components/LanguageStateItem.jsx</a></li><li><a href="frontend_src_components_LeftButtonListContainer.module_jsx.html">frontend/src/components/LeftButtonListContainer.jsx</a></li><li><a href="frontend_src_components_LoadingDialog.module_jsx.html">frontend/src/components/LoadingDialog.jsx</a></li><li><a href="frontend_src_components_LoginLink.module_jsx.html">frontend/src/components/LoginLink.jsx</a></li><li><a href="frontend_src_components_LogoutLink.module_jsx.html">frontend/src/components/LogoutLink.jsx</a></li><li><a href="frontend_src_components_P5Background.module_jsx.html">frontend/src/components/P5Background.jsx</a></li><li><a href="frontend_src_components_P5PropertiesContext.module_jsx.html">frontend/src/components/P5PropertiesContext.jsx</a></li><li><a href="frontend_src_components_PlayPauseButton.module_jsx.html">frontend/src/components/PlayPauseButton.jsx</a></li><li><a href="frontend_src_components_PostCard.module_jsx.html">frontend/src/components/PostCard.jsx</a></li><li><a href="frontend_src_components_PostListing.module_jsx.html">frontend/src/components/PostListing.jsx</a></li><li><a href="frontend_src_components_PremadeRuleCard.module_jsx.html">frontend/src/components/PremadeRuleCard.jsx</a></li><li><a href="frontend_src_components_PremadeRulesOptionsTabContainer.module_jsx.html">frontend/src/components/PremadeRulesOptionsTabContainer.jsx</a></li><li><a href="frontend_src_components_PrettyAlert.module_jsx.html">frontend/src/components/PrettyAlert.jsx</a></li><li><a href="frontend_src_components_ResizableGrid.module_jsx.html">frontend/src/components/ResizableGrid.jsx</a></li><li><a href="frontend_src_components_RightOptionsRootContainer.module_jsx.html">frontend/src/components/RightOptionsRootContainer.jsx</a></li><li><a href="frontend_src_components_SavePostInput.module_jsx.html">frontend/src/components/SavePostInput.jsx</a></li><li><a href="frontend_src_components_TopNavigationBar.module_jsx.html">frontend/src/components/TopNavigationBar.jsx</a></li><li><a href="frontend_src_components_ViewerOptionsTabContainer.module_jsx.html">frontend/src/components/ViewerOptionsTabContainer.jsx</a></li><li><a href="frontend_src_components_cellularAutomataSketch.module_js.html">frontend/src/components/cellularAutomataSketch.js</a></li><li><a href="frontend_src_pages_Community.module_jsx.html">frontend/src/pages/Community.jsx</a></li><li><a href="frontend_src_pages_Login.module_jsx.html">frontend/src/pages/Login.jsx</a></li><li><a href="frontend_src_pages_MyCA.module_jsx.html">frontend/src/pages/MyCA.jsx</a></li><li><a href="frontend_src_pages_Register.module_jsx.html">frontend/src/pages/Register.jsx</a></li><li><a href="frontend_src_pages_ViewerBuilderCreator.module_jsx.html">frontend/src/pages/ViewerBuilderCreator.jsx</a></li><li><a href="frontend_src_sketches_CellularAutomataSketchClass.module_js.html">frontend/src/sketches/CellularAutomataSketchClass.js</a></li></ul><h3>Classes</h3><ul><li><a href="TextureRuleCellularAutomataSketchClass.html">TextureRuleCellularAutomataSketchClass</a></li><li><a href="backend_src_postgreSQLConnect.module_js-PostgreSQLConnect.html">PostgreSQLConnect</a></li><li><a href="frontend_src_components_BackendRequester.module_js-BackendRequester.html">BackendRequester</a></li><li><a href="frontend_src_components_BinaryEncoderDecoder.module_js-BinaryEncoderDecoder.html">BinaryEncoderDecoder</a></li><li><a href="frontend_src_sketches_CellularAutomataSketchClass.module_js-CellularAutomataSketchClass.html">CellularAutomataSketchClass</a></li></ul><h3>Global</h3><ul><li><a href="global.html#LangPage">LangPage</a></li><li><a href="global.html#langCompiler">langCompiler</a></li><li><a href="global.html#translate_colors">translate_colors</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Fri Feb 16 2024 23:57:50 GMT-0800 (Pacific Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Tue Mar 12 2024 15:15:20 GMT-0700 (Pacific Daylight Time)
 </footer>
 
 <script> prettyPrint(); </script>

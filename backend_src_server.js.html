@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: backend/src/server.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: backend/src/server.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @project Emergent Playground
+ * @file server.js
+ * @overview This file sets up an HTTPS server for the Emergent Playground project. It imports necessary modules, 
+ * loads environment variables, and imports the main application. It then creates an HTTPS server using SSL key and 
+ * certificate files specified in the environment variables, and starts the server on the port specified in the 
+ * environment variables. 
+ * @authors Kevin Schultz
+ */
+
+const http = require('http');
+const https = require('https');
+const fs = require('fs');
+const path = require('path');
+require('dotenv').config();
+
+const application = require('./application');
+
+const httpsServer = https.createServer({
+    key: fs.readFileSync(path.join(process.env.SSL_KEY_PATH)),
+    cert: fs.readFileSync(path.join(process.env.SSL_CERTIFICATE_PATH))
+}, application);
+
+httpsServer.listen(process.env.SSL_PORT, () => {
+    console.log(`HTTPS server running on port ${process.env.SSL_PORT}`);
+});
+
+// Redirect HTTP requests to HTTPS
+const httpServer = http.createServer((request, response) => {
+    if (request.url === '/.well-known/acme-challenge/njcAnN02vwQaYjBNyF5MOl_enOGL0Xy4FRE0Sm1TkO0') {
+        fs.readFile('/home/main/emergent-playground/backend/src/acme-challenge/njcAnN02vwQaYjBNyF5MOl_enOGL0Xy4FRE0Sm1TkO0', 'utf8', (err, data) => {
+            if (err) {
+                response.writeHead(404);
+                response.end('Not found');
+            } else {
+                response.writeHead(200, { 'Content-Type': 'text/plain' });
+                response.end(data);
+            }
+        });
+    } else {
+        response.writeHead(301, { "Location": "https://" + request.headers['host'] + request.url });
+        response.end();
+    }
+});
+
+const httpPort = process.env.HTTP_PORT || 80;
+
+httpServer.listen(httpPort, () => {
+    console.log(`HTTP server running on port ${httpPort}`);
+});</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="backend_src_application.module_js.html">backend/src/application.js</a></li><li><a href="backend_src_authentication.module_js.html">backend/src/authentication.js</a></li><li><a href="backend_src_jsonWebTokenAuthorize.module_js.html">backend/src/jsonWebTokenAuthorize.js</a></li><li><a href="backend_src_jsonWebTokenGenerator.module_js.html">backend/src/jsonWebTokenGenerator.js</a></li><li><a href="backend_src_mainAPIRoutes.module_js.html">backend/src/mainAPIRoutes.js</a></li><li><a href="backend_src_postgreSQLConnect.module_js.html">backend/src/postgreSQLConnect.js</a></li><li><a href="frontend_src_components_BackendRequester.module_js.html">frontend/src/components/BackendRequester.js</a></li><li><a href="frontend_src_components_BinaryEncoderDecoder.module_js.html">frontend/src/components/BinaryEncoderDecoder.js</a></li><li><a href="frontend_src_components_BrushIconButton.module_jsx.html">frontend/src/components/BrushIconButton.jsx</a></li><li><a href="frontend_src_components_DefaultProperties.module_jsx.html">frontend/src/components/DefaultProperties.jsx</a></li><li><a href="frontend_src_components_InputSlider.module_jsx.html">frontend/src/components/InputSlider.jsx</a></li><li><a href="frontend_src_components_LanguageColorMenuDropdown.module_jsx.html">frontend/src/components/LanguageColorMenuDropdown.jsx</a></li><li><a href="frontend_src_components_LanguageHelpDropdown.module_jsx.html">frontend/src/components/LanguageHelpDropdown.jsx</a></li><li><a href="frontend_src_components_LanguageOptionsDropdown.module_jsx.html">frontend/src/components/LanguageOptionsDropdown.jsx</a></li><li><a href="frontend_src_components_LanguageOptionsTabContainer.module_jsx.html">frontend/src/components/LanguageOptionsTabContainer.jsx</a></li><li><a href="frontend_src_components_LanguageShaderDropdown.module_jsx.html">frontend/src/components/LanguageShaderDropdown.jsx</a></li><li><a href="frontend_src_components_LanguageStateItem.module_jsx.html">frontend/src/components/LanguageStateItem.jsx</a></li><li><a href="frontend_src_components_LeftButtonListContainer.module_jsx.html">frontend/src/components/LeftButtonListContainer.jsx</a></li><li><a href="frontend_src_components_LoadingDialog.module_jsx.html">frontend/src/components/LoadingDialog.jsx</a></li><li><a href="frontend_src_components_LoginLink.module_jsx.html">frontend/src/components/LoginLink.jsx</a></li><li><a href="frontend_src_components_LogoutLink.module_jsx.html">frontend/src/components/LogoutLink.jsx</a></li><li><a href="frontend_src_components_P5Background.module_jsx.html">frontend/src/components/P5Background.jsx</a></li><li><a href="frontend_src_components_P5PropertiesContext.module_jsx.html">frontend/src/components/P5PropertiesContext.jsx</a></li><li><a href="frontend_src_components_PlayPauseButton.module_jsx.html">frontend/src/components/PlayPauseButton.jsx</a></li><li><a href="frontend_src_components_PostCard.module_jsx.html">frontend/src/components/PostCard.jsx</a></li><li><a href="frontend_src_components_PostListing.module_jsx.html">frontend/src/components/PostListing.jsx</a></li><li><a href="frontend_src_components_PremadeRuleCard.module_jsx.html">frontend/src/components/PremadeRuleCard.jsx</a></li><li><a href="frontend_src_components_PremadeRulesOptionsTabContainer.module_jsx.html">frontend/src/components/PremadeRulesOptionsTabContainer.jsx</a></li><li><a href="frontend_src_components_PrettyAlert.module_jsx.html">frontend/src/components/PrettyAlert.jsx</a></li><li><a href="frontend_src_components_ResizableGrid.module_jsx.html">frontend/src/components/ResizableGrid.jsx</a></li><li><a href="frontend_src_components_RightOptionsRootContainer.module_jsx.html">frontend/src/components/RightOptionsRootContainer.jsx</a></li><li><a href="frontend_src_components_SavePostInput.module_jsx.html">frontend/src/components/SavePostInput.jsx</a></li><li><a href="frontend_src_components_TopNavigationBar.module_jsx.html">frontend/src/components/TopNavigationBar.jsx</a></li><li><a href="frontend_src_components_ViewerOptionsTabContainer.module_jsx.html">frontend/src/components/ViewerOptionsTabContainer.jsx</a></li><li><a href="frontend_src_components_cellularAutomataSketch.module_js.html">frontend/src/components/cellularAutomataSketch.js</a></li><li><a href="frontend_src_pages_Community.module_jsx.html">frontend/src/pages/Community.jsx</a></li><li><a href="frontend_src_pages_Login.module_jsx.html">frontend/src/pages/Login.jsx</a></li><li><a href="frontend_src_pages_MyCA.module_jsx.html">frontend/src/pages/MyCA.jsx</a></li><li><a href="frontend_src_pages_Register.module_jsx.html">frontend/src/pages/Register.jsx</a></li><li><a href="frontend_src_pages_ViewerBuilderCreator.module_jsx.html">frontend/src/pages/ViewerBuilderCreator.jsx</a></li><li><a href="frontend_src_sketches_CellularAutomataSketchClass.module_js.html">frontend/src/sketches/CellularAutomataSketchClass.js</a></li></ul><h3>Classes</h3><ul><li><a href="TextureRuleCellularAutomataSketchClass.html">TextureRuleCellularAutomataSketchClass</a></li><li><a href="backend_src_postgreSQLConnect.module_js-PostgreSQLConnect.html">PostgreSQLConnect</a></li><li><a href="frontend_src_components_BackendRequester.module_js-BackendRequester.html">BackendRequester</a></li><li><a href="frontend_src_components_BinaryEncoderDecoder.module_js-BinaryEncoderDecoder.html">BinaryEncoderDecoder</a></li><li><a href="frontend_src_sketches_CellularAutomataSketchClass.module_js-CellularAutomataSketchClass.html">CellularAutomataSketchClass</a></li></ul><h3>Global</h3><ul><li><a href="global.html#LangPage">LangPage</a></li><li><a href="global.html#langCompiler">langCompiler</a></li><li><a href="global.html#translate_colors">translate_colors</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Tue Mar 12 2024 15:15:20 GMT-0700 (Pacific Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

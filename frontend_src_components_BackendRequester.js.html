@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: frontend/src/components/BackendRequester.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: frontend/src/components/BackendRequester.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @project Emergent Playground
+ * @file BackendRequester.js
+ * @overview This class provides methods to send HTTP requests to the backend server.
+ * @authors Ethan Foster, Kevin Schultz
+ * @exports backendRequester
+ */
+
+/*
+HOW IT WORKS:
+
+each function sends a request that is then handled by the backend
+in order to complete the stated task that the function does
+
+These functions send the params to the backend and the backend then 
+does the needed database functions to complete the task.
+
+uses built in fetch functions
+*/
+
+import BinaryEncoderDecoder from "./BinaryEncoderDecoder";
+
+/**
+ * @class BackendRequester
+ * @classdesc The BackendRequester class provides methods to send HTTP requests to a backend server.
+ * These requests are used to perform various operations, such as user registration.
+ * The class uses the Fetch API to send the requests and a BinaryEncoderDecoder instance
+ * to encode and decode data.
+ * @constructor
+ * @param {BinaryEncoderDecoderInterface} binaryEncoderDecoder - The binary encoder/decoder to use.
+ * @param {string} testURL - The URL to use for testing.
+ * 
+ */
+class BackendRequester {
+  
+  constructor(binaryEncoderDecoder, testURL = "") {
+    this.binaryEncoderDecoder = binaryEncoderDecoder;
+    this.testURL = testURL;
+  }
+
+  /**
+   * 
+   * @description Sends a registration request to the server.
+   * @async
+   * @param {string} username - The username of the user.
+   * @param {string} email - The email of the user.
+   * @param {string} password - The password of the user.
+   * @returns {Promise&lt;Object>} A promise that resolves to the response from the server.
+   */
+  async register(username, email, password) {
+    const url = this.testURL + "/api/register ";
+    const body = JSON.stringify({ username, email, password });
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: body,
+    };
+
+    try {
+      const response = await fetch(url, options);
+      const json = await response.json();
+
+      return json;
+    } catch (error) {
+      console.log("Error:", error);
+      return undefined;
+    }
+  }
+
+  /**
+   * 
+   * @description Sends a login request to the server.
+   * @async
+   * @param {string} email - The email of the user.
+   * @param {string} password - The password of the user.
+   * @returns {Promise&lt;Object>} A promise that resolves to the response from the server.
+   */
+  async login(email, password) {
+    const url = this.testURL + "/api/login";
+    const body = JSON.stringify({ email, password });
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: body,
+    };
+
+    try {
+      const response = await fetch(url, options);
+      const json = await response.json();
+      return json;
+    } catch (error) {
+      console.log("Error:", error);
+      return undefined;
+    }
+  }
+
+  /**
+   * 
+   * @description Sends a logout request to the server.
+   * @async
+   * @returns {Promise&lt;Object>} A promise that resolves to the response from the server or undefined.
+   */
+  async logout() {
+    const url = this.testURL + "/api/logout";
+
+    const options = {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    try {
+      const response = await fetch(url, options);
+      return response;
+    } catch (error) {
+      console.log("Error:", error);
+      return undefined;
+    }
+  }
+
+  /**
+   * 
+   * @description Gets the username of a logged in user.
+   * @async
+   * @returns {Promise&lt;Object>} A promise that resolves to the username from the server or undefined.
+   */
+  async getUsername() {
+    const url = this.testURL + "/api/username";
+    const options = {
+      method: "GET",
+    };
+
+    try {
+      const response = await fetch(url, options);
+      const json = await response.json();
+      return json.username;
+    } catch (error) {
+      console.error("Error:", error);
+      return undefined;
+    }
+  }
+
+/**
+ * 
+ * @description Uploads a full post to the server.
+ *
+ * @async
+ * @param {string} title - The title of the post.
+ * @param {Blob} poststate - The binary encoding of the state of the post.
+ * @param {Object} postproperties - The properties of the post.
+ * @returns {Promise&lt;Response>} The response from the server or undefined.
+ * @throws {Error} If there is an error during the fetch operation.
+ */
+  async uploadPost(title, poststate, postproperties) {
+    const encodedPostProperties =
+      await this.binaryEncoderDecoder.encodeJSONToBinary(postproperties);
+
+    let formData = new FormData();
+
+    formData.append("poststate", poststate);
+    formData.append("postproperties", encodedPostProperties);
+
+    const url = this.testURL + "/api/upload?title=" + encodeURIComponent(title);
+
+    const options = {
+      method: "POST",
+      credentials: "include", // include cookies in the request
+      body: formData,
+    };
+
+    try {
+      const response = await fetch(url, options);
+      return response;
+    } catch (error) {
+      console.error("Error:", error);
+      return undefined;
+    }
+  }
+
+
+  /**
+   * 
+   * @description Sends a request for downloading a cellular automata post from the server.
+   *
+   * @async
+   * @param {string} postid - The ID of the post to download.
+   * @returns {Promise&lt;Object>} A promise that resolves to the {state: state, properties: properties} from the server or undefined.
+   */
+  async downloadPost(postid) {
+    const responseState = await this.downloadPostState(postid);
+    const responseProperties = await this.downloadPostProperties(postid);
+
+    if (responseState == undefined || responseProperties == undefined) {
+      return undefined;
+    }
+
+    const state = await this.binaryEncoderDecoder.blobToArray(responseState);
+
+    const properties =
+      await this.binaryEncoderDecoder.decodeBinaryToJSON(responseProperties);
+
+
+    return { state: state, properties: properties };
+  }
+
+  /**
+   * 
+   * @description Downloads the state of a post from the server.
+   *
+   * @async
+   * @param {string} postid - The ID of the post.
+   * @returns {Promise&lt;Blob>} The binary data of the post state or undefined.
+   * @throws {Error} If there is an error during the fetch operation.
+   */
+    async downloadPostState(postid) {
+    const url =
+      this.testURL + `/api/downloadstate?postid=${encodeURIComponent(postid)}`;
+
+    const options = {
+      method: "GET",
+    };
+
+    try {
+      const response = await fetch(url, options);
+      const binary = await response.blob();
+      return binary;
+    } catch (error) {
+      console.error("Error:", error);
+      return undefined;
+    }
+  }
+
+  /**
+   * 
+   * @description Downloads the properties of a post from the server.
+   *
+   * @async
+   * @param {string} postid - The ID of the post.
+   * @returns {Promise&lt;Blob>} The binary data of the post properties or undefined.
+   * @throws {Error} If there is an error during the fetch operation.
+   */
+  async downloadPostProperties(postid) {
+    const url = `/api/downloadproperties?postid=${encodeURIComponent(postid)}`;
+
+    const options = {
+      method: "GET",
+    };
+
+    try {
+      const response = await fetch(url, options);
+      const binary = await response.blob();
+      return binary;
+    } catch (error) {
+      console.error("Error:", error);
+      return undefined;
+    }
+  }
+
+  /**
+   * Downloads the list of all posts from the server according to a certain sorting method.
+   *
+   * @async
+   * @param {string} [sorting=null] - The sorting method to be used.
+   * @returns {Promise&lt;Array>} The list of posts as a JavaScript array. Returns an empty array if there is an error or if the response is empty.
+   * @throws {Error} If there is an error during the fetch operation.
+   */
+  async downloadPostList(sorting = null) {
+    // getting list of all posts according to certain sorting method
+    let url = `/api/list?sorting=${encodeURIComponent(sorting)}`;
+
+    if (sorting === null) {
+      url = `/api/list`;
+    }
+
+    const options = {
+      method: "GET",
+    };
+
+    try {
+      const response = await fetch(url, options); // getting the raw data
+
+      const postListJson = await response.json(); // putting data into json
+
+      if (postListJson == {}) {
+        return [];
+      }
+
+      return postListJson; // returning the postList as javascript array
+    } catch (error) {
+      console.log("Error:", error);
+      return [];
+    }
+  }
+}
+
+const binaryEncoderDecoder = new BinaryEncoderDecoder();
+const backendRequester = new BackendRequester(binaryEncoderDecoder);
+
+export default backendRequester;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="backend_src_application.module_js.html">backend/src/application.js</a></li><li><a href="backend_src_authentication.module_js.html">backend/src/authentication.js</a></li><li><a href="backend_src_jsonWebTokenAuthorize.module_js.html">backend/src/jsonWebTokenAuthorize.js</a></li><li><a href="backend_src_jsonWebTokenGenerator.module_js.html">backend/src/jsonWebTokenGenerator.js</a></li><li><a href="backend_src_mainAPIRoutes.module_js.html">backend/src/mainAPIRoutes.js</a></li><li><a href="backend_src_postgreSQLConnect.module_js.html">backend/src/postgreSQLConnect.js</a></li><li><a href="frontend_src_components_BackendRequester.module_js.html">frontend/src/components/BackendRequester.js</a></li><li><a href="frontend_src_components_BinaryEncoderDecoder.module_js.html">frontend/src/components/BinaryEncoderDecoder.js</a></li><li><a href="frontend_src_components_BrushIconButton.module_jsx.html">frontend/src/components/BrushIconButton.jsx</a></li><li><a href="frontend_src_components_DefaultProperties.module_jsx.html">frontend/src/components/DefaultProperties.jsx</a></li><li><a href="frontend_src_components_InputSlider.module_jsx.html">frontend/src/components/InputSlider.jsx</a></li><li><a href="frontend_src_components_LanguageColorMenuDropdown.module_jsx.html">frontend/src/components/LanguageColorMenuDropdown.jsx</a></li><li><a href="frontend_src_components_LanguageHelpDropdown.module_jsx.html">frontend/src/components/LanguageHelpDropdown.jsx</a></li><li><a href="frontend_src_components_LanguageOptionsDropdown.module_jsx.html">frontend/src/components/LanguageOptionsDropdown.jsx</a></li><li><a href="frontend_src_components_LanguageOptionsTabContainer.module_jsx.html">frontend/src/components/LanguageOptionsTabContainer.jsx</a></li><li><a href="frontend_src_components_LanguageShaderDropdown.module_jsx.html">frontend/src/components/LanguageShaderDropdown.jsx</a></li><li><a href="frontend_src_components_LanguageStateItem.module_jsx.html">frontend/src/components/LanguageStateItem.jsx</a></li><li><a href="frontend_src_components_LeftButtonListContainer.module_jsx.html">frontend/src/components/LeftButtonListContainer.jsx</a></li><li><a href="frontend_src_components_LoadingDialog.module_jsx.html">frontend/src/components/LoadingDialog.jsx</a></li><li><a href="frontend_src_components_LoginLink.module_jsx.html">frontend/src/components/LoginLink.jsx</a></li><li><a href="frontend_src_components_LogoutLink.module_jsx.html">frontend/src/components/LogoutLink.jsx</a></li><li><a href="frontend_src_components_P5Background.module_jsx.html">frontend/src/components/P5Background.jsx</a></li><li><a href="frontend_src_components_P5PropertiesContext.module_jsx.html">frontend/src/components/P5PropertiesContext.jsx</a></li><li><a href="frontend_src_components_PlayPauseButton.module_jsx.html">frontend/src/components/PlayPauseButton.jsx</a></li><li><a href="frontend_src_components_PostCard.module_jsx.html">frontend/src/components/PostCard.jsx</a></li><li><a href="frontend_src_components_PostListing.module_jsx.html">frontend/src/components/PostListing.jsx</a></li><li><a href="frontend_src_components_PremadeRuleCard.module_jsx.html">frontend/src/components/PremadeRuleCard.jsx</a></li><li><a href="frontend_src_components_PremadeRulesOptionsTabContainer.module_jsx.html">frontend/src/components/PremadeRulesOptionsTabContainer.jsx</a></li><li><a href="frontend_src_components_PrettyAlert.module_jsx.html">frontend/src/components/PrettyAlert.jsx</a></li><li><a href="frontend_src_components_ResizableGrid.module_jsx.html">frontend/src/components/ResizableGrid.jsx</a></li><li><a href="frontend_src_components_RightOptionsRootContainer.module_jsx.html">frontend/src/components/RightOptionsRootContainer.jsx</a></li><li><a href="frontend_src_components_SavePostInput.module_jsx.html">frontend/src/components/SavePostInput.jsx</a></li><li><a href="frontend_src_components_TopNavigationBar.module_jsx.html">frontend/src/components/TopNavigationBar.jsx</a></li><li><a href="frontend_src_components_ViewerOptionsTabContainer.module_jsx.html">frontend/src/components/ViewerOptionsTabContainer.jsx</a></li><li><a href="frontend_src_components_cellularAutomataSketch.module_js.html">frontend/src/components/cellularAutomataSketch.js</a></li><li><a href="frontend_src_pages_Community.module_jsx.html">frontend/src/pages/Community.jsx</a></li><li><a href="frontend_src_pages_Login.module_jsx.html">frontend/src/pages/Login.jsx</a></li><li><a href="frontend_src_pages_MyCA.module_jsx.html">frontend/src/pages/MyCA.jsx</a></li><li><a href="frontend_src_pages_Register.module_jsx.html">frontend/src/pages/Register.jsx</a></li><li><a href="frontend_src_pages_ViewerBuilderCreator.module_jsx.html">frontend/src/pages/ViewerBuilderCreator.jsx</a></li><li><a href="frontend_src_sketches_CellularAutomataSketchClass.module_js.html">frontend/src/sketches/CellularAutomataSketchClass.js</a></li></ul><h3>Classes</h3><ul><li><a href="TextureRuleCellularAutomataSketchClass.html">TextureRuleCellularAutomataSketchClass</a></li><li><a href="backend_src_postgreSQLConnect.module_js-PostgreSQLConnect.html">PostgreSQLConnect</a></li><li><a href="frontend_src_components_BackendRequester.module_js-BackendRequester.html">BackendRequester</a></li><li><a href="frontend_src_components_BinaryEncoderDecoder.module_js-BinaryEncoderDecoder.html">BinaryEncoderDecoder</a></li><li><a href="frontend_src_sketches_CellularAutomataSketchClass.module_js-CellularAutomataSketchClass.html">CellularAutomataSketchClass</a></li></ul><h3>Global</h3><ul><li><a href="global.html#LangPage">LangPage</a></li><li><a href="global.html#langCompiler">langCompiler</a></li><li><a href="global.html#translate_colors">translate_colors</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Tue Mar 12 2024 15:15:20 GMT-0700 (Pacific Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

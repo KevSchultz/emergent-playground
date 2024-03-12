@@ -30,7 +30,10 @@
     
         <h2><span class="attribs"><span class="type-signature"></span></span>TextureRuleCellularAutomataSketchClass<span class="signature">(defaultReactProperties)</span><span class="type-signature"></span></h2>
         
-            <div class="class-description">TextureRuleCellularAutomataSketchClass</div>
+            <div class="class-description">Extends CellularAutomataSketchClass to implement a texture-based rule for cellular automata.
+This class introduces the concept of states and neighbors into the cellular automata, allowing for more complex patterns and behaviors.
+It randomly generates states and rules for cellular automata, then applies these by passing a texture to the shader.
+The class is designed for use with p5.js and integrates seamlessly with React through the ReactP5Wrapper component, allowing for dynamic property updates and interactive sketch manipulation.</div>
         
     
 </header>
@@ -286,7 +289,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="frontend_src_sketches_TextureRuleCellularAutomataSketchClass.js.html">frontend/src/sketches/TextureRuleCellularAutomataSketchClass.js</a>, <a href="frontend_src_sketches_TextureRuleCellularAutomataSketchClass.js.html#line18">line 18</a>
+        <a href="frontend_src_sketches_TextureRuleCellularAutomataSketchClass.js.html">frontend/src/sketches/TextureRuleCellularAutomataSketchClass.js</a>, <a href="frontend_src_sketches_TextureRuleCellularAutomataSketchClass.js.html#line5">line 5</a>
     </li></ul></dd>
     
 
@@ -394,7 +397,98 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="frontend_src_sketches_TextureRuleCellularAutomataSketchClass.js.html">frontend/src/sketches/TextureRuleCellularAutomataSketchClass.js</a>, <a href="frontend_src_sketches_TextureRuleCellularAutomataSketchClass.js.html#line119">line 119</a>
+        <a href="frontend_src_sketches_TextureRuleCellularAutomataSketchClass.js.html">frontend/src/sketches/TextureRuleCellularAutomataSketchClass.js</a>, <a href="frontend_src_sketches_TextureRuleCellularAutomataSketchClass.js.html#line275">line 275</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="generateIsomorphicRuleGraphics"><span class="type-signature"></span>generateIsomorphicRuleGraphics<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Generates random isomorphic rule graphics for the sketch.
+
+This method creates a new p5 graphics object with a width equal to the number of states raised to the power of the number of neighbors plus one and a height of one.
+It then fills the graphics object with random states in a symmetrical pattern.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="frontend_src_sketches_TextureRuleCellularAutomataSketchClass.js.html">frontend/src/sketches/TextureRuleCellularAutomataSketchClass.js</a>, <a href="frontend_src_sketches_TextureRuleCellularAutomataSketchClass.js.html#line118">line 118</a>
     </li></ul></dd>
     
 
@@ -438,7 +532,10 @@
 
 
 <div class="description">
-    Generates random rule graphics for the sketch.This method creates a new p5 graphics object with a width equal to the number of states raised to the power of the number of neighbors plus one and a height of one.It then fills the graphics object with random states.
+    Generates random rule graphics for the sketch.
+
+This method creates a new p5 graphics object with a width equal to the number of states raised to the power of the number of neighbors plus one and a height of one.
+It then fills the graphics object with random states.
 </div>
 
 
@@ -482,7 +579,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="frontend_src_sketches_TextureRuleCellularAutomataSketchClass.js.html">frontend/src/sketches/TextureRuleCellularAutomataSketchClass.js</a>, <a href="frontend_src_sketches_TextureRuleCellularAutomataSketchClass.js.html#line62">line 62</a>
+        <a href="frontend_src_sketches_TextureRuleCellularAutomataSketchClass.js.html">frontend/src/sketches/TextureRuleCellularAutomataSketchClass.js</a>, <a href="frontend_src_sketches_TextureRuleCellularAutomataSketchClass.js.html#line85">line 85</a>
     </li></ul></dd>
     
 
@@ -526,7 +623,10 @@
 
 
 <div class="description">
-    Generates random states for the sketch.This method clears the current states array and then fills it with new random colors.Each color is a p5 color object with random red, green, and blue values and an alpha value of 255.
+    Generates random states for the sketch.
+
+This method clears the current states array and then fills it with new random colors.
+Each color is a p5 color object with random red, green, and blue values and an alpha value of 255.
 </div>
 
 
@@ -570,7 +670,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="frontend_src_sketches_TextureRuleCellularAutomataSketchClass.js.html">frontend/src/sketches/TextureRuleCellularAutomataSketchClass.js</a>, <a href="frontend_src_sketches_TextureRuleCellularAutomataSketchClass.js.html#line43">line 43</a>
+        <a href="frontend_src_sketches_TextureRuleCellularAutomataSketchClass.js.html">frontend/src/sketches/TextureRuleCellularAutomataSketchClass.js</a>, <a href="frontend_src_sketches_TextureRuleCellularAutomataSketchClass.js.html#line54">line 54</a>
     </li></ul></dd>
     
 
@@ -658,7 +758,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="frontend_src_sketches_TextureRuleCellularAutomataSketchClass.js.html">frontend/src/sketches/TextureRuleCellularAutomataSketchClass.js</a>, <a href="frontend_src_sketches_TextureRuleCellularAutomataSketchClass.js.html#line105">line 105</a>
+        <a href="frontend_src_sketches_TextureRuleCellularAutomataSketchClass.js.html">frontend/src/sketches/TextureRuleCellularAutomataSketchClass.js</a>, <a href="frontend_src_sketches_TextureRuleCellularAutomataSketchClass.js.html#line261">line 261</a>
     </li></ul></dd>
     
 
@@ -694,7 +794,7 @@
     
 
     
-    <h4 class="name" id="setupRuleGraphics"><span class="type-signature"></span>setupRuleGraphics<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="setupCurrentStateGraphicsBuffer"><span class="type-signature"></span>setupCurrentStateGraphicsBuffer<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
@@ -702,7 +802,7 @@
 
 
 <div class="description">
-    Sets up the rule graphics for the sketch.This method calls the generateRandomRuleGraphics method to create a new rule graphics.
+    Sets up the current state graphics buffer which is eventually drawn as a texture to a plane in the main canvas.
 </div>
 
 
@@ -746,7 +846,107 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="frontend_src_sketches_TextureRuleCellularAutomataSketchClass.js.html">frontend/src/sketches/TextureRuleCellularAutomataSketchClass.js</a>, <a href="frontend_src_sketches_TextureRuleCellularAutomataSketchClass.js.html#line97">line 97</a>
+        <a href="frontend_src_sketches_TextureRuleCellularAutomataSketchClass.js.html">frontend/src/sketches/TextureRuleCellularAutomataSketchClass.js</a>, <a href="frontend_src_sketches_TextureRuleCellularAutomataSketchClass.js.html#line243">line 243</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    None
+</div>
+
+
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="setupRuleGraphics"><span class="type-signature"></span>setupRuleGraphics<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Sets up the rule graphics for the sketch.
+
+This method calls the generateRandomRuleGraphics method to create a new rule graphics.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="frontend_src_sketches_TextureRuleCellularAutomataSketchClass.js.html">frontend/src/sketches/TextureRuleCellularAutomataSketchClass.js</a>, <a href="frontend_src_sketches_TextureRuleCellularAutomataSketchClass.js.html#line164">line 164</a>
     </li></ul></dd>
     
 
@@ -790,7 +990,10 @@
 
 
 <div class="description">
-    Sets up the state graphics for the sketch.This method creates a new p5 graphics object with a width equal to the number of states and a height of one.It then fills the graphics object with the colors of the states.
+    Sets up the state graphics for the sketch.
+
+This method creates a new p5 graphics object with a width equal to the number of states and a height of one.
+It then fills the graphics object with the colors of the states.
 </div>
 
 
@@ -834,7 +1037,285 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="frontend_src_sketches_TextureRuleCellularAutomataSketchClass.js.html">frontend/src/sketches/TextureRuleCellularAutomataSketchClass.js</a>, <a href="frontend_src_sketches_TextureRuleCellularAutomataSketchClass.js.html#line82">line 82</a>
+        <a href="frontend_src_sketches_TextureRuleCellularAutomataSketchClass.js.html">frontend/src/sketches/TextureRuleCellularAutomataSketchClass.js</a>, <a href="frontend_src_sketches_TextureRuleCellularAutomataSketchClass.js.html#line149">line 149</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="updateWorldHeight"><span class="type-signature"></span>updateWorldHeight<span class="signature">(newWorldHeight)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Updates the world height of the sketch.
+
+This method clears the current and previous states, sets the pause state to 1, updates the shader's resolution uniform, and resizes the canvas of the current and previous states.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>newWorldHeight</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The new world height.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="frontend_src_sketches_TextureRuleCellularAutomataSketchClass.js.html">frontend/src/sketches/TextureRuleCellularAutomataSketchClass.js</a>, <a href="frontend_src_sketches_TextureRuleCellularAutomataSketchClass.js.html#line211">line 211</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="updateWorldWidth"><span class="type-signature"></span>updateWorldWidth<span class="signature">(newWorldWidth)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Updates the world width of the sketch.
+
+This method clears the current and previous states, sets the pause state to 1, updates the shader's resolution uniform, and resizes the canvas of the current and previous states.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>newWorldWidth</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The new world width.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="frontend_src_sketches_TextureRuleCellularAutomataSketchClass.js.html">frontend/src/sketches/TextureRuleCellularAutomataSketchClass.js</a>, <a href="frontend_src_sketches_TextureRuleCellularAutomataSketchClass.js.html#line176">line 176</a>
     </li></ul></dd>
     
 
@@ -880,13 +1361,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="frontend_src_components_BrushIconButton.module_jsx.html">frontend/src/components/BrushIconButton.jsx</a></li><li><a href="frontend_src_components_DefaultProperties.module_jsx.html">frontend/src/components/DefaultProperties.jsx</a></li><li><a href="frontend_src_components_InputSlider.module_jsx.html">frontend/src/components/InputSlider.jsx</a></li><li><a href="frontend_src_components_LanguageOptionsTabContainer.module_jsx.html">frontend/src/components/LanguageOptionsTabContainer.jsx</a></li><li><a href="frontend_src_components_LeftButtonListContainer.module_jsx.html">frontend/src/components/LeftButtonListContainer.jsx</a></li><li><a href="frontend_src_components_P5Background.module_jsx.html">frontend/src/components/P5Background.jsx</a></li><li><a href="frontend_src_components_P5PropertiesContext.module_jsx.html">frontend/src/components/P5PropertiesContext.jsx</a></li><li><a href="frontend_src_components_PlayPauseButton.module_jsx.html">frontend/src/components/PlayPauseButton.jsx</a></li><li><a href="frontend_src_components_PremadeRuleCard.module_jsx.html">frontend/src/components/PremadeRuleCard.jsx</a></li><li><a href="frontend_src_components_PremadeRulesOptionsTabContainer.module_jsx.html">frontend/src/components/PremadeRulesOptionsTabContainer.jsx</a></li><li><a href="frontend_src_components_RightOptionsRootContainer.module_jsx.html">frontend/src/components/RightOptionsRootContainer.jsx</a></li><li><a href="frontend_src_components_TopNavigationBar.module_jsx.html">frontend/src/components/TopNavigationBar.jsx</a></li><li><a href="frontend_src_components_ViewerOptionsTabContainer.module_jsx.html">frontend/src/components/ViewerOptionsTabContainer.jsx</a></li><li><a href="frontend_src_pages_About.module_jsx.html">frontend/src/pages/About.jsx</a></li><li><a href="frontend_src_pages_Community.module_jsx.html">frontend/src/pages/Community.jsx</a></li><li><a href="frontend_src_pages_Login.module_jsx.html">frontend/src/pages/Login.jsx</a></li><li><a href="frontend_src_pages_Signup.module_jsx.html">frontend/src/pages/Signup.jsx</a></li><li><a href="frontend_src_pages_ViewerBuilderCreator.module_jsx.html">frontend/src/pages/ViewerBuilderCreator.jsx</a></li><li><a href="frontend_src_pages_Welcome.module_jsx.html">frontend/src/pages/Welcome.jsx</a></li></ul><h3>Classes</h3><ul><li><a href="CellularAutomataSketchClass.html">CellularAutomataSketchClass</a></li><li><a href="TextureRuleCellularAutomataSketchClass.html">TextureRuleCellularAutomataSketchClass</a></li></ul><h3>Global</h3><ul><li><a href="global.html#connectToDatabase">connectToDatabase</a></li><li><a href="global.html#createAccount">createAccount</a></li><li><a href="global.html#deletePost">deletePost</a></li><li><a href="global.html#getCurrentTimestamp">getCurrentTimestamp</a></li><li><a href="global.html#getPostInfo">getPostInfo</a></li><li><a href="global.html#getPostsByLeastViews">getPostsByLeastViews</a></li><li><a href="global.html#getPostsByMostViews">getPostsByMostViews</a></li><li><a href="global.html#getPostsByNewest">getPostsByNewest</a></li><li><a href="global.html#getPostsByOldest">getPostsByOldest</a></li><li><a href="global.html#getPostsByUser">getPostsByUser</a></li><li><a href="global.html#getRandomInt">getRandomInt</a></li><li><a href="global.html#getTimestampThreeHoursAhead">getTimestampThreeHoursAhead</a></li><li><a href="global.html#hidePost">hidePost</a></li><li><a href="global.html#logIn">logIn</a></li><li><a href="global.html#logOut">logOut</a></li><li><a href="global.html#makePost">makePost</a></li><li><a href="global.html#unhidePost">unhidePost</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="backend_src_application.module_js.html">backend/src/application.js</a></li><li><a href="backend_src_authentication.module_js.html">backend/src/authentication.js</a></li><li><a href="backend_src_jsonWebTokenAuthorize.module_js.html">backend/src/jsonWebTokenAuthorize.js</a></li><li><a href="backend_src_jsonWebTokenGenerator.module_js.html">backend/src/jsonWebTokenGenerator.js</a></li><li><a href="backend_src_mainAPIRoutes.module_js.html">backend/src/mainAPIRoutes.js</a></li><li><a href="backend_src_postgreSQLConnect.module_js.html">backend/src/postgreSQLConnect.js</a></li><li><a href="frontend_src_components_BackendRequester.module_js.html">frontend/src/components/BackendRequester.js</a></li><li><a href="frontend_src_components_BinaryEncoderDecoder.module_js.html">frontend/src/components/BinaryEncoderDecoder.js</a></li><li><a href="frontend_src_components_BrushIconButton.module_jsx.html">frontend/src/components/BrushIconButton.jsx</a></li><li><a href="frontend_src_components_DefaultProperties.module_jsx.html">frontend/src/components/DefaultProperties.jsx</a></li><li><a href="frontend_src_components_InputSlider.module_jsx.html">frontend/src/components/InputSlider.jsx</a></li><li><a href="frontend_src_components_LanguageColorMenuDropdown.module_jsx.html">frontend/src/components/LanguageColorMenuDropdown.jsx</a></li><li><a href="frontend_src_components_LanguageHelpDropdown.module_jsx.html">frontend/src/components/LanguageHelpDropdown.jsx</a></li><li><a href="frontend_src_components_LanguageOptionsDropdown.module_jsx.html">frontend/src/components/LanguageOptionsDropdown.jsx</a></li><li><a href="frontend_src_components_LanguageOptionsTabContainer.module_jsx.html">frontend/src/components/LanguageOptionsTabContainer.jsx</a></li><li><a href="frontend_src_components_LanguageShaderDropdown.module_jsx.html">frontend/src/components/LanguageShaderDropdown.jsx</a></li><li><a href="frontend_src_components_LanguageStateItem.module_jsx.html">frontend/src/components/LanguageStateItem.jsx</a></li><li><a href="frontend_src_components_LeftButtonListContainer.module_jsx.html">frontend/src/components/LeftButtonListContainer.jsx</a></li><li><a href="frontend_src_components_LoadingDialog.module_jsx.html">frontend/src/components/LoadingDialog.jsx</a></li><li><a href="frontend_src_components_LoginLink.module_jsx.html">frontend/src/components/LoginLink.jsx</a></li><li><a href="frontend_src_components_LogoutLink.module_jsx.html">frontend/src/components/LogoutLink.jsx</a></li><li><a href="frontend_src_components_P5Background.module_jsx.html">frontend/src/components/P5Background.jsx</a></li><li><a href="frontend_src_components_P5PropertiesContext.module_jsx.html">frontend/src/components/P5PropertiesContext.jsx</a></li><li><a href="frontend_src_components_PlayPauseButton.module_jsx.html">frontend/src/components/PlayPauseButton.jsx</a></li><li><a href="frontend_src_components_PostCard.module_jsx.html">frontend/src/components/PostCard.jsx</a></li><li><a href="frontend_src_components_PostListing.module_jsx.html">frontend/src/components/PostListing.jsx</a></li><li><a href="frontend_src_components_PremadeRuleCard.module_jsx.html">frontend/src/components/PremadeRuleCard.jsx</a></li><li><a href="frontend_src_components_PremadeRulesOptionsTabContainer.module_jsx.html">frontend/src/components/PremadeRulesOptionsTabContainer.jsx</a></li><li><a href="frontend_src_components_PrettyAlert.module_jsx.html">frontend/src/components/PrettyAlert.jsx</a></li><li><a href="frontend_src_components_ResizableGrid.module_jsx.html">frontend/src/components/ResizableGrid.jsx</a></li><li><a href="frontend_src_components_RightOptionsRootContainer.module_jsx.html">frontend/src/components/RightOptionsRootContainer.jsx</a></li><li><a href="frontend_src_components_SavePostInput.module_jsx.html">frontend/src/components/SavePostInput.jsx</a></li><li><a href="frontend_src_components_TopNavigationBar.module_jsx.html">frontend/src/components/TopNavigationBar.jsx</a></li><li><a href="frontend_src_components_ViewerOptionsTabContainer.module_jsx.html">frontend/src/components/ViewerOptionsTabContainer.jsx</a></li><li><a href="frontend_src_components_cellularAutomataSketch.module_js.html">frontend/src/components/cellularAutomataSketch.js</a></li><li><a href="frontend_src_pages_Community.module_jsx.html">frontend/src/pages/Community.jsx</a></li><li><a href="frontend_src_pages_Login.module_jsx.html">frontend/src/pages/Login.jsx</a></li><li><a href="frontend_src_pages_MyCA.module_jsx.html">frontend/src/pages/MyCA.jsx</a></li><li><a href="frontend_src_pages_Register.module_jsx.html">frontend/src/pages/Register.jsx</a></li><li><a href="frontend_src_pages_ViewerBuilderCreator.module_jsx.html">frontend/src/pages/ViewerBuilderCreator.jsx</a></li><li><a href="frontend_src_sketches_CellularAutomataSketchClass.module_js.html">frontend/src/sketches/CellularAutomataSketchClass.js</a></li></ul><h3>Classes</h3><ul><li><a href="TextureRuleCellularAutomataSketchClass.html">TextureRuleCellularAutomataSketchClass</a></li><li><a href="backend_src_postgreSQLConnect.module_js-PostgreSQLConnect.html">PostgreSQLConnect</a></li><li><a href="frontend_src_components_BackendRequester.module_js-BackendRequester.html">BackendRequester</a></li><li><a href="frontend_src_components_BinaryEncoderDecoder.module_js-BinaryEncoderDecoder.html">BinaryEncoderDecoder</a></li><li><a href="frontend_src_sketches_CellularAutomataSketchClass.module_js-CellularAutomataSketchClass.html">CellularAutomataSketchClass</a></li></ul><h3>Global</h3><ul><li><a href="global.html#LangPage">LangPage</a></li><li><a href="global.html#langCompiler">langCompiler</a></li><li><a href="global.html#translate_colors">translate_colors</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Fri Feb 16 2024 23:57:50 GMT-0800 (Pacific Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Tue Mar 12 2024 15:15:20 GMT-0700 (Pacific Daylight Time)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: frontend/src/lang-data/langCompiler.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: frontend/src/lang-data/langCompiler.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @file langCompiler.js transforms instructions from EditorTabPanel to a fragment shader.
+ * @author Beckett Avary
+ * @project Emergent Playground
+ */
+
+/*
+ERROR: 0:19: 'lessThanEquals' : no matching overloaded function found
+ERROR: 0:19: 'all' : no matching overloaded function found
+ERROR: 0:19: 'return' : function return is not matching type:
+ERROR: 0:55: 'curr' : undeclared identifier
+ERROR: 0:55: 'eq' : no matching overloaded function found
+ERROR: 0:55: '' : boolean expression expected
+*/
+
+/**
+ * langCompiler is a function that takes a String instruction of shader-lang format and transforms it to GLSL ES 3.0 code.
+ *
+ * @param {string} inst - The input instruction code.
+ * @param {boolean} include_self - Whether to include current cell in identification.
+ * @param {number} range - Integer size of neighborhood in identification.
+ * @param {string} neighborhood - Type of neighborhood.
+ * @param {Array[{string, string}]} colors - ONLY USE langTupleList here!!!
+ *
+ * @returns {string} frag - The resultant GLSL ES 3.0 code.
+ */
+function langCompiler(
+  code,
+  colors,
+  include_self,
+  range,
+  neighborhood,
+  background,
+) {
+  let frag =
+    "#version 300 es\n\n#ifdef GL_ES\nprecision mediump float;\n#endif\n\nin vec2 vTexCoord;\nout vec4 out_col;\n\nuniform sampler2D previousState;\nuniform vec2 resolution;\nuniform float pause;\n\n//CONSTS\n\nbool eq(vec4 c1, vec4 c2){\n\treturn all(lessThanEqual(abs(c1 - c2), vec4(0.01)));\n}\n\nvoid main(){\n\tvec2 uv = vTexCoord;\n\tuv.y = 1.0 - uv.y;\n\n//BUCKETS\n\tvec4 c = texture(previousState, uv);\n\tvec4 curr = c;\n//POSITIONS\n\n//IDENTIFY\n\n//DEFAULTCOLOR\n\n//CODEBEGIN\n//RULES\n//CODEEND\n\n\tif(pause == 1.0){\n\t\tnext = c;\n\t}\n\n\tout_col = next;\n}\n";
+
+  // parse instructions
+  let text = code;
+
+  let color_vec = {};
+  colors.forEach((st) => {
+    color_vec[st.name] = translate_colors(st.color);
+  });
+
+  let insert = "";
+  for (const [k, v] of Object.entries(color_vec)) {
+    insert += `const vec4 ${k} = ${v};\n`;
+  }
+  frag = frag.replace("//CONSTS", insert);
+
+  insert = "";
+  for (const k in color_vec) {
+    insert += `\tint ${k}_num = 0;\n`;
+  }
+  frag = frag.replace("//BUCKETS", insert);
+
+  let nc =
+    neighborhood === "moore"
+      ? ["tl", "t", "tr", "l", "r", "bl", "b", "br"]
+      : ["t", "l", "r", "b"];
+  let ni =
+    neighborhood === "moore"
+      ? [
+          [-1, -1],
+          [0, -1],
+          [1, -1],
+          [-1, 0],
+          [1, 0],
+          [-1, 1],
+          [0, 1],
+          [1, 1],
+        ]
+      : [
+          [0, -1],
+          [-1, 0],
+          [1, 0],
+          [0, 1],
+        ];
+  insert = `\tvec4 n[${nc.length + (include_self ? 1 : 0)}];\n`;
+  nc.forEach((c, idx) => {
+    insert += `\tvec4 ${c} = textureOffset(previousState, uv, ivec2(${ni[idx][0]}, ${ni[idx][1]}));\n`;
+  });
+  nc = include_self ? ["c", ...nc] : nc;
+  insert += `\tn = vec4[${nc.length}](`;
+  nc.forEach((c, idx) => {
+    insert += idx === nc.length - 1 ? `${c});\n` : `${c}, `;
+  });
+  frag = frag.replace("//POSITIONS", insert);
+
+  insert = `\tfor(int idx=0; idx&lt;${nc.length}; idx++){\n`;
+  for (const k in color_vec) {
+    insert += `\t\tif(eq(n[idx], ${k})){\n\t\t\t${k}_num++;\n\t\t}\n`;
+  }
+  insert += "\t}\n";
+  frag = frag.replace("//IDENTIFY", insert);
+
+  text = "\t" + text.replace(/\n/g, "\n\t");
+  frag = frag.replace("//RULES", text);
+
+  insert = `\tvec4 next = ${translate_colors(background)};`;
+  frag = frag.replace("//DEFAULTCOLOR", insert);
+
+  return frag;
+}
+
+/**
+ * translate_colors is a function that takes an HTML color code and returns its vec4 representation
+ *
+ * @param {string} c - The input HTML color code
+ *
+ * @returns {string[]} - Index-encoded vec4 and packed uint representations, respectively.
+ */
+function translate_colors(c) {
+  const num = c.replace(/^#/, "0x");
+  const tmp = parseInt(num);
+  const r = ((tmp >> 16) &amp; 0xff) / 255.0;
+  const g = ((tmp >> 8) &amp; 0xff) / 255.0;
+  const b = (tmp &amp; 0xff) / 255.0;
+  return `vec4(${r === 0 || r === 1 ? r.toFixed(1) : r}, ${g === 0 || g === 1 ? g.toFixed(1) : g}, ${b === 0 || b === 1 ? b.toFixed(1) : b}, 1.0)`;
+}
+
+export default langCompiler;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="backend_src_application.module_js.html">backend/src/application.js</a></li><li><a href="backend_src_authentication.module_js.html">backend/src/authentication.js</a></li><li><a href="backend_src_jsonWebTokenAuthorize.module_js.html">backend/src/jsonWebTokenAuthorize.js</a></li><li><a href="backend_src_jsonWebTokenGenerator.module_js.html">backend/src/jsonWebTokenGenerator.js</a></li><li><a href="backend_src_mainAPIRoutes.module_js.html">backend/src/mainAPIRoutes.js</a></li><li><a href="backend_src_postgreSQLConnect.module_js.html">backend/src/postgreSQLConnect.js</a></li><li><a href="frontend_src_components_BackendRequester.module_js.html">frontend/src/components/BackendRequester.js</a></li><li><a href="frontend_src_components_BinaryEncoderDecoder.module_js.html">frontend/src/components/BinaryEncoderDecoder.js</a></li><li><a href="frontend_src_components_BrushIconButton.module_jsx.html">frontend/src/components/BrushIconButton.jsx</a></li><li><a href="frontend_src_components_DefaultProperties.module_jsx.html">frontend/src/components/DefaultProperties.jsx</a></li><li><a href="frontend_src_components_InputSlider.module_jsx.html">frontend/src/components/InputSlider.jsx</a></li><li><a href="frontend_src_components_LanguageColorMenuDropdown.module_jsx.html">frontend/src/components/LanguageColorMenuDropdown.jsx</a></li><li><a href="frontend_src_components_LanguageHelpDropdown.module_jsx.html">frontend/src/components/LanguageHelpDropdown.jsx</a></li><li><a href="frontend_src_components_LanguageOptionsDropdown.module_jsx.html">frontend/src/components/LanguageOptionsDropdown.jsx</a></li><li><a href="frontend_src_components_LanguageOptionsTabContainer.module_jsx.html">frontend/src/components/LanguageOptionsTabContainer.jsx</a></li><li><a href="frontend_src_components_LanguageShaderDropdown.module_jsx.html">frontend/src/components/LanguageShaderDropdown.jsx</a></li><li><a href="frontend_src_components_LanguageStateItem.module_jsx.html">frontend/src/components/LanguageStateItem.jsx</a></li><li><a href="frontend_src_components_LeftButtonListContainer.module_jsx.html">frontend/src/components/LeftButtonListContainer.jsx</a></li><li><a href="frontend_src_components_LoadingDialog.module_jsx.html">frontend/src/components/LoadingDialog.jsx</a></li><li><a href="frontend_src_components_LoginLink.module_jsx.html">frontend/src/components/LoginLink.jsx</a></li><li><a href="frontend_src_components_LogoutLink.module_jsx.html">frontend/src/components/LogoutLink.jsx</a></li><li><a href="frontend_src_components_P5Background.module_jsx.html">frontend/src/components/P5Background.jsx</a></li><li><a href="frontend_src_components_P5PropertiesContext.module_jsx.html">frontend/src/components/P5PropertiesContext.jsx</a></li><li><a href="frontend_src_components_PlayPauseButton.module_jsx.html">frontend/src/components/PlayPauseButton.jsx</a></li><li><a href="frontend_src_components_PostCard.module_jsx.html">frontend/src/components/PostCard.jsx</a></li><li><a href="frontend_src_components_PostListing.module_jsx.html">frontend/src/components/PostListing.jsx</a></li><li><a href="frontend_src_components_PremadeRuleCard.module_jsx.html">frontend/src/components/PremadeRuleCard.jsx</a></li><li><a href="frontend_src_components_PremadeRulesOptionsTabContainer.module_jsx.html">frontend/src/components/PremadeRulesOptionsTabContainer.jsx</a></li><li><a href="frontend_src_components_PrettyAlert.module_jsx.html">frontend/src/components/PrettyAlert.jsx</a></li><li><a href="frontend_src_components_ResizableGrid.module_jsx.html">frontend/src/components/ResizableGrid.jsx</a></li><li><a href="frontend_src_components_RightOptionsRootContainer.module_jsx.html">frontend/src/components/RightOptionsRootContainer.jsx</a></li><li><a href="frontend_src_components_SavePostInput.module_jsx.html">frontend/src/components/SavePostInput.jsx</a></li><li><a href="frontend_src_components_TopNavigationBar.module_jsx.html">frontend/src/components/TopNavigationBar.jsx</a></li><li><a href="frontend_src_components_ViewerOptionsTabContainer.module_jsx.html">frontend/src/components/ViewerOptionsTabContainer.jsx</a></li><li><a href="frontend_src_components_cellularAutomataSketch.module_js.html">frontend/src/components/cellularAutomataSketch.js</a></li><li><a href="frontend_src_pages_Community.module_jsx.html">frontend/src/pages/Community.jsx</a></li><li><a href="frontend_src_pages_Login.module_jsx.html">frontend/src/pages/Login.jsx</a></li><li><a href="frontend_src_pages_MyCA.module_jsx.html">frontend/src/pages/MyCA.jsx</a></li><li><a href="frontend_src_pages_Register.module_jsx.html">frontend/src/pages/Register.jsx</a></li><li><a href="frontend_src_pages_ViewerBuilderCreator.module_jsx.html">frontend/src/pages/ViewerBuilderCreator.jsx</a></li><li><a href="frontend_src_sketches_CellularAutomataSketchClass.module_js.html">frontend/src/sketches/CellularAutomataSketchClass.js</a></li></ul><h3>Classes</h3><ul><li><a href="TextureRuleCellularAutomataSketchClass.html">TextureRuleCellularAutomataSketchClass</a></li><li><a href="backend_src_postgreSQLConnect.module_js-PostgreSQLConnect.html">PostgreSQLConnect</a></li><li><a href="frontend_src_components_BackendRequester.module_js-BackendRequester.html">BackendRequester</a></li><li><a href="frontend_src_components_BinaryEncoderDecoder.module_js-BinaryEncoderDecoder.html">BinaryEncoderDecoder</a></li><li><a href="frontend_src_sketches_CellularAutomataSketchClass.module_js-CellularAutomataSketchClass.html">CellularAutomataSketchClass</a></li></ul><h3>Global</h3><ul><li><a href="global.html#LangPage">LangPage</a></li><li><a href="global.html#langCompiler">langCompiler</a></li><li><a href="global.html#translate_colors">translate_colors</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Tue Mar 12 2024 15:15:20 GMT-0700 (Pacific Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

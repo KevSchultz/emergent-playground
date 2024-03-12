@@ -29,120 +29,168 @@
             <pre class="prettyprint source linenums"><code>/**
  * @project Emergent Playground
  * @file P5PropertiesContext.jsx
- * @overview This file exports both the P5PropertiesContext and P5PropertiesProvider components for managing p5 property state. 
+ * @overview This file exports both the P5PropertiesContext and P5PropertiesProvider components for managing p5 property state.
  * @authors Kevin Schultz
- * @exports P5PropertiesContext P5PropertiesProvider
+ * @exports P5PropertiesContext
+ * @exports P5PropertiesProvider
  */
 
 // React Imports
-import { createContext } from 'react';
-import { useState } from 'react';
+import { createContext } from "react";
+import { useState } from "react";
 
 // Other Imports
-import DefaultProperties from './DefaultProperties';
-import PropTypes from 'prop-types';
+import DefaultProperties from "./DefaultProperties";
+import PropTypes from "prop-types";
 
 const P5PropertiesContext = createContext();
 
 /**
- * P5PropertiesProvider is a React component that provides a context for managing state related to P5 properties.
+ *  @description P5PropertiesProvider is a React component that provides a context for managing state related to P5 properties.
  * It uses React's useState hook to create state variables for each property, and provides a context that makes these
  * state variables and their associated setters available to child components.
- *
  * The properties managed by this context can be found in DefaultProperties.jsx
- *
  * Child components can access these state variables and setters by using React's useContext hook with P5PropertiesContext.
  *
  * @param {object} props - The properties passed to this component. Expected to include 'children', the child components.
- * 
+ *
  * @returns {JSX.Element} A P5PropertiesContext.Provider that wraps the child components and provides them with access to the P5 properties context.
  */
 export function P5PropertiesProvider({ children }) {
-    const [worldWidth, setWorldWidth] = useState(DefaultProperties.worldWidth);
-    const [worldHeight, setWorldHeight] = useState(DefaultProperties.worldHeight);
-    const [pixelDensity, setPixelDensity] = useState(DefaultProperties.pixelDensity);
-    const [cameraX, setCameraX] = useState(DefaultProperties.cameraX);
-    const [cameraY, setCameraY] = useState(DefaultProperties.cameraY);
-    const [cameraZ, setCameraZ] = useState(DefaultProperties.cameraZ);
-    const [zoom, setZoom] = useState(DefaultProperties.zoom);
-    const [minZoom, setMinZoom] = useState(DefaultProperties.minZoom);
-    const [maxZoom, setMaxZoom] = useState(DefaultProperties.maxZoom);
-    const [zoomSensitivity, setZoomSensitivity] = useState(DefaultProperties.zoomSensitivity);
-    const [panSensitivity, setPanSensitivity] = useState(DefaultProperties.panSensitivity);
-    const [brushType, setBrushType] = useState(DefaultProperties.brushType);
-    const [listBrushTypes, setListBrushTypes] = useState(DefaultProperties.listBrushTypes);
-    const [brushIcons, setBrushIcons] = useState(DefaultProperties.brushIcons);
-    const [selectedBrushIconColor, setSelectedBrushIconColor] = useState(
-        DefaultProperties.selectedBrushIconColor
-    );
-    const [deselectedBrushIconColor, setDeselectedBrushIconColor] = useState(
-        DefaultProperties.deselectedBrushIconColor
-    );
-    const [brushSize, setBrushSize] = useState(DefaultProperties.brushSize);
-    const [cursorStyles, setCursorStyles] = useState(DefaultProperties.cursorStyles);
-    const [previousMouseX, setPreviousMouseX] = useState(DefaultProperties.previousMouseX);
-    const [previousMouseY, setPreviousMouseY] = useState(DefaultProperties.previousMouseY);
-    const [vertexShader, setVertexShader] = useState(DefaultProperties.vertexShader);
-    const [fragmentShader, setFragmentShader] = useState(DefaultProperties.fragmentShader);
-    const [pause, setPause] = useState(DefaultProperties.pause);
-    const [code, setCode] = useState(DefaultProperties.code);
+  const [title, setTitle] = useState(DefaultProperties.title);
+  const [username, setUsername] = useState(DefaultProperties.username);
+  const [worldWidth, setWorldWidth] = useState(DefaultProperties.worldWidth);
+  const [worldHeight, setWorldHeight] = useState(DefaultProperties.worldHeight);
+  const [cameraX, setCameraX] = useState(DefaultProperties.cameraX);
+  const [cameraY, setCameraY] = useState(DefaultProperties.cameraY);
+  const [cameraZ, setCameraZ] = useState(DefaultProperties.cameraZ);
+  const [zoom, setZoom] = useState(DefaultProperties.zoom);
+  const [minZoom, setMinZoom] = useState(DefaultProperties.minZoom);
+  const [maxZoom, setMaxZoom] = useState(DefaultProperties.maxZoom);
+  const [zoomSensitivity, setZoomSensitivity] = useState(
+    DefaultProperties.zoomSensitivity,
+  );
+  const [panSensitivity, setPanSensitivity] = useState(
+    DefaultProperties.panSensitivity,
+  );
+  const [brushType, setBrushType] = useState(DefaultProperties.brushType);
+  const [deselectedBrushIconColor, setDeselectedBrushIconColor] = useState(
+    DefaultProperties.deselectedBrushIconColor,
+  );
+  const [brushSize, setBrushSize] = useState(DefaultProperties.brushSize);
+  const [previousMouseX, setPreviousMouseX] = useState(
+    DefaultProperties.previousMouseX,
+  );
+  const [previousMouseY, setPreviousMouseY] = useState(
+    DefaultProperties.previousMouseY,
+  );
+  const [vertexShader, setVertexShader] = useState(
+    DefaultProperties.vertexShader,
+  );
+  const [fragmentShader, setFragmentShader] = useState(
+    DefaultProperties.fragmentShader,
+  );
+  const [pause, setPause] = useState(DefaultProperties.pause);
+  const [code, setCode] = useState(DefaultProperties.code);
+  const [currentLangColor, setCurrentLangColor] = useState(
+    DefaultProperties.currentLangColor,
+  );
+  const [langTupleList, setLangTupleList] = useState(
+    DefaultProperties.langTupleList,
+  );
+  const [langIncludeSelf, setLangIncludeSelf] = useState(
+    DefaultProperties.langIncludeSelf,
+  );
+  const [langRange, setLangRange] = useState(DefaultProperties.langRange);
+  const [backgroundColor, setBackgroundColor] = useState(
+    DefaultProperties.backgroundColor,
+  );
+  const [currentDrawColor, setCurrentDrawColor] = useState(
+    DefaultProperties.currentDrawColor,
+  );
+  const [fullscreen, setFullscreen] = useState(DefaultProperties.fullscreen);
+  const [generation, setGeneration] = useState(DefaultProperties.generation);
+  const [continuousPlay, setContinuousPlay] = useState(
+    DefaultProperties.continuousPlay,
+  );
+  const [langNeighborhoodType, setLangNeighborhoodType] = useState(
+    DefaultProperties.langNeighborhoodType,
+  );
 
-    const value = {
-        worldWidth,
-        setWorldWidth,
-        worldHeight,
-        setWorldHeight,
-        pixelDensity,
-        setPixelDensity,
-        cameraX,
-        setCameraX,
-        cameraY,
-        setCameraY,
-        cameraZ,
-        setCameraZ,
-        zoom,
-        setZoom,
-        minZoom,
-        setMinZoom,
-        maxZoom,
-        setMaxZoom,
-        zoomSensitivity,
-        setZoomSensitivity,
-        panSensitivity,
-        setPanSensitivity,
-        brushType,
-        setBrushType,
-        listBrushTypes,
-        setListBrushTypes,
-        brushIcons,
-        setBrushIcons,
-        selectedBrushIconColor,
-        setSelectedBrushIconColor,
-        deselectedBrushIconColor,
-        setDeselectedBrushIconColor,
-        brushSize,
-        setBrushSize,
-        cursorStyles,
-        setCursorStyles,
-        previousMouseX,
-        setPreviousMouseX,
-        previousMouseY,
-        setPreviousMouseY,
-        vertexShader,
-        setVertexShader,
-        fragmentShader,
-        setFragmentShader,
-        pause,
-        setPause,
-        code,
-        setCode,
-    };
+  const value = {
+    title,
+    setTitle,
+    username,
+    setUsername,
+    worldWidth,
+    setWorldWidth,
+    worldHeight,
+    setWorldHeight,
+    cameraX,
+    setCameraX,
+    cameraY,
+    setCameraY,
+    cameraZ,
+    setCameraZ,
+    zoom,
+    setZoom,
+    minZoom,
+    setMinZoom,
+    maxZoom,
+    setMaxZoom,
+    zoomSensitivity,
+    setZoomSensitivity,
+    panSensitivity,
+    setPanSensitivity,
+    brushType,
+    setBrushType,
+    deselectedBrushIconColor,
+    setDeselectedBrushIconColor,
+    brushSize,
+    setBrushSize,
+    previousMouseX,
+    setPreviousMouseX,
+    previousMouseY,
+    setPreviousMouseY,
+    vertexShader,
+    setVertexShader,
+    fragmentShader,
+    setFragmentShader,
+    pause,
+    setPause,
+    code,
+    setCode,
+    currentLangColor,
+    setCurrentLangColor,
+    langTupleList,
+    setLangTupleList,
+    langIncludeSelf,
+    setLangIncludeSelf,
+    langRange,
+    setLangRange,
+    backgroundColor,
+    setBackgroundColor,
+    currentDrawColor,
+    setCurrentDrawColor,
+    langNeighborhoodType,
+    setLangNeighborhoodType,
+    fullscreen,
+    setFullscreen,
+    generation,
+    setGeneration,
+    continuousPlay,
+    setContinuousPlay,
+  };
 
-    return &lt;P5PropertiesContext.Provider value={value}>{children}&lt;/P5PropertiesContext.Provider>;
+  return (
+    &lt;P5PropertiesContext.Provider value={value}>
+      {children}
+    &lt;/P5PropertiesContext.Provider>
+  );
 }
 
 P5PropertiesProvider.propTypes = {
-    children: PropTypes.node.isRequired,
+  children: PropTypes.node.isRequired,
 };
 
 export default P5PropertiesContext;
@@ -156,13 +204,13 @@ export default P5PropertiesContext;
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="frontend_src_components_BrushIconButton.module_jsx.html">frontend/src/components/BrushIconButton.jsx</a></li><li><a href="frontend_src_components_DefaultProperties.module_jsx.html">frontend/src/components/DefaultProperties.jsx</a></li><li><a href="frontend_src_components_InputSlider.module_jsx.html">frontend/src/components/InputSlider.jsx</a></li><li><a href="frontend_src_components_LanguageOptionsTabContainer.module_jsx.html">frontend/src/components/LanguageOptionsTabContainer.jsx</a></li><li><a href="frontend_src_components_LeftButtonListContainer.module_jsx.html">frontend/src/components/LeftButtonListContainer.jsx</a></li><li><a href="frontend_src_components_P5Background.module_jsx.html">frontend/src/components/P5Background.jsx</a></li><li><a href="frontend_src_components_P5PropertiesContext.module_jsx.html">frontend/src/components/P5PropertiesContext.jsx</a></li><li><a href="frontend_src_components_PlayPauseButton.module_jsx.html">frontend/src/components/PlayPauseButton.jsx</a></li><li><a href="frontend_src_components_PremadeRuleCard.module_jsx.html">frontend/src/components/PremadeRuleCard.jsx</a></li><li><a href="frontend_src_components_PremadeRulesOptionsTabContainer.module_jsx.html">frontend/src/components/PremadeRulesOptionsTabContainer.jsx</a></li><li><a href="frontend_src_components_RightOptionsRootContainer.module_jsx.html">frontend/src/components/RightOptionsRootContainer.jsx</a></li><li><a href="frontend_src_components_TopNavigationBar.module_jsx.html">frontend/src/components/TopNavigationBar.jsx</a></li><li><a href="frontend_src_components_ViewerOptionsTabContainer.module_jsx.html">frontend/src/components/ViewerOptionsTabContainer.jsx</a></li><li><a href="frontend_src_pages_About.module_jsx.html">frontend/src/pages/About.jsx</a></li><li><a href="frontend_src_pages_Community.module_jsx.html">frontend/src/pages/Community.jsx</a></li><li><a href="frontend_src_pages_Login.module_jsx.html">frontend/src/pages/Login.jsx</a></li><li><a href="frontend_src_pages_Signup.module_jsx.html">frontend/src/pages/Signup.jsx</a></li><li><a href="frontend_src_pages_ViewerBuilderCreator.module_jsx.html">frontend/src/pages/ViewerBuilderCreator.jsx</a></li><li><a href="frontend_src_pages_Welcome.module_jsx.html">frontend/src/pages/Welcome.jsx</a></li></ul><h3>Classes</h3><ul><li><a href="CellularAutomataSketchClass.html">CellularAutomataSketchClass</a></li><li><a href="TextureRuleCellularAutomataSketchClass.html">TextureRuleCellularAutomataSketchClass</a></li></ul><h3>Global</h3><ul><li><a href="global.html#connectToDatabase">connectToDatabase</a></li><li><a href="global.html#createAccount">createAccount</a></li><li><a href="global.html#deletePost">deletePost</a></li><li><a href="global.html#getCurrentTimestamp">getCurrentTimestamp</a></li><li><a href="global.html#getPostInfo">getPostInfo</a></li><li><a href="global.html#getPostsByLeastViews">getPostsByLeastViews</a></li><li><a href="global.html#getPostsByMostViews">getPostsByMostViews</a></li><li><a href="global.html#getPostsByNewest">getPostsByNewest</a></li><li><a href="global.html#getPostsByOldest">getPostsByOldest</a></li><li><a href="global.html#getPostsByUser">getPostsByUser</a></li><li><a href="global.html#getRandomInt">getRandomInt</a></li><li><a href="global.html#getTimestampThreeHoursAhead">getTimestampThreeHoursAhead</a></li><li><a href="global.html#hidePost">hidePost</a></li><li><a href="global.html#logIn">logIn</a></li><li><a href="global.html#logOut">logOut</a></li><li><a href="global.html#makePost">makePost</a></li><li><a href="global.html#unhidePost">unhidePost</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="backend_src_application.module_js.html">backend/src/application.js</a></li><li><a href="backend_src_authentication.module_js.html">backend/src/authentication.js</a></li><li><a href="backend_src_jsonWebTokenAuthorize.module_js.html">backend/src/jsonWebTokenAuthorize.js</a></li><li><a href="backend_src_jsonWebTokenGenerator.module_js.html">backend/src/jsonWebTokenGenerator.js</a></li><li><a href="backend_src_mainAPIRoutes.module_js.html">backend/src/mainAPIRoutes.js</a></li><li><a href="backend_src_postgreSQLConnect.module_js.html">backend/src/postgreSQLConnect.js</a></li><li><a href="frontend_src_components_BackendRequester.module_js.html">frontend/src/components/BackendRequester.js</a></li><li><a href="frontend_src_components_BinaryEncoderDecoder.module_js.html">frontend/src/components/BinaryEncoderDecoder.js</a></li><li><a href="frontend_src_components_BrushIconButton.module_jsx.html">frontend/src/components/BrushIconButton.jsx</a></li><li><a href="frontend_src_components_DefaultProperties.module_jsx.html">frontend/src/components/DefaultProperties.jsx</a></li><li><a href="frontend_src_components_InputSlider.module_jsx.html">frontend/src/components/InputSlider.jsx</a></li><li><a href="frontend_src_components_LanguageColorMenuDropdown.module_jsx.html">frontend/src/components/LanguageColorMenuDropdown.jsx</a></li><li><a href="frontend_src_components_LanguageHelpDropdown.module_jsx.html">frontend/src/components/LanguageHelpDropdown.jsx</a></li><li><a href="frontend_src_components_LanguageOptionsDropdown.module_jsx.html">frontend/src/components/LanguageOptionsDropdown.jsx</a></li><li><a href="frontend_src_components_LanguageOptionsTabContainer.module_jsx.html">frontend/src/components/LanguageOptionsTabContainer.jsx</a></li><li><a href="frontend_src_components_LanguageShaderDropdown.module_jsx.html">frontend/src/components/LanguageShaderDropdown.jsx</a></li><li><a href="frontend_src_components_LanguageStateItem.module_jsx.html">frontend/src/components/LanguageStateItem.jsx</a></li><li><a href="frontend_src_components_LeftButtonListContainer.module_jsx.html">frontend/src/components/LeftButtonListContainer.jsx</a></li><li><a href="frontend_src_components_LoadingDialog.module_jsx.html">frontend/src/components/LoadingDialog.jsx</a></li><li><a href="frontend_src_components_LoginLink.module_jsx.html">frontend/src/components/LoginLink.jsx</a></li><li><a href="frontend_src_components_LogoutLink.module_jsx.html">frontend/src/components/LogoutLink.jsx</a></li><li><a href="frontend_src_components_P5Background.module_jsx.html">frontend/src/components/P5Background.jsx</a></li><li><a href="frontend_src_components_P5PropertiesContext.module_jsx.html">frontend/src/components/P5PropertiesContext.jsx</a></li><li><a href="frontend_src_components_PlayPauseButton.module_jsx.html">frontend/src/components/PlayPauseButton.jsx</a></li><li><a href="frontend_src_components_PostCard.module_jsx.html">frontend/src/components/PostCard.jsx</a></li><li><a href="frontend_src_components_PostListing.module_jsx.html">frontend/src/components/PostListing.jsx</a></li><li><a href="frontend_src_components_PremadeRuleCard.module_jsx.html">frontend/src/components/PremadeRuleCard.jsx</a></li><li><a href="frontend_src_components_PremadeRulesOptionsTabContainer.module_jsx.html">frontend/src/components/PremadeRulesOptionsTabContainer.jsx</a></li><li><a href="frontend_src_components_PrettyAlert.module_jsx.html">frontend/src/components/PrettyAlert.jsx</a></li><li><a href="frontend_src_components_ResizableGrid.module_jsx.html">frontend/src/components/ResizableGrid.jsx</a></li><li><a href="frontend_src_components_RightOptionsRootContainer.module_jsx.html">frontend/src/components/RightOptionsRootContainer.jsx</a></li><li><a href="frontend_src_components_SavePostInput.module_jsx.html">frontend/src/components/SavePostInput.jsx</a></li><li><a href="frontend_src_components_TopNavigationBar.module_jsx.html">frontend/src/components/TopNavigationBar.jsx</a></li><li><a href="frontend_src_components_ViewerOptionsTabContainer.module_jsx.html">frontend/src/components/ViewerOptionsTabContainer.jsx</a></li><li><a href="frontend_src_components_cellularAutomataSketch.module_js.html">frontend/src/components/cellularAutomataSketch.js</a></li><li><a href="frontend_src_pages_Community.module_jsx.html">frontend/src/pages/Community.jsx</a></li><li><a href="frontend_src_pages_Login.module_jsx.html">frontend/src/pages/Login.jsx</a></li><li><a href="frontend_src_pages_MyCA.module_jsx.html">frontend/src/pages/MyCA.jsx</a></li><li><a href="frontend_src_pages_Register.module_jsx.html">frontend/src/pages/Register.jsx</a></li><li><a href="frontend_src_pages_ViewerBuilderCreator.module_jsx.html">frontend/src/pages/ViewerBuilderCreator.jsx</a></li><li><a href="frontend_src_sketches_CellularAutomataSketchClass.module_js.html">frontend/src/sketches/CellularAutomataSketchClass.js</a></li></ul><h3>Classes</h3><ul><li><a href="TextureRuleCellularAutomataSketchClass.html">TextureRuleCellularAutomataSketchClass</a></li><li><a href="backend_src_postgreSQLConnect.module_js-PostgreSQLConnect.html">PostgreSQLConnect</a></li><li><a href="frontend_src_components_BackendRequester.module_js-BackendRequester.html">BackendRequester</a></li><li><a href="frontend_src_components_BinaryEncoderDecoder.module_js-BinaryEncoderDecoder.html">BinaryEncoderDecoder</a></li><li><a href="frontend_src_sketches_CellularAutomataSketchClass.module_js-CellularAutomataSketchClass.html">CellularAutomataSketchClass</a></li></ul><h3>Global</h3><ul><li><a href="global.html#LangPage">LangPage</a></li><li><a href="global.html#langCompiler">langCompiler</a></li><li><a href="global.html#translate_colors">translate_colors</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Fri Feb 16 2024 23:57:50 GMT-0800 (Pacific Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Tue Mar 12 2024 15:15:20 GMT-0700 (Pacific Daylight Time)
 </footer>
 
 <script> prettyPrint(); </script>
