@@ -2,6 +2,7 @@ import gameOfLifeShader from "../shaders/gameOfLife.frag?raw";
 import seedsShader from "../shaders/seeds.frag?raw";
 import briansBrainShader from "../shaders/briansBrain.frag?raw";
 import wireworldShader from "../shaders/wireworld.frag?raw";
+import edgingAntShader from "../shaders/edgingant.frag?raw";
 
 const gameOfLife = {
   name: "Game of Life",
@@ -66,4 +67,27 @@ const wireworld = {
   includeSelf: false,
 };
 
-export default [gameOfLife, seeds, briansBrain, wireworld];
+const edgingAnt = {
+    name: "Edging Ant",
+    tupleList: [
+        { color: "#000000", name: "black"},
+        { color: "#ffffff", name: "white"},
+        { color: "#00ffff", name: "b_t"},
+        { color: "#ff00ff", name: "b_l"},
+        { color: "#ffff00", name: "b_r"},
+        { color: "888888", name: "b_b"},
+        { color: "#ff0000", name: "w_t"},
+        { color: "#00ff00", name: "w_l"},
+        { color: "#0000ff", name: "w_r"},
+        { color: "#800813", name: "w_b"},
+    ],
+    defaultDraw: "#000000",
+    defaultBackground: "#ffffff",
+    url: "/edgingAnt.gif",
+    shader: edgingAntShader,
+    neighborhood: "von_neumann",
+    range: 1,
+    includeSelf: false,
+};
+
+export default [gameOfLife, seeds, briansBrain, wireworld, edgingAnt];
