@@ -135,8 +135,20 @@ class CellularAutomataSketchClass {
 
         this.debugMode ? console.log('CellularAutomataSketchClass.updateWorldHeight') : null;
     }
-
-    checkShaderError(shaderObj, shaderText) {
+    
+    /**
+     * Returns the GL error associated with a fragment shader.
+     *
+     * This method pulls the GL context from a P5 shader object, and
+     * uses it to compile the given shaderText. If there is an error,
+     * it is returned. Otherwise, an empty string is returned.
+     *
+     * @param {p5.Shader} shaderObj 
+     * @param {string} shaderText 
+     *
+     * @returns {string} WebGL shader error
+     */
+    checkShaderError(shaderObj, shaderText){
         let gl = shaderObj._renderer.GL;
         let glFragShader = gl.createShader(gl.FRAGMENT_SHADER);
         gl.shaderSource(glFragShader, shaderText);
@@ -144,7 +156,7 @@ class CellularAutomataSketchClass {
         if (!gl.getShaderParameter(glFragShader, gl.COMPILE_STATUS)) {
             return gl.getShaderInfoLog(glFragShader);
         }
-        return 'no error';
+        return '';
     }
 
     /**
@@ -159,17 +171,22 @@ class CellularAutomataSketchClass {
      */
     updateShader(newVertexShader, newFragmentShader) {
         this.currentState.resetShader();
-        this.shader = null;
-        this.shader = this.p5.createShader(newVertexShader, newFragmentShader);
+
+        let err = this.checkShaderError(this.shader, newFragmentShader);
+        if(err == ''){
+            this.shader = null;
+            this.shader = this.p5.createShader(newVertexShader, newFragmentShader);
+        }
+
         this.currentState.shader(this.shader);
         this.shader.setUniform('pause', 0);
         this.shader.setUniform('resolution', [
             this.reactProperties.worldWidth,
             this.reactProperties.worldHeight,
         ]);
+        
 
         this.debugMode ? console.log('CellularAutomataSketchClass.updateShader') : null;
-        this.debugMode ? console.log(this.checkShaderError(this.shader, newFragmentShader)) : null;
     }
 
     /**

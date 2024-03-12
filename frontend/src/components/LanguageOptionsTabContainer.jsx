@@ -15,7 +15,7 @@ import { Button, Box, List } from '@mui/material';
 // Ace Code Editor Imports
 import AceEditor from 'react-ace';
 import 'ace-builds/src-noconflict/mode-glsl';
-import 'ace-builds/src-noconflict/theme-gruvbox';
+import 'ace-builds/src-noconflict/theme-solarized_dark';
 import 'ace-builds/src-noconflict/ext-language_tools';
 
 // Dropdown Imports
@@ -41,7 +41,7 @@ import ResizableGrid from './ResizableGrid';
  */
 
 //TODO: autocomplete for language in AceEditor
-//TODO: UPDATE PALETTE WHEN COLOR BECOMES UNAVAILABLE
+//TODO: implement custom neighborhood selection
 function LanguageOptionsTabContainer() {
     const { 
         code, 
@@ -65,7 +65,6 @@ function LanguageOptionsTabContainer() {
     const handleCompile = () => {
         if(code !== ''){
             const newFrag = langCompiler(code, langTupleList, langIncludeSelf, langRange, langNeighborhoodType, backgroundColor);
-            console.log(newFrag);
             setFragmentShader(newFrag);
         } else {
             setOpenError(true);
@@ -73,9 +72,8 @@ function LanguageOptionsTabContainer() {
         }
     };
 
-    const handleSave = () => {
-        console.log(fragmentShader);
-        console.log(langTupleList);
+    const handleViewShader = () => {
+        alert(fragmentShader);
     };
 
     return (
@@ -95,10 +93,10 @@ function LanguageOptionsTabContainer() {
             <ResizableGrid limit={400}>
                 <Button
                     variant='outlined'
-                    onClick={handleSave}
+                    onClick={handleViewShader}
                     fullWidth
                 >
-                    Save
+                    View Full Shader
                 </Button>
                  <Button
                     variant='outlined'
@@ -112,7 +110,7 @@ function LanguageOptionsTabContainer() {
                 width="100%"
                 placeholder=""
                 mode="glsl"
-                theme="gruvbox"
+                theme="solarized_dark"
                 name="ed"
                 value={code}
                 onChange={handleCodeChange}

@@ -41,7 +41,7 @@ let DefaultProperties = {
     langNeighborhoodType: 'moore',
     fullscreen: false,
     generation: 0,
-    continuousPlay: false,
+    continuousPlay: false
 };
 
 export default DefaultProperties;
