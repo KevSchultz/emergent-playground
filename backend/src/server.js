@@ -8,6 +8,7 @@
  * @authors Kevin Schultz
  */
 
+const http = require('http');
 const https = require('https');
 const fs = require('fs');
 const path = require('path');
@@ -26,8 +27,8 @@ httpsServer.listen(process.env.SSL_PORT, () => {
 
 // Redirect HTTP requests to HTTPS
 const httpServer = http.createServer((request, response) => {
-    if (request.url === '/.well-known/acme-challenge/mSMAp7H0J20DA-iSEXhPKK2s0CqwCm-8_FObpxxprLg') {
-        fs.readFile('./acme-challenge/mSMAp7H0J20DA-iSEXhPKK2s0CqwCm-8_FObpxxprLg', 'utf8', (err, data) => {
+    if (request.url === '/.well-known/acme-challenge/njcAnN02vwQaYjBNyF5MOl_enOGL0Xy4FRE0Sm1TkO0') {
+        fs.readFile('/home/main/emergent-playground/backend/src/acme-challenge/njcAnN02vwQaYjBNyF5MOl_enOGL0Xy4FRE0Sm1TkO0', 'utf8', (err, data) => {
             if (err) {
                 response.writeHead(404);
                 response.end('Not found');
@@ -47,4 +48,3 @@ const httpPort = process.env.HTTP_PORT || 80;
 httpServer.listen(httpPort, () => {
     console.log(`HTTP server running on port ${httpPort}`);
 });
- 
