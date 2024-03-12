@@ -19,6 +19,8 @@ To run this project locally, you will need the following:
 
 * [Node.js](https://nodejs.org/) and npm (Node Package Manager). npm is included with Node.js, which you can download and install from [Node.js downloads](https://nodejs.org/en/download/).
 
+* [PostgreSQL](https://www.postgresql.org/)
+
 * [Git](https://git-scm.com/) for version control.
 
 ## Local Installation
@@ -73,7 +75,11 @@ Follow these steps to install and run the backend locally:
     npm install
     ```
 
-4. Start the express server:
+4. Create a .env file following the README.md in backend
+
+5. Create the database following the README.md in backend/database
+
+6. Start the express server:
 
     ```bash
     npm start
