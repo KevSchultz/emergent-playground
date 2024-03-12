@@ -1,7 +1,10 @@
 /**
  * @project Emergent Playground
  * @file postgreSQLConnect.js
- * @overview 
+ * @overview The postgreSQLConnect.js file defines a PostgreSQLConnect class for establishing a connection to a PostgreSQL database. 
+ * It uses the pg module to create a client and connect to the database. 
+ * The class constructor takes host, user, port, password, and database as parameters. 
+ * An error is thrown if the connection fails.
  * @authors Ethan Foster, Kevin Schultz
  * @exports postgreSQLConnect
  */
