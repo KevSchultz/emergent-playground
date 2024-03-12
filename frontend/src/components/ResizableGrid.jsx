@@ -10,8 +10,7 @@ import { Children, useEffect, useRef, useState } from "react";
 import { Box, Grid } from "@mui/material";
 
 /**
- * A container component that arranges its children in a two-column grid when its width is less than limit.
- *
+ * @description A container component that arranges its children in a two-column grid when its width is less than limit.
  * Registers a ResizeObserver on its parent Box container's Ref, updating state
  * variable boxSize when the parent Box size changes. Children are mapped to
  * Grid items that set their breakpoint based on (boxSize < limit). Likely bad.

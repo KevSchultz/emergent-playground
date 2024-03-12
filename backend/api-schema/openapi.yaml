@@ -4,8 +4,8 @@ info:
   title: Emergent Playground API
   version: '0.1.0'
 
-servers:
-  - url: https://localhost:3000/api
+servers: 
+  - url: https://localhost:443/api
 
 paths:
   /register:
@@ -20,7 +20,7 @@ paths:
               $ref: '#/components/schemas/RegistrationCredentials'
       responses:
         200:
-          description: Sets an HttpOnly cookie for authentication
+          description: Sets an HttpOnly Secure cookie for authentication
           content:
             application/json:
               schema:
@@ -220,7 +220,7 @@ paths:
                 $ref: '#/components/schemas/UnexpectedError'
   /username:
     get:
-      description: Get username from user ID in cookie
+      description: Get username from userid in cookie
       responses:
         200:
           description: Success

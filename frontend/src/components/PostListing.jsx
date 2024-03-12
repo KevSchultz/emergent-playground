@@ -1,16 +1,11 @@
 /**
  * @project Emergent Playground
- * @file Community.jsx
- * @overview The container component for the community page.
- * The community page includes a cellular automata list that users have shared with searching functionality.
+ * @file PostListing.jsx
+ * @overview This file defines the PostListing component, which fetches and displays a list of posts in a paginated format. 
+ * It uses the P5PropertiesContext to access the current username and the BackendRequester to fetch posts. 
+ * It also uses several Material UI components for layout and styling.
  * @authors Kevin Schultz, Preston Nguyen, Alex Garza
- * @exports Community
- */
-
-/**
- * A functional component that renders the Community page.
- *
- * @returns {JSX.Element} The Community component.
+ * @exports PostListing
  */
 
 // React Imports
@@ -29,6 +24,15 @@ import backendRequester from "../components/BackendRequester";
 import PostCard from "../components/PostCard";
 import P5PropertiesContext from "../components/P5PropertiesContext";
 
+/**
+ * @description A component that displays a list of posts. 
+ * It fetches the posts from the backend and displays them in a paginated format.
+ *
+ * @param {Object} props - The properties passed to this component.
+ * @param {string} props.title - The title of the page.
+ * @param {string} props.sorting - The sorting method to be used when fetching the posts.
+ * @returns {JSX.Element} The PostListing component.
+ */
 function PostListing({ title, sorting }) {
   // State for messages
 

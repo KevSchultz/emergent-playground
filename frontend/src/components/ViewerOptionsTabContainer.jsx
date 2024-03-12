@@ -21,8 +21,7 @@ import cellularAutomataSketch from "./cellularAutomataSketch";
 // import { downloadPost } from '../backendRequester';
 
 /**
- * A container component for the viewer options tab.
- *
+ * @description A container component for the viewer options tab.
  * This component displays a Box that contains four InputSlider components.
  * The InputSlider components are used to control the zoom level, world width, world height, and brush size.
  * The current values and the functions to update these values are retrieved from the P5PropertiesContext.

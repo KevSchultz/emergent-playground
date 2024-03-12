@@ -22,7 +22,6 @@ import { RouterProvider } from "react-router-dom";
 import ViewerBuilderCreator from "./pages/ViewerBuilderCreator";
 import Welcome from "./pages/Welcome";
 import MyCA from "./pages/MyCA";
-import About from "./pages/About";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Community from "./pages/Community";
@@ -41,10 +40,6 @@ const router = createBrowserRouter([
   {
     path: "myca",
     element: <MyCA />,
-  },
-  {
-    path: "about",
-    element: <About />,
   },
   {
     path: "login",

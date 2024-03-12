@@ -3,7 +3,8 @@
  * @file P5PropertiesContext.jsx
  * @overview This file exports both the P5PropertiesContext and P5PropertiesProvider components for managing p5 property state.
  * @authors Kevin Schultz
- * @exports P5PropertiesContext P5PropertiesProvider
+ * @exports P5PropertiesContext
+ * @exports P5PropertiesProvider
  */
 
 // React Imports
@@ -17,12 +18,10 @@ import PropTypes from "prop-types";
 const P5PropertiesContext = createContext();
 
 /**
- * P5PropertiesProvider is a React component that provides a context for managing state related to P5 properties.
+ *  @description P5PropertiesProvider is a React component that provides a context for managing state related to P5 properties.
  * It uses React's useState hook to create state variables for each property, and provides a context that makes these
  * state variables and their associated setters available to child components.
- *
  * The properties managed by this context can be found in DefaultProperties.jsx
- *
  * Child components can access these state variables and setters by using React's useContext hook with P5PropertiesContext.
  *
  * @param {object} props - The properties passed to this component. Expected to include 'children', the child components.

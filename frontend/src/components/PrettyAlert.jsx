@@ -13,9 +13,8 @@
  */
 
 /**
- * A pretty looking alert message. Use only one per component, and use setAlertMessage
+ * @description A pretty looking alert message. Use only one per component, and use setAlertMessage
  * to control what it says. Use setOpenAlert(true) to open it. Handles its own closing.
- *
  * Snackbar contains the Alert so it can display over other components.
  *
  * @param {boolean} openAlert - A React state variable to control whether PrettyAlert is displayed.

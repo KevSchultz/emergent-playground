@@ -10,7 +10,7 @@
 import { useContext, useState } from "react";
 
 // Material UI Imports
-import { Button, Box, List } from "@mui/material";
+import { Button, Box } from "@mui/material";
 
 // Ace Code Editor Imports
 import AceEditor from "react-ace";
@@ -31,8 +31,7 @@ import ResizableGrid from "./ResizableGrid";
 import LanguageShaderDropdown from "./LanguageShaderDropdown";
 
 /**
- * A container component for that shows on the language options tab.
- *
+ * @description A container component for that shows on the language options tab.
  * This component displays an AceEditor inside a Box.
  * The AceEditor is used to display and edit the code.
  * The code is retrieved from the P5PropertiesContext.

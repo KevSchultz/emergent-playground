@@ -16,8 +16,7 @@ import CircleIcon from "@mui/icons-material/RadioButtonUnchecked";
 import PropTypes from "prop-types";
 
 /**
- * A button component for selecting a brush type.
- *
+ * @description A button component for selecting a brush type.
  * This component displays an icon button with a brush icon.
  * The color of the icon changes based on whether the brush type of the button matches the current brush type.
  * When the button is clicked, the current brush type is updated to the brush type of the button.

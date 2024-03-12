@@ -20,7 +20,7 @@ import P5PropertiesContext from "./P5PropertiesContext";
 import backendRequester from "./BackendRequester";
 
 /**
- * @description`LoginLink` is a functional component that displays a link to the login page
+ * @description LoginLink is a functional component that displays a link to the login page
  * if the user is not logged in, or a link to the MyCa page if the user is logged in.
  *
  * @returns {JSX.Element} The LoginLink component.
@@ -44,7 +44,7 @@ export default function LoginLink() {
     };
 
     getUsername();
-  }, []);
+  }, [setUsername]);
 
   return (
     <>

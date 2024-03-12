@@ -15,16 +15,13 @@ import TopNavigationBar from "../components/TopNavigationBar";
 import LeftButtonListContainer from "../components/LeftButtonListContainer";
 import RightOptionsRootContainer from "../components/RightOptionsRootContainer";
 import P5Background from "../components/P5Background";
-import P5PropertiesContext from "../components/P5PropertiesContext";
-import resetP5PropertiesContext from "../components/resetP5PropertiesContext";
+
 
 // Resizable Panel Imports
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
-import { useContext, useEffect } from "react";
 
 /**
- * A functional component that renders the Viewer Builder Creator page.
- *
+ * @description A functional component that renders the Viewer Builder Creator page.
  * This component displays a P5PropertiesProvider that contains a P5Background, a TopNavigationBar, and a PanelGroup.
  * The PanelGroup contains a LeftButtonListContainer, a Panel, a PanelResizeHandle, and a RightOptionsRootContainer.
  *

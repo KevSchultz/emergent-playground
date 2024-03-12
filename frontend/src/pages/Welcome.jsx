@@ -1,11 +1,12 @@
 /**
- * @file Welcome.jsx is the container component for the welcome landing page.
+ * @project Emergent Playground
+ * @file Welcome.jsx
+ * @overview The container component for the welcome page.
  * The welcome page includes a brief description of the project and a button to get started.
  * @author Preston Nguyen, Kevin Schultz
  * @project Emergent Playground
  */
 
-import Button from "@mui/material/Button";
 import ButtonBase from "@mui/material/ButtonBase";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
@@ -125,62 +126,6 @@ function Welcome() {
                 employed SCRUM techniques learned in class to collaborate on
                 this project.
               </Typography>
-
-              {/* Avatar list */}
-              {/* <div style={{ display: 'flex', alignItems: 'center', marginTop: '30px' }}>
-                                <Avatar 
-                                    sx={{ height: '10vh', width: '10vh', marginRight: '10px' }}
-                                >
-                                    Kevin
-                                </Avatar>
-                                <Typography variant="body2" gutterBottom>
-                                    I am the product manager
-                                </Typography>
-                            </div>
-
-                            <div style={{ display: 'flex', alignItems: 'center', marginTop: '30px' }}>
-                                <Avatar 
-                                    sx={{ height: '10vh', width: '10vh', marginRight: '10px' }}
-                                >
-                                    Beckett
-                                </Avatar>
-                                <Typography variant="body2" gutterBottom>
-                                    Text here
-                                </Typography>
-                            </div>
-
-                            <div style={{ display: 'flex', alignItems: 'center', marginTop: '30px' }}>
-                                <Avatar 
-                                    sx={{ height: '10vh', width: '10vh', marginRight: '10px' }}
-                                >
-                                    Alex
-                                </Avatar>
-                                <Typography variant="body2" gutterBottom>
-                                    Text here
-                                </Typography>
-                            </div>
-
-                            <div style={{ display: 'flex', alignItems: 'center', marginTop: '30px' }}>
-                                <Avatar 
-                                    sx={{ height: '10vh', width: '10vh', marginRight: '10px' }}
-                                >
-                                    Ethan
-                                </Avatar>
-                                <Typography variant="body2" gutterBottom>
-                                    Text here
-                                </Typography>
-                            </div>
-
-                            <div style={{ display: 'flex', alignItems: 'center', marginTop: '30px' }}>
-                                <Avatar 
-                                    sx={{ height: '10vh', width: '10vh', marginRight: '10px' }}
-                                >
-                                    Preston
-                                </Avatar>
-                                <Typography variant="body2" gutterBottom>
-                                    Text here
-                                </Typography>
-                            </div> */}
             </div>
           </Box>
         </div>

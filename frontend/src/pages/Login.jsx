@@ -1,9 +1,8 @@
 /**
  * @project Emergent Playground
- * @file Login.jsx is
- * @overview The container component for the sign in page.
+ * @file Login.jsx
+ * @overview The container component for the login page.
  * The sign in page includes a form for the user to enter their username and password.
- * As well as integration with authentication services such as Google and (TBD).
  * @authors Kevin Schultz
  * @exports Login
  */
@@ -26,6 +25,12 @@ import Logo from "../emergent_playground_logo.svg";
 // Custom Imports
 import backendRequester from "../components/BackendRequester";
 
+/**
+ * @description A component that provides a login form. 
+ * When the form is submitted, it sends a login request to the server. If the login is successful, it updates the username in the P5 properties context and navigates to the home page.
+ *
+ * @returns {JSX.Element} The Login component.
+ */
 function Login() {
   const navigate = useNavigate(); // Get the navigate function
 

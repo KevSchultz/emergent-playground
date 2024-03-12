@@ -1,8 +1,17 @@
-import React from "react";
+/**
+ * @project Emergent Playground
+ * @file LoadingDialog.jsx
+ * @overview A dialog component that displays a loading spinner.
+ * @authors Kevin Schultz
+ * @exports LoadingDialog
+ */
+
 import Dialog from "@mui/material/Dialog";
 import CircularProgress from "@mui/material/CircularProgress";
+import PropTypes from "prop-types";
 
-export default function LoadingDialog({ open }) {
+
+function LoadingDialog({ open }) {
   return (
     <Dialog
       open={open}
@@ -22,3 +31,9 @@ export default function LoadingDialog({ open }) {
     </Dialog>
   );
 }
+
+LoadingDialog.propTypes = {
+  open: PropTypes.bool.isRequired,
+};
+
+export default LoadingDialog;

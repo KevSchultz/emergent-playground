@@ -1,9 +1,9 @@
 /**
  * @project Emergent Playground
  * @file BackendRequester.js
- * @overview This class provides methods to send HTTP requests to a backend server.
+ * @overview This class provides methods to send HTTP requests to the backend server.
  * @authors Ethan Foster, Kevin Schultz
- * @exports BackendRequester
+ * @exports backendRequester
  */
 
 /*
@@ -15,26 +15,19 @@ in order to complete the stated task that the function does
 These functions send the params to the backend and the backend then 
 does the needed database functions to complete the task.
 
-all functions will either return a true/object on success
-or a false/object with a debugging line
-
 uses built in fetch functions
 */
 
-import BackendRequesterInterface from "../interfaces/BackendRequesterInterface";
 import BinaryEncoderDecoder from "./BinaryEncoderDecoder";
 
 /**
  * @class BackendRequester
- * @classdesc The BackendRequester class extends the BackendRequesterInterface.
- * It provides methods to send HTTP requests to a backend server.
+ * @classdesc The BackendRequester class provides methods to send HTTP requests to a backend server.
  * These requests are used to perform various operations, such as user registration.
- * The class uses the Fetch API to send the requests and a BinaryEncoderDecoderInterface instance
+ * The class uses the Fetch API to send the requests and a BinaryEncoderDecoder instance
  * to encode and decode data.
- *
- * @extends BackendRequesterInterface
  */
-class BackendRequester extends BackendRequesterInterface {
+class BackendRequester {
   /**
    * @description Creates an instance of BackendRequester.
    *
@@ -42,7 +35,6 @@ class BackendRequester extends BackendRequesterInterface {
    * @param {string} testURL - The URL to use for testing.
    */
   constructor(binaryEncoderDecoder, testURL = "") {
-    super();
     this.binaryEncoderDecoder = binaryEncoderDecoder;
     this.testURL = testURL;
   }
@@ -72,6 +64,7 @@ class BackendRequester extends BackendRequesterInterface {
 
       return json;
     } catch (error) {
+      console.log("Error:", error);
       return undefined;
     }
   }
@@ -99,6 +92,7 @@ class BackendRequester extends BackendRequesterInterface {
       const json = await response.json();
       return json;
     } catch (error) {
+      console.log("Error:", error);
       return undefined;
     }
   }
@@ -106,7 +100,7 @@ class BackendRequester extends BackendRequesterInterface {
   /**
    * @description Sends a logout request to the server.
    *
-   * @returns {Promise<Object>} A promise that resolves to the response from the server.
+   * @returns {Promise<Object>} A promise that resolves to the response from the server or undefined.
    */
   async logout() {
     const url = this.testURL + "/api/logout";
@@ -122,6 +116,7 @@ class BackendRequester extends BackendRequesterInterface {
       const response = await fetch(url, options);
       return response;
     } catch (error) {
+      console.log("Error:", error);
       return undefined;
     }
   }
@@ -129,7 +124,7 @@ class BackendRequester extends BackendRequesterInterface {
   /**
    * @description Gets the username of a logged in user.
    *
-   * @returns {Promise<Object>} A promise that resolves to the username or undefined from the server.
+   * @returns {Promise<Object>} A promise that resolves to the username from the server or undefined.
    */
   async getUsername() {
     const url = this.testURL + "/api/username";
@@ -142,16 +137,21 @@ class BackendRequester extends BackendRequesterInterface {
       const json = await response.json();
       return json.username;
     } catch (error) {
+      console.error("Error:", error);
       return undefined;
     }
   }
 
-  /**
-   * @description Sends a request for uploading a cellular automata post to the server.
-   *
-   * @param {Object} post - The post to upload.
-   * @returns {Promise<Object>} A promise that resolves to the response from the server.
-   */
+/**
+ * Uploads a full post to the server.
+ *
+ * @async
+ * @param {string} title - The title of the post.
+ * @param {Blob} poststate - The binary encoding of the state of the post.
+ * @param {Object} postproperties - The properties of the post.
+ * @returns {Promise<Response>} The response from the server or undefined.
+ * @throws {Error} If there is an error during the fetch operation.
+ */
   async uploadPost(title, poststate, postproperties) {
     const encodedPostProperties =
       await this.binaryEncoderDecoder.encodeJSONToBinary(postproperties);
@@ -183,7 +183,7 @@ class BackendRequester extends BackendRequesterInterface {
    * @description Sends a request for downloading a cellular automata post from the server.
    *
    * @param {string} postid - The ID of the post to download.
-   * @returns {Promise<Object>} A promise that resolves to the response from the server.
+   * @returns {Promise<Object>} A promise that resolves to the {state: state, properties: properties} from the server or undefined.
    */
   async downloadPost(postid) {
     const responseState = await this.downloadPostState(postid);
@@ -203,15 +203,14 @@ class BackendRequester extends BackendRequesterInterface {
   }
 
   /**
-   * @description Sends a request for downloading a cellular automata post from the server.
+   * @description Downloads the state of a post from the server.
    *
-   * @param {string} postid - The ID of the post to download.
-   * @returns {Promise<Object>} A promise that resolves to the blob representing the postState.
+   * @async
+   * @param {string} postid - The ID of the post.
+   * @returns {Promise<Blob>} The binary data of the post state or undefined.
+   * @throws {Error} If there is an error during the fetch operation.
    */
-  // reconstructs a post from the database by calling the downloadState and downloadproperties functions
-  // also gets the username and title of the post
-  // then puts all of the unserialized data into a post object and returns it
-  async downloadPostState(postid) {
+    async downloadPostState(postid) {
     const url =
       this.testURL + `/api/downloadstate?postid=${encodeURIComponent(postid)}`;
 
@@ -230,10 +229,12 @@ class BackendRequester extends BackendRequesterInterface {
   }
 
   /**
-   * @description Sends a request for downloading a cellular automata post from the server.
+   * @description Downloads the properties of a post from the server.
    *
-   * @param {string} postid - The ID of the post to download.
-   * @returns {Promise<Object>} A promise that resolves to the unserializedPostProperties.
+   * @async
+   * @param {string} postid - The ID of the post.
+   * @returns {Promise<Blob>} The binary data of the post properties or undefined.
+   * @throws {Error} If there is an error during the fetch operation.
    */
   async downloadPostProperties(postid) {
     const url = `/api/downloadproperties?postid=${encodeURIComponent(postid)}`;
@@ -253,12 +254,12 @@ class BackendRequester extends BackendRequesterInterface {
   }
 
   /**
-   * @description Sends a request for downloading a cellular automata post from the server.
+   * Downloads the list of all posts from the server according to a certain sorting method.
    *
-   *
-   * @param {integer} sorting - specifies the sorting method to be used with the list ()
-   * 0 or null for no sorting, 1 to sort by userID, 2 to sort by postID, 3 to sort by creationTime
-   * @returns {Promise<Object>} A promise that resolves to an array representing all of the posts.
+   * @async
+   * @param {string} [sorting=null] - The sorting method to be used.
+   * @returns {Promise<Array>} The list of posts as a JavaScript array. Returns an empty array if there is an error or if the response is empty.
+   * @throws {Error} If there is an error during the fetch operation.
    */
   async downloadPostList(sorting = null) {
     // getting list of all posts according to certain sorting method
@@ -283,6 +284,7 @@ class BackendRequester extends BackendRequesterInterface {
 
       return postListJson; // returning the postList as javascript array
     } catch (error) {
+      console.log("Error:", error);
       return [];
     }
   }

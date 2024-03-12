@@ -1,3 +1,14 @@
+/**
+ * @project Emergent Playground
+ * @file CellularAutomataSketchClass.js
+ * @overview This file defines the CellularAutomataSketchClass, a class that represents a cellular automata sketch.
+ * It integrates p5.js functionalities with custom shader operations and React properties.
+ * The class manages the lifecycle of a cellular automata sketch, including setup, drawing operations, event handling, and dynamic property updates.
+ * It is designed to work within a React environment, utilizing the ReactP5Wrapper for seamless integration.
+ * @author Beckett Avary, Kevin Schultz
+ * @exports CellularAutomataSketchClass
+ */
+
 const PIXEL_DENSITY = 1;
 
 /**
@@ -7,20 +18,25 @@ const PIXEL_DENSITY = 1;
  * The class is designed to work within a React environment, utilizing the ReactP5Wrapper for seamless integration.
  * @property {p5} p5 - An instance of the p5 library, used for drawing and event handling.
  * @property {p5.Graphics} currentState - A graphics buffer representing the current state of the automata.
- * @property {p5.Graphics} previousState - A graphics buffer storing the previous state of the automata for calculations.
- * @property {Object} reactProperties - Dynamic properties passed from React, used to control sketch parameters.
- * @property {Object} defaultReactProperties - Default properties for the sketch, set upon instantiation.
+ * @property {p5.Graphics} previousState - A graphics buffer storing the previous state of the automata used to transition to next state.
+ * @property {p5.Graphics} overlayGraphics - A graphics buffer used to draw the brush overlay.
  * @property {p5.Shader} shader - A p5.js Shader object for custom rendering effects.
+ * @property {Object} reactProperties - Dynamic properties passed from React, used to control sketch parameters.
+ * @property {boolean} shouldCopy - Flag to check if the current state should be copied to the previous state.
  * @property {boolean} isSketchSetup - Flag to check if the initial setup has been completed.
- * @constructor
- * @param {Object} defaultReactProperties - Initial properties for the sketch, typically passed from a React component.
+ * @property {boolean} debugMode - Flag to enable debug mode for logging.
+ * @property {boolean} cursorIsOnCanvas - Flag to check if the cursor is currently on the canvas.
  */
 class CellularAutomataSketchClass {
+  /**
+   * @description Constructs a new instance of the CellularAutomataSketchClass.
+   *
+   * @param {Object} defaultReactProperties - The default properties for the React component.
+   */
   constructor(defaultReactProperties) {
     this.p5;
     this.currentState;
     this.previousState;
-    this.staticOverlayGraphics;
     this.dynamicOverlayGraphics;
     this.shader;
     this.canvas;
@@ -72,7 +88,6 @@ class CellularAutomataSketchClass {
 
   /**
    * @description Updates the world width of the sketch.
-   * This method clears the current and previous states, sets the pause state to 1, updates the shader's resolution uniform, and resizes the canvas of the current and previous states.
    *
    * @param {number} newWorldWidth - The new world width.
    */
@@ -118,9 +133,7 @@ class CellularAutomataSketchClass {
   }
 
   /**
-   * Updates the world height of the sketch.
-   *
-   * This method clears the current and previous states, sets the pause state to 1, updates the shader's resolution uniform, and resizes the canvas of the current and previous states.
+   * @description Updates the world height of the sketch.
    *
    * @param {number} newWorldHeight - The new world height.
    */
@@ -166,8 +179,7 @@ class CellularAutomataSketchClass {
   }
 
   /**
-   * Returns the GL error associated with a fragment shader.
-   *
+   * @description Returns the GL error associated with a fragment shader.
    * This method pulls the GL context from a P5 shader object, and
    * uses it to compile the given shaderText. If there is an error,
    * it is returned. Otherwise, an empty string is returned.
@@ -189,8 +201,7 @@ class CellularAutomataSketchClass {
   }
 
   /**
-   * Updates the shader of the sketch.
-   *
+   * @description Updates the shader of the sketch.
    * This method clears the current and previous states, resets the shader of the current state,
    * creates a new shader with the new vertex and fragment shaders,
    * sets the shader of the current state to the new shader, and updates the pause and resolution uniforms of the new shader.
@@ -222,7 +233,7 @@ class CellularAutomataSketchClass {
   }
 
   /**
-   * Updates the 'default CA state' color according to a given value.
+   * @description Updates the 'default CA state' color according to a given value.
    * Sets the background attribute of the texture's currentState and previousState.
    *
    * @param {string} newBackgroundColor - The new background color in hex format.
@@ -242,7 +253,7 @@ class CellularAutomataSketchClass {
   }
 
   /**
-   * Maps the p5.js event handlers to the corresponding class methods.
+   * @description Maps the p5.js event handlers to the corresponding class methods.
    * This function is used to integrate the p5.js library and ReactP5Wrapper with the class-based structure of this component.
    * It assigns the class methods to the p5.js event handlers, allowing the class to handle these events.
    *
@@ -266,7 +277,7 @@ class CellularAutomataSketchClass {
   }
 
   /**
-   * Updates the sketch attributes with the provided properties.
+   * @description Updates the sketch attributes with the provided properties.
    * These properties are passed from the ReactP5Wrapper in ViewerBuilderCreator.jsx using the @p5-wrapper/react library.
    * This function must be called before the sketch is created.
    *
@@ -314,8 +325,7 @@ class CellularAutomataSketchClass {
   }
 
   /**
-   * Sets up the main webgl canvas for p5.
-   * @returns None
+   * @description Sets up the main webgl canvas for p5.
    */
   setupMainCanvas() {
     this.canvas = this.p5.createCanvas(
@@ -332,8 +342,9 @@ class CellularAutomataSketchClass {
   }
 
   /**
-   * Sets up the current state graphics buffer which is eventually drawn as a texture to a plane in the main canvas.
-   * @returns None
+   * @description Sets up the current state graphics buffer which is eventually drawn as a texture to a plane in the main canvas.
+   * @param {number} worldWidth - The width of the world.
+   * @param {number} worldHeight - The height of the world.
    */
   setupCurrentStateGraphicsBuffer(worldWidth, worldHeight) {
     this.currentState = this.p5.createGraphics(
@@ -356,8 +367,10 @@ class CellularAutomataSketchClass {
   }
 
   /**
-   * Sets up the previous state graphics buffer which will be drawn on and feed into the shader as a texture.
-   * @returns None
+   * @description Sets up the previous state graphics buffer which will be drawn on and feed into the shader as a texture.
+   *
+   * @param {number} worldWidth - The width of the world.
+   * @param {number} worldHeight - The height of the world.
    */
   setupPreviousStateGraphicsBuffer(worldWidth, worldHeight) {
     let oldPreviousState = undefined;
@@ -396,6 +409,12 @@ class CellularAutomataSketchClass {
       : null;
   }
 
+  /**
+   * @description Sets up the overlay graphics buffer with the given world width and height.
+   *
+   * @param {number} worldWidth - The width of the world.
+   * @param {number} worldHeight - The height of the world.
+   */
   setupOverlayGraphicsBuffer(worldWidth, worldHeight) {
     this.overlayGraphics = this.p5.createGraphics(worldWidth, worldHeight);
 
@@ -406,7 +425,7 @@ class CellularAutomataSketchClass {
   }
 
   /**
-   * Sets up a shader using the provided vertex and fragment shaders.
+   * @description Sets up a shader using the provided vertex and fragment shaders.
    *
    * @param {string} vertexShader - The GLSL source code for the vertex shader.
    * @param {string} fragmentShader - The GLSL source code for the fragment shader.
@@ -420,9 +439,8 @@ class CellularAutomataSketchClass {
   }
 
   /**
-   * Sets up the cellular automata sketch with the necessary react properties.
+   * @description Sets up the cellular automata sketch with the necessary react properties.
    * Once setup is complete, the `isSketchSetup` flag is set to true.
-   * @returns None
    */
   setup() {
     // ----- Shader Setup -----
@@ -471,7 +489,7 @@ class CellularAutomataSketchClass {
   }
 
   /**
-   * Checks if the brush is currently drawing.
+   * @description Checks if the brush is currently drawing.
    *
    * @returns Boolean - True if the brush is drawing, false otherwise.
    */
@@ -490,7 +508,7 @@ class CellularAutomataSketchClass {
   }
 
   /**
-   * Draws a pixel on the given graphics buffer at the specified coordinates.
+   * @description Draws a pixel on the given graphics buffer at the specified coordinates.
    *
    * @param {p5.Graphics} graphicsBuffer - The graphics buffer on which to draw the pixel.
    * @param {number} x - The x-coordinate of the pixel.
@@ -510,7 +528,7 @@ class CellularAutomataSketchClass {
   }
 
   /**
-   * Draws a square outline on the given graphics buffer at the specified coordinates for the top left of the square.
+   * @description Draws a square outline on the given graphics buffer at the specified coordinates for the top left of the square.
    *
    * @param {p5.Graphics} graphicsBuffer - The graphics buffer on which to draw the square.
    * @param {number} x - The x-coordinate of the top-left corner of the square.
@@ -535,7 +553,7 @@ class CellularAutomataSketchClass {
   }
 
   /**
-   * Draws a circle outline on the given graphics buffer at the specified coordinates.
+   * @description Draws a circle outline on the given graphics buffer at the specified coordinates.
    *
    * @param {p5.Graphics} graphicsBuffer - The graphics buffer on which to draw the circle.
    * @param {number} x - The x-coordinate of the center of the circle.
@@ -543,8 +561,6 @@ class CellularAutomataSketchClass {
    * @param {p5.Color} color - The color of the circle.
    * @param {number} size - The diameter of the circle.
    * @param {number} borderSize - The thickness of the circle's border.
-   *
-   * @returns None
    */
   circleDrawOnGraphics(graphicsBuffer, x0, y0, color, diameter) {
     let radius = diameter / 2;
@@ -582,15 +598,13 @@ class CellularAutomataSketchClass {
   }
 
   /**
-   * Draws the current brush shape on the given graphics buffer at the specified coordinates.
+   * @description Draws the current brush shape on the given graphics buffer at the specified coordinates.
    * This function checks if brush drawing is active and if the cursor is within the world bounds before drawing.
    *
    * @param {p5.Graphics} graphicsBuffer - The p5.js graphics buffer where the brush will draw.
    * @param {number} x - The x-coordinate on the graphics buffer where the brush starts drawing.
    * @param {number} y - The y-coordinate on the graphics buffer where the brush starts drawing.
    * @param {p5.Color} color - The color of the brush.
-   *
-   * @returns None
    */
   brushDrawOnGraphics(graphicsBuffer, x, y, color) {
     switch (this.reactProperties.brushType) {
@@ -638,7 +652,7 @@ class CellularAutomataSketchClass {
   }
 
   /**
-   * Copies the image data from one graphics buffer to another at the specified coordinates.
+   * @description Copies the image data from one graphics buffer to another at the specified coordinates.
    *
    * @param {p5.Graphics} source - The graphics buffer from which to copy the image data.
    * @param {p5.Graphics} destination - The graphics buffer to which to copy the image data.
@@ -656,24 +670,23 @@ class CellularAutomataSketchClass {
     // this.debugMode ? console.log('CellularAutomataSketchClass.copyGraphicsBufferImageDataToAnotherGraphicsBuffer') : null;
   }
 
+  /**
+   * @description Draws the overlay on the overlay graphics buffer. It clears the buffer and then draws the brush on it.
+   */
   drawOverlay() {
     this.overlayGraphics.clear();
     this.brushDrawOnGraphics(this.overlayGraphics);
   }
 
   /**
-   * Handles the drawing of the cellular automata sketch with p5.
+   * @description Handles the drawing of the cellular automata sketch with p5.
    * This includes clearing the sketch, updating the previous state with the current state,
    * handling mouse interactions, setting shader uniforms, applying the shader to the current state,
    * scaling the sketch based on zoom level, drawing the current state and overlay graphics to the canvas,
    * and setting the camera settings.
    * If the sketch is not set up, the function will return early and do nothing.
-   *
-   * @returns None
    */
   draw() {
-    // this.saveState(this.previousState);
-
     if (this.reactProperties.pause == 0) {
       this.reactProperties.setGeneration((previousGeneration) => {
         return previousGeneration + 1;
@@ -766,7 +779,7 @@ class CellularAutomataSketchClass {
   }
 
   /**
-   * Draws a texture plane with the specified texture, width, and height.
+   * @description Draws a texture plane with the specified texture, width, and height.
    * The texture filtering is set to nearest instead of linear, which prevents smoothing on the texture.
    * This is done by reaching into the internals of the p5.js library, which is not documented in the p5.js reference.
    *
@@ -796,12 +809,11 @@ class CellularAutomataSketchClass {
   }
 
   /**
-   * Handles the mouse wheel event for zooming in and out of the sketch.
+   * @description Handles the mouse wheel event for zooming in and out of the sketch.
    * The zoom level is updated based on the delta of the mouse wheel event and the zoom sensitivity.
    * The new zoom level is constrained between the minimum and maximum zoom levels.
    *
    * @param {object} event - The mouse wheel event.
-   * @returns None
    */
   mouseWheel(event) {
     if (!this.cursorIsOnCanvas) {
@@ -824,12 +836,10 @@ class CellularAutomataSketchClass {
   }
 
   /**
-   * Handles the mouse dragged event to pan the camera over the sketch.
+   * @description Handles the mouse dragged event to pan the camera over the sketch.
    * The camera's X and Y positions are updated based on the mouse's X and Y positions.
    * The new camera positions are calculated by subtracting the difference between the current and previous mouse position from the current mouse position.
    * The camera is only moved if the center mouse button is pressed.
-   *
-   * @returns None
    */
   mouseDragged() {
     // Update the camera's X position
@@ -867,11 +877,9 @@ class CellularAutomataSketchClass {
   }
 
   /**
-   * Handles the mouse pressed event.
+   * @description Handles the mouse pressed event.
    * The previous mouse X and Y positions are updated with the current mouse X and Y positions.
    * If the cursor is on the world (i.e., within the bounds of the sketch), the sketch is paused to allow for drawing in draw function.
-   *
-   * @returns None
    */
   mousePressed() {
     this.reactProperties.setPreviousMouseX(this.p5.mouseX);
@@ -890,7 +898,7 @@ class CellularAutomataSketchClass {
   }
 
   /**
-   * Handles the window resized event.
+   * @description Handles the window resized event.
    * The canvas is resized to match the new window width and height.
    */
   windowResized() {
@@ -902,7 +910,7 @@ class CellularAutomataSketchClass {
   }
 
   /**
-   * Converts screen coordinates to world coordinates inside the cellular automata in a p5.js 2D context.
+   * @description Converts screen coordinates to world coordinates inside the cellular automata in a p5.js 2D context.
    * This function takes into account the current scaleOffset, zoom, and camera position.
    * If the screen coordinates are outside the world boundaries, it returns null for the world coordinates.
    *
@@ -965,7 +973,7 @@ class CellularAutomataSketchClass {
   }
 
   /**
-   * Converts screen coordinates to world coordinates in a p5.js WebGL context.
+   * @description Converts screen coordinates to world coordinates in a p5.js WebGL context.
    * This function first converts the screen coordinates to p5.js 2D world coordinates,
    * then adjusts them for the WebGL context by subtracting half the world width and height.
    * If the screen coordinates are outside the world boundaries, it returns null for the world coordinates.
@@ -982,7 +990,7 @@ class CellularAutomataSketchClass {
   }
 
   /**
-   * Checks if the cursor is on the world (i.e., within the bounds of the cellular automata plane).
+   * @description Checks if the cursor is on the world (i.e., within the bounds of the cellular automata plane).
    * This function first converts the screen coordinates to world coordinates,
    * then checks if the world coordinates are not null to determine if the cursor is on the world.
    *
@@ -998,10 +1006,20 @@ class CellularAutomataSketchClass {
     );
   }
 
+  /**
+   * @description Exports the current state of the cellular automata sketch to a PNG file.
+   *
+   * @param {string} filename - The name of the file to save.
+   */
   exportStateToPNG(filename) {
     this.currentState.save(filename + ".png");
   }
 
+/**
+ * @description Converts the current state of the cellular automata sketch to a Blob object.
+ *
+ * @returns {Blob} The Blob object representing the current state of the sketch.
+ */
   stateToBlob() {
     this.currentState.loadPixels();
     const blob = new Blob([this.currentState.pixels.buffer], {
@@ -1010,6 +1028,12 @@ class CellularAutomataSketchClass {
     return blob;
   }
 
+/**
+ * @description Loads a pixel array into the previous state graphics buffer. 
+ * The pixel array should be in the format [R, G, B, A, R, G, B, A, ...] for each pixel in the buffer.
+ *
+ * @param {Array<number>} pixels - The pixel array to load into the buffer.
+ */
   loadPixelsArray(pixels) {
     this.previousState.loadPixels();
     for (let x = 0; x < this.previousState.width; x++) {

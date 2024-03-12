@@ -1,6 +1,6 @@
 /**
  * @project Emergent Playground
- * @file ButtonPanel.jsx
+ * @file LeftButtonListContainer.jsx
  * @overview Renders the side panel of buttons.
  * @authors Alex Garza, Kevin Schultz
  * @exports LeftButtonListContainer
@@ -32,12 +32,10 @@ import FullscreenIcon from "@mui/icons-material/Fullscreen";
 import FullscreenExitIcon from "@mui/icons-material/FullscreenExit";
 
 /**
- * A container component for the left button list.
- *
- * This component displays a list of BrushIconButton components and a PlayPauseButton component inside a Paper component.
- * The BrushIconButton components are created for each brush type in the listBrushTypes array from the P5PropertiesContext.
+ * @description A container component for the left button list.
+ * This component displays a list of BrushIconButton components and a PlayPauseButton component inside a Popover component.
+ * The BrushIconButton components are created for each brush type.
  * The PlayPauseButton component is used to control the pause state.
- * When the brush type changes, the cursor style is updated to match the current brush type.
  *
  * @returns {JSX.Element} The LeftButtonListContainer component.
  */

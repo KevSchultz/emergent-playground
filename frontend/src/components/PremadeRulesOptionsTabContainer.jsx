@@ -14,10 +14,8 @@ import PremadeRuleCard from "./PremadeRuleCard";
 import ResizableGrid from "./ResizableGrid";
 
 /**
- * A container component for the premade rules options tab.
- *
- * This component displays a Box that contains two PremadeRuleCard components.
- * The PremadeRuleCard components are passed the new fragment shader, the name of the premade rule, and the URL of the image to display on the Card.
+ * @description A container component for the premade rules options tab.
+ * This component displays a Box that contains PremadeRuleCard components.
  *
  * @returns {JSX.Element} The PremadeRulesOptionsTabContainer component.
  */

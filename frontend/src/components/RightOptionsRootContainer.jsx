@@ -32,8 +32,7 @@ import P5PropertiesContext from "./P5PropertiesContext";
 const TABS = ["Premade Rules", "Viewer Options", "Language"];
 
 /**
- * A container component for the right options root.
- *
+ * @description A container component for the right options root.
  * This component displays a Paper that contains a Box with Tabs and conditional rendering of tab containers.
  * The Tabs are created for each tab label in the TABS array.
  * The tab containers are rendered based on the current tab index.

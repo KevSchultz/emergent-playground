@@ -3,19 +3,16 @@
  * @file Register.jsx
  * @overview The container component for the Register page.
  * The Register page includes a form for the user to enter their new username, password, and retype password.
- * As well as integration with authentication services such as Google and (TBD).
  * @authors Kevin Schultz
  * @exports Register
  */
-import { useContext, useEffect, useCallback } from "react";
-import Avatar from "@mui/material/Avatar";
+import { useContext, useCallback } from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import P5PropertiesContext from "../components/P5PropertiesContext";
@@ -25,7 +22,7 @@ import Logo from "../emergent_playground_logo.svg";
 import backendRequester from "../components/BackendRequester";
 
 /**
- * A functional component that renders the Register page.
+ * @description A functional component that renders the Register page.
  *
  * @returns {JSX.Element} The Register component.
  */

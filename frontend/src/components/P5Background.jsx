@@ -17,8 +17,7 @@ import P5PropertiesContext from "./P5PropertiesContext";
 import cellularAutomataSketch from "./cellularAutomataSketch";
 
 /**
- * A component for rendering the P5.js background.
- *
+ * @description A component for rendering the P5.js background.
  * This component uses the P5PropertiesContext to get and set various properties related to the P5.js sketch.
  * These properties include the world dimensions, camera position, zoom level, brush type and size, shaders, pause state, and code.
  * The component renders a Box that contains a ReactP5Wrapper.

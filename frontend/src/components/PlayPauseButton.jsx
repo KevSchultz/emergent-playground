@@ -12,8 +12,7 @@ import PropTypes from "prop-types";
 import Fab from "@mui/material/Fab";
 
 /**
- * A button component for controlling the pause state.
- *
+ * @description A button component for controlling the pause state.
  * This component displays an IconButton with either a PlayArrowIcon or a PauseIcon, depending on the current pause state.
  * When the button is clicked, the pause state is toggled.
  *

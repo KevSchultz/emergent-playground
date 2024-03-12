@@ -1,20 +1,19 @@
 /**
  * @project Emergent Playground
- * @file BinaryEncoder.js
- * @overview This class provides methods to encode a JSON object into a binary format and decode a binary input into a JSON object.
- * It extends the BinaryEncoderDecoderInterface, inheriting its structure.
- * The encoding and decoding are performed using the TextEncoder and TextDecoder Web APIs, respectively.
- * The encoded output is a Uint8Array, and the decoded output is a JavaScript object (JSON).
+ * @file BinaryEncoderDecoder.js
+ * @overview This file contains the BinaryEncoderDecoder class, which is used for encoding and decoding binary data.
+ * It provides methods for encoding a JSON object into a binary string, decoding a binary input into a JSON object,
+ * and converting a Blob into a Uint8Array.
  * @authors Ethan Foster, Kevin Schultz
  * @exports BinaryEncoderDecoder
  */
 
-import BinaryEncoderDecoderInterface from "../interfaces/BinaryEncoderDecoderInterface";
-
-export default class BinaryEncoderDecoder extends BinaryEncoderDecoderInterface {
-  constructor() {
-    super();
-  }
+/**
+ * @class
+ * @classdesc A class for encoding and decoding binary data.
+ * @extends BinaryEncoderDecoderInterface
+ */
+export default class BinaryEncoderDecoder {
 
   /**
    * @description Encodes a JSON object into a binary string.

@@ -2,7 +2,7 @@
  * @project Emergent Playground
  * @file PremadeRuleCard.jsx
  * @overview Card Button to display a premade rule and set the fragment shader to the new rule when clicked.
- * @authors Kevin Schultz
+ * @authors Beckett Avary, Kevin Schultz
  * @exports PremadeRuleCard
  */
 
@@ -18,22 +18,20 @@ import Typography from "@mui/material/Typography";
 
 // Custom Component Imports
 import P5PropertiesContext from "./P5PropertiesContext";
-import PropTypes from "prop-types";
 
 /**
- * A card component for displaying a premade rule.
+ * @description A component that displays a card for a premade rule. When clicked, it updates the P5 properties context with the properties of the premade rule.
  *
- * This component displays a Card with an image and the name of the premade rule.
- * When the Card is clicked, the fragment shader is updated to the new fragment shader of the premade rule.
- *
- * @param {Object} props - The properties passed to the component.
+ * @param {Object} props - The properties passed to this component.
  * @param {string} props.premadeRuleName - The name of the premade rule.
- * @param {string} props.newFragmentShader - The new fragment shader of the premade rule.
- * @param {string} props.imageUrl - The URL of the image to display on the Card.
- * @param {array[{string, string}]} props.newTupleList - The name/color state tuple list associated with the premade rule.
- * @param {string} props.newDefaultDraw - The default color to draw.
- * @param {string} props.newDefaultBackground - The default state.
- *
+ * @param {string} props.newFragmentShader - The fragment shader of the premade rule.
+ * @param {string} props.imageUrl - The URL of the image to display on the card.
+ * @param {Array} props.newTupleList - The tuple list of the premade rule.
+ * @param {string} props.newDefaultDraw - The default draw color of the premade rule.
+ * @param {string} props.newDefaultBackground - The default background color of the premade rule.
+ * @param {string} props.newNeighborhood - The neighborhood type of the premade rule.
+ * @param {number} props.newRange - The range of the premade rule.
+ * @param {boolean} props.newIncludeSelf - Whether the premade rule includes itself in the neighborhood.
  * @returns {JSX.Element} The PremadeRuleCard component.
  */
 function PremadeRuleCard({
@@ -94,11 +92,5 @@ function PremadeRuleCard({
     </Card>
   );
 }
-
-PremadeRuleCard.propTypes = {
-  premadeRuleName: PropTypes.string.isRequired,
-  newFragmentShader: PropTypes.string.isRequired,
-  imageUrl: PropTypes.string.isRequired,
-};
 
 export default PremadeRuleCard;

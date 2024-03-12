@@ -1,7 +1,7 @@
 /**
  * @project Emergent Playground
  * @file PostCard.jsx
- * @overview This component is a card that displays a post for the community page.
+ * @overview This component is a card that displays a post for the community page and myca page.
  * @authors Kevin Schultz, Preston Nguyen, Alex Garza
  * @exports PostCard
  */
@@ -27,6 +27,16 @@ import P5PropertiesContext from "./P5PropertiesContext";
 // Other Imports
 import PropTypes from "prop-types";
 
+/**
+ * @description A component that displays a post card with a title and username. 
+ * When clicked, it downloads the post and updates the P5 properties context.
+ *
+ * @param {Object} props - The properties passed to this component.
+ * @param {string} props.title - The title of the post.
+ * @param {string} props.username - The username of the post author.
+ * @param {string} props.postid - The ID of the post.
+ * @returns {JSX.Element} The PostCard component.
+ */
 function PostCard({ title, username, postid }) {
   const {
     setWorldWidth,

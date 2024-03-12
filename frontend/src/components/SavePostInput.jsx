@@ -1,3 +1,13 @@
+/**
+ * @project Emergent Playground
+ * @file SavePostInput.jsx
+ * @overview This file defines the SavePostInput component, which provides an input field for the title and a save button. 
+ * When the save button is clicked, it uploads the current state of the cellular automata sketch to the server. 
+ * It uses the P5PropertiesContext to access the current properties of the sketch and the BackendRequester to upload the post. 
+ * @authors Kevin Schultz
+ * @exports SavePostInput.jsx
+ */
+
 // React Imports
 import { useContext } from "react";
 import { useState } from "react";
@@ -12,6 +22,12 @@ import P5PropertiesContext from "./P5PropertiesContext";
 import cellularAutomataSketch from "./cellularAutomataSketch";
 import LoadingDialog from "./LoadingDialog";
 
+/**
+ * @description A component that provides an input field for the title and a save button. 
+ * When the save button is clicked, it uploads the current state of the cellular automata sketch to the server.
+ *
+ * @returns {JSX.Element} The SavePostInput component.
+ */
 export default function SavePostInput() {
   const properties = useContext(P5PropertiesContext);
   const [loading, setLoading] = useState(false);

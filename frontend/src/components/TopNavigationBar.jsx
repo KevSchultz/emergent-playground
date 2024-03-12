@@ -6,11 +6,13 @@
  * @exports TopNavigationBar
  */
 
+// React Imports
 import { useContext } from "react";
 import { useLocation } from "react-router-dom";
 import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 
+// Material UI Imports
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
@@ -23,15 +25,10 @@ import LoginLink from "./LoginLink";
 import LogoutLink from "./LogoutLink";
 import Logo from "../emergent_playground_logo.svg";
 import ButtonBase from "@mui/material/ButtonBase";
-import { Button } from "@mui/material";
 import Card from "@mui/material/Card";
 
 /**
- * A functional component that renders a top navigation bar.
- *
- * This component displays a Paper component that contains a Typography component and a Box component.
- * The Typography component displays the title of the application.
- * The Box component contains a Link component that navigates to the community page.
+ * @description A functional component that renders a top navigation bar.
  *
  * @returns {JSX.Element} The TopNavigationBar component.
  */

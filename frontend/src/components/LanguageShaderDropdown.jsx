@@ -1,7 +1,7 @@
 /**
  * @project Emergent Playground
  * @file LanguageOptionsDropdown.jsx
- * @overview This file contains the Options dropdwon menu in the Language tab.
+ * @overview This file contains the Options dropdown menu in the Language tab.
  * @author Beckett Avary
  * @exports LanguageOptionsDropdown
  */
