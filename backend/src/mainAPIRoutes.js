@@ -68,13 +68,6 @@ exports.createPostRoute = async (request, response) => {
         const title = request.query.title;
         const poststate = request.files['poststate'][0].buffer;
         const postproperties = request.files['postproperties'][0].buffer;
-
-        console.log('userID: ', userid);
-        console.log('username: ', username);
-        console.log('title: ', title);
-        console.log('poststate: ', poststate);
-        console.log('postproperties: ', postproperties);
-
         
         const post = await postgreSQLConnection.createPost(userid, username, title, poststate, postproperties);
 
@@ -192,8 +185,6 @@ exports.getPostsListRoute = async (request, response) => {
         const sorting = request.query.sorting;
 
         const postsList = await postgreSQLConnection.getPostsList(sorting, userid);
-
-        console.log(postsList);
 
         response.status(200).json(postsList);
     } catch (err) {
