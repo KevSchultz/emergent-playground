@@ -1,0 +1,1233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Module: backend/src/authentication.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Module: backend/src/authentication.js</h1>
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description">This file handles user authentication middleware and routes. It exports functions for 
+registering a new user and logging in an existing user. The register function creates a new user account in the 
+PostgreSQL database, hashes the user's password using bcrypt, and sets a JSON Web Token (JWT) as an HttpOnly cookie.</div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="backend_src_authentication.js.html">backend/src/authentication.js</a>, <a href="backend_src_authentication.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".check"><span class="type-signature">(static) </span>check<span class="signature">(request, response, next)</span><span class="type-signature"> &rarr; {void}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Middleware to check if the user is authenticated by verifying the JWT in the HttpOnly cookie.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>request</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The Express request object.
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>cookies</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The cookies in the request.
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>accessToken</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The JWT for authentication.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>response</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The Express response object.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>next</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The next middleware function.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="backend_src_authentication.js.html">backend/src/authentication.js</a>, <a href="backend_src_authentication.js.html#line122">line 122</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">void</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".login"><span class="type-signature">(static) </span>login<span class="signature">(request, response)</span><span class="type-signature"> &rarr; {void}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Logs in a user by verifying their credentials and setting a JWT as an HttpOnly cookie.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>request</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The Express request object.
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>body</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The request body.
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>email</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The email of the user.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>password</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The password of the user.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>response</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The Express response object.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="backend_src_authentication.js.html">backend/src/authentication.js</a>, <a href="backend_src_authentication.js.html#line75">line 75</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">void</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".logout"><span class="type-signature">(static) </span>logout<span class="signature">(request, response)</span><span class="type-signature"> &rarr; {void}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Logs out the user by clearing the 'accessToken' cookie.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>request</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Express request object.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>response</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Express response object.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="backend_src_authentication.js.html">backend/src/authentication.js</a>, <a href="backend_src_authentication.js.html#line158">line 158</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">void</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".register"><span class="type-signature">(static) </span>register<span class="signature">(request, response)</span><span class="type-signature"> &rarr; {void}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Registers a new user by creating an account in the database and setting a JWT as an HttpOnly cookie.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>request</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The Express request object.
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>body</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The request body.
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>username</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The username of the new user.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>email</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The email of the new user.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>password</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The password of the new user.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>response</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The Express response object.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="backend_src_authentication.js.html">backend/src/authentication.js</a>, <a href="backend_src_authentication.js.html#line33">line 33</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">void</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="backend_src_application.module_js.html">backend/src/application.js</a></li><li><a href="backend_src_authentication.module_js.html">backend/src/authentication.js</a></li><li><a href="backend_src_jsonWebTokenAuthorize.module_js.html">backend/src/jsonWebTokenAuthorize.js</a></li><li><a href="backend_src_jsonWebTokenGenerator.module_js.html">backend/src/jsonWebTokenGenerator.js</a></li><li><a href="backend_src_mainAPIRoutes.module_js.html">backend/src/mainAPIRoutes.js</a></li><li><a href="backend_src_postgreSQLConnect.module_js.html">backend/src/postgreSQLConnect.js</a></li><li><a href="frontend_src_components_BackendRequester.module_js.html">frontend/src/components/BackendRequester.js</a></li><li><a href="frontend_src_components_BinaryEncoderDecoder.module_js.html">frontend/src/components/BinaryEncoderDecoder.js</a></li><li><a href="frontend_src_components_BrushIconButton.module_jsx.html">frontend/src/components/BrushIconButton.jsx</a></li><li><a href="frontend_src_components_DefaultProperties.module_jsx.html">frontend/src/components/DefaultProperties.jsx</a></li><li><a href="frontend_src_components_InputSlider.module_jsx.html">frontend/src/components/InputSlider.jsx</a></li><li><a href="frontend_src_components_LanguageColorMenuDropdown.module_jsx.html">frontend/src/components/LanguageColorMenuDropdown.jsx</a></li><li><a href="frontend_src_components_LanguageHelpDropdown.module_jsx.html">frontend/src/components/LanguageHelpDropdown.jsx</a></li><li><a href="frontend_src_components_LanguageOptionsDropdown.module_jsx.html">frontend/src/components/LanguageOptionsDropdown.jsx</a></li><li><a href="frontend_src_components_LanguageOptionsTabContainer.module_jsx.html">frontend/src/components/LanguageOptionsTabContainer.jsx</a></li><li><a href="frontend_src_components_LanguageShaderDropdown.module_jsx.html">frontend/src/components/LanguageShaderDropdown.jsx</a></li><li><a href="frontend_src_components_LanguageStateItem.module_jsx.html">frontend/src/components/LanguageStateItem.jsx</a></li><li><a href="frontend_src_components_LeftButtonListContainer.module_jsx.html">frontend/src/components/LeftButtonListContainer.jsx</a></li><li><a href="frontend_src_components_LoadingDialog.module_jsx.html">frontend/src/components/LoadingDialog.jsx</a></li><li><a href="frontend_src_components_LoginLink.module_jsx.html">frontend/src/components/LoginLink.jsx</a></li><li><a href="frontend_src_components_LogoutLink.module_jsx.html">frontend/src/components/LogoutLink.jsx</a></li><li><a href="frontend_src_components_P5Background.module_jsx.html">frontend/src/components/P5Background.jsx</a></li><li><a href="frontend_src_components_P5PropertiesContext.module_jsx.html">frontend/src/components/P5PropertiesContext.jsx</a></li><li><a href="frontend_src_components_PlayPauseButton.module_jsx.html">frontend/src/components/PlayPauseButton.jsx</a></li><li><a href="frontend_src_components_PostCard.module_jsx.html">frontend/src/components/PostCard.jsx</a></li><li><a href="frontend_src_components_PostListing.module_jsx.html">frontend/src/components/PostListing.jsx</a></li><li><a href="frontend_src_components_PremadeRuleCard.module_jsx.html">frontend/src/components/PremadeRuleCard.jsx</a></li><li><a href="frontend_src_components_PremadeRulesOptionsTabContainer.module_jsx.html">frontend/src/components/PremadeRulesOptionsTabContainer.jsx</a></li><li><a href="frontend_src_components_PrettyAlert.module_jsx.html">frontend/src/components/PrettyAlert.jsx</a></li><li><a href="frontend_src_components_ResizableGrid.module_jsx.html">frontend/src/components/ResizableGrid.jsx</a></li><li><a href="frontend_src_components_RightOptionsRootContainer.module_jsx.html">frontend/src/components/RightOptionsRootContainer.jsx</a></li><li><a href="frontend_src_components_SavePostInput.module_jsx.html">frontend/src/components/SavePostInput.jsx</a></li><li><a href="frontend_src_components_TopNavigationBar.module_jsx.html">frontend/src/components/TopNavigationBar.jsx</a></li><li><a href="frontend_src_components_ViewerOptionsTabContainer.module_jsx.html">frontend/src/components/ViewerOptionsTabContainer.jsx</a></li><li><a href="frontend_src_components_cellularAutomataSketch.module_js.html">frontend/src/components/cellularAutomataSketch.js</a></li><li><a href="frontend_src_pages_Community.module_jsx.html">frontend/src/pages/Community.jsx</a></li><li><a href="frontend_src_pages_Login.module_jsx.html">frontend/src/pages/Login.jsx</a></li><li><a href="frontend_src_pages_MyCA.module_jsx.html">frontend/src/pages/MyCA.jsx</a></li><li><a href="frontend_src_pages_Register.module_jsx.html">frontend/src/pages/Register.jsx</a></li><li><a href="frontend_src_pages_ViewerBuilderCreator.module_jsx.html">frontend/src/pages/ViewerBuilderCreator.jsx</a></li><li><a href="frontend_src_sketches_CellularAutomataSketchClass.module_js.html">frontend/src/sketches/CellularAutomataSketchClass.js</a></li></ul><h3>Classes</h3><ul><li><a href="TextureRuleCellularAutomataSketchClass.html">TextureRuleCellularAutomataSketchClass</a></li><li><a href="backend_src_postgreSQLConnect.module_js-PostgreSQLConnect.html">PostgreSQLConnect</a></li><li><a href="frontend_src_components_BackendRequester.module_js-BackendRequester.html">BackendRequester</a></li><li><a href="frontend_src_components_BinaryEncoderDecoder.module_js-BinaryEncoderDecoder.html">BinaryEncoderDecoder</a></li><li><a href="frontend_src_sketches_CellularAutomataSketchClass.module_js-CellularAutomataSketchClass.html">CellularAutomataSketchClass</a></li></ul><h3>Global</h3><ul><li><a href="global.html#LangPage">LangPage</a></li><li><a href="global.html#langCompiler">langCompiler</a></li><li><a href="global.html#translate_colors">translate_colors</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Tue Mar 12 2024 15:15:20 GMT-0700 (Pacific Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

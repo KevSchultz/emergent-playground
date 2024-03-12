@@ -1,7 +1,7 @@
 /**
  * @project Emergent Playground
  * @file LoginLink.jsx
- * @overview This component creates a link to the login page or a link to the user's cellular automata posts page.
+ * @overview This component creates a link to the login page or a link to the users cellular automata posts page.
  * @authors Kevin Schultz
  * @exports LoginLink
  */
@@ -25,7 +25,7 @@ import backendRequester from "./BackendRequester";
  *
  * @returns {JSX.Element} The LoginLink component.
  */
-export default function LoginLink() {
+function LoginLink() {
   const { username, setUsername } = useContext(P5PropertiesContext);
 
   const navigate = useNavigate();
@@ -56,3 +56,5 @@ export default function LoginLink() {
     </>
   );
 }
+
+export default LoginLink;

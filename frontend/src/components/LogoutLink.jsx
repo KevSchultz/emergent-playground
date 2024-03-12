@@ -17,11 +17,11 @@ import P5PropertiesContext from "./P5PropertiesContext";
 import backendRequester from "./BackendRequester";
 
 /**
- * @description`LogoutLink` is a functional component that logs out the current user.
+ * @description A functional component that logs out the current user.
  *
  * @returns {JSX.Element} The LogoutLink component.
  */
-export default function LogoutLink() {
+function LogoutLink() {
   const { setUsername } = useContext(P5PropertiesContext);
 
   return (
@@ -40,3 +40,5 @@ export default function LogoutLink() {
     </>
   );
 }
+
+export default LogoutLink;

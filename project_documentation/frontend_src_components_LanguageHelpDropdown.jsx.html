@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: frontend/src/components/LanguageHelpDropdown.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: frontend/src/components/LanguageHelpDropdown.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @project Emergent Playground
+ * @file LanguageHelpDropdown.jsx
+ * @overview This file contains the Help dropdwon menu in the Language tab.
+ * @author Beckett Avary
+ * @exports LanguageHelpDropdown
+ */
+
+// React Imports
+import { useContext, useState } from "react";
+
+// Material UI Imports
+import {
+  Accordion,
+  AccordionSummary,
+  FormControl,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Select,
+  Table,
+  TableCell,
+  TableContainer,
+  TableRow,
+  Typography,
+} from "@mui/material";
+
+import { Brightness1, ExpandMoreOutlined } from "@mui/icons-material";
+
+// Other Imports
+import P5PropertiesContext from "./P5PropertiesContext";
+
+/**
+ * A dropdown menu for help with writing the language. Displays active variables.
+ *
+ * @returns {JSX.Element} The LanguageHelpDropdown component.
+ */
+
+function LanguageHelpDropdown() {
+  const { langTupleList, langNeighborhoodType } =
+    useContext(P5PropertiesContext);
+
+  const [infoPage, setInfoPage] = useState("Variables");
+  const infoPages = ["Help", "Variables", "Example"];
+
+  const golExample = `
+    if(curr == live){
+        if(live_num &lt; 2){
+            next = dead;
+        }
+        if(live_num == 2 || live_num == 3){
+            next = live;
+        }
+        if(live_num > 3){
+            next = dead;
+        }
+    } else {
+        if(curr == dead &amp;&amp; live_num == 3){
+            next = live;
+        }
+    }`;
+
+  const helpText = [
+    `Welcome to the Cellular Automata (CA) creator! You can define your own rules for CA here.`,
+    `You will be writing a segment of GLSL ES 3.00 code, which has almost identical syntax to C.`,
+    `There are a variety of built-in variables to expedite CA creation.`,
+    `The most important are "curr" and "next". "curr" refers to the current cell being examined, and "next" is the state it will assume after it is processed. So, if you want every cell to be in "state0", your entire program would read "next = state0", after you define "state0" in the State Definition section.`,
+    `The states you defined above can be referenced by name, and are represented internally as a color. You can reference the number of cells in a neighborhood that belong to a certain state by adding the "_num" suffix to the state name.`,
+    `Depending on the neighborhood, you can also reference each individual cell in the neighborhood with the scheme [top/bottom][left/right]. So, the top left neighbor would be called "tl". Such combinations of position are only available to the Moore neighborhood, which looks at the eight cells surrounding the current cell. The von Neumann neighborhood only looks at the top, bottom, left, and right cells (t, b, l, r).`,
+    `All of the comparisons you would expect are available, but it is very important to use the eq() function to compare two states. You may still use == to perform an equality comparison, but the eq() function will be far more accurate.`,
+    `Check out the Premade Rules to see how they are implemented in the language! By clicking on a given Premade Rule, you will be able to view its implementation in this tab.`,
+    `The Variables Page has a quick reference page of all available built-in variables with a short explanation.`,
+  ];
+
+  const makeTableRow = (n0, d0, n1, d1) => {
+    return (
+      &lt;TableRow>
+        &lt;TableCell sx={{ fontFamily: "monospace" }}>{n0}&lt;/TableCell>
+        &lt;TableCell>{d0}&lt;/TableCell>
+        &lt;TableCell sx={{ fontFamily: "monospace" }}>{n1}&lt;/TableCell>
+        &lt;TableCell>{d1}&lt;/TableCell>
+      &lt;/TableRow>
+    );
+  };
+
+  return (
+    &lt;Accordion disableGutters>
+      &lt;AccordionSummary expandIcon={&lt;ExpandMoreOutlined />}>
+        Information
+      &lt;/AccordionSummary>
+      &lt;Grid container spacing={1} padding={2}>
+        &lt;Grid item xs={12}>
+          &lt;FormControl fullWidth>
+            &lt;InputLabel id="Page Selector">Page Select&lt;/InputLabel>
+            &lt;Select
+              labelId="infoPageSelect"
+              value={infoPage}
+              label="Info Select"
+              onChange={(e) => {
+                setInfoPage(e.target.value);
+              }}
+            >
+              {infoPages.map((p, index) => (
+                &lt;MenuItem key={index} value={p}>
+                  {p}
+                &lt;/MenuItem>
+              ))}
+            &lt;/Select>
+          &lt;/FormControl>
+        &lt;/Grid>
+        &lt;Grid item xs={12}>
+          {infoPage == "Help" &amp;&amp; (
+            &lt;>
+              {helpText.map((s, index) => (
+                &lt;h4 key={index}>
+                  {s}
+                  &lt;p>&lt;/p>
+                &lt;/h4>
+              ))}
+            &lt;/>
+          )}
+          {infoPage === "Variables" &amp;&amp; (
+            &lt;TableContainer>
+              &lt;Table>
+                &lt;TableRow>
+                  &lt;TableCell sx={{ fontFamily: "monospace" }}>curr&lt;/TableCell>
+                  &lt;TableCell>current cell state&lt;/TableCell>
+                  &lt;TableCell sx={{ fontFamily: "monospace" }}>next&lt;/TableCell>
+                  &lt;TableCell>next cell state&lt;/TableCell>
+                &lt;/TableRow>
+                {langTupleList.map((s, index) => (
+                  &lt;TableRow key={index}>
+                    &lt;TableCell sx={{ fontFamily: "monospace" }}>
+                      {s.name}
+                    &lt;/TableCell>
+                    &lt;TableCell>
+                      &lt;Brightness1 sx={{ color: s.color }} />
+                    &lt;/TableCell>
+                    &lt;TableCell sx={{ fontFamily: "monospace" }}>
+                      {s.name + "_num"}
+                    &lt;/TableCell>
+                    &lt;TableCell># in neighborhood&lt;/TableCell>
+                  &lt;/TableRow>
+                ))}
+                {langNeighborhoodType === "moore" &amp;&amp; (
+                  &lt;>
+                    {makeTableRow("tl", "top left", "t", "top")}
+                    {makeTableRow("tr", "top right", "l", "left")}
+                    {makeTableRow("r", "right", "bl", "bottom left")}
+                    {makeTableRow("b", "bottom", "br", "bottom right")}
+                  &lt;/>
+                )}
+                {langNeighborhoodType === "von_neumann" &amp;&amp; (
+                  &lt;>
+                    {makeTableRow("t", "top", "l", "left")}
+                    {makeTableRow("r", "right", "b", "bottom")}
+                  &lt;/>
+                )}
+              &lt;/Table>
+            &lt;/TableContainer>
+          )}
+          {infoPage === "Example" &amp;&amp; (
+            &lt;>
+              &lt;Typography>{"Conway's Game of Life"}&lt;/Typography>
+              &lt;Typography sx={{ fontFamily: "monospace" }} noWrap>
+                &lt;pre>
+                  &lt;code>{golExample}&lt;/code>
+                &lt;/pre>
+              &lt;/Typography>
+            &lt;/>
+          )}
+        &lt;/Grid>
+      &lt;/Grid>
+    &lt;/Accordion>
+  );
+}
+
+export default LanguageHelpDropdown;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="backend_src_application.module_js.html">backend/src/application.js</a></li><li><a href="backend_src_authentication.module_js.html">backend/src/authentication.js</a></li><li><a href="backend_src_jsonWebTokenAuthorize.module_js.html">backend/src/jsonWebTokenAuthorize.js</a></li><li><a href="backend_src_jsonWebTokenGenerator.module_js.html">backend/src/jsonWebTokenGenerator.js</a></li><li><a href="backend_src_mainAPIRoutes.module_js.html">backend/src/mainAPIRoutes.js</a></li><li><a href="backend_src_postgreSQLConnect.module_js.html">backend/src/postgreSQLConnect.js</a></li><li><a href="frontend_src_components_BackendRequester.module_js.html">frontend/src/components/BackendRequester.js</a></li><li><a href="frontend_src_components_BinaryEncoderDecoder.module_js.html">frontend/src/components/BinaryEncoderDecoder.js</a></li><li><a href="frontend_src_components_BrushIconButton.module_jsx.html">frontend/src/components/BrushIconButton.jsx</a></li><li><a href="frontend_src_components_DefaultProperties.module_jsx.html">frontend/src/components/DefaultProperties.jsx</a></li><li><a href="frontend_src_components_InputSlider.module_jsx.html">frontend/src/components/InputSlider.jsx</a></li><li><a href="frontend_src_components_LanguageColorMenuDropdown.module_jsx.html">frontend/src/components/LanguageColorMenuDropdown.jsx</a></li><li><a href="frontend_src_components_LanguageHelpDropdown.module_jsx.html">frontend/src/components/LanguageHelpDropdown.jsx</a></li><li><a href="frontend_src_components_LanguageOptionsDropdown.module_jsx.html">frontend/src/components/LanguageOptionsDropdown.jsx</a></li><li><a href="frontend_src_components_LanguageOptionsTabContainer.module_jsx.html">frontend/src/components/LanguageOptionsTabContainer.jsx</a></li><li><a href="frontend_src_components_LanguageShaderDropdown.module_jsx.html">frontend/src/components/LanguageShaderDropdown.jsx</a></li><li><a href="frontend_src_components_LanguageStateItem.module_jsx.html">frontend/src/components/LanguageStateItem.jsx</a></li><li><a href="frontend_src_components_LeftButtonListContainer.module_jsx.html">frontend/src/components/LeftButtonListContainer.jsx</a></li><li><a href="frontend_src_components_LoadingDialog.module_jsx.html">frontend/src/components/LoadingDialog.jsx</a></li><li><a href="frontend_src_components_LoginLink.module_jsx.html">frontend/src/components/LoginLink.jsx</a></li><li><a href="frontend_src_components_LogoutLink.module_jsx.html">frontend/src/components/LogoutLink.jsx</a></li><li><a href="frontend_src_components_P5Background.module_jsx.html">frontend/src/components/P5Background.jsx</a></li><li><a href="frontend_src_components_P5PropertiesContext.module_jsx.html">frontend/src/components/P5PropertiesContext.jsx</a></li><li><a href="frontend_src_components_PlayPauseButton.module_jsx.html">frontend/src/components/PlayPauseButton.jsx</a></li><li><a href="frontend_src_components_PostCard.module_jsx.html">frontend/src/components/PostCard.jsx</a></li><li><a href="frontend_src_components_PostListing.module_jsx.html">frontend/src/components/PostListing.jsx</a></li><li><a href="frontend_src_components_PremadeRuleCard.module_jsx.html">frontend/src/components/PremadeRuleCard.jsx</a></li><li><a href="frontend_src_components_PremadeRulesOptionsTabContainer.module_jsx.html">frontend/src/components/PremadeRulesOptionsTabContainer.jsx</a></li><li><a href="frontend_src_components_PrettyAlert.module_jsx.html">frontend/src/components/PrettyAlert.jsx</a></li><li><a href="frontend_src_components_ResizableGrid.module_jsx.html">frontend/src/components/ResizableGrid.jsx</a></li><li><a href="frontend_src_components_RightOptionsRootContainer.module_jsx.html">frontend/src/components/RightOptionsRootContainer.jsx</a></li><li><a href="frontend_src_components_SavePostInput.module_jsx.html">frontend/src/components/SavePostInput.jsx</a></li><li><a href="frontend_src_components_TopNavigationBar.module_jsx.html">frontend/src/components/TopNavigationBar.jsx</a></li><li><a href="frontend_src_components_ViewerOptionsTabContainer.module_jsx.html">frontend/src/components/ViewerOptionsTabContainer.jsx</a></li><li><a href="frontend_src_components_cellularAutomataSketch.module_js.html">frontend/src/components/cellularAutomataSketch.js</a></li><li><a href="frontend_src_pages_Community.module_jsx.html">frontend/src/pages/Community.jsx</a></li><li><a href="frontend_src_pages_Login.module_jsx.html">frontend/src/pages/Login.jsx</a></li><li><a href="frontend_src_pages_MyCA.module_jsx.html">frontend/src/pages/MyCA.jsx</a></li><li><a href="frontend_src_pages_Register.module_jsx.html">frontend/src/pages/Register.jsx</a></li><li><a href="frontend_src_pages_ViewerBuilderCreator.module_jsx.html">frontend/src/pages/ViewerBuilderCreator.jsx</a></li><li><a href="frontend_src_sketches_CellularAutomataSketchClass.module_js.html">frontend/src/sketches/CellularAutomataSketchClass.js</a></li></ul><h3>Classes</h3><ul><li><a href="TextureRuleCellularAutomataSketchClass.html">TextureRuleCellularAutomataSketchClass</a></li><li><a href="backend_src_postgreSQLConnect.module_js-PostgreSQLConnect.html">PostgreSQLConnect</a></li><li><a href="frontend_src_components_BackendRequester.module_js-BackendRequester.html">BackendRequester</a></li><li><a href="frontend_src_components_BinaryEncoderDecoder.module_js-BinaryEncoderDecoder.html">BinaryEncoderDecoder</a></li><li><a href="frontend_src_sketches_CellularAutomataSketchClass.module_js-CellularAutomataSketchClass.html">CellularAutomataSketchClass</a></li></ul><h3>Global</h3><ul><li><a href="global.html#LangPage">LangPage</a></li><li><a href="global.html#langCompiler">langCompiler</a></li><li><a href="global.html#translate_colors">translate_colors</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Tue Mar 12 2024 15:15:20 GMT-0700 (Pacific Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

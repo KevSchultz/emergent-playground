@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: backend/src/mainAPIRoutes.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: backend/src/mainAPIRoutes.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @project Emergent Playground
+ * @file mainAPIRoutes.js
+ * @overview This file exports several route handlers for the Emergent Playground project. These include handlers for 
+ * creating a new post, downloading post state, downloading post properties, downloading a list of posts, and getting a 
+ * username. Each handler interacts with the PostgreSQL database to perform its function. 
+ * @authors Kevin Schultz
+ * @exports createPostRoute
+ * @exports downloadPostStateRoute
+ * @exports downloadPostPropertiesRoute
+ * @exports downloadPostListRoute
+ * @exports getUsernameRoute
+ */
+
+const { request } = require('https');
+const { postgreSQLConnection } = require('./postgreSQLConnect');
+
+
+/**
+ * @description Handles the creation of a new post.
+ * 
+ * @async
+ * @function
+ * @param {Object} request - The Express request object.
+ * @param {string} request.userid - The ID of the user making the request.
+ * @param {Object} request.query - The query parameters.
+ * @param {string} request.query.title - The title of the post.
+ * @param {Object} request.files - The files sent in the request.
+ * @param {Buffer} request.files['poststate'] - The state of the post.
+ * @param {Buffer} request.files['postproperties'] - The properties of the post.
+ * @param {Object} response - The Express response object.
+ * @returns {Promise&lt;void>} - A Promise that resolves when the response has been sent.
+ * @throws Will throw an error if the user ID is not provided, the title is not provided, the files are not provided, or there is an error creating the post.
+ */
+exports.createPostRoute = async (request, response) => {
+
+    if (!request.query.title) {
+        console.log('createPostRoute: title not provided.');
+        response.sendStatus(400);
+        return;
+    }
+
+    if (!request.files) {
+        console.log("createPostRoute: files not provided.");
+        response.sendStatus(400);
+        return;
+    }
+
+    if (!request.files['poststate'] || !request.files['postproperties']) {
+        console.log("createPostRoute: poststate or postproperties not provided.");
+        response.sendStatus(400);
+        return;
+    }
+
+    try {
+
+        const user = await postgreSQLConnection.getAccount(null, request.userid);
+
+        if (!user) {
+            console.log("createPostRoute: user not found.");
+            response.sendStatus(401);
+            return;
+        }
+
+        const userid = user.userid;
+        const username = user.username;
+        const title = request.query.title;
+        const poststate = request.files['poststate'][0].buffer;
+        const postproperties = request.files['postproperties'][0].buffer;
+        
+        const post = await postgreSQLConnection.createPost(userid, username, title, poststate, postproperties);
+
+        response.status(200).json({ postid: post.postid, username: post.username, title: post.title });
+    } catch (err) {
+        console.log(err);
+        response.sendStatus(401);
+    }
+};
+
+/**
+ * @description Handles the request to download the state of a post.
+ * 
+ * @async
+ * @function
+ * @param {Object} request - The Express request object.
+ * @param {string} request.userid - The ID of the user making the request.
+ * @param {Object} request.query - The query parameters.
+ * @param {string} request.query.postid - The ID of the post whose state is to be downloaded.
+ * @param {Object} response - The Express response object.
+ * @returns {Promise&lt;void>} - A Promise that resolves when the response has been sent.
+ * @throws Will throw an error if the user ID is not provided, the post ID is not provided, or there is an error retrieving the post state.
+ */
+exports.downloadPostStateRoute = async (request, response) => {
+    
+    if (!request.userid) {
+        response.sendStatus(401);
+        return;
+    }
+
+    if (!request.query.postid) {
+        response.sendStatus(400);
+        return;
+    }
+
+    try {
+        const postid = request.query.postid;
+
+        const post = await postgreSQLConnection.getPostState(postid);
+
+        response.status(200).send(post.poststate);
+
+    } catch (err) {
+        console.log(err);
+        response.sendStatus(401);
+    }
+};
+
+/**
+ * @description This function handles the route for downloading post properties.
+ *
+ * @param {Object} request - The HTTP request object, expected to contain `userid` in its body and `postid` as a query parameter.
+ * @param {string} request.userid - The ID of the user making the request.
+ * @param {Object} request.query - The query parameters.
+ * @param {string} request.query.postid - The ID of the post whose properties are to be downloaded.
+ * @param {Object} response - The HTTP response object, used to send the HTTP response.
+ * @returns {Promise&lt;void>} - A Promise that resolves when the function has completed.
+ */
+exports.downloadPostPropertiesRoute = async (request, response) => {
+
+    if (!request.userid) {
+        response.sendStatus(401);
+        return;
+    }
+
+    if (!request.query.postid) {
+        response.sendStatus(400);
+        return;
+    }
+
+    try {
+        const postid = request.query.postid;
+
+        const post = await postgreSQLConnection.getPostProperties(postid);
+
+        response.status(200).send(post.postproperties);
+
+    } catch (err) {
+        console.log(err);
+        response.sendStatus(401);
+    }
+};
+
+/**
+ * @description Handles the request to get a list of posts from the database, optionally sorted by a specified criterion.
+ * 
+ * request.query.storting:
+ * 0 or null: unsorted all posts
+ * 1: sort by userID
+ * 2: sort by postID
+ * 3: sort by creationtime
+ * 
+ * @async
+ * @function
+ * @param {Object} request - The Express request object.
+ * @param {string} request.userid - The ID of the user making the request.
+ * @param {Object} request.query - The query parameters.
+ * @param {number} request.query.sorting - The sorting criterion. 0 or null for no sorting, 1 to sort by userID, 2 to sort by postID, 3 to sort by creationTime.
+ * @param {Object} response - The Express response object.
+ * @returns {Promise&lt;void>} - A Promise that resolves when the response has been sent.
+ * @throws Will throw an error if the user ID is not provided, the sorting criterion is not provided, or there is an error retrieving the posts list.
+ */
+exports.getPostsListRoute = async (request, response) => {
+
+    if (!request.query.sorting) {
+        request.query.sorting = 0;
+    }
+
+    if (!request.query.sorting != 0 &amp;&amp; !request.query.sorting != 1 &amp;&amp; !request.query.sorting != 2 &amp;&amp; !request.query.sorting != 3) {
+        response.sendStatus(400);
+        return;
+    }
+
+    try {
+        const user = await postgreSQLConnection.getAccount(null, request.userid);
+
+        if (!user) {
+            response.sendStatus(401);
+            return;
+        }
+
+        const userid = user.userid;
+        const sorting = request.query.sorting;
+
+        const postsList = await postgreSQLConnection.getPostsList(sorting, userid);
+
+        response.status(200).json(postsList);
+    } catch (err) {
+        console.log(err);
+        response.sendStatus(401);
+    }
+};
+
+/**
+ * @description Gets the username associated with a given user ID.
+ * 
+ * @async
+ * @function
+ * @param {Object} request - The HTTP request object, expected to contain a 'userID' property.
+ * @param {Object} response - The HTTP response object used to send the response.
+ * @returns {Promise&lt;void>} A Promise that resolves when the function has completed.
+ * @throws Will send a 401 status if the 'userID' is not provided in the request, if no user is found with the provided 'userID', or if an error occurs during execution.
+ */
+exports.getUsernameRoute = async (request, response) => {
+    if (!request.userid) {
+        response.sendStatus(401);
+        return;
+    }
+
+    try {
+        const user = await postgreSQLConnection.getAccount(null, request.userid);
+
+        if (!user) {
+            response.sendStatus(401);
+            return;
+        }
+
+        response.status(200).json({ username: user.username });
+    } catch (err) {
+        console.log(err);
+        response.sendStatus(401);
+    }
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="backend_src_application.module_js.html">backend/src/application.js</a></li><li><a href="backend_src_authentication.module_js.html">backend/src/authentication.js</a></li><li><a href="backend_src_jsonWebTokenAuthorize.module_js.html">backend/src/jsonWebTokenAuthorize.js</a></li><li><a href="backend_src_jsonWebTokenGenerator.module_js.html">backend/src/jsonWebTokenGenerator.js</a></li><li><a href="backend_src_mainAPIRoutes.module_js.html">backend/src/mainAPIRoutes.js</a></li><li><a href="backend_src_postgreSQLConnect.module_js.html">backend/src/postgreSQLConnect.js</a></li><li><a href="frontend_src_components_BackendRequester.module_js.html">frontend/src/components/BackendRequester.js</a></li><li><a href="frontend_src_components_BinaryEncoderDecoder.module_js.html">frontend/src/components/BinaryEncoderDecoder.js</a></li><li><a href="frontend_src_components_BrushIconButton.module_jsx.html">frontend/src/components/BrushIconButton.jsx</a></li><li><a href="frontend_src_components_DefaultProperties.module_jsx.html">frontend/src/components/DefaultProperties.jsx</a></li><li><a href="frontend_src_components_InputSlider.module_jsx.html">frontend/src/components/InputSlider.jsx</a></li><li><a href="frontend_src_components_LanguageColorMenuDropdown.module_jsx.html">frontend/src/components/LanguageColorMenuDropdown.jsx</a></li><li><a href="frontend_src_components_LanguageHelpDropdown.module_jsx.html">frontend/src/components/LanguageHelpDropdown.jsx</a></li><li><a href="frontend_src_components_LanguageOptionsDropdown.module_jsx.html">frontend/src/components/LanguageOptionsDropdown.jsx</a></li><li><a href="frontend_src_components_LanguageOptionsTabContainer.module_jsx.html">frontend/src/components/LanguageOptionsTabContainer.jsx</a></li><li><a href="frontend_src_components_LanguageShaderDropdown.module_jsx.html">frontend/src/components/LanguageShaderDropdown.jsx</a></li><li><a href="frontend_src_components_LanguageStateItem.module_jsx.html">frontend/src/components/LanguageStateItem.jsx</a></li><li><a href="frontend_src_components_LeftButtonListContainer.module_jsx.html">frontend/src/components/LeftButtonListContainer.jsx</a></li><li><a href="frontend_src_components_LoadingDialog.module_jsx.html">frontend/src/components/LoadingDialog.jsx</a></li><li><a href="frontend_src_components_LoginLink.module_jsx.html">frontend/src/components/LoginLink.jsx</a></li><li><a href="frontend_src_components_LogoutLink.module_jsx.html">frontend/src/components/LogoutLink.jsx</a></li><li><a href="frontend_src_components_P5Background.module_jsx.html">frontend/src/components/P5Background.jsx</a></li><li><a href="frontend_src_components_P5PropertiesContext.module_jsx.html">frontend/src/components/P5PropertiesContext.jsx</a></li><li><a href="frontend_src_components_PlayPauseButton.module_jsx.html">frontend/src/components/PlayPauseButton.jsx</a></li><li><a href="frontend_src_components_PostCard.module_jsx.html">frontend/src/components/PostCard.jsx</a></li><li><a href="frontend_src_components_PostListing.module_jsx.html">frontend/src/components/PostListing.jsx</a></li><li><a href="frontend_src_components_PremadeRuleCard.module_jsx.html">frontend/src/components/PremadeRuleCard.jsx</a></li><li><a href="frontend_src_components_PremadeRulesOptionsTabContainer.module_jsx.html">frontend/src/components/PremadeRulesOptionsTabContainer.jsx</a></li><li><a href="frontend_src_components_PrettyAlert.module_jsx.html">frontend/src/components/PrettyAlert.jsx</a></li><li><a href="frontend_src_components_ResizableGrid.module_jsx.html">frontend/src/components/ResizableGrid.jsx</a></li><li><a href="frontend_src_components_RightOptionsRootContainer.module_jsx.html">frontend/src/components/RightOptionsRootContainer.jsx</a></li><li><a href="frontend_src_components_SavePostInput.module_jsx.html">frontend/src/components/SavePostInput.jsx</a></li><li><a href="frontend_src_components_TopNavigationBar.module_jsx.html">frontend/src/components/TopNavigationBar.jsx</a></li><li><a href="frontend_src_components_ViewerOptionsTabContainer.module_jsx.html">frontend/src/components/ViewerOptionsTabContainer.jsx</a></li><li><a href="frontend_src_components_cellularAutomataSketch.module_js.html">frontend/src/components/cellularAutomataSketch.js</a></li><li><a href="frontend_src_pages_Community.module_jsx.html">frontend/src/pages/Community.jsx</a></li><li><a href="frontend_src_pages_Login.module_jsx.html">frontend/src/pages/Login.jsx</a></li><li><a href="frontend_src_pages_MyCA.module_jsx.html">frontend/src/pages/MyCA.jsx</a></li><li><a href="frontend_src_pages_Register.module_jsx.html">frontend/src/pages/Register.jsx</a></li><li><a href="frontend_src_pages_ViewerBuilderCreator.module_jsx.html">frontend/src/pages/ViewerBuilderCreator.jsx</a></li><li><a href="frontend_src_sketches_CellularAutomataSketchClass.module_js.html">frontend/src/sketches/CellularAutomataSketchClass.js</a></li></ul><h3>Classes</h3><ul><li><a href="TextureRuleCellularAutomataSketchClass.html">TextureRuleCellularAutomataSketchClass</a></li><li><a href="backend_src_postgreSQLConnect.module_js-PostgreSQLConnect.html">PostgreSQLConnect</a></li><li><a href="frontend_src_components_BackendRequester.module_js-BackendRequester.html">BackendRequester</a></li><li><a href="frontend_src_components_BinaryEncoderDecoder.module_js-BinaryEncoderDecoder.html">BinaryEncoderDecoder</a></li><li><a href="frontend_src_sketches_CellularAutomataSketchClass.module_js-CellularAutomataSketchClass.html">CellularAutomataSketchClass</a></li></ul><h3>Global</h3><ul><li><a href="global.html#LangPage">LangPage</a></li><li><a href="global.html#langCompiler">langCompiler</a></li><li><a href="global.html#translate_colors">translate_colors</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Tue Mar 12 2024 15:15:20 GMT-0700 (Pacific Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

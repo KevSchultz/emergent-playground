@@ -28,7 +28,7 @@ import LoadingDialog from "./LoadingDialog";
  *
  * @returns {JSX.Element} The SavePostInput component.
  */
-export default function SavePostInput() {
+function SavePostInput() {
   const properties = useContext(P5PropertiesContext);
   const [loading, setLoading] = useState(false);
 
@@ -70,3 +70,5 @@ export default function SavePostInput() {
     </>
   );
 }
+
+export default SavePostInput;
