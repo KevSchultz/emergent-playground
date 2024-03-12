@@ -65,7 +65,6 @@ function LanguageOptionsTabContainer() {
     const handleCompile = () => {
         if(code !== ''){
             const newFrag = langCompiler(code, langTupleList, langIncludeSelf, langRange, langNeighborhoodType, backgroundColor);
-            console.log(newFrag);
             setFragmentShader(newFrag);
         } else {
             setOpenError(true);
@@ -73,9 +72,8 @@ function LanguageOptionsTabContainer() {
         }
     };
 
-    const handleSave = () => {
-        console.log(fragmentShader);
-        console.log(langTupleList);
+    const handleViewShader = () => {
+        alert(fragmentShader);
     };
 
     return (
@@ -95,10 +93,10 @@ function LanguageOptionsTabContainer() {
             <ResizableGrid limit={400}>
                 <Button
                     variant='outlined'
-                    onClick={handleSave}
+                    onClick={handleViewShader}
                     fullWidth
                 >
-                    Save
+                    View Full Shader
                 </Button>
                  <Button
                     variant='outlined'

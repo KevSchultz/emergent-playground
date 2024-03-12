@@ -112,7 +112,7 @@ function LanguageHelpDropdown() {
                     {infoPage=='Help' && (
                         <>
                         {helpText.map((s, index) => (
-                            <Typography key={index}>{s}<p></p></Typography>
+                            <h4 key={index}>{s}<p></p></h4>
                         ))}
                         </>
                     )}
