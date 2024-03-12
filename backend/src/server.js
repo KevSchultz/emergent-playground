@@ -23,3 +23,28 @@ const httpsServer = https.createServer({
 httpsServer.listen(process.env.SSL_PORT, () => {
     console.log(`HTTPS server running on port ${process.env.SSL_PORT}`);
 });
+
+// Redirect HTTP requests to HTTPS
+const httpServer = http.createServer((request, response) => {
+    if (request.url === '/.well-known/acme-challenge/mSMAp7H0J20DA-iSEXhPKK2s0CqwCm-8_FObpxxprLg') {
+        fs.readFile('./acme-challenge/mSMAp7H0J20DA-iSEXhPKK2s0CqwCm-8_FObpxxprLg', 'utf8', (err, data) => {
+            if (err) {
+                response.writeHead(404);
+                response.end('Not found');
+            } else {
+                response.writeHead(200, { 'Content-Type': 'text/plain' });
+                response.end(data);
+            }
+        });
+    } else {
+        response.writeHead(301, { "Location": "https://" + request.headers['host'] + request.url });
+        response.end();
+    }
+});
+
+const httpPort = process.env.HTTP_PORT || 80;
+
+httpServer.listen(httpPort, () => {
+    console.log(`HTTP server running on port ${httpPort}`);
+});
+ 

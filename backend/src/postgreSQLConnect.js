@@ -184,8 +184,6 @@ class PostgreSQLConnect {
 
         const pathwayResults = await this.client.query(pathwayDeterminationString, pathwayValues);
 
-        console.log("pathwayResults: ", pathwayResults.rows);
-
         if (pathwayResults.rows.length > 0) {
             // UPDATE PATHWAY
             console.log('Row found:', pathwayResults.rows[0]);

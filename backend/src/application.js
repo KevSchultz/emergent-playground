@@ -51,7 +51,6 @@ app.post('/api/register', authentication.register);
 app.post('/api/login', authentication.login);
 app.get('/api/logout', authentication.logout);
 app.get('/api/test', authentication.check, (request, response) => {
-    console.log("userID from accessToken: ", request.userID);
     response.status(200).json({message: 'Hello Secure World?!'});
 });
 
