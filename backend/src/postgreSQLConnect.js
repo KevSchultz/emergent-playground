@@ -201,13 +201,18 @@ class PostgreSQLConnect {
             if (pathwayResults.rows.length > 0) {
                 // UPDATE PATHWAY
                 console.log('Row found:', pathwayResults.rows[0]);
-                const updateQuery =
-                    'UPDATE posts SET poststate = $1, postproperties = $2 WHERE userid = $3 AND title = $4;';
-                const updateValues = [poststate, postproperties, userid, title];
 
-                const updateResults = await this.client.query(updateQuery, updateValues);
-                postUpdate = updateResults.row[0];
-                return postUpdate;
+                const postid = pathwayResults.rows[0].postid;
+
+                console.log(postid);
+
+                const updateQuery =
+                    'UPDATE posts SET poststate = $1, postproperties = $2 WHERE postid = $3;';
+                const updateValues = [poststate, postproperties, postid];
+
+                await this.client.query(updateQuery, updateValues);
+
+                return {postid: postid, username: username, title: title};
             } else {
                 // CREATION PATHWAY
                 console.log('No row found: creating new post');

@@ -32,5 +32,5 @@ CREATE TABLE posts (
 );
 
 -- giving client user permissions to only modify these 3 tables (cannot delete them or the database)
-GRANT SELECT, INSERT, DELETE ON users TO client;
-GRANT SELECT, INSERT, DELETE ON posts TO client;
+GRANT SELECT, INSERT, DELETE, UPDATE ON users TO client;
+GRANT SELECT, INSERT, DELETE, UPDATE ON posts TO client;
