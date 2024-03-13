@@ -72,8 +72,8 @@ function ViewerOptionsTabContainer() {
       />
       <InputSlider
         label="Brush Size"
-        minValue={2}
-        maxValue={5000}
+        minValue={1}
+        maxValue={worldWidth}
         stepValue={1}
         value={brushSize}
         setValue={setBrushSize}
