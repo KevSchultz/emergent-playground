@@ -312,13 +312,6 @@ class CellularAutomataSketchClass {
       );
     }
 
-    if (
-      oldReactProperties.backgroundColor !== newReactProperties.backgroundColor
-    ) {
-      console.log("background color changed");
-      this.updateBackgroundColor(newReactProperties.backgroundColor);
-    }
-
     this.debugMode
       ? console.log("CellularAutomataSketchClass.updateReactProperties")
       : null;
@@ -704,8 +697,8 @@ class CellularAutomataSketchClass {
 
     if (this.shouldCopy) {
       this.copyGraphicsBufferImageDataToAnotherGraphicsBuffer(
-        this.previousState,
         this.currentState,
+        this.previousState,
         0,
         0,
       );

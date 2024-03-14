@@ -195,13 +195,6 @@ function LeftButtonListContainer() {
             currentBrushType={brushType}
             setCurrentBrushType={setBrushType}
           />
-          <IconButton
-            onClick={() => {
-              setBackgroundColor(currentDrawColor);
-            }}
-          >
-            <FormatColorFill />
-          </IconButton>
           <FormControl fullWidth>
             <Select
               value={currentDrawColor}
