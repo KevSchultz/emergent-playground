@@ -120,8 +120,8 @@ class CellularAutomataSketchClass {
     this.previousState.background(this.reactProperties.backgroundColor);
 
     this.copyGraphicsBufferImageDataToAnotherGraphicsBuffer(
-      this.previousState,
       previousStateCopy,
+      this.previousState,
       0,
       0,
     );
@@ -166,8 +166,8 @@ class CellularAutomataSketchClass {
     this.previousState.background(this.reactProperties.backgroundColor);
 
     this.copyGraphicsBufferImageDataToAnotherGraphicsBuffer(
-      this.previousState,
       previousStateCopy,
+      this.previousState,
       0,
       0,
     );
@@ -387,8 +387,8 @@ class CellularAutomataSketchClass {
 
     if (oldPreviousState) {
       this.copyGraphicsBufferImageDataToAnotherGraphicsBuffer(
-        this.previousState,
         oldPreviousState,
+        this.previousState,
         0,
         0,
       );
@@ -658,7 +658,7 @@ class CellularAutomataSketchClass {
     x,
     y,
   ) {
-    source.image(destination.get(), x, y);
+    destination.image(source.get(), x, y);
 
     // this.debugMode ? console.log('CellularAutomataSketchClass.copyGraphicsBufferImageDataToAnotherGraphicsBuffer') : null;
   }
